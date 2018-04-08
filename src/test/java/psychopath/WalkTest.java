@@ -39,9 +39,9 @@ public class WalkTest {
             });
         });
 
-        assert Filer.walk(root).size() == 6;
-        assert Filer.walk(root, "*").size() == 2;
-        assert Filer.walk(root, "!dir1/**").size() == 4;
-        assert Filer.walkDirectory(root).size() == 2;
+        assert PsychoPath.walk(root).size() == 6;
+        assert PsychoPath.walk(root, "*").size() == 2;
+        assert PsychoPath.walk(root, "!dir1/**").size() == 4;
+        assert PsychoPath.walkDirectory(root).size() == 2;
     }
 }

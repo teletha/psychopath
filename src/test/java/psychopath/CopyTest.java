@@ -39,7 +39,7 @@ public class CopyTest extends PathOperationTestHelper {
      * @param other
      */
     private void operate(Path one, Path other, String... patterns) {
-        PsychoPath.locate(one).copy(other, patterns);
+        PsychoPath.copy(one, other, patterns);
     }
 
     /**
@@ -51,7 +51,7 @@ public class CopyTest extends PathOperationTestHelper {
      * @param other
      */
     private void operate(Path one, Path other, BiPredicate<Path, BasicFileAttributes> filter) {
-        PsychoPath.locate(one).copy(other, filter);
+        PsychoPath.copy(one, other, filter);
     }
 
     @Test

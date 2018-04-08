@@ -485,7 +485,7 @@ public class PathObservationTest {
      * </p>
      */
     private Disposable observe(Path path) {
-        Disposable disposable = Filer.observe(path).to(queue);
+        Disposable disposable = PsychoPath.observe(path).to(queue);
 
         disposables.add(disposable);
 
@@ -498,7 +498,7 @@ public class PathObservationTest {
      * </p>
      */
     private Disposable observe(Path path, String pattern) {
-        Disposable disposable = Filer.observe(path, pattern).to(queue);
+        Disposable disposable = PsychoPath.observe(path, pattern).to(queue);
 
         disposables.add(disposable);
 
@@ -553,7 +553,7 @@ public class PathObservationTest {
      * </p>
      */
     private void delete(Path path) {
-        Filer.delete(path);
+        PsychoPath.delete(path);
     }
 
     /**

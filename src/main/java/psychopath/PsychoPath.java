@@ -9,56 +9,47 @@
  */
 package psychopath;
 
-import static psychopath.PsychoPathFileSystemProvider.*;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.channels.FileLock;
-import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
-import java.nio.file.LinkOption;
 import java.nio.file.LinkPermission;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.WatchEvent.Kind;
-import java.nio.file.WatchEvent.Modifier;
-import java.nio.file.WatchKey;
-import java.nio.file.WatchService;
+import java.nio.file.WatchEvent;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.security.CodeSource;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Spliterator;
 import java.util.function.BiPredicate;
-import java.util.function.Consumer;
 
 import kiss.I;
+import kiss.Observer;
+import kiss.Signal;
 
 /**
- * @version 2018/04/07 22:41:16
+ * @version 2018/04/08 9:19:09
  */
-public class PsychoPath implements Path {
+public class PsychoPath {
 
     /** The root temporary directory for Sinobu. */
-    private static final PsychoPath temporaries;
+    private static final Path temporaries;
 
     /** The temporary directory for the current processing JVM. */
-    private static final PsychoPath temporary;
+    private static final Path temporary;
 
     static {
         try {
             // Create the root temporary directory for Sinobu.
-            temporaries = new PsychoPath(Files.createDirectories(Paths.get(System.getProperty("java.io.tmpdir"), "PsychoPath")));
+            temporaries = Files.createDirectories(Paths.get(System.getProperty("java.io.tmpdir"), "Filer"));
 
             // Clean up any old temporary directories by listing all of the files, using a prefix
             // filter and that don't have a lock file.
-            for (PsychoPath path : temporaries.walkDirectory("temporary*")) {
+            for (Path path : walkDirectory(temporaries, "temporary*")) {
                 // create a file to represent the lock
                 RandomAccessFile file = new RandomAccessFile(path.resolve("lock").toFile(), "rw");
 
@@ -72,7 +63,7 @@ public class PsychoPath implements Path {
                 // exclusive lock
                 if (lock != null) {
                     try {
-                        path.delete();
+                        delete(path);
                     } catch (Exception e) {
                         // ignore
                     }
@@ -80,7 +71,7 @@ public class PsychoPath implements Path {
             }
 
             // Create the temporary directory for the current processing JVM.
-            temporary = new PsychoPath(Files.createTempDirectory(temporaries, "temporary"));
+            temporary = Files.createTempDirectory(temporaries, "temporary");
 
             // Create a lock after creating the temporary directory so there is no race condition
             // with another application trying to clean our temporary directory.
@@ -90,14 +81,56 @@ public class PsychoPath implements Path {
         }
     }
 
-    /** The actual {@link Path} . */
-    final Path base;
+    /**
+     * <p>
+     * Walk a file tree and collect files you want to filter by pattern matching.
+     * </p>
+     *
+     * @param start A depature point. The result list doesn't include this starting path.
+     * @param patterns <a href="#Patterns">include/exclude patterns</a> you want to visit.
+     * @return All matched Files. (<em>not</em> including directory)
+     */
+    public static List<Path> walk(Path start, String... patterns) {
+        return new Visitor(start, null, 3, patterns).walk();
+    }
 
     /**
-     * @param base
+     * <p>
+     * Walk a file tree and collect files you want to filter by pattern matching.
+     * </p>
+     *
+     * @param start A depature point. The result list doesn't include this starting path.
+     * @param filter A file filter to visit.
+     * @return All matched Files. (<em>not</em> including directory)
      */
-    PsychoPath(Path base) {
-        this.base = base;
+    public static List<Path> walk(Path start, BiPredicate<Path, BasicFileAttributes> filter) {
+        return new Visitor(start, null, 3, filter).walk();
+    }
+
+    /**
+     * <p>
+     * Walk a file tree and collect directories you want to filter by various conditions.
+     * </p>
+     *
+     * @param start A depature point. The result list include this starting path.
+     * @param patterns <a href="#Patterns">include/exclude patterns</a> you want to visit.
+     * @return All matched directories. (<em>not</em> including file)
+     */
+    public static List<Path> walkDirectory(Path start, String... patterns) {
+        return new Visitor(start, null, 4, patterns).walk();
+    }
+
+    /**
+     * <p>
+     * Walk a file tree and collect directories you want to filter by various conditions.
+     * </p>
+     *
+     * @param start A departure point. The result list include this starting path.
+     * @param filter A directory filter.
+     * @return All matched directories. (<em>not</em> including file)
+     */
+    public static List<Path> walkDirectory(Path start, BiPredicate<Path, BasicFileAttributes> filter) {
+        return new Visitor(start, null, 4, filter).walk();
     }
 
     /**
@@ -149,8 +182,8 @@ public class PsychoPath implements Path {
      *             the target file. If a symbolic link is copied the security manager is invoked to
      *             check {@link LinkPermission}("symbolic").
      */
-    public void copy(Path output, String... patterns) {
-        new Visitor(this, output, 0, patterns).walk();
+    public static void copy(Path input, Path output, String... patterns) {
+        new Visitor(input, output, 0, patterns).walk();
     }
 
     /**
@@ -201,8 +234,8 @@ public class PsychoPath implements Path {
      *             the target file. If a symbolic link is copied the security manager is invoked to
      *             check {@link LinkPermission}("symbolic").
      */
-    public void copy(Path output, BiPredicate<Path, BasicFileAttributes> filter) {
-        new Visitor(this, output, 0, filter).walk();
+    public static void copy(Path input, Path output, BiPredicate<Path, BasicFileAttributes> filter) {
+        new Visitor(input, output, 0, filter).walk();
     }
 
     /**
@@ -234,8 +267,10 @@ public class PsychoPath implements Path {
      *             the target file. If a symbolic link is copied the security manager is invoked to
      *             check {@link LinkPermission}("symbolic").
      */
-    public void delete(String... patterns) {
-        new Visitor(this, null, 2, patterns).walk();
+    public static void delete(Path input, String... patterns) {
+        if (input != null) {
+            new Visitor(input, null, 2, patterns).walk();
+        }
     }
 
     /**
@@ -267,8 +302,10 @@ public class PsychoPath implements Path {
      *             the target file. If a symbolic link is copied the security manager is invoked to
      *             check {@link LinkPermission}("symbolic").
      */
-    public void delete(BiPredicate<Path, BasicFileAttributes> filter) {
-        new Visitor(this, null, 2, filter).walk();
+    public static void delete(Path input, BiPredicate<Path, BasicFileAttributes> filter) {
+        if (input != null) {
+            new Visitor(input, null, 2, filter).walk();
+        }
     }
 
     /**
@@ -318,8 +355,8 @@ public class PsychoPath implements Path {
      *             the target file. If a symbolic link is copied the security manager is invoked to
      *             check {@link LinkPermission}("symbolic").
      */
-    public void move(Path output, String... patterns) {
-        new Visitor(this, output, 1, patterns).walk();
+    public static void move(Path input, Path output, String... patterns) {
+        new Visitor(input, output, 1, patterns).walk();
     }
 
     /**
@@ -369,308 +406,95 @@ public class PsychoPath implements Path {
      *             the target file. If a symbolic link is copied the security manager is invoked to
      *             check {@link LinkPermission}("symbolic").
      */
-    public void move(Path output, BiPredicate<Path, BasicFileAttributes> filter) {
-        new Visitor(this, output, 1, filter).walk();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void forEach(Consumer<? super Path> action) {
-        base.forEach(action);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Spliterator<Path> spliterator() {
-        return base.spliterator();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public FileSystem getFileSystem() {
-        return new PsychoPathFileSystem(base.getFileSystem());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean isAbsolute() {
-        return base.isAbsolute();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public PsychoPath getRoot() {
-        return new PsychoPath(base.getRoot());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public PsychoPath getFileName() {
-        return new PsychoPath(base.getFileName());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public PsychoPath getParent() {
-        return new PsychoPath(base.getParent());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int getNameCount() {
-        return base.getNameCount();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public PsychoPath getName(int index) {
-        return new PsychoPath(base.getName(index));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public PsychoPath subpath(int beginIndex, int endIndex) {
-        return new PsychoPath(base.subpath(beginIndex, endIndex));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean startsWith(Path other) {
-        return base.startsWith(unwrap(other));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean startsWith(String other) {
-        return base.startsWith(other);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean endsWith(Path other) {
-        return base.endsWith(unwrap(other));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean endsWith(String other) {
-        return base.endsWith(other);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public PsychoPath normalize() {
-        return new PsychoPath(base.normalize());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public PsychoPath resolve(Path other) {
-        return new PsychoPath(base.resolve(unwrap(other)));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public PsychoPath resolve(String other) {
-        return new PsychoPath(base.resolve(other));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public PsychoPath resolveSibling(Path other) {
-        return new PsychoPath(base.resolveSibling(unwrap(other)));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public PsychoPath resolveSibling(String other) {
-        return new PsychoPath(base.resolveSibling(other));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public PsychoPath relativize(Path other) {
-        return new PsychoPath(base.relativize(unwrap(other)));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public URI toUri() {
-        return base.toUri();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public PsychoPath toAbsolutePath() {
-        return new PsychoPath(base.toAbsolutePath());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public PsychoPath toRealPath(LinkOption... options) throws IOException {
-        return new PsychoPath(base.toRealPath(options));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public File toFile() {
-        return base.toFile();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public WatchKey register(WatchService watcher, Kind<?>[] events, Modifier... modifiers) throws IOException {
-        return base.register(watcher, events, modifiers);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public WatchKey register(WatchService watcher, Kind<?>... events) throws IOException {
-        return base.register(watcher, events);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Iterator<Path> iterator() {
-        return base.iterator();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int compareTo(Path other) {
-        return base.compareTo(unwrap(other));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean equals(Object other) {
-        return base.equals(other);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int hashCode() {
-        return base.hashCode();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String toString() {
-        return base.toString();
+    public static void move(Path input, Path output, BiPredicate<Path, BasicFileAttributes> filter) {
+        new Visitor(input, output, 1, filter).walk();
     }
 
     /**
      * <p>
-     * Walk a file tree and collect files you want to filter by pattern matching.
+     * Observe the file system change and raises events when a file, directory, or file in a
+     * directory, changes.
+     * </p>
+     * <p>
+     * You can watch for changes in files and subdirectories of the specified directory.
+     * </p>
+     * <p>
+     * The operating system interpret a cut-and-paste action or a move action as a rename action for
+     * a directory and its contents. If you cut and paste a folder with files into a directory being
+     * watched, the {@link Observer} object reports only the directory as new, but not its contents
+     * because they are essentially only renamed.
+     * </p>
+     * <p>
+     * Common file system operations might raise more than one event. For example, when a file is
+     * moved from one directory to another, several Modify and some Create and Delete events might
+     * be raised. Moving a file is a complex operation that consists of multiple simple operations,
+     * therefore raising multiple events. Likewise, some applications might cause additional file
+     * system events that are detected by the {@link Observer}.
      * </p>
      *
-     * @param start A depature point. The result list doesn't include this starting path.
-     * @param patterns <a href="#Patterns">include/exclude patterns</a> you want to visit.
-     * @return All matched Files. (<em>not</em> including directory)
+     * @param path A target path you want to observe. (file and directory are acceptable)
+     * @param patterns <a href="#Patterns">include/exclude patterns</a> you want to sort out. Ignore
+     *            patterns if you want to observe a file.
+     * @return A observable event stream.
+     * @throws NullPointerException If the specified path or listener is <code>null</code>.
+     * @throws SecurityException In the case of the default provider, and a security manager is
+     *             installed, the {@link SecurityManager#checkRead(String)} method is invoked to
+     *             check read access to the source file, the
+     *             {@link SecurityManager#checkWrite(String)} is invoked to check write access to
+     *             the target file. If a symbolic link is copied the security manager is invoked to
+     *             check {@link LinkPermission}("symbolic").
      */
-    public List<PsychoPath> walk(String... patterns) {
-        return new Visitor(this, null, 3, patterns).walk();
+    public static Signal<WatchEvent<Path>> observe(Path path, String... patterns) {
+        if (!Files.isDirectory(path)) {
+            return observe(path.getParent(), path.getFileName().toString());
+        }
+
+        return new Signal<>((observer, disposer) -> {
+            // Create logical file system watch service.
+            Visitor watcher = new Visitor(path, observer, patterns);
+
+            // Run in anothor thread.
+            I.schedule(watcher);
+
+            // API definition
+            return watcher;
+        });
     }
 
     /**
      * <p>
-     * Walk a file tree and collect files you want to filter by pattern matching.
+     * Observe the file system change and raises events when a file, directory, or file in a
+     * directory, changes.
      * </p>
-     *
-     * @param start A depature point. The result list doesn't include this starting path.
-     * @param filter A file filter to visit.
-     * @return All matched Files. (<em>not</em> including directory)
-     */
-    public List<PsychoPath> walk(BiPredicate<Path, BasicFileAttributes> filter) {
-        return new Visitor(this, null, 3, filter).walk();
-    }
-
-    /**
      * <p>
-     * Walk a file tree and collect directories you want to filter by various conditions.
+     * You can watch for changes in files and subdirectories of the specified directory.
      * </p>
-     *
-     * @param start A depature point. The result list include this starting path.
-     * @param patterns <a href="#Patterns">include/exclude patterns</a> you want to visit.
-     * @return All matched directories. (<em>not</em> including file)
-     */
-    public List<PsychoPath> walkDirectory(String... patterns) {
-        return new Visitor(this, null, 4, patterns).walk();
-    }
-
-    /**
      * <p>
-     * Walk a file tree and collect directories you want to filter by various conditions.
+     * The operating system interpret a cut-and-paste action or a move action as a rename action for
+     * a directory and its contents. If you cut and paste a folder with files into a directory being
+     * watched, the {@link Observer} object reports only the directory as new, but not its contents
+     * because they are essentially only renamed.
+     * </p>
+     * <p>
+     * Common file system operations might raise more than one event. For example, when a file is
+     * moved from one directory to another, several Modify and some Create and Delete events might
+     * be raised. Moving a file is a complex operation that consists of multiple simple operations,
+     * therefore raising multiple events. Likewise, some applications might cause additional file
+     * system events that are detected by the {@link Observer}.
      * </p>
      *
-     * @param start A departure point. The result list include this starting path.
-     * @param filter A directory filter.
-     * @return All matched directories. (<em>not</em> including file)
+     * @param path A target path you want to observe. (file and directory are acceptable)
+     * @return A observable event stream.
+     * @throws NullPointerException If the specified path or listener is <code>null</code>.
+     * @throws SecurityException In the case of the default provider, and a security manager is
+     *             installed, the {@link SecurityManager#checkRead(String)} method is invoked to
+     *             check read access to the source file, the
+     *             {@link SecurityManager#checkWrite(String)} is invoked to check write access to
+     *             the target file. If a symbolic link is copied the security manager is invoked to
+     *             check {@link LinkPermission}("symbolic").
      */
-    public List<PsychoPath> walkDirectory(BiPredicate<Path, BasicFileAttributes> filter) {
-        return new Visitor(this, null, 4, filter).walk();
+    public static Signal<WatchEvent<Path>> observe(Path path) {
+        return observe(path, new String[0]);
     }
 
     /**
@@ -678,19 +502,19 @@ public class PsychoPath implements Path {
      * Locate the specified file URL and return the plain {@link Path} object.
      * </p>
      *
-     * @param path A location path.
+     * @param filePath A location path.
      * @return A located {@link Path}.
      * @throws NullPointerException If the given file path is null.
      * @throws SecurityException If a   security manager exists and its
      *             {@link SecurityManager#checkWrite(String)} method does not allow a file to be
      *             created.
      */
-    public static PsychoPath locate(URL path) {
+    public static Path locate(URL filePath) {
         try {
             // Use File constructor with URI to resolve escaped character.
-            return new PsychoPath(new File(path.toURI()).toPath());
+            return new File(filePath.toURI()).toPath();
         } catch (URISyntaxException e) {
-            return new PsychoPath(new File(path.getPath()).toPath());
+            return new File(filePath.getPath()).toPath();
         }
     }
 
@@ -706,8 +530,8 @@ public class PsychoPath implements Path {
      *             {@link SecurityManager#checkWrite(String)} method does not allow a file to be
      *             created.
      */
-    public static PsychoPath locate(String filePath) {
-        return new PsychoPath(Paths.get(filePath));
+    public static Path locate(String filePath) {
+        return Paths.get(filePath);
     }
 
     /**
@@ -720,7 +544,7 @@ public class PsychoPath implements Path {
      * @param clazz A sample class.
      * @return A class archive (e.g. jar file, classes directory) or <code>null</code>.
      */
-    public static PsychoPath locate(Class clazz) {
+    public static Path locate(Class clazz) {
         // retrieve code source of this sample class
         CodeSource source = clazz.getProtectionDomain().getCodeSource();
 
@@ -739,14 +563,14 @@ public class PsychoPath implements Path {
      * @param filePath A location path.
      * @return A class resource (e.g. in jar file, in classes directory) or <code>null</code>.
      */
-    public static PsychoPath locate(Class clazz, String filePath) {
+    public static Path locate(Class clazz, String filePath) {
         try {
             Path root = locate(clazz);
 
             if (Files.isRegularFile(root)) {
-                root = FileSystems.newFileSystem(root, PsychoPath.class.getClassLoader()).getPath("/");
+                root = FileSystems.newFileSystem(root, null).getPath("/");
             }
-            return new PsychoPath(root.resolve(clazz.getName().replaceAll("\\.", "/")).resolveSibling(filePath));
+            return root.resolve(clazz.getName().replaceAll("\\.", "/")).resolveSibling(filePath);
         } catch (Exception e) {
             throw I.quiet(e);
         }
@@ -763,7 +587,7 @@ public class PsychoPath implements Path {
      *             {@link SecurityManager#checkWrite(String)} method does not allow a file to be
      *             created.
      */
-    public static PsychoPath locateTemporary() {
+    public static Path locateTemporary() {
         try {
             Path path = Files.createTempDirectory(temporary, "temporary");
 
@@ -771,29 +595,9 @@ public class PsychoPath implements Path {
             Files.delete(path);
 
             // API definition
-            return new PsychoPath(path);
+            return path;
         } catch (IOException e) {
             throw I.quiet(e);
-        }
-    }
-
-    /**
-     * <p>
-     * Locate the specified file path and return the plain {@link Path} object.
-     * </p>
-     *
-     * @param filePath A location path.
-     * @return A located {@link Path}.
-     * @throws NullPointerException If the given file path is null.
-     * @throws SecurityException If a   security manager exists and its
-     *             {@link SecurityManager#checkWrite(String)} method does not allow a file to be
-     *             created.
-     */
-    public static PsychoPath locate(Path path) {
-        if (path instanceof PsychoPath) {
-            return (PsychoPath) path;
-        } else {
-            return new PsychoPath(path);
         }
     }
 }

@@ -34,10 +34,10 @@ import kiss.I;
 import kiss.Observer;
 
 /**
- * @version 2018/04/07 23:10:54
+ * @version 2015/07/04 16:56:44
  */
 @SuppressWarnings({"serial"})
-class Visitor extends ArrayList<PsychoPath> implements FileVisitor<Path>, Runnable, Disposable {
+class Visitor extends ArrayList<Path> implements FileVisitor<Path>, Runnable, Disposable {
 
     // =======================================================
     // For Pattern Matching Facility
@@ -154,7 +154,6 @@ class Visitor extends ArrayList<PsychoPath> implements FileVisitor<Path>, Runnab
      * </ol>
      */
     Visitor(Path from, Path to, int type, BiPredicate<Path, BasicFileAttributes> filter) {
-        to = PsychoPath.locate(to);
         this.original = from;
         this.type = type;
         this.include = filter;
@@ -228,7 +227,7 @@ class Visitor extends ArrayList<PsychoPath> implements FileVisitor<Path>, Runnab
 
         case 4: // walk directory
             if ((root || from != path) && accept(relative, attrs)) {
-                add(new PsychoPath(path));
+                add(path);
             }
             // fall-through to reduce footprint
 
@@ -284,7 +283,7 @@ class Visitor extends ArrayList<PsychoPath> implements FileVisitor<Path>, Runnab
                     break;
 
                 case 3: // walk file
-                    add(new PsychoPath(path));
+                    add(path);
                     break;
                 }
             } else if (type < 3) {
@@ -351,7 +350,7 @@ class Visitor extends ArrayList<PsychoPath> implements FileVisitor<Path>, Runnab
      * @param observer A event listener.
      * @param patterns Name matching patterns.
      */
-    Visitor(PsychoPath path, Observer observer, String... patterns) {
+    Visitor(Path path, Observer observer, String... patterns) {
         this(path, null, 5, patterns);
 
         try {
@@ -362,7 +361,7 @@ class Visitor extends ArrayList<PsychoPath> implements FileVisitor<Path>, Runnab
             if (patterns.length == 1 && patterns[0].equals("*")) {
                 path.register(service, ENTRY_CREATE, ENTRY_DELETE, ENTRY_MODIFY);
             } else {
-                for (Path dir : path.walkDirectory()) {
+                for (Path dir : PsychoPath.walkDirectory(path)) {
                     dir.register(service, ENTRY_CREATE, ENTRY_DELETE, ENTRY_MODIFY);
                 }
             }
@@ -382,7 +381,7 @@ class Visitor extends ArrayList<PsychoPath> implements FileVisitor<Path>, Runnab
 
                 for (WatchEvent event : key.pollEvents()) {
                     // make current modified path
-                    PsychoPath path = new PsychoPath(((Path) key.watchable()).resolve((Path) event.context()));
+                    Path path = ((Path) key.watchable()).resolve((Path) event.context());
 
                     // pattern matching
                     if (accept(from.relativize(path), null)) {
@@ -390,7 +389,7 @@ class Visitor extends ArrayList<PsychoPath> implements FileVisitor<Path>, Runnab
 
                         if (event.kind() == ENTRY_CREATE) {
                             if (Files.isDirectory(path) && preVisitDirectory(path, null) == CONTINUE) {
-                                for (Path dir : path.walkDirectory()) {
+                                for (Path dir : PsychoPath.walkDirectory(path)) {
                                     dir.register(service, ENTRY_CREATE, ENTRY_DELETE, ENTRY_MODIFY);
                                 }
                             }
@@ -419,10 +418,10 @@ class Visitor extends ArrayList<PsychoPath> implements FileVisitor<Path>, Runnab
     /**
      * @version 2017/04/19 1:19:50
      */
-    private static class Watch implements WatchEvent<PsychoPath> {
+    private static class Watch implements WatchEvent<Path> {
 
         /** Generic object. */
-        private final PsychoPath path;
+        private final Path path;
 
         /** The event holder. */
         private final WatchEvent event;
@@ -431,7 +430,7 @@ class Visitor extends ArrayList<PsychoPath> implements FileVisitor<Path>, Runnab
          * @param path
          * @param event
          */
-        private Watch(PsychoPath path, WatchEvent event) {
+        private Watch(Path path, WatchEvent event) {
             this.path = path;
             this.event = event;
         }
@@ -456,8 +455,9 @@ class Visitor extends ArrayList<PsychoPath> implements FileVisitor<Path>, Runnab
          * {@inheritDoc}
          */
         @Override
-        public PsychoPath context() {
+        public Path context() {
             return path;
         }
     }
+
 }

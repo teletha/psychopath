@@ -22,33 +22,33 @@ import antibug.Chronus;
 import antibug.CleanRoom;
 
 /**
- * @version 2018/04/07 23:16:43
+ * @version 2018/03/31 3:00:44
  */
-class LocateTest {
+public class LocateTest {
 
     @RegisterExtension
     static final CleanRoom room = new CleanRoom();
 
     @Test
-    void locateRelative() {
+    public void locateRelative() {
         Path path = PsychoPath.locate("context");
         assert !path.isAbsolute();
     }
 
     @Test
-    void locateAbsolute() {
+    public void locateAbsolute() {
         Path path = PsychoPath.locate(room.root.toAbsolutePath().toString());
         assert path.isAbsolute();
     }
 
     @Test
-    void locateWhitespace() throws MalformedURLException {
+    public void locateWhitespace() throws MalformedURLException {
         Path path = PsychoPath.locate(new URL("file://white space"));
         assert !path.isAbsolute();
     }
 
     @Test
-    void locateTemporary() {
+    public void locateTemporary() {
         Path path = PsychoPath.locateTemporary();
         assert !Files.exists(path);
         assert !Files.isDirectory(path);
@@ -56,7 +56,7 @@ class LocateTest {
     }
 
     @Test
-    void locateTemporaries() {
+    public void locateTemporaries() {
         Path path1 = PsychoPath.locateTemporary();
         Path path2 = PsychoPath.locateTemporary();
         Path path3 = PsychoPath.locateTemporary();
@@ -69,7 +69,7 @@ class LocateTest {
     }
 
     @Test
-    void locateArchive() {
+    public void locateArchive() {
         Path archive = PsychoPath.locate(LocateTest.class);
         assert archive != null;
         assert Files.exists(archive);
@@ -77,7 +77,7 @@ class LocateTest {
     }
 
     @Test
-    void locateResource() {
+    public void locateResource() {
         Path resource = PsychoPath.locate(LocateTest.class, LocateTest.class.getSimpleName() + ".class");
         assert resource != null;
         assert Files.exists(resource);
@@ -85,7 +85,7 @@ class LocateTest {
     }
 
     @Test
-    void locateResourceInJar() {
+    public void locateResourceInJar() {
         Path resource = PsychoPath.locate(Chronus.class, Chronus.class.getSimpleName() + ".class");
         assert resource != null;
         assert Files.exists(resource);
@@ -93,7 +93,7 @@ class LocateTest {
     }
 
     @Test
-    void locateArchiveByJDKClass() {
+    public void locateArchiveByJDKClass() {
         Path archive = PsychoPath.locate(Map.class);
         assert archive == null;
     }

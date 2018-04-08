@@ -34,7 +34,7 @@ public class DeleteTest extends PathOperationTestHelper {
      * @param path
      */
     private void operate(Path path, String... patterns) {
-        PsychoPath.locate(path).delete(patterns);
+        PsychoPath.delete(path, patterns);
     }
 
     /**
@@ -45,7 +45,7 @@ public class DeleteTest extends PathOperationTestHelper {
      * @param path
      */
     private void operate(Path path, BiPredicate<Path, BasicFileAttributes> filter) {
-        PsychoPath.locate(path).delete(filter);
+        PsychoPath.delete(path, filter);
     }
 
     @Test
@@ -113,6 +113,11 @@ public class DeleteTest extends PathOperationTestHelper {
         operate(input);
 
         assert notExist(input);
+    }
+
+    @Test
+    public void inputNull() {
+        PsychoPath.delete(null);
     }
 
     @Test

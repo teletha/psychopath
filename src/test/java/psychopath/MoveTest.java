@@ -39,7 +39,7 @@ public class MoveTest extends PathOperationTestHelper {
      * @param other
      */
     private void operate(Path one, Path other, String... patterns) {
-        PsychoPath.locate(one).move(other, patterns);
+        PsychoPath.move(one, other, patterns);
     }
 
     /**
@@ -51,7 +51,7 @@ public class MoveTest extends PathOperationTestHelper {
      * @param other
      */
     private void operate(Path one, Path other, BiPredicate<Path, BasicFileAttributes> filter) {
-        PsychoPath.locate(one).move(other, filter);
+        PsychoPath.move(one, other, filter);
     }
 
     @Test

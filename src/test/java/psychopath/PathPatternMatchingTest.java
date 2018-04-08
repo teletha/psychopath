@@ -235,7 +235,7 @@ public class PathPatternMatchingTest {
     private void assertCount(int expected, Consumer<FileSystemDSL> pattern, String... patterns) {
         room.with(pattern);
 
-        assert expected == Filer.walk(room.root, patterns).size();
+        assert expected == PsychoPath.walk(room.root, patterns).size();
     }
 
     /**
@@ -244,6 +244,6 @@ public class PathPatternMatchingTest {
     private void assertDirectoryCount(int expected, Consumer<FileSystemDSL> pattern, String... patterns) {
         room.with(pattern);
 
-        assert Filer.walkDirectory(room.root, patterns).size() == expected;
+        assert PsychoPath.walkDirectory(room.root, patterns).size() == expected;
     }
 }

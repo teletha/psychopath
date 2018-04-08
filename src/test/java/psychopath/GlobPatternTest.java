@@ -34,9 +34,9 @@ public class GlobPatternTest {
                 $.file("text");
             });
         });
-        assert Filer.walk(root, "*").size() == 2;
-        assert Filer.walk(root, "*/text").size() == 1;
-        assert Filer.walk(root, "*", "*/text").size() == 3;
+        assert PsychoPath.walk(root, "*").size() == 2;
+        assert PsychoPath.walk(root, "*/text").size() == 1;
+        assert PsychoPath.walk(root, "*", "*/text").size() == 3;
     }
 
     @Test
@@ -54,9 +54,9 @@ public class GlobPatternTest {
                 $.file("text1");
             });
         });
-        assert Filer.walk(root, "*/*").size() == 6;
-        assert Filer.walk(root, "*/file*").size() == 4;
-        assert Filer.walk(root, "*/*1").size() == 4;
+        assert PsychoPath.walk(root, "*/*").size() == 6;
+        assert PsychoPath.walk(root, "*/file*").size() == 4;
+        assert PsychoPath.walk(root, "*/*1").size() == 4;
     }
 
     @Test
@@ -69,9 +69,9 @@ public class GlobPatternTest {
                 $.file("text2");
             });
         });
-        assert Filer.walk(root, "text?").size() == 2;
-        assert Filer.walk(root, "????1").size() == 1;
-        assert Filer.walk(root, "**text?").size() == 4;
+        assert PsychoPath.walk(root, "text?").size() == 2;
+        assert PsychoPath.walk(root, "????1").size() == 1;
+        assert PsychoPath.walk(root, "**text?").size() == 4;
     }
 
     @Test
@@ -82,8 +82,8 @@ public class GlobPatternTest {
             $.file("text3");
             $.file("text4");
         });
-        assert Filer.walk(root, "text[1-2]").size() == 2;
-        assert Filer.walk(root, "text[2-5]").size() == 3;
+        assert PsychoPath.walk(root, "text[1-2]").size() == 2;
+        assert PsychoPath.walk(root, "text[2-5]").size() == 3;
     }
 
     @Test
@@ -94,8 +94,8 @@ public class GlobPatternTest {
             $.file("text3");
             $.file("text4");
         });
-        assert Filer.walk(root, "text[!3]").size() == 3;
-        assert Filer.walk(root, "text[!34]").size() == 2;
+        assert PsychoPath.walk(root, "text[!3]").size() == 3;
+        assert PsychoPath.walk(root, "text[!34]").size() == 2;
     }
 
     @Test
@@ -106,6 +106,6 @@ public class GlobPatternTest {
             $.file("text3");
             $.file("text4");
         });
-        assert Filer.walk(root, "**", "!**1", "!**3").size() == 2;
+        assert PsychoPath.walk(root, "**", "!**1", "!**3").size() == 2;
     }
 }
