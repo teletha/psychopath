@@ -46,7 +46,7 @@ public class Directory extends Location {
                 observer.error(e);
             }
             return disposer;
-        }).skip(this);
+        });
     }
 
     /**
