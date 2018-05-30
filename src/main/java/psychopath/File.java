@@ -22,4 +22,15 @@ public class File extends Location {
     File(Path path) {
         super(path);
     }
+
+    /**
+     * Retrieve the extension of this {@link File}.
+     * 
+     * @return
+     */
+    public String extension() {
+        String name = name();
+        int index = name.lastIndexOf(".");
+        return index == -1 ? "" : name.substring(index + 1);
+    }
 }
