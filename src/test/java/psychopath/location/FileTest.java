@@ -19,6 +19,15 @@ import psychopath.Location;
 class FileTest {
 
     @Test
+    void base() {
+        assert Location.file("test").base().equals("test");
+        assert Location.file("test.txt").base().equals("test");
+        assert Location.file("test.dummy.log").base().equals("test.dummy");
+        assert Location.file("text.").base().equals("text");
+        assert Location.file(".gitignore").base().equals("");
+    }
+
+    @Test
     void extension() {
         assert Location.file("test").extension().equals("");
         assert Location.file("test.txt").extension().equals("txt");
