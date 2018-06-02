@@ -18,7 +18,7 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 import antibug.CleanRoom;
 import antibug.CleanRoom.FileSystemDSL;
 import psychopath.Directory;
-import psychopath.Location;
+import psychopath.Locator;
 
 /**
  * @version 2018/04/08 15:21:41
@@ -90,7 +90,7 @@ public class DirectoryTest {
     private Directory define(Consumer<FileSystemDSL> definition) {
         room.with(definition);
 
-        return current = Location.directory(room.root);
+        return current = Locator.directory(room.root);
     }
 
     /**

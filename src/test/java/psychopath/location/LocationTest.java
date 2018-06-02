@@ -17,7 +17,7 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 
 import antibug.CleanRoom;
 import antibug.Code;
-import psychopath.Location;
+import psychopath.Locator;
 
 /**
  * @version 2018/05/31 8:42:45
@@ -30,40 +30,40 @@ class LocationTest {
     @Test
     void fileByString() {
         // relative
-        assert Location.file("test.file").isAbsent();
-        assert Location.file("noExtensionFile").isAbsent();
-        assert Location.file("inDirectory/file").isAbsent();
+        assert Locator.file("test.file").isAbsent();
+        assert Locator.file("noExtensionFile").isAbsent();
+        assert Locator.file("inDirectory/file").isAbsent();
 
         // absolute
         String base = room.root.toAbsolutePath().toString();
-        assert Location.file(base + "/test.file").isAbsent();
-        assert Location.file(base + "/noExtensionFile").isAbsent();
-        assert Location.file(base + "/inDirectory/file").isAbsent();
+        assert Locator.file(base + "/test.file").isAbsent();
+        assert Locator.file(base + "/noExtensionFile").isAbsent();
+        assert Locator.file(base + "/inDirectory/file").isAbsent();
 
         // abnormal
-        assert Code.rejectEmptyArgs(Location::file);
+        assert Code.rejectEmptyArgs(Locator::file);
     }
 
     @Test
     void fileByPath() {
         // relative absent
-        assert Location.file(Paths.get("test.file")).isAbsent();
-        assert Location.file(Paths.get("noExtensionFile")).isAbsent();
-        assert Location.file(Paths.get("inDirectory/file")).isAbsent();
+        assert Locator.file(Paths.get("test.file")).isAbsent();
+        assert Locator.file(Paths.get("noExtensionFile")).isAbsent();
+        assert Locator.file(Paths.get("inDirectory/file")).isAbsent();
 
         // absolute absent
         Path base = room.root.toAbsolutePath();
-        assert Location.file(base.resolve("test.file")).isAbsent();
-        assert Location.file(base.resolve("noExtensionFile")).isAbsent();
-        assert Location.file(base.resolve("inDirectory/file")).isAbsent();
+        assert Locator.file(base.resolve("test.file")).isAbsent();
+        assert Locator.file(base.resolve("noExtensionFile")).isAbsent();
+        assert Locator.file(base.resolve("inDirectory/file")).isAbsent();
 
         // abnormal
-        assert Code.rejectEmptyArgs(Location::file);
+        assert Code.rejectEmptyArgs(Locator::file);
     }
 
     @Test
     void asPath() {
-        Path path = Location.file("test").asPath();
+        Path path = Locator.file("test").asPath();
         assert path.isAbsolute() == false;
         assert path.getFileName().toString().equals("test");
         assert path.getParent() == null;
@@ -71,7 +71,7 @@ class LocationTest {
 
     @Test
     void asFile() {
-        java.io.File file = Location.file("test").asFile();
+        java.io.File file = Locator.file("test").asFile();
         assert file.exists() == false;
         assert file.isAbsolute() == false;
         assert file.getName().equals("test");

@@ -212,7 +212,7 @@ public class CymaticScan implements FileVisitor<Path>, Runnable, Disposable {
 
         case 4: // walk directory
             if (from != path && accept(relative, attrs)) {
-                observer.accept(Location.directory(path));
+                observer.accept(Locator.directory(path));
             }
             // fall-through to reduce footprint
 
@@ -268,7 +268,7 @@ public class CymaticScan implements FileVisitor<Path>, Runnable, Disposable {
                     break;
 
                 case 3: // walk file
-                    observer.accept(Location.file(path));
+                    observer.accept(Locator.file(path));
                     break;
                 }
             } else if (type < 3) {

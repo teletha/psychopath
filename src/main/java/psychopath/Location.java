@@ -9,11 +9,19 @@
  */
 package psychopath;
 
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
+import java.nio.file.LinkPermission;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.nio.file.WatchEvent;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Objects;
+
+import kiss.I;
+import kiss.Observer;
+import kiss.Signal;
 
 /**
  * @version 2018/05/31 8:34:34
@@ -47,7 +55,27 @@ public abstract class Location {
      * @return
      */
     public Directory parent() {
-        return directory(path.getParent());
+        return Locator.directory(path.getParent());
+    }
+
+    /**
+     * Returns the size of a file (in bytes). The size may differ from the actual size on the file
+     * system due to compression, support for sparse files, or other reasons. The size of files that are
+     * not {@link #isRegularFile regular} files is implementation specific and therefore unspecified.
+     *
+     * @return the file size, in bytes
+     * @throws IOException if an I/O error occurs
+     * @throws SecurityException In the case of the default provider, and a security manager is
+     *             installed, its {@link SecurityManager#checkRead(String) checkRead} method denies read
+     *             access to the file.
+     * @see BasicFileAttributes#size
+     */
+    public long size() {
+        try {
+            return Files.size(path);
+        } catch (IOException e) {
+            throw I.quiet(e);
+        }
     }
 
     /**
@@ -118,6 +146,161 @@ public abstract class Location {
     }
 
     /**
+     * <p>
+     * Move a input {@link Path} to an output {@link Path} with its attributes. Simplified strategy is
+     * the following:
+     * </p>
+     * <p>
+     * <pre>
+     * if (input.isFile) {
+     *   if (output.isFile) {
+     *     // Move input file to output file.
+     *   } else {
+     *     // Move input file under output directory.
+     *   }
+     * } else {
+     *   if (output.isFile) {
+     *     // NoSuchFileException will be thrown.
+     *   } else {
+     *     // Move input directory under output directory deeply.
+     *     // You can also specify <a href="#Patterns">include/exclude patterns</a>.
+     *   }
+     * }
+     * </pre>
+     * <p>
+     * If the output file already exists, it will be replaced by input file unconditionaly. The exact
+     * file attributes that are copied is platform and file system dependent and therefore unspecified.
+     * Minimally, the last-modified-time is copied to the output file if supported by both the input and
+     * output file store. Copying of file timestamps may result in precision loss.
+     * </p>
+     * <p>
+     * Moving a file is an atomic operation.
+     * </p>
+     *
+     * @param destination An output {@link Path} object which can be file or directory.
+     * @throws IOException If an I/O error occurs.
+     * @throws NullPointerException If the specified input or output file is <code>null</code>.
+     * @throws NoSuchFileException If the input file is directory and the output file is <em>not</em>
+     *             directory.
+     * @throws SecurityException In the case of the default provider, and a security manager is
+     *             installed, the {@link SecurityManager#checkRead(String)} method is invoked to check
+     *             read access to the source file, the {@link SecurityManager#checkWrite(String)} is
+     *             invoked to check write access to the target file. If a symbolic link is copied the
+     *             security manager is invoked to check {@link LinkPermission}("symbolic").
+     */
+    public abstract void moveTo(Directory destination);
+
+    /**
+     * <p>
+     * Copy a input {@link Path} to the output {@link Path} with its attributes. Simplified strategy is
+     * the following:
+     * </p>
+     * <p>
+     * <pre>
+     * if (input.isFile) {
+     *   if (output.isFile) {
+     *     // Copy input file to output file.
+     *   } else {
+     *     // Copy input file to output directory.
+     *   }
+     * } else {
+     *   if (output.isFile) {
+     *     // NoSuchFileException will be thrown.
+     *   } else {
+     *     // Copy input directory under output directory deeply.
+     *     // You can also specify <a href="#Patterns">include/exclude patterns</a>.
+     *   }
+     * }
+     * </pre>
+     * <p>
+     * If the output file already exists, it will be replaced by input file unconditionaly. The exact
+     * file attributes that are copied is platform and file system dependent and therefore unspecified.
+     * Minimally, the last-modified-time is copied to the output file if supported by both the input and
+     * output file store. Copying of file timestamps may result in precision loss.
+     * </p>
+     * <p>
+     * Copying a file is not an atomic operation. If an {@link IOException} is thrown then it possible
+     * that the output file is incomplete or some of its file attributes have not been copied from the
+     * input file.
+     * </p>
+     *
+     * @param destination An output {@link Path} object which can be file or directory.
+     * @throws IOException If an I/O error occurs.
+     * @throws NullPointerException If the specified input or output file is <code>null</code>.
+     * @throws NoSuchFileException If the input file is directory and the output file is <em>not</em>
+     *             directory.
+     * @throws SecurityException In the case of the default provider, and a security manager is
+     *             installed, the {@link SecurityManager#checkRead(String)} method is invoked to check
+     *             read access to the source file, the {@link SecurityManager#checkWrite(String)} is
+     *             invoked to check write access to the target file. If a symbolic link is copied the
+     *             security manager is invoked to check {@link LinkPermission}("symbolic").
+     */
+    public abstract void copyTo(Directory destination);
+
+    /**
+     * <p>
+     * Delete a input {@link Path}. Simplified strategy is the following:
+     * </p>
+     * <p>
+     * <pre>
+     * if (input.isFile) {
+     *   // Delete input file unconditionaly.
+     * } else {
+     *   // Delete input directory deeply.
+     *   // You can also specify <a href="#Patterns">include/exclude patterns</a>.
+     * }
+     * </pre>
+     * <p>
+     * On some operating systems it may not be possible to remove a file when it is open and in use by
+     * this Java virtual machine or other programs.
+     * </p>
+     *
+     * @throws IOException If an I/O error occurs.
+     * @throws NullPointerException If the specified input file is <code>null</code>.
+     * @throws SecurityException In the case of the default provider, and a security manager is
+     *             installed, the {@link SecurityManager#checkRead(String)} method is invoked to check
+     *             read access to the source file, the {@link SecurityManager#checkWrite(String)} is
+     *             invoked to check write access to the target file. If a symbolic link is copied the
+     *             security manager is invoked to check {@link LinkPermission}("symbolic").
+     */
+    public abstract void delete();
+
+    /**
+     * <p>
+     * Observe the file system change and raises events when a file, directory, or file in a directory,
+     * changes.
+     * </p>
+     * <p>
+     * You can watch for changes in files and subdirectories of the specified directory.
+     * </p>
+     * <p>
+     * The operating system interpret a cut-and-paste action or a move action as a rename action for a
+     * directory and its contents. If you cut and paste a folder with files into a directory being
+     * watched, the {@link Observer} object reports only the directory as new, but not its contents
+     * because they are essentially only renamed.
+     * </p>
+     * <p>
+     * Common file system operations might raise more than one event. For example, when a file is moved
+     * from one directory to another, several Modify and some Create and Delete events might be raised.
+     * Moving a file is a complex operation that consists of multiple simple operations, therefore
+     * raising multiple events. Likewise, some applications might cause additional file system events
+     * that are detected by the {@link Observer}.
+     * </p>
+     *
+     * @param path A target path you want to observe. (file and directory are acceptable)
+     * @param patterns <a href="#Patterns">include/exclude patterns</a> you want to sort out. Ignore
+     *            patterns if you want to observe a file.
+     * @return A observable event stream.
+     * @throws NullPointerException If the specified path or listener is <code>null</code>.
+     * @throws SecurityException In the case of the default provider, and a security manager is
+     *             installed, the {@link SecurityManager#checkRead(String)} method is invoked to check
+     *             read access to the source file, the {@link SecurityManager#checkWrite(String)} is
+     *             invoked to check write access to the target file. If a symbolic link is copied the
+     *             security manager is invoked to check {@link LinkPermission}("symbolic").
+     */
+    public abstract Signal<WatchEvent<Path>> observe();
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -139,48 +322,5 @@ public abstract class Location {
     @Override
     public String toString() {
         return path.toString();
-    }
-
-    /**
-     * Locate {@link File}.
-     * 
-     * @param path A path to the file.
-     * @return The specified {@link File}.
-     */
-    public static File file(String path) {
-        if (path == null || path.isEmpty()) {
-            throw new IllegalArgumentException("Empty file name is invalid.");
-        }
-        return file(Paths.get(path));
-    }
-
-    /**
-     * Locate {@link File}.
-     * 
-     * @param path A path to the file.
-     * @return The specified {@link File}.
-     */
-    public static File file(Path path) {
-        return new File(path);
-    }
-
-    /**
-     * Locate {@link Directory}.
-     * 
-     * @param path A path to the directory.
-     * @return The specified {@link Directory}.
-     */
-    public static Directory directory(String path) {
-        return directory(Paths.get(path));
-    }
-
-    /**
-     * Locate {@link Directory}.
-     * 
-     * @param path A path to the directory.
-     * @return The specified {@link Directory}.
-     */
-    public static Directory directory(Path path) {
-        return new Directory(path);
     }
 }
