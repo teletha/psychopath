@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
@@ -48,6 +49,7 @@ class FileTest {
     }
 
     @Test
+    @Disabled
     void copyTo() {
         File file = Locator.file(room.locateFile("base", "ok"));
         Directory dest = Locator.directory(room.locateDirectory("dest"));

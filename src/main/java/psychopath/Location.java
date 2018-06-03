@@ -26,7 +26,7 @@ import kiss.Signal;
 /**
  * @version 2018/05/31 8:34:34
  */
-public abstract class Location {
+public abstract class Location<Self extends Location> {
 
     /** The actual location. */
     protected final Path path;
@@ -38,12 +38,14 @@ public abstract class Location {
         this.path = Objects.requireNonNull(path);
     }
 
+    public abstract Self absolutize();
+
     /**
-     * Returns the name of the file or directory denoted by this path as a {@code Locate} object. The
-     * file name is the <em>farthest</em> element from the root in the directory hierarchy.
+     * Returns the name of the file or directory denoted by this path as a {@code Locate} object.
+     * The file name is the <em>farthest</em> element from the root in the directory hierarchy.
      *
-     * @return a path representing the name of the file or directory, or {@code null} if this path has
-     *         zero elements
+     * @return a path representing the name of the file or directory, or {@code null} if this path
+     *         has zero elements
      */
     public String name() {
         return String.valueOf(path.getFileName());
@@ -60,14 +62,15 @@ public abstract class Location {
 
     /**
      * Returns the size of a file (in bytes). The size may differ from the actual size on the file
-     * system due to compression, support for sparse files, or other reasons. The size of files that are
-     * not {@link #isRegularFile regular} files is implementation specific and therefore unspecified.
+     * system due to compression, support for sparse files, or other reasons. The size of files that
+     * are not {@link #isRegularFile regular} files is implementation specific and therefore
+     * unspecified.
      *
      * @return the file size, in bytes
      * @throws IOException if an I/O error occurs
      * @throws SecurityException In the case of the default provider, and a security manager is
-     *             installed, its {@link SecurityManager#checkRead(String) checkRead} method denies read
-     *             access to the file.
+     *             installed, its {@link SecurityManager#checkRead(String) checkRead} method denies
+     *             read access to the file.
      * @see BasicFileAttributes#size
      */
     public long size() {
@@ -79,8 +82,8 @@ public abstract class Location {
     }
 
     /**
-     * Tests whether this location does not exist or not. This method is intended for cases where it is
-     * required to take action when it can be confirmed that a file does not exist.
+     * Tests whether this location does not exist or not. This method is intended for cases where it
+     * is required to take action when it can be confirmed that a file does not exist.
      * 
      * @param options options indicating how symbolic links are handled
      * @return {@code true} if the file does not exist; {@code false} if the file exists or its
@@ -113,8 +116,8 @@ public abstract class Location {
      *
      * @implSpec The default implementation is equivalent for this path to: <pre>{@code
      *     new File(toString());
-     * }</pre> if the {@code FileSystem} which created this {@code Path} is the default file system;
-     *           otherwise an {@code UnsupportedOperationException} is thrown.
+     * }</pre> if the {@code FileSystem} which created this {@code Path} is the default file
+     *           system; otherwise an {@code UnsupportedOperationException} is thrown.
      * @return a {@code File} object representing this path
      * @throws UnsupportedOperationException if this {@code Path} is not associated with the default
      *             provider
@@ -134,12 +137,13 @@ public abstract class Location {
      * java.nio.file.FileSystem#getPath getPath}(this.{@link #getPath getPath}());
      * </pre></blockquote> Subsequent invocations of this method return the same {@code Path}.
      * <p>
-     * If this abstract pathname is the empty abstract pathname then this method returns a {@code Path}
-     * that may be used to access the current user directory.
+     * If this abstract pathname is the empty abstract pathname then this method returns a
+     * {@code Path} that may be used to access the current user directory.
      *
      * @return a {@code Path} constructed from this abstract path
-     * @throws java.nio.file.InvalidPathException if a {@code Path} object cannot be constructed from
-     *             the abstract path (see {@link java.nio.file.FileSystem#getPath FileSystem.getPath})
+     * @throws java.nio.file.InvalidPathException if a {@code Path} object cannot be constructed
+     *             from the abstract path (see {@link java.nio.file.FileSystem#getPath
+     *             FileSystem.getPath})
      */
     public final Path asPath() {
         return path;
@@ -147,8 +151,8 @@ public abstract class Location {
 
     /**
      * <p>
-     * Move a input {@link Path} to an output {@link Path} with its attributes. Simplified strategy is
-     * the following:
+     * Move a input {@link Path} to an output {@link Path} with its attributes. Simplified strategy
+     * is the following:
      * </p>
      * <p>
      * <pre>
@@ -168,10 +172,11 @@ public abstract class Location {
      * }
      * </pre>
      * <p>
-     * If the output file already exists, it will be replaced by input file unconditionaly. The exact
-     * file attributes that are copied is platform and file system dependent and therefore unspecified.
-     * Minimally, the last-modified-time is copied to the output file if supported by both the input and
-     * output file store. Copying of file timestamps may result in precision loss.
+     * If the output file already exists, it will be replaced by input file unconditionaly. The
+     * exact file attributes that are copied is platform and file system dependent and therefore
+     * unspecified. Minimally, the last-modified-time is copied to the output file if supported by
+     * both the input and output file store. Copying of file timestamps may result in precision
+     * loss.
      * </p>
      * <p>
      * Moving a file is an atomic operation.
@@ -180,20 +185,21 @@ public abstract class Location {
      * @param destination An output {@link Path} object which can be file or directory.
      * @throws IOException If an I/O error occurs.
      * @throws NullPointerException If the specified input or output file is <code>null</code>.
-     * @throws NoSuchFileException If the input file is directory and the output file is <em>not</em>
-     *             directory.
+     * @throws NoSuchFileException If the input file is directory and the output file is
+     *             <em>not</em> directory.
      * @throws SecurityException In the case of the default provider, and a security manager is
-     *             installed, the {@link SecurityManager#checkRead(String)} method is invoked to check
-     *             read access to the source file, the {@link SecurityManager#checkWrite(String)} is
-     *             invoked to check write access to the target file. If a symbolic link is copied the
-     *             security manager is invoked to check {@link LinkPermission}("symbolic").
+     *             installed, the {@link SecurityManager#checkRead(String)} method is invoked to
+     *             check read access to the source file, the
+     *             {@link SecurityManager#checkWrite(String)} is invoked to check write access to
+     *             the target file. If a symbolic link is copied the security manager is invoked to
+     *             check {@link LinkPermission}("symbolic").
      */
     public abstract void moveTo(Directory destination);
 
     /**
      * <p>
-     * Copy a input {@link Path} to the output {@link Path} with its attributes. Simplified strategy is
-     * the following:
+     * Copy a input {@link Path} to the output {@link Path} with its attributes. Simplified strategy
+     * is the following:
      * </p>
      * <p>
      * <pre>
@@ -213,27 +219,29 @@ public abstract class Location {
      * }
      * </pre>
      * <p>
-     * If the output file already exists, it will be replaced by input file unconditionaly. The exact
-     * file attributes that are copied is platform and file system dependent and therefore unspecified.
-     * Minimally, the last-modified-time is copied to the output file if supported by both the input and
-     * output file store. Copying of file timestamps may result in precision loss.
+     * If the output file already exists, it will be replaced by input file unconditionaly. The
+     * exact file attributes that are copied is platform and file system dependent and therefore
+     * unspecified. Minimally, the last-modified-time is copied to the output file if supported by
+     * both the input and output file store. Copying of file timestamps may result in precision
+     * loss.
      * </p>
      * <p>
-     * Copying a file is not an atomic operation. If an {@link IOException} is thrown then it possible
-     * that the output file is incomplete or some of its file attributes have not been copied from the
-     * input file.
+     * Copying a file is not an atomic operation. If an {@link IOException} is thrown then it
+     * possible that the output file is incomplete or some of its file attributes have not been
+     * copied from the input file.
      * </p>
      *
      * @param destination An output {@link Path} object which can be file or directory.
      * @throws IOException If an I/O error occurs.
      * @throws NullPointerException If the specified input or output file is <code>null</code>.
-     * @throws NoSuchFileException If the input file is directory and the output file is <em>not</em>
-     *             directory.
+     * @throws NoSuchFileException If the input file is directory and the output file is
+     *             <em>not</em> directory.
      * @throws SecurityException In the case of the default provider, and a security manager is
-     *             installed, the {@link SecurityManager#checkRead(String)} method is invoked to check
-     *             read access to the source file, the {@link SecurityManager#checkWrite(String)} is
-     *             invoked to check write access to the target file. If a symbolic link is copied the
-     *             security manager is invoked to check {@link LinkPermission}("symbolic").
+     *             installed, the {@link SecurityManager#checkRead(String)} method is invoked to
+     *             check read access to the source file, the
+     *             {@link SecurityManager#checkWrite(String)} is invoked to check write access to
+     *             the target file. If a symbolic link is copied the security manager is invoked to
+     *             check {@link LinkPermission}("symbolic").
      */
     public abstract void copyTo(Directory destination);
 
@@ -251,40 +259,41 @@ public abstract class Location {
      * }
      * </pre>
      * <p>
-     * On some operating systems it may not be possible to remove a file when it is open and in use by
-     * this Java virtual machine or other programs.
+     * On some operating systems it may not be possible to remove a file when it is open and in use
+     * by this Java virtual machine or other programs.
      * </p>
      *
      * @throws IOException If an I/O error occurs.
      * @throws NullPointerException If the specified input file is <code>null</code>.
      * @throws SecurityException In the case of the default provider, and a security manager is
-     *             installed, the {@link SecurityManager#checkRead(String)} method is invoked to check
-     *             read access to the source file, the {@link SecurityManager#checkWrite(String)} is
-     *             invoked to check write access to the target file. If a symbolic link is copied the
-     *             security manager is invoked to check {@link LinkPermission}("symbolic").
+     *             installed, the {@link SecurityManager#checkRead(String)} method is invoked to
+     *             check read access to the source file, the
+     *             {@link SecurityManager#checkWrite(String)} is invoked to check write access to
+     *             the target file. If a symbolic link is copied the security manager is invoked to
+     *             check {@link LinkPermission}("symbolic").
      */
     public abstract void delete();
 
     /**
      * <p>
-     * Observe the file system change and raises events when a file, directory, or file in a directory,
-     * changes.
+     * Observe the file system change and raises events when a file, directory, or file in a
+     * directory, changes.
      * </p>
      * <p>
      * You can watch for changes in files and subdirectories of the specified directory.
      * </p>
      * <p>
-     * The operating system interpret a cut-and-paste action or a move action as a rename action for a
-     * directory and its contents. If you cut and paste a folder with files into a directory being
+     * The operating system interpret a cut-and-paste action or a move action as a rename action for
+     * a directory and its contents. If you cut and paste a folder with files into a directory being
      * watched, the {@link Observer} object reports only the directory as new, but not its contents
      * because they are essentially only renamed.
      * </p>
      * <p>
-     * Common file system operations might raise more than one event. For example, when a file is moved
-     * from one directory to another, several Modify and some Create and Delete events might be raised.
-     * Moving a file is a complex operation that consists of multiple simple operations, therefore
-     * raising multiple events. Likewise, some applications might cause additional file system events
-     * that are detected by the {@link Observer}.
+     * Common file system operations might raise more than one event. For example, when a file is
+     * moved from one directory to another, several Modify and some Create and Delete events might
+     * be raised. Moving a file is a complex operation that consists of multiple simple operations,
+     * therefore raising multiple events. Likewise, some applications might cause additional file
+     * system events that are detected by the {@link Observer}.
      * </p>
      *
      * @param path A target path you want to observe. (file and directory are acceptable)
@@ -293,10 +302,11 @@ public abstract class Location {
      * @return A observable event stream.
      * @throws NullPointerException If the specified path or listener is <code>null</code>.
      * @throws SecurityException In the case of the default provider, and a security manager is
-     *             installed, the {@link SecurityManager#checkRead(String)} method is invoked to check
-     *             read access to the source file, the {@link SecurityManager#checkWrite(String)} is
-     *             invoked to check write access to the target file. If a symbolic link is copied the
-     *             security manager is invoked to check {@link LinkPermission}("symbolic").
+     *             installed, the {@link SecurityManager#checkRead(String)} method is invoked to
+     *             check read access to the source file, the
+     *             {@link SecurityManager#checkWrite(String)} is invoked to check write access to
+     *             the target file. If a symbolic link is copied the security manager is invoked to
+     *             check {@link LinkPermission}("symbolic").
      */
     public abstract Signal<WatchEvent<Path>> observe();
 

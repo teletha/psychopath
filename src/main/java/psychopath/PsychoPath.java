@@ -45,7 +45,7 @@ public class PsychoPath {
     static {
         try {
             // Create the root temporary directory for Sinobu.
-            temporaries = Files.createDirectories(Paths.get(System.getProperty("java.io.tmpdir"), "Filer"));
+            temporaries = Files.createDirectories(Paths.get(System.getProperty("java.io.tmpdir"), PsychoPath.class.getName()));
 
             // Clean up any old temporary directories by listing all of the files, using a prefix
             // filter and that don't have a lock file.
@@ -171,7 +171,7 @@ public class PsychoPath {
      * @param input A input {@link Path} object which can be file or directory.
      * @param output An output {@link Path} object which can be file or directory.
      * @param patterns <a href="#Patterns">include/exclude patterns</a> you want to sort out.
-     * @throws IOException If an  I/O error occurs.
+     * @throws IOException If an I/O error occurs.
      * @throws NullPointerException If the specified input or output file is <code>null</code>.
      * @throws NoSuchFileException If the input file is directory and the output file is
      *             <em>not</em> directory.
@@ -223,7 +223,7 @@ public class PsychoPath {
      * @param input A input {@link Path} object which can be file or directory.
      * @param output An output {@link Path} object which can be file or directory.
      * @param filter A file filter to copy.
-     * @throws IOException If an  I/O error occurs.
+     * @throws IOException If an I/O error occurs.
      * @throws NullPointerException If the specified input or output file is <code>null</code>.
      * @throws NoSuchFileException If the input file is directory and the output file is
      *             <em>not</em> directory.
@@ -258,7 +258,7 @@ public class PsychoPath {
      *
      * @param input A input {@link Path} object which can be file or directory.
      * @param patterns <a href="#Patterns">include/exclude patterns</a> you want to sort out.
-     * @throws IOException If an  I/O error occurs.
+     * @throws IOException If an I/O error occurs.
      * @throws NullPointerException If the specified input file is <code>null</code>.
      * @throws SecurityException In the case of the default provider, and a security manager is
      *             installed, the {@link SecurityManager#checkRead(String)} method is invoked to
@@ -293,7 +293,7 @@ public class PsychoPath {
      *
      * @param input A input {@link Path} object which can be file or directory.
      * @param filter A file filter.
-     * @throws IOException If an  I/O error occurs.
+     * @throws IOException If an I/O error occurs.
      * @throws NullPointerException If the specified input file is <code>null</code>.
      * @throws SecurityException In the case of the default provider, and a security manager is
      *             installed, the {@link SecurityManager#checkRead(String)} method is invoked to
@@ -344,7 +344,7 @@ public class PsychoPath {
      * @param input A input {@link Path} object which can be file or directory.
      * @param output An output {@link Path} object which can be file or directory.
      * @param patterns <a href="#Patterns">include/exclude patterns</a> you want to sort out.
-     * @throws IOException If an  I/O error occurs.
+     * @throws IOException If an I/O error occurs.
      * @throws NullPointerException If the specified input or output file is <code>null</code>.
      * @throws NoSuchFileException If the input file is directory and the output file is
      *             <em>not</em> directory.
@@ -395,7 +395,7 @@ public class PsychoPath {
      * @param input A input {@link Path} object which can be file or directory.
      * @param output An output {@link Path} object which can be file or directory.
      * @param filter A file filter to move.
-     * @throws IOException If an  I/O error occurs.
+     * @throws IOException If an I/O error occurs.
      * @throws NullPointerException If the specified input or output file is <code>null</code>.
      * @throws NoSuchFileException If the input file is directory and the output file is
      *             <em>not</em> directory.
@@ -505,7 +505,7 @@ public class PsychoPath {
      * @param filePath A location path.
      * @return A located {@link Path}.
      * @throws NullPointerException If the given file path is null.
-     * @throws SecurityException If a   security manager exists and its
+     * @throws SecurityException If a security manager exists and its
      *             {@link SecurityManager#checkWrite(String)} method does not allow a file to be
      *             created.
      */
@@ -526,7 +526,7 @@ public class PsychoPath {
      * @param filePath A location path.
      * @return A located {@link Path}.
      * @throws NullPointerException If the given file path is null.
-     * @throws SecurityException If a   security manager exists and its
+     * @throws SecurityException If a security manager exists and its
      *             {@link SecurityManager#checkWrite(String)} method does not allow a file to be
      *             created.
      */
@@ -583,7 +583,7 @@ public class PsychoPath {
      * </p>
      *
      * @return A newly created temporary file which is not exist yet.
-     * @throws SecurityException If a   security manager exists and its
+     * @throws SecurityException If a security manager exists and its
      *             {@link SecurityManager#checkWrite(String)} method does not allow a file to be
      *             created.
      */
