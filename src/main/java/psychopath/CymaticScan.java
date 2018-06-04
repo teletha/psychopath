@@ -39,11 +39,15 @@ public class CymaticScan implements FileVisitor<Path>, Runnable, Disposable {
     // =======================================================
     // For Pattern Matching Facility
     // =======================================================
+    boolean relatively = false;
 
     private Path original;
 
     /** The user speecified event listener. */
     private Observer observer;
+
+    /** The user speecified event listener. */
+    private Disposable disposer;
 
     /** The source. */
     private Path from;
@@ -85,8 +89,8 @@ public class CymaticScan implements FileVisitor<Path>, Runnable, Disposable {
      * <li>5 - observe</li>
      * </ol>
      */
-    CymaticScan(Path from, Path to, int type, Observer observer, String... patterns) {
-        this(from, to, type, observer, (BiPredicate) null);
+    CymaticScan(Path from, Path to, int type, Observer observer, Disposable disposer, String... patterns) {
+        this(from, to, type, observer, disposer, (BiPredicate) null);
 
         if (patterns == null) {
             patterns = new String[0];
@@ -153,10 +157,11 @@ public class CymaticScan implements FileVisitor<Path>, Runnable, Disposable {
      * <li>5 - observe</li>
      * </ol>
      */
-    CymaticScan(Path from, Path to, int type, Observer observer, BiPredicate<Path, BasicFileAttributes> filter) {
+    CymaticScan(Path from, Path to, int type, Observer observer, Disposable disposer, BiPredicate<Path, BasicFileAttributes> filter) {
         this.original = from;
         this.type = type;
         this.observer = observer;
+        this.disposer = disposer;
         this.include = filter;
         this.root = filter == null && !isZip(from);
 
@@ -187,6 +192,10 @@ public class CymaticScan implements FileVisitor<Path>, Runnable, Disposable {
      */
     @Override
     public FileVisitResult preVisitDirectory(Path path, BasicFileAttributes attrs) throws IOException {
+        if (disposer.isDisposed()) {
+            return TERMINATE;
+        }
+
         // Retrieve relative path from base.
         Path relative = from.relativize(path);
         // Skip root directory.
@@ -212,7 +221,7 @@ public class CymaticScan implements FileVisitor<Path>, Runnable, Disposable {
 
         case 4: // walk directory
             if (from != path && accept(relative, attrs)) {
-                observer.accept(Locator.directory(path));
+                observer.accept(Locator.directory(relatively ? relative : path));
             }
             // fall-through to reduce footprint
 
@@ -226,6 +235,10 @@ public class CymaticScan implements FileVisitor<Path>, Runnable, Disposable {
      */
     @Override
     public FileVisitResult postVisitDirectory(Path path, IOException e) throws IOException {
+        if (disposer.isDisposed()) {
+            return TERMINATE;
+        }
+
         switch (type) {
         case 0: // copy
         case 1: // move
@@ -249,6 +262,10 @@ public class CymaticScan implements FileVisitor<Path>, Runnable, Disposable {
      */
     @Override
     public FileVisitResult visitFile(Path path, BasicFileAttributes attrs) throws IOException {
+        if (disposer.isDisposed()) {
+            return TERMINATE;
+        }
+
         if (type < 4) {
             // Retrieve relative path from base.
             Path relative = from.relativize(path);
@@ -268,7 +285,7 @@ public class CymaticScan implements FileVisitor<Path>, Runnable, Disposable {
                     break;
 
                 case 3: // walk file
-                    observer.accept(Locator.file(path));
+                    observer.accept(Locator.file(relatively ? relative : path));
                     break;
                 }
             } else if (type < 3) {
@@ -332,8 +349,8 @@ public class CymaticScan implements FileVisitor<Path>, Runnable, Disposable {
      * @param observer A event listener.
      * @param patterns Name matching patterns.
      */
-    CymaticScan(Path path, Observer observer, String... patterns) {
-        this(path, null, 5, observer, patterns);
+    CymaticScan(Path path, Observer observer, Disposable disposer, String... patterns) {
+        this(path, null, 5, observer, disposer, patterns);
 
         try {
             this.service = path.getFileSystem().newWatchService();

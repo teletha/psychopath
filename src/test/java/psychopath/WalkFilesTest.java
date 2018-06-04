@@ -25,7 +25,7 @@ public class WalkFilesTest {
     CleanRoom room = new CleanRoom();
 
     @Test
-    void base() {
+    void walkFiles() {
         Path root = room.locateDirectory("root", $ -> {
             $.file("text1");
             $.file("text2");
@@ -44,6 +44,34 @@ public class WalkFilesTest {
         assert directory.walkFiles("*").toList().size() == 2;
         assert directory.walkFiles("**").toList().size() == 6;
         assert directory.walkFiles("*/*").toList().size() == 4;
-        assert directory.walkFiles().take(File::isAbsolute).toList().size() == 6;
+        directory.walkFiles().to(e -> {
+            assert e.isAbsolute();
+        });
+    }
+
+    @Test
+    void walkFilesRelatively() {
+        Path root = room.locateDirectory("root", $ -> {
+            $.file("text1");
+            $.file("text2");
+            $.dir("dir1", () -> {
+                $.file("text1");
+                $.file("text2");
+            });
+            $.dir("dir2", () -> {
+                $.file("text1");
+                $.file("text2");
+            });
+        });
+
+        Directory directory = Locator.directory(root);
+        assert directory.walkFilesRelatively().toList().size() == 6;
+        assert directory.walkFilesRelatively("*").toList().size() == 2;
+        assert directory.walkFilesRelatively("**").toList().size() == 6;
+        assert directory.walkFilesRelatively("*/*").toList().size() == 4;
+        directory.walkFilesRelatively().to(e -> {
+            assert e.ⅰ == directory;
+            assert e.ⅱ.isRelative();
+        });
     }
 }
