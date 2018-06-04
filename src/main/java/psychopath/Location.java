@@ -82,6 +82,30 @@ public abstract class Location<Self extends Location> {
     }
 
     /**
+     * Tells whether or not this path is absolute.
+     * <p>
+     * An absolute path is complete in that it doesn't need to be combined with other path
+     * information in order to locate a file.
+     *
+     * @return {@code true} if, and only if, this path is absolute
+     */
+    public final boolean isAbsolute() {
+        return path.isAbsolute();
+    }
+
+    /**
+     * Tells whether or not this path is relative.
+     * <p>
+     * An absolute path is complete in that it doesn't need to be combined with other path
+     * information in order to locate a file.
+     *
+     * @return {@code true} if, and only if, this path is relative
+     */
+    public final boolean isRelative() {
+        return !path.isAbsolute();
+    }
+
+    /**
      * Tests whether this location does not exist or not. This method is intended for cases where it
      * is required to take action when it can be confirmed that a file does not exist.
      * 
