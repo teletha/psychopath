@@ -102,22 +102,18 @@ public class Archiver {
                 try {
                     entries.to(e -> {
                         // compute base directory
-                        Path base = e.ⅰ.asPath();
-                        Path file = e.ⅱ.asPath();
+                        File file = e.ⅰ.file(e.ⅱ);
 
                         // scan entry
                         try {
-                            String path = file.toString().replace(java.io.File.separatorChar, '/');
-                            System.out.println(base + "  " + file + "    " + path);
-                            BasicFileAttributes attrs = Files.readAttributes(file, BasicFileAttributes.class);
-                            System.out.println(base + "  " + file + "    " + path);
-                            ZipEntry zip = new ZipEntry("/" + path);
+                            BasicFileAttributes attrs = file.attribute();
+                            ZipEntry zip = new ZipEntry(e.ⅱ.path());
                             zip.setSize(attrs.size());
                             zip.setLastModifiedTime(attrs.lastModifiedTime());
                             zip.setMethod(ZipEntry.DEFLATED);
 
                             archiver.putNextEntry(zip);
-                            I.copy(Files.newInputStream(file), archiver, true);
+                            I.copy(file.newInputStream(), archiver, true);
                             archiver.closeEntry();
                         } catch (IOException io) {
                             // ignore
