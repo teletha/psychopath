@@ -121,7 +121,7 @@ public class Directory extends Location<Directory> {
      * @return All matched absolute {@link File}s.
      */
     public Signal<File> walkFiles(String... filters) {
-        return walkFiles(3, filters, null, Integer.MAX_VALUE, false);
+        return walk(File.class, 3, filters, null, Integer.MAX_VALUE, false);
     }
 
     /**
@@ -131,7 +131,7 @@ public class Directory extends Location<Directory> {
      * @return All matched absolute {@link File}s.
      */
     public Signal<File> walkFiles(BiPredicate<Path, BasicFileAttributes> filters) {
-        return walkFiles(3, null, filters, Integer.MAX_VALUE, false);
+        return walk(File.class, 3, null, filters, Integer.MAX_VALUE, false);
     }
 
     /**
@@ -142,39 +142,7 @@ public class Directory extends Location<Directory> {
      * @return All matched absolute {@link File}s.
      */
     public Signal<File> walkFiles(BiPredicate<Path, BasicFileAttributes> filters, int depth) {
-        return walkFiles(3, null, filters, depth, false);
-    }
-
-    /**
-     * Walk file tree and collect absolute {@link File}s which are filtered by various conditions.
-     * 
-     * @param type Scan type.
-     * @param patterns Glob patterns.
-     * @param filters Your condition.
-     * @param depth A max file tree depth to search.
-     * @return All matched absolute {@link File}s.
-     */
-    private Signal<File> walkFiles(int type, String[] patterns, BiPredicate<Path, BasicFileAttributes> filters, int depth, boolean relatively) {
-        return new Signal<File>((observer, disposer) -> {
-            // build new scanner
-            CymaticScan scanner;
-
-            if (filters == null) {
-                scanner = new CymaticScan(path, null, type, observer, disposer, patterns);
-            } else {
-                scanner = new CymaticScan(path, null, type, observer, disposer, filters);
-            }
-            scanner.relatively = relatively;
-
-            // try to scan
-            try {
-                Files.walkFileTree(path, Collections.EMPTY_SET, depth, scanner);
-                observer.complete();
-            } catch (IOException e) {
-                observer.error(e);
-            }
-            return disposer;
-        });
+        return walk(File.class, 3, null, filters, depth, false);
     }
 
     /**
@@ -218,7 +186,114 @@ public class Directory extends Location<Directory> {
      * @return All matched absolute {@link File}s.
      */
     private Signal<Ⅱ<Directory, File>> walkFilesRelatively(int type, String[] patterns, BiPredicate<Path, BasicFileAttributes> filters, int depth) {
-        return walkFiles(type, patterns, filters, depth, true).map(file -> I.pair(this, file));
+        return walk(File.class, type, patterns, filters, depth, true).map(file -> I.pair(this, file));
+    }
+
+    /**
+     * Walk file tree and collect absolute {@link File}s which are filtered by various conditions.
+     * 
+     * @param filters Glob patterns.
+     * @return All matched absolute {@link File}s.
+     */
+    public Signal<Directory> walkDirectories(String... filters) {
+        return walk(Directory.class, 4, filters, null, Integer.MAX_VALUE, false);
+    }
+
+    /**
+     * Walk file tree and collect absolute {@link File}s which are filtered by various conditions.
+     * 
+     * @param filters Your condition.
+     * @return All matched absolute {@link File}s.
+     */
+    public Signal<Directory> walkDirectories(BiPredicate<Path, BasicFileAttributes> filters) {
+        return walk(Directory.class, 4, null, filters, Integer.MAX_VALUE, false);
+    }
+
+    /**
+     * Walk file tree and collect absolute {@link File}s which are filtered by various conditions.
+     * 
+     * @param filters Your condition.
+     * @param depth A max file tree depth to search.
+     * @return All matched absolute {@link File}s.
+     */
+    public Signal<Directory> walkDirectories(BiPredicate<Path, BasicFileAttributes> filters, int depth) {
+        return walk(Directory.class, 4, null, filters, depth, false);
+    }
+
+    /**
+     * Walk file tree and collect relative {@link File}s which are filtered by various conditions.
+     * 
+     * @param filters Glob patterns.
+     * @return All matched relative {@link File}s.
+     */
+    public Signal<Ⅱ<Directory, Directory>> walkDirectoriesRelatively(String... filters) {
+        return walkDirectoriesRelatively(4, filters, null, Integer.MAX_VALUE);
+    }
+
+    /**
+     * Walk file tree and collect relative {@link File}s which are filtered by various conditions.
+     * 
+     * @param filters Your condition.
+     * @return All matched relative {@link File}s.
+     */
+    public Signal<Ⅱ<Directory, Directory>> walkDirectoriesRelatively(BiPredicate<Path, BasicFileAttributes> filters) {
+        return walkDirectoriesRelatively(4, null, filters, Integer.MAX_VALUE);
+    }
+
+    /**
+     * Walk file tree and collect relative {@link File}s which are filtered by various conditions.
+     * 
+     * @param filters Your condition.
+     * @param depth A max file tree depth to search.
+     * @return All matched relative {@link File}s.
+     */
+    public Signal<Ⅱ<Directory, Directory>> walkDirectoriesRelatively(BiPredicate<Path, BasicFileAttributes> filters, int depth) {
+        return walkDirectoriesRelatively(4, null, filters, depth);
+    }
+
+    /**
+     * Walk file tree and collect absolute {@link File}s which are filtered by various conditions.
+     * 
+     * @param type Scan type.
+     * @param patterns Glob patterns.
+     * @param filters Your condition.
+     * @param depth A max file tree depth to search.
+     * @return All matched absolute {@link File}s.
+     */
+    private Signal<Ⅱ<Directory, Directory>> walkDirectoriesRelatively(int type, String[] patterns, BiPredicate<Path, BasicFileAttributes> filters, int depth) {
+        return walk(Directory.class, type, patterns, filters, depth, true).map(file -> I.pair(this, file));
+    }
+
+    /**
+     * Walk file tree and collect absolute {@link File}s which are filtered by various conditions.
+     * 
+     * @param type Scan type.
+     * @param patterns Glob patterns.
+     * @param filters Your condition.
+     * @param depth A max file tree depth to search.
+     * @return All matched absolute {@link File}s.
+     */
+    private <L extends Location> Signal<L> walk(Class<L> clazz, int type, String[] patterns, BiPredicate<Path, BasicFileAttributes> filters, int depth, boolean relatively) {
+        return new Signal<L>((observer, disposer) -> {
+            // build new scanner
+            CymaticScan scanner;
+    
+            if (filters == null) {
+                scanner = new CymaticScan(path, null, type, observer, disposer, patterns);
+            } else {
+                scanner = new CymaticScan(path, null, type, observer, disposer, filters);
+            }
+            scanner.relatively = relatively;
+    
+            // try to scan
+            try {
+                Files.walkFileTree(path, Collections.EMPTY_SET, depth, scanner);
+                observer.complete();
+            } catch (IOException e) {
+                observer.error(e);
+            }
+            return disposer;
+        });
     }
 
     /**

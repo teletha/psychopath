@@ -19,7 +19,7 @@ import antibug.CleanRoom;
 /**
  * @version 2018/06/04 9:31:56
  */
-public class WalkFilesTest {
+public class WalkLocationTest {
 
     @RegisterExtension
     CleanRoom room = new CleanRoom();
@@ -70,6 +70,57 @@ public class WalkFilesTest {
         assert directory.walkFilesRelatively("**").toList().size() == 6;
         assert directory.walkFilesRelatively("*/*").toList().size() == 4;
         directory.walkFilesRelatively().to(e -> {
+            assert e.ⅰ == directory;
+            assert e.ⅱ.isRelative();
+        });
+    }
+
+    @Test
+    void walkDirectories() {
+        Path root = room.locateDirectory("root", $ -> {
+            $.dir("text1");
+            $.dir("text2");
+            $.dir("dir1", () -> {
+                $.dir("text1");
+                $.dir("text2");
+            });
+            $.dir("dir2", () -> {
+                $.dir("text1");
+                $.dir("text2");
+            });
+        });
+
+        Directory directory = Locator.directory(root);
+        assert directory.walkDirectories().toList().size() == 8;
+        assert directory.walkDirectories("*").toList().size() == 4;
+        assert directory.walkDirectories("**").toList().size() == 8;
+        assert directory.walkDirectories("*/*").toList().size() == 4;
+        directory.walkDirectories().to(e -> {
+            assert e.isAbsolute();
+        });
+    }
+
+    @Test
+    void walkDirectoriesRelatively() {
+        Path root = room.locateDirectory("root", $ -> {
+            $.dir("text1");
+            $.dir("text2");
+            $.dir("dir1", () -> {
+                $.dir("text1");
+                $.dir("text2");
+            });
+            $.dir("dir2", () -> {
+                $.dir("text1");
+                $.dir("text2");
+            });
+        });
+
+        Directory directory = Locator.directory(root);
+        assert directory.walkDirectoriesRelatively().toList().size() == 8;
+        assert directory.walkDirectoriesRelatively("*").toList().size() == 4;
+        assert directory.walkDirectoriesRelatively("**").toList().size() == 8;
+        assert directory.walkDirectoriesRelatively("*/*").toList().size() == 4;
+        directory.walkDirectoriesRelatively().to(e -> {
             assert e.ⅰ == directory;
             assert e.ⅱ.isRelative();
         });
