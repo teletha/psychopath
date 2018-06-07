@@ -35,7 +35,7 @@ public class ArchiverTest {
 
         Archiver jar = new Archiver();
         jar.add(Locator.directory(file.getParent()));
-        jar.pack(output);
+        jar.packTo(output);
 
         try (FileSystem system = FileSystems.newFileSystem(output, null)) {
             Path archive = system.getPath("/");

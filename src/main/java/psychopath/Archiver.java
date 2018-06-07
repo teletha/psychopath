@@ -25,7 +25,6 @@ import bee.Platform;
 import kiss.Disposable;
 import kiss.I;
 import kiss.Signal;
-import kiss.Ⅱ;
 
 /**
  * @version 2018/06/05 14:45:33
@@ -39,14 +38,14 @@ public class Archiver {
     protected Manifest manifest;
 
     /** The path entries. */
-    private Signal<Ⅱ<Directory, File>> entries = Signal.EMPTY;
+    private Signal<File> entries = Signal.EMPTY;
 
     /**
      * Add files.
      * 
      * @param files
      */
-    public Archiver add(Signal<Ⅱ<Directory, File>> files) {
+    public Archiver add(Signal<File> files) {
         if (files != null) {
             entries = entries.merge(files);
         }
@@ -63,7 +62,7 @@ public class Archiver {
      */
     public void add(Directory base, String... patterns) {
         if (base != null) {
-            add(base.walkFilesRelatively(patterns));
+            add(base.walkFiles(patterns));
         }
     }
 
@@ -74,7 +73,7 @@ public class Archiver {
      * 
      * @param location
      */
-    public void pack(Path location) {
+    public void packTo(Path location) {
         if (location != null) {
             location = location.toAbsolutePath();
 
@@ -100,14 +99,11 @@ public class Archiver {
                 }
 
                 try {
-                    entries.to(e -> {
-                        // compute base directory
-                        File file = e.ⅰ.file(e.ⅱ);
-
+                    entries.to(file -> {
                         // scan entry
                         try {
                             BasicFileAttributes attrs = file.attribute();
-                            ZipEntry zip = new ZipEntry(e.ⅱ.path());
+                            ZipEntry zip = new ZipEntry(file.relativePath());
                             zip.setSize(attrs.size());
                             zip.setLastModifiedTime(attrs.lastModifiedTime());
                             zip.setMethod(ZipEntry.DEFLATED);

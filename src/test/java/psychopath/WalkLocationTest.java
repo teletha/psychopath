@@ -45,33 +45,7 @@ public class WalkLocationTest {
         assert directory.walkFiles("**").toList().size() == 6;
         assert directory.walkFiles("*/*").toList().size() == 4;
         directory.walkFiles().to(e -> {
-            assert e.isAbsolute();
-        });
-    }
-
-    @Test
-    void walkFilesRelatively() {
-        Path root = room.locateDirectory("root", $ -> {
-            $.file("text1");
-            $.file("text2");
-            $.dir("dir1", () -> {
-                $.file("text1");
-                $.file("text2");
-            });
-            $.dir("dir2", () -> {
-                $.file("text1");
-                $.file("text2");
-            });
-        });
-
-        Directory directory = Locator.directory(root);
-        assert directory.walkFilesRelatively().toList().size() == 6;
-        assert directory.walkFilesRelatively("*").toList().size() == 2;
-        assert directory.walkFilesRelatively("**").toList().size() == 6;
-        assert directory.walkFilesRelatively("*/*").toList().size() == 4;
-        directory.walkFilesRelatively().to(e -> {
-            assert e.ⅰ == directory;
-            assert e.ⅱ.isRelative();
+            assert e.relativePath().equals(directory.relativize(e).toString());
         });
     }
 
@@ -96,33 +70,7 @@ public class WalkLocationTest {
         assert directory.walkDirectories("**").toList().size() == 8;
         assert directory.walkDirectories("*/*").toList().size() == 4;
         directory.walkDirectories().to(e -> {
-            assert e.isAbsolute();
-        });
-    }
-
-    @Test
-    void walkDirectoriesRelatively() {
-        Path root = room.locateDirectory("root", $ -> {
-            $.dir("text1");
-            $.dir("text2");
-            $.dir("dir1", () -> {
-                $.dir("text1");
-                $.dir("text2");
-            });
-            $.dir("dir2", () -> {
-                $.dir("text1");
-                $.dir("text2");
-            });
-        });
-
-        Directory directory = Locator.directory(root);
-        assert directory.walkDirectoriesRelatively().toList().size() == 8;
-        assert directory.walkDirectoriesRelatively("*").toList().size() == 4;
-        assert directory.walkDirectoriesRelatively("**").toList().size() == 8;
-        assert directory.walkDirectoriesRelatively("*/*").toList().size() == 4;
-        directory.walkDirectoriesRelatively().to(e -> {
-            assert e.ⅰ == directory;
-            assert e.ⅱ.isRelative();
+            assert e.relativePath().equals(directory.relativize(e).toString());
         });
     }
 }

@@ -39,8 +39,6 @@ public class CymaticScan implements FileVisitor<Path>, Runnable, Disposable {
     // =======================================================
     // For Pattern Matching Facility
     // =======================================================
-    boolean relatively = false;
-
     private Path original;
 
     /** The user speecified event listener. */
@@ -221,7 +219,9 @@ public class CymaticScan implements FileVisitor<Path>, Runnable, Disposable {
 
         case 4: // walk directory
             if (from != path && accept(relative, attrs)) {
-                observer.accept(Locator.directory(relatively ? relative : path.toAbsolutePath()));
+                Directory directory = Locator.directory(path);
+                directory.relative = relative.toString();
+                observer.accept(directory);
             }
             // fall-through to reduce footprint
 
@@ -285,7 +285,9 @@ public class CymaticScan implements FileVisitor<Path>, Runnable, Disposable {
                     break;
 
                 case 3: // walk file
-                    observer.accept(Locator.file(relatively ? relative : path.toAbsolutePath()));
+                    File file = Locator.file(path);
+                    file.relative = relative.toString();
+                    observer.accept(file);
                     break;
                 }
             } else if (type < 3) {
