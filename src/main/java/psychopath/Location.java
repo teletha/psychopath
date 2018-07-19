@@ -28,6 +28,9 @@ import kiss.Signal;
  */
 public abstract class Location<Self extends Location> {
 
+    /** The separator flag. */
+    private static final boolean useNativeSeparator = java.io.File.separatorChar == '/';
+
     /** The actual location. */
     protected final Path path;
 
@@ -41,18 +44,31 @@ public abstract class Location<Self extends Location> {
         this.path = Objects.requireNonNull(path);
     }
 
-    public abstract Self absolutize();
-
     /**
-     * Returns the name of the file or directory denoted by this path as a {@code Locate} object. The
+     * Returns the name of the file or directory denoted by this path as a {@code Location} object. The
      * file name is the <em>farthest</em> element from the root in the directory hierarchy.
      *
-     * @return a path representing the name of the file or directory, or {@code null} if this path has
+     * @return A path representing the name of the file or directory, or {@code null} if this path has
      *         zero elements
      */
     public final String name() {
         return String.valueOf(path.getFileName());
     }
+
+    /**
+     * Returns the path expression of this {@link Location}.
+     * 
+     * @return A path to this {@link Location}.
+     */
+    public final String path() {
+        if (useNativeSeparator) {
+            return path.toString();
+        } else {
+            return path.toString().replace(java.io.File.separatorChar, '/');
+        }
+    }
+
+    public abstract Self absolutize();
 
     /**
      * Compute relative path which is from base directory.
@@ -75,6 +91,8 @@ public abstract class Location<Self extends Location> {
     public final Directory parent() {
         return Locator.directory(path.getParent());
     }
+
+    public abstract Signal<Location<? extends Location>> children();
 
     /**
      * Returns the size of a file (in bytes). The size may differ from the actual size on the file
@@ -184,6 +202,15 @@ public abstract class Location<Self extends Location> {
     public final boolean isPresent(LinkOption... options) {
         return Files.exists(path, options);
     }
+
+    /**
+     * Test whether this location can have items or not.
+     * 
+     * @return
+     */
+    public abstract boolean isContainer();
+
+    public abstract Signal<Directory> asDirectory();
 
     /**
      * Returns a {@link File} object representing this path. Where this {@code
@@ -319,6 +346,8 @@ public abstract class Location<Self extends Location> {
      *             security manager is invoked to check {@link LinkPermission}("symbolic").
      */
     public abstract void copyTo(Directory destination);
+
+    public abstract void create();
 
     /**
      * <p>

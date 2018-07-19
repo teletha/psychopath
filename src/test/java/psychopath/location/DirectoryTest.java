@@ -18,6 +18,7 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 import antibug.CleanRoom;
 import antibug.CleanRoom.FileSystemDSL;
 import psychopath.Directory;
+import psychopath.File;
 import psychopath.Locator;
 
 /**
@@ -33,6 +34,19 @@ public class DirectoryTest {
     @BeforeEach
     void setup() {
         current = null;
+    }
+
+    @Test
+    void name() {
+        // relative
+        assert relative("name").name().equals("name");
+        assert relative("nest/name").name().equals("name");
+        assert relative("root/nest/name").name().equals("name");
+
+        // absolute
+        assert absolute("name").name().equals("name");
+        assert absolute("nest/name").name().equals("name");
+        assert absolute("root/nest/name").name().equals("name");
     }
 
     @Test
@@ -79,6 +93,26 @@ public class DirectoryTest {
         assert findDirectory("*/*") == 4;
         assert findDirectory("**") == 6;
         assert findDirectory("*", "*/*1") == 4;
+    }
+
+    /**
+     * Helper to locate {@link File}.
+     * 
+     * @param path
+     * @return
+     */
+    private File absolute(String path) {
+        return Locator.file(path).absolutize();
+    }
+
+    /**
+     * Helper to locate {@link Directory}.
+     * 
+     * @param path
+     * @return
+     */
+    private Directory relative(String path) {
+        return Locator.directory(path);
     }
 
     /**

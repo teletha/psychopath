@@ -14,5 +14,9 @@ public class Project extends bee.api.Project {
 
         require("com.github.teletha", "sinobu", "1.0");
         require("com.github.teletha", "antibug", "0.6").atTest();
+        require("org.apache.commons", "commons-compress", "1.17");
+        require("com.github.junrar", "junrar", "2.0.0");
+        unrequire("org.apache.commons", "commons-vfs2");
+        unrequire("commons-logging", "commons-logging");
     }
 }

@@ -9,6 +9,9 @@
  */
 package psychopath;
 
+import static java.nio.file.StandardCopyOption.*;
+
+import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -21,6 +24,12 @@ import java.nio.file.StandardOpenOption;
 import java.nio.file.WatchEvent;
 import java.nio.file.attribute.FileAttribute;
 import java.util.Set;
+
+import org.apache.commons.compress.archivers.ArchiveEntry;
+import org.apache.commons.compress.archivers.ArchiveException;
+import org.apache.commons.compress.archivers.ArchiveInputStream;
+import org.apache.commons.compress.archivers.ArchiveStreamFactory;
+import org.apache.commons.compress.archivers.StreamingNotSupportedException;
 
 import kiss.I;
 import kiss.Signal;
@@ -38,6 +47,58 @@ public class File extends Location<File> {
     }
 
     /**
+     * Retrieve the base name of this {@link File}.
+     * 
+     * @return A base name.
+     */
+    public final String base() {
+        String name = name();
+        int index = name.lastIndexOf(".");
+        return index == -1 ? name : name.substring(0, index);
+    }
+
+    /**
+     * Locate {@link File} with the specified new base name, but extension is same.
+     * 
+     * @param newBaseName A new base name.
+     * @return New located {@link File}.
+     */
+    public final File base(String newBaseName) {
+        String extension = extension();
+        return Locator.file(path.resolveSibling(extension.isEmpty() ? newBaseName : newBaseName + "." + extension));
+    }
+
+    /**
+     * Retrieve the extension of this {@link File}.
+     * 
+     * @return An extension or empty if it has no extension.
+     */
+    public final String extension() {
+        String name = name();
+        int index = name.lastIndexOf(".");
+        return index == -1 ? "" : name.substring(index + 1);
+    }
+
+    /**
+     * Locate {@link File} with the specified new extension, but base name is same.
+     * 
+     * @param newExtension A new extension.
+     * @return New located {@link File}.
+     */
+    public File extension(String newExtension) {
+        return Locator.file(path.resolveSibling(base() + "." + newExtension));
+    }
+
+    /**
+     * Cast to archive.
+     * 
+     * @return
+     */
+    public Directory asArchive() {
+        return new Archive(this);
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -49,38 +110,27 @@ public class File extends Location<File> {
     }
 
     /**
-     * Retrieve the base name of this {@link Location}.
-     * 
-     * @return A base name.
+     * {@inheritDoc}
      */
-    public String base() {
-        String name = name();
-        int index = name.lastIndexOf(".");
-        return index == -1 ? name : name.substring(0, index);
+    @Override
+    public Signal<Location<? extends Location>> children() {
+        return Signal.EMPTY;
     }
 
     /**
-     * Retrieve the extension of this {@link Location}.
-     * 
-     * @return An extension.
+     * {@inheritDoc}
      */
-    public String extension() {
-        String name = name();
-        int index = name.lastIndexOf(".");
-        return index == -1 ? "" : name.substring(index + 1);
+    @Override
+    public boolean isContainer() {
+        return false;
     }
 
     /**
-     * Retrieve the path expression of this {@link Location}.
-     * 
-     * @return A path to this {@link Location}.
+     * {@inheritDoc}
      */
-    public String path() {
-        return I.join("/", path);
-    }
-
-    public File extension(String newExtension) {
-        return Locator.file(path.resolveSibling(base() + "." + newExtension));
+    @Override
+    public Signal<Directory> asDirectory() {
+        return Signal.EMPTY;
     }
 
     public long lastModified() {
@@ -96,6 +146,12 @@ public class File extends Location<File> {
      */
     @Override
     public void moveTo(Directory destination) {
+        try {
+            destination.create();
+            Files.move(path, destination.file(name()).path, ATOMIC_MOVE, REPLACE_EXISTING);
+        } catch (Exception e) {
+            throw I.quiet(e);
+        }
     }
 
     /**
@@ -109,12 +165,52 @@ public class File extends Location<File> {
      */
     @Override
     public void copyTo(Directory destination) {
+        try {
+            destination.create();
+            Files.copy(path, destination.file(name()).path, REPLACE_EXISTING, COPY_ATTRIBUTES);
+        } catch (Exception e) {
+            throw I.quiet(e);
+        }
+    }
+
+    public Directory unpackTo(Directory destination) {
+        try (ArchiveInputStream in = detect()) {
+            destination.create();
+
+            ArchiveEntry entry = null;
+            while ((entry = in.getNextEntry()) != null) {
+                if (in.canReadEntryData(entry)) {
+                    if (entry.isDirectory()) {
+                        destination.directory(entry.getName()).create();
+                    } else {
+                        try (OutputStream out = destination.file(entry.getName()).newOutputStream()) {
+                            I.copy(in, out, false);
+                        }
+                    }
+                }
+            }
+        } catch (Throwable e) {
+            throw I.quiet(e);
+        }
+        return destination;
     }
 
     /**
      * {@inheritDoc}
      */
     public void copyTo(File destination) {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void create() {
+        try {
+            Files.createFile(path);
+        } catch (IOException e) {
+            throw I.quiet(e);
+        }
     }
 
     /**
@@ -191,6 +287,7 @@ public class File extends Location<File> {
      */
     public OutputStream newOutputStream(OpenOption... options) {
         try {
+            parent().create();
             return Files.newOutputStream(path, options);
         } catch (IOException e) {
             throw I.quiet(e);
@@ -224,6 +321,25 @@ public class File extends Location<File> {
         try {
             return Files.newByteChannel(path, options);
         } catch (IOException e) {
+            throw I.quiet(e);
+        }
+    }
+
+    /**
+     * Detect archive file system.
+     * 
+     * @return An archive.
+     */
+    private ArchiveInputStream detect() {
+        ArchiveStreamFactory factory = new ArchiveStreamFactory(System.getProperty("sun.jnu.encoding"));
+
+        try {
+            try {
+                return factory.createArchiveInputStream(extension(), new BufferedInputStream(newInputStream()));
+            } catch (StreamingNotSupportedException e) {
+                return factory.createArchiveInputStream(new BufferedInputStream(newInputStream()));
+            }
+        } catch (ArchiveException e) {
             throw I.quiet(e);
         }
     }
