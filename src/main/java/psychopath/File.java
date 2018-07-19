@@ -102,16 +102,8 @@ public class File extends Location<File> {
      * {@inheritDoc}
      */
     @Override
-    public Signal<Location<? extends Location>> children() {
+    public Signal<Location<?>> children() {
         return Signal.EMPTY;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean isContainer() {
-        return false;
     }
 
     /**

@@ -39,14 +39,6 @@ public class Directory extends Location<Directory> {
      * {@inheritDoc}
      */
     @Override
-    public boolean isContainer() {
-        return true;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public Signal<Directory> asDirectory() {
         return I.signal(this);
     }
@@ -63,7 +55,7 @@ public class Directory extends Location<Directory> {
      * {@inheritDoc}
      */
     @Override
-    public Signal<Location<? extends Location>> children() {
+    public Signal<Location<?>> children() {
         return new Signal<>((observer, disposer) -> {
             try (DirectoryStream<Path> stream = Files.newDirectoryStream(path)) {
                 stream.forEach(file -> {
@@ -402,6 +394,10 @@ public class Directory extends Location<Directory> {
      */
     public void moveTo(Directory destination, BiPredicate<Path, BasicFileAttributes> filter) {
         new Visitor(path, destination.path, 1, filter).walk();
+    }
+
+    public Directory moveFrom(Location move) {
+        return this;
     }
 
     /**

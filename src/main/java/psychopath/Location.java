@@ -10,11 +10,13 @@
 package psychopath;
 
 import java.io.IOException;
+import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.LinkPermission;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
+import java.nio.file.SecureDirectoryStream;
 import java.nio.file.WatchEvent;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Objects;
@@ -160,7 +162,26 @@ public abstract class Location<Self extends Location> {
         return Locator.directory(path.getParent());
     }
 
-    public abstract Signal<Location<? extends Location>> children();
+    /**
+     * Return a {@link Signal} to iterate over all entries in this {@link Location}. The entry returned
+     * by the directory stream's {@link DirectoryStream#iterator iterator} are of type {@code
+     * Path}, each one representing an entry in the directory. The {@code Path} objects are obtained as
+     * if by {@link Path#resolve(Path) resolving} the name of the directory entry against {@code dir}.
+     * <p>
+     * When not using the try-with-resources construct, then directory stream's {@code close} method
+     * should be invoked after iteration is completed so as to free any resources held for the open
+     * directory.
+     * <p>
+     * When an implementation supports operations on entries in the directory that execute in a
+     * race-free manner then the returned directory stream is a {@link SecureDirectoryStream}.
+     *
+     * @return A {@link Signal} which iterate over all entries in this {@link Location}.
+     * @throws IOException if an I/O error occurs
+     * @throws SecurityException In the case of the default provider, and a security manager is
+     *             installed, the {@link SecurityManager#checkRead(String) checkRead} method is invoked
+     *             to check read access to the directory.
+     */
+    public abstract Signal<Location<?>> children();
 
     /**
      * Returns the size of a file (in bytes). The size may differ from the actual size on the file
@@ -270,13 +291,6 @@ public abstract class Location<Self extends Location> {
     public final boolean isPresent(LinkOption... options) {
         return Files.exists(path, options);
     }
-
-    /**
-     * Test whether this location can have items or not.
-     * 
-     * @return
-     */
-    public abstract boolean isContainer();
 
     public abstract Signal<Directory> asDirectory();
 
