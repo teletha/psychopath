@@ -39,17 +39,6 @@ public class Directory extends Location<Directory> {
      * {@inheritDoc}
      */
     @Override
-    public Directory absolutize() {
-        if (path.isAbsolute()) {
-            return this;
-        }
-        return Locator.directory(path.toAbsolutePath());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public boolean isContainer() {
         return true;
     }
@@ -618,5 +607,13 @@ public class Directory extends Location<Directory> {
      */
     public Directory relativize(Directory directory) {
         return Locator.directory(path.relativize(directory.path));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected Directory convert(Path path) {
+        return Locator.directory(path);
     }
 }

@@ -85,7 +85,7 @@ public class File extends Location<File> {
      * @param newExtension A new extension.
      * @return New located {@link File}.
      */
-    public File extension(String newExtension) {
+    public final File extension(String newExtension) {
         return Locator.file(path.resolveSibling(base() + "." + newExtension));
     }
 
@@ -96,17 +96,6 @@ public class File extends Location<File> {
      */
     public Directory asArchive() {
         return new Archive(this);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public File absolutize() {
-        if (path.isAbsolute()) {
-            return this;
-        }
-        return Locator.file(path.toAbsolutePath());
     }
 
     /**
@@ -323,6 +312,14 @@ public class File extends Location<File> {
         } catch (IOException e) {
             throw I.quiet(e);
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected File convert(Path path) {
+        return Locator.file(path);
     }
 
     /**

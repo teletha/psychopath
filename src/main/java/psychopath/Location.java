@@ -68,8 +68,6 @@ public abstract class Location<Self extends Location> {
         }
     }
 
-    public abstract Self absolutize();
-
     /**
      * Compute relative path which is from base directory.
      * 
@@ -84,9 +82,79 @@ public abstract class Location<Self extends Location> {
     }
 
     /**
-     * Locate parent {@link Directory}.
-     * 
-     * @return
+     * Returns a {@code Location} object representing the absolute path of this path.
+     * <p>
+     * If this path is already {@link Path#isAbsolute absolute} then this method simply returns this
+     * path. Otherwise, this method resolves the path in an implementation dependent manner, typically
+     * by resolving the path against a file system default directory. Depending on the implementation,
+     * this method may throw an I/O error if the file system is not accessible.
+     *
+     * @return A {@code Location} object representing the absolute path.
+     * @throws java.io.IOError if an I/O error occurs
+     * @throws SecurityException In the case of the default provider, a security manager is installed,
+     *             and this path is not absolute, then the security manager's
+     *             {@link SecurityManager#checkPropertyAccess(String) checkPropertyAccess} method is
+     *             invoked to check access to the system property {@code user.dir}
+     */
+    public final Self absolutize() {
+        if (path.isAbsolute()) {
+            return (Self) this;
+        } else {
+            return convert(path.toAbsolutePath());
+        }
+    }
+
+    /**
+     * Constructs a relative path between this path and a given path.
+     * <p>
+     * Relativization is the inverse of {@link #resolve(Path) resolution}. This method attempts to
+     * construct a {@link #isAbsolute relative} path that when {@link #resolve(Path) resolved} against
+     * this path, yields a path that locates the same file as the given path. For example, on UNIX, if
+     * this path is {@code "/a/b"} and the given path is {@code "/a/b/c/d"} then the resulting relative
+     * path would be {@code "c/d"}. Where this path and the given path do not have a {@link #getRoot
+     * root} component, then a relative path can be constructed. A relative path cannot be constructed
+     * if only one of the paths have a root component. Where both paths have a root component then it is
+     * implementation dependent if a relative path can be constructed. If this path and the given path
+     * are {@link #equals equal} then an <i>empty path</i> is returned.
+     * <p>
+     * For any two {@link #normalize normalized} paths <i>p</i> and <i>q</i>, where <i>q</i> does not
+     * have a root component, <blockquote> <i>p</i>{@code .relativize(}<i>p</i>
+     * {@code .resolve(}<i>q</i>{@code )).equals(}<i>q</i>{@code )} </blockquote>
+     * <p>
+     * When symbolic links are supported, then whether the resulting path, when resolved against this
+     * path, yields a path that can be used to locate the {@link Files#isSameFile same} file as
+     * {@code other} is implementation dependent. For example, if this path is {@code "/a/b"} and the
+     * given path is {@code "/a/x"} then the resulting relative path may be {@code
+     * "../x"}. If {@code "b"} is a symbolic link then is implementation dependent if {@code "a/b/../x"}
+     * would locate the same file as {@code "/a/x"}.
+     *
+     * @param other the path to relativize against this path
+     * @return the resulting relative path, or an empty path if both paths are equal
+     * @throws IllegalArgumentException if {@code other} is not a {@code Path} that can be relativized
+     *             against this path
+     */
+    public final <T extends Location<T>> T relativize(T other) {
+        return other.convert(path.relativize(other.path));
+    }
+
+    /**
+     * Returns the <em>parent path</em>, or {@code null} if this path does not have a parent.
+     * <p>
+     * The parent of this path object consists of this path's root component, if any, and each element
+     * in the path except for the <em>farthest</em> from the root in the directory hierarchy. This
+     * method does not access the file system; the path or its parent may not exist. Furthermore, this
+     * method does not eliminate special names such as "." and ".." that may be used in some
+     * implementations. On UNIX for example, the parent of "{@code /a/b/c}" is "{@code /a/b}", and the
+     * parent of {@code "x/y/.}" is "{@code x/y}". This method may be used with the {@link #normalize
+     * normalize} method, to eliminate redundant names, for cases where <em>shell-like</em> navigation
+     * is required.
+     * <p>
+     * If this path has more than one element, and no root component, then this method is equivalent to
+     * evaluating the expression: <blockquote><pre>
+     * subpath(0,&nbsp;getNameCount()-1);
+     * </pre></blockquote>
+     *
+     * @return A {@link Location} representing the path's parent
      */
     public final Directory parent() {
         return Locator.directory(path.getParent());
@@ -416,7 +484,7 @@ public abstract class Location<Self extends Location> {
      * {@inheritDoc}
      */
     @Override
-    public int hashCode() {
+    public final int hashCode() {
         return path.hashCode();
     }
 
@@ -424,15 +492,27 @@ public abstract class Location<Self extends Location> {
      * {@inheritDoc}
      */
     @Override
-    public boolean equals(Object obj) {
-        return path.equals(obj);
+    public final boolean equals(Object other) {
+        if (other instanceof Location) {
+            return path.equals(((Location) other).path);
+        } else {
+            return false;
+        }
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public String toString() {
+    public final String toString() {
         return path.toString();
     }
+
+    /**
+     * Convert from {@link Path}.
+     * 
+     * @param path A target path.
+     * @return The {@link Location}.
+     */
+    protected abstract Self convert(Path path);
 }

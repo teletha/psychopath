@@ -21,6 +21,7 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 import antibug.CleanRoom;
 import psychopath.Directory;
 import psychopath.File;
+import psychopath.Location;
 import psychopath.Locator;
 
 /**
@@ -123,6 +124,45 @@ class FileTest {
     }
 
     @Test
+    void absolutize() {
+        // relative
+        Location relative = relative("name");
+        Location absolute = relative.absolutize();
+        assert relative != absolute;
+        assert absolute.isAbsolute();
+
+        // absolute
+        relative = absolute("name");
+        absolute = relative.absolutize();
+        assert relative == absolute;
+        assert absolute.isAbsolute();
+    }
+
+    @Test
+    void parent() {
+        // relative
+        assert relative("a/b").parent().equals(relativeDirectory("a"));
+        assert relative("a/b/c").parent().equals(relativeDirectory("a/b"));
+
+        // absolute
+        assert absolute("a/b").parent().equals(absoluteDirectory("a"));
+        assert absolute("a/b/c").parent().equals(absoluteDirectory("a/b"));
+    }
+
+    @Test
+    void equal() {
+        // relative
+        assert relative("a").equals(relative("a"));
+        assert relative("a/b").equals(relative("a/b"));
+        assert relative("../a").equals(relative("../a"));
+
+        // absolute
+        assert absolute("a").equals(absolute("a"));
+        assert absolute("a/b").equals(absolute("a/b"));
+        assert absolute("../a").equals(absolute("../a"));
+    }
+
+    @Test
     @Disabled
     void copyTo() {
         File file = at(room.locateFile("base", "ok"));
@@ -175,6 +215,26 @@ class FileTest {
      */
     private File absolute(String path) {
         return Locator.file(room.locateAbsent(path).toAbsolutePath());
+    }
+
+    /**
+     * Helper to locate {@link File}.
+     * 
+     * @param path
+     * @return
+     */
+    private Directory relativeDirectory(String path) {
+        return Locator.directory(room.locateAbsent(path));
+    }
+
+    /**
+     * Helper to locate {@link File}.
+     * 
+     * @param path
+     * @return
+     */
+    private Directory absoluteDirectory(String path) {
+        return Locator.directory(room.locateAbsent(path).toAbsolutePath());
     }
 
     /**

@@ -19,6 +19,7 @@ import antibug.CleanRoom;
 import antibug.CleanRoom.FileSystemDSL;
 import psychopath.Directory;
 import psychopath.File;
+import psychopath.Location;
 import psychopath.Locator;
 
 /**
@@ -47,6 +48,45 @@ public class DirectoryTest {
         assert absolute("name").name().equals("name");
         assert absolute("nest/name").name().equals("name");
         assert absolute("root/nest/name").name().equals("name");
+    }
+
+    @Test
+    void absolutize() {
+        // relative
+        Location relative = relative("name");
+        Location absolute = relative.absolutize();
+        assert relative != absolute;
+        assert absolute.isAbsolute();
+
+        // absolute
+        relative = absolute("name");
+        absolute = relative.absolutize();
+        assert relative == absolute;
+        assert absolute.isAbsolute();
+    }
+
+    @Test
+    void parent() {
+        // relative
+        assert relative("a/b").parent().equals(relative("a"));
+        assert relative("a/b/c").parent().equals(relative("a/b"));
+
+        // absolute
+        assert absolute("a/b").parent().equals(absolute("a"));
+        assert absolute("a/b/c").parent().equals(absolute("a/b"));
+    }
+
+    @Test
+    void equal() {
+        // relative
+        assert relative("a").equals(relative("a"));
+        assert relative("a/b").equals(relative("a/b"));
+        assert relative("../a").equals(relative("../a"));
+
+        // absolute
+        assert absolute("a").equals(absolute("a"));
+        assert absolute("a/b").equals(absolute("a/b"));
+        assert absolute("../a").equals(absolute("../a"));
     }
 
     @Test
@@ -101,18 +141,18 @@ public class DirectoryTest {
      * @param path
      * @return
      */
-    private File absolute(String path) {
-        return Locator.file(path).absolutize();
+    private Directory relative(String path) {
+        return Locator.directory(room.locateAbsent(path));
     }
 
     /**
-     * Helper to locate {@link Directory}.
+     * Helper to locate {@link File}.
      * 
      * @param path
      * @return
      */
-    private Directory relative(String path) {
-        return Locator.directory(path);
+    private Directory absolute(String path) {
+        return Locator.directory(room.locateAbsent(path).toAbsolutePath());
     }
 
     /**
