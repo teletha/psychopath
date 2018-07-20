@@ -21,14 +21,14 @@ public class Renamer {
     public static void main(String[] args) {
         Directory root = Locator.directory("e:\\");
 
-        root.walkFiles("*.zip")
-                .take(1)
-                .map(file -> file.unpackTo(root.directory(file.base())))
-                .flatMap(Location::children)
-                .single()
-                .as(Directory.class)
-                .effectOnComplete(Directory::delete)
-                .flatMap(Directory::children)
-                .to(Location::moveToParent);
+        root.walkFiles("*.zip").take(2).effectOnComplete(Location::delete).to(file -> {
+            file.unpackTo(root.directory(file.base()))
+                    .children()
+                    .single()
+                    .as(Directory.class)
+                    .effectOnComplete(Location::delete)
+                    .flatMap(Location::children)
+                    .to(Location::moveUp);
+        });
     }
 }

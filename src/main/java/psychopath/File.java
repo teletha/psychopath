@@ -145,6 +145,14 @@ public class File extends Location<File> {
      * {@inheritDoc}
      */
     @Override
+    public void moveUp() {
+        moveTo(parent().parent());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void copyTo(Directory destination) {
         try {
             destination.create();
@@ -199,6 +207,11 @@ public class File extends Location<File> {
      */
     @Override
     public void delete() {
+        try {
+            Files.delete(path);
+        } catch (IOException e) {
+            throw I.quiet(e);
+        }
     }
 
     /**

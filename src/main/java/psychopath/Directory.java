@@ -396,16 +396,20 @@ public class Directory extends Location<Directory> {
         new Visitor(path, destination.path, 1, filter).walk();
     }
 
-    public Directory moveFrom(Location move) {
-        return this;
-    }
-
     /**
      * {@inheritDoc}
      */
     @Override
     public void copyTo(Directory destination) {
         copyTo(destination, (BiPredicate) null);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void moveUp() {
+        moveTo(parent());
     }
 
     /**
@@ -525,8 +529,9 @@ public class Directory extends Location<Directory> {
     @Override
     public void delete() {
         try {
-            Files.deleteIfExists(path);
+            Files.delete(path);
         } catch (IOException e) {
+            e.printStackTrace();
             throw I.quiet(e);
         }
     }
