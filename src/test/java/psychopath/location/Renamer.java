@@ -9,8 +9,6 @@
  */
 package psychopath.location;
 
-import java.util.List;
-
 import psychopath.Directory;
 import psychopath.Location;
 import psychopath.Locator;
@@ -23,18 +21,14 @@ public class Renamer {
     public static void main(String[] args) {
         Directory root = Locator.directory("e:\\");
 
-        root.walkFiles("*.rar").take(1).to(file -> {
-            Directory destination = file.unpackTo(root.directory(file.base()));
-
-            List<Location<?>> children = destination.children().toList();
-
-            destination.children().share().as(Directory.class).flatMap(Directory::children).to(child -> child.moveTo(destination));
-
-            if (children.size() == 1) {
-                Location<?> wrapper = children.get(0);
-
-                wrapper.asDirectory().flatMap(Directory::children).to(destination::moveFrom, wrapper::delete);
-            }
-        });
+        root.walkFiles("*.zip")
+                .take(1)
+                .map(file -> file.unpackTo(root.directory(file.base())))
+                .flatMap(Location::children)
+                .single()
+                .as(Directory.class)
+                .effectOnComplete(Directory::delete)
+                .flatMap(Directory::children)
+                .to(Location::moveToParent);
     }
 }
