@@ -17,6 +17,6 @@ public class Project extends bee.api.Project {
         require("org.apache.commons", "commons-compress", "1.17");
         require("com.github.junrar", "junrar", "2.0.0");
         unrequire("org.apache.commons", "commons-vfs2");
-        unrequire("commons-logging", "commons-logging");
+        // unrequire("commons-logging", "commons-logging");
     }
 }

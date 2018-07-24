@@ -9,6 +9,8 @@
  */
 package psychopath.location;
 
+import java.time.ZonedDateTime;
+
 import psychopath.Directory;
 import psychopath.Location;
 import psychopath.Locator;
@@ -21,14 +23,14 @@ public class Renamer {
     public static void main(String[] args) {
         Directory root = Locator.directory("e:\\");
 
-        root.walkFiles("*.zip").take(2).effectOnComplete(Location::delete).to(file -> {
-            file.unpackTo(root.directory(file.base()))
+        root.walkFiles("*.rar").take(3).effectOnComplete(Location::delete).to(archive -> {
+            archive.unpackTo(root.directory(archive.base()))
                     .children()
                     .single()
                     .as(Directory.class)
                     .effectOnComplete(Location::delete)
                     .flatMap(Location::children)
-                    .to(Location::moveUp);
+                    .to(file -> file.lastModified(ZonedDateTime.now()).moveUp());
         });
     }
 }
