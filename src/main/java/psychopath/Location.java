@@ -22,7 +22,6 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.attribute.FileTime;
 import java.time.Instant;
 import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.time.chrono.ChronoLocalDateTime;
 import java.time.chrono.ChronoZonedDateTime;
 import java.util.Objects;
@@ -556,12 +555,24 @@ public abstract class Location<Self extends Location> {
      * the file date and time.
      */
     public final Self touch() {
-        if (isAbsent()) {
-            create();
-        } else {
-            lastModified(ZonedDateTime.now());
+        try {
+            if (Files.exists(path)) {
+                Files.setLastModifiedTime(path, FileTime.fromMillis(System.currentTimeMillis()));
+            } else {
+                Files.createFile(path);
+            }
+        } catch (IOException e) {
+            throw I.quiet(e);
         }
         return (Self) this;
+    }
+
+    private void touch(Path path) throws IOException {
+        if (Files.exists(path)) {
+            Files.setLastModifiedTime(path, FileTime.fromMillis(System.currentTimeMillis()));
+        } else {
+            Files.createFile(path);
+        }
     }
 
     /**
@@ -599,7 +610,7 @@ public abstract class Location<Self extends Location> {
      *             check {@link LinkPermission}("symbolic").
      */
     public final Signal<WatchEvent<Path>> observe() {
-        return PsychoPath.observe(parent().path, name());
+        return PsychoPath.observe(path);
     }
 
     /**
