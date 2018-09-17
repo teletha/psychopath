@@ -15,7 +15,6 @@ import java.nio.file.Files;
 import java.nio.file.LinkPermission;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
-import java.nio.file.WatchEvent;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Collections;
 import java.util.function.BiPredicate;
@@ -534,14 +533,6 @@ public class Directory extends Location<Directory> {
             e.printStackTrace();
             throw I.quiet(e);
         }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Signal<WatchEvent<Path>> observe() {
-        return null;
     }
 
     /**

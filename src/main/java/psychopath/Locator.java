@@ -105,6 +105,15 @@ public class Locator {
         return directory(base.path.resolve(path));
     }
 
+    /**
+     * Locate the system temporary {@link Directory}.
+     * 
+     * @return
+     */
+    public static Directory temporary() {
+        return directory(System.getProperty("java.io.tmpdir"));
+    }
+
     public static Consumer<Directory> copy(Path destination, String... patterns) {
         return copy(directory(destination), patterns);
     }
