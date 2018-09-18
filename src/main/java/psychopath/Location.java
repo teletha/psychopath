@@ -10,6 +10,7 @@
 package psychopath;
 
 import java.io.IOException;
+import java.nio.channels.FileLock;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
@@ -22,6 +23,7 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.attribute.FileTime;
 import java.time.Instant;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.chrono.ChronoLocalDateTime;
 import java.time.chrono.ChronoZonedDateTime;
 import java.util.Objects;
@@ -29,6 +31,7 @@ import java.util.Objects;
 import kiss.I;
 import kiss.Observer;
 import kiss.Signal;
+import kiss.WiseRunnable;
 
 /**
  * @version 2018/05/31 8:34:34
@@ -555,25 +558,20 @@ public abstract class Location<Self extends Location> {
      * the file date and time.
      */
     public final Self touch() {
-        try {
-            if (Files.exists(path)) {
-                Files.setLastModifiedTime(path, FileTime.fromMillis(System.currentTimeMillis()));
-            } else {
-                Files.createFile(path);
-            }
-        } catch (IOException e) {
-            throw I.quiet(e);
+        if (isAbsent()) {
+            create();
+        } else {
+            lastModified(ZonedDateTime.now());
         }
         return (Self) this;
     }
 
-    private void touch(Path path) throws IOException {
-        if (Files.exists(path)) {
-            Files.setLastModifiedTime(path, FileTime.fromMillis(System.currentTimeMillis()));
-        } else {
-            Files.createFile(path);
-        }
-    }
+    /**
+     * Try to acquire exclusive lock for this {@link Location}.
+     * 
+     * @return
+     */
+    public abstract FileLock lock(WiseRunnable failed);
 
     /**
      * <p>

@@ -10,6 +10,7 @@
 package psychopath;
 
 import java.io.IOException;
+import java.nio.channels.FileLock;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.LinkPermission;
@@ -21,6 +22,7 @@ import java.util.function.BiPredicate;
 
 import kiss.I;
 import kiss.Signal;
+import kiss.WiseRunnable;
 
 /**
  * @version 2018/04/08 12:22:35
@@ -533,6 +535,14 @@ public class Directory extends Location<Directory> {
             e.printStackTrace();
             throw I.quiet(e);
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public FileLock lock(WiseRunnable failed) {
+        return file(".lock").lock(failed);
     }
 
     /**

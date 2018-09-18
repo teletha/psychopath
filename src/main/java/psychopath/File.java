@@ -10,11 +10,15 @@
 package psychopath;
 
 import static java.nio.file.StandardCopyOption.*;
+import static java.nio.file.StandardOpenOption.*;
+import static java.util.concurrent.TimeUnit.*;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.channels.AsynchronousFileChannel;
+import java.nio.channels.FileLock;
 import java.nio.channels.SeekableByteChannel;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
@@ -33,6 +37,7 @@ import org.apache.commons.compress.archivers.StreamingNotSupportedException;
 
 import kiss.I;
 import kiss.Signal;
+import kiss.WiseRunnable;
 
 /**
  * @version 2018/05/31 18:23:03
@@ -209,6 +214,24 @@ public class File extends Location<File> {
     public void delete() {
         try {
             Files.delete(path);
+        } catch (IOException e) {
+            throw I.quiet(e);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public FileLock lock(WiseRunnable failed) {
+        try {
+            AsynchronousFileChannel channel = AsynchronousFileChannel.open(path, CREATE, WRITE);
+
+            return I.signal(channel)
+                    .map(c -> c.tryLock())
+                    .take(lock -> lock.isValid())
+                    .retryWhen(NullPointerException.class, e -> e.effect(failed).wait(300, MILLISECONDS).take(10))
+                    .to().v;
         } catch (IOException e) {
             throw I.quiet(e);
         }
