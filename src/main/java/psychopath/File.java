@@ -108,7 +108,7 @@ public class File extends Location<File> {
      */
     @Override
     public Signal<Location<?>> children() {
-        return Signal.EMPTY;
+        return Signal.empty();
     }
 
     /**
@@ -116,7 +116,7 @@ public class File extends Location<File> {
      */
     @Override
     public Signal<Directory> asDirectory() {
-        return Signal.EMPTY;
+        return Signal.empty();
     }
 
     public long lastModified() {

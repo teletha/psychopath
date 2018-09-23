@@ -38,7 +38,7 @@ public class Archiver {
     protected Manifest manifest;
 
     /** The path entries. */
-    private Signal<File> entries = Signal.EMPTY;
+    private Signal<File> entries = Signal.empty();
 
     /**
      * Add files.
