@@ -13,10 +13,18 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.function.Consumer;
 
+import kiss.Decoder;
+import kiss.Encoder;
+import kiss.I;
+
 /**
  * @version 2018/06/02 19:35:53
  */
 public class Locator {
+
+    static {
+        I.load(DirectoryCodec.class, false);
+    }
 
     /**
      * Locate {@link File}.
@@ -132,5 +140,50 @@ public class Locator {
         return departure -> {
             departure.moveTo(departure, patterns);
         };
+    }
+
+    /**
+     * @version 2018/09/27 9:47:39
+     */
+    private static class DirectoryCodec implements Decoder<Directory>, Encoder<Directory> {
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public String encode(Directory value) {
+            return value.path();
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public Directory decode(String value) {
+            return Locator.directory(value);
+        }
+    }
+
+    /**
+     * @version 2018/09/27 9:47:39
+     */
+    @SuppressWarnings("unused")
+    private static class FileCodec implements Decoder<File>, Encoder<File> {
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public String encode(File value) {
+            return value.path();
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public File decode(String value) {
+            return Locator.file(value);
+        }
     }
 }
