@@ -8,7 +8,7 @@
  *
  *          http://opensource.org/licenses/mit-license.php
  */
-package psychopath.sample;
+package psychopath;
 
 import static psychopath.UnpackOption.*;
 

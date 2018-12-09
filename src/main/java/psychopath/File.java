@@ -9,9 +9,13 @@
  */
 package psychopath;
 
-import static java.nio.file.StandardCopyOption.*;
-import static java.nio.file.StandardOpenOption.*;
-import static java.util.concurrent.TimeUnit.*;
+import static java.nio.file.StandardCopyOption.ATOMIC_MOVE;
+import static java.nio.file.StandardCopyOption.COPY_ATTRIBUTES;
+import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
+import static java.nio.file.StandardOpenOption.CREATE;
+import static java.nio.file.StandardOpenOption.WRITE;
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
+import static psychopath.UnpackOption.StripSingleDirectory;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -26,6 +30,7 @@ import java.nio.file.OpenOption;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.nio.file.attribute.FileAttribute;
+import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
 
@@ -210,6 +215,25 @@ public class File extends Location<File> {
             }
         } catch (Throwable e) {
             throw I.quiet(e);
+        }
+
+        Set<UnpackOption> op = Set.of(options);
+
+        if (op.contains(StripSingleDirectory)) {
+            Directory top = destination;
+            
+            top.children().
+            List<Location<?>> children = top.children().toList();
+            
+            if (children.size() == 1 && children.get(0).isDirectory) {
+                
+            }
+            
+            List<Location<?>> children = destination.children().toList();
+            
+            if (children.size() == 1) {
+                children.get(0).
+            }
         }
         return destination;
     }
