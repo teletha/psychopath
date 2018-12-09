@@ -159,12 +159,37 @@ public class File extends Location<File> {
         }
     }
 
-    public Directory unpackTo(Directory destination) {
-        return unpackTo(destination, e -> {
-        });
+    /**
+     * Unpack archive file to the same directory that this {@link File} exists.
+     * 
+     * @param options A list of options.
+     * @return An unpacked directory.
+     */
+    public Directory unpack(UnpackOption... options) {
+        return unpackTo(absolutize().parent().directory(base()), options);
     }
 
-    public Directory unpackTo(Directory destination, Consumer<File> listener) {
+    /**
+     * Unpack archive file to the specified directory.
+     * 
+     * @param destination A destination directory to unpack.
+     * @param options A list of options.
+     * @return An unpacked directory.
+     */
+    public Directory unpackTo(Directory destination, UnpackOption... options) {
+        return unpackTo(destination, e -> {
+        }, options);
+    }
+
+    /**
+     * Unpack archive file to the specified directory.
+     * 
+     * @param destination A destination directory to unpack.
+     * @param listener An unpack event listener.
+     * @param options A list of options.
+     * @return An unpacked directory.
+     */
+    public Directory unpackTo(Directory destination, Consumer<File> listener, UnpackOption... options) {
         try (ArchiveInputStream in = detect()) {
             destination.create();
 
@@ -353,7 +378,7 @@ public class File extends Location<File> {
      * @return An archive.
      */
     private ArchiveInputStream detect() {
-        ArchiveStreamFactory factory = new ArchiveStreamFactory(System.getProperty("sun.jnu.encoding"));
+        ArchiveStreamFactory factory = new ArchiveStreamFactory(System.getProperty("file.encoding"));
 
         try {
             try {
