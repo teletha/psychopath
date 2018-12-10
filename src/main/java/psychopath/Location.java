@@ -194,6 +194,8 @@ public abstract class Location<Self extends Location> {
      */
     public abstract Signal<Location<?>> children();
 
+    public abstract Signal<Location<?>> descendant();
+
     /**
      * Returns the size of a file (in bytes). The size may differ from the actual size on the file
      * system due to compression, support for sparse files, or other reasons. The size of files that

@@ -118,6 +118,14 @@ public class File extends Location<File> {
      * {@inheritDoc}
      */
     @Override
+    public Signal<Location<?>> descendant() {
+        return Signal.empty();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Signal<Directory> asDirectory() {
         return Signal.empty();
     }
@@ -245,7 +253,7 @@ public class File extends Location<File> {
     @Override
     public void delete() {
         try {
-            Files.delete(path);
+            Files.deleteIfExists(path);
         } catch (IOException e) {
             throw I.quiet(e);
         }

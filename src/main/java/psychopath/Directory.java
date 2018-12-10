@@ -75,6 +75,14 @@ public class Directory extends Location<Directory> {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Signal<Location<?>> descendant() {
+        return I.signal(true, (Location) this, dir -> dir.flatMap(Location::children)).skip(this).map(file -> relativize(file));
+    }
+
+    /**
      * Shortcut for {@link Locator#file(String)}
      * 
      * @param path A file path.
@@ -132,6 +140,17 @@ public class Directory extends Location<Directory> {
      */
     public Directory directory(Directory path) {
         return directory(path.path);
+    }
+
+    /**
+     * Walk file tree and collect {@link File}s and {@link Directory}s which are filtered by various
+     * conditions.
+     * 
+     * @param filters Glob patterns.
+     * @return All matched {@link File}s.
+     */
+    public Signal<Location> walk(String... filters) {
+        return walk(Location.class, 3, filters, null, Integer.MAX_VALUE, false);
     }
 
     /**

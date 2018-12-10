@@ -9,132 +9,117 @@
  */
 package psychopath;
 
-import java.nio.file.Path;
-import java.nio.file.attribute.BasicFileAttributes;
-import java.util.function.BiPredicate;
-
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.RegisterExtension;
-
-import antibug.CleanRoom;
 
 /**
- * @version 2018/03/31 3:01:30
+ * @version 2018/12/10 12:34:07
  */
-public class DeleteTest extends PathOperationTestHelper {
+class DeleteTest extends LocationTestHelper {
 
-    @RegisterExtension
-    public CleanRoom room = new CleanRoom();
-
-    /**
-     * <p>
-     * Test operation.
-     * </p>
-     * 
-     * @param path
-     */
-    private void operate(Path path, String... patterns) {
-        PsychoPath.delete(path, patterns);
-    }
-
-    /**
-     * <p>
-     * Test operation.
-     * </p>
-     * 
-     * @param path
-     */
-    private void operate(Path path, BiPredicate<Path, BasicFileAttributes> filter) {
-        PsychoPath.delete(path, filter);
+    @Test
+    void file() {
+        File file = locateFile("file");
+        assert file.isPresent();
+        file.delete();
+        assert file.isAbsent();
     }
 
     @Test
-    public void file() {
-        Path input = room.locateFile("test01/01.txt");
-
-        operate(input);
-
-        assert exist(input.getParent());
-        assert notExist(input);
+    void absentFile() {
+        File file = locateAbsent("file");
+        assert file.isAbsent();
+        file.delete();
+        assert file.isAbsent();
     }
 
     @Test
-    public void directory() {
-        Path input = room.locateDirectory("dir", $ -> {
-            $.file("text");
+    void directoryEmpty() {
+        Directory directory = locateDirectory("dir");
+
+        assert directory.isPresent();
+        directory.delete();
+        assert directory.isAbsent();
+    }
+
+    @Test
+    void directoryWithFile() {
+        Directory directory = locateDirectory("dir", $ -> {
+            $.file("text1");
+            $.file("text2");
+            $.file("text3");
+        });
+
+        assert directory.isPresent();
+        directory.delete();
+        assert directory.isAbsent();
+    }
+
+    @Test
+    void directoryWithFileAndDirectory() {
+        Directory directory = locateDirectory("dir", $ -> {
+            $.file("text1");
+            $.file("text2");
+            $.dir("empty-dir");
             $.dir("dir", () -> {
-                $.file("nest");
+                $.file("nest1");
+                $.file("nest2");
             });
         });
 
-        operate(input);
-
-        assert exist(input.getParent());
-        assert notExist(input, input.resolve("text"), input.resolve("dir"), input.resolve("dir/nest"));
+        assert directory.isPresent();
+        directory.delete();
+        assert directory.isAbsent();
     }
 
     @Test
-    public void directoryChildren() {
-        Path input = room.locateDirectory("dir", $ -> {
-            $.file("text");
+    void absentDirectory() {
+        Directory directory = locateAbsentDirectory("dir");
+        assert directory.isAbsent();
+        directory.delete();
+        assert directory.isAbsent();
+    }
+
+    @Test
+    void pattern() {
+        Directory directory = locateDirectory("dir", $ -> {
+            $.file("text1");
+            $.file("text2");
+            $.dir("empty-dir");
             $.dir("dir", () -> {
-                $.file("nest");
+                $.file("nest1");
+                $.file("nest2");
             });
         });
 
-        operate(input, "**");
+        directory.delete("nest1");
 
-        assert exist(input);
-        assert notExist(input.resolve("text"), input.resolve("dir"), input.resolve("dir/nest"));
+        assert match(directory, $ -> {
+            $.file("text1");
+            $.file("text2");
+            $.dir("empty-dir");
+            $.dir("dir", () -> {
+                $.file("nest2");
+            });
+        });
     }
 
     @Test
-    public void directoryFilter() {
-        Path in = room.locateDirectory("In", $ -> {
-            $.file("file");
-            $.file("text");
+    void patternWildcard() {
+        Directory directory = locateDirectory("dir", $ -> {
+            $.file("1.txt");
+            $.file("2.txt");
+            $.dir("empty-dir");
             $.dir("dir", () -> {
-                $.file("file");
-                $.file("text");
+                $.file("3.txt");
+                $.file("4.txt");
             });
         });
 
-        operate(in, (file, attr) -> file.getFileName().startsWith("file"));
+        directory.delete("**.txt");
 
-        assert exist(in, in.resolve("text"), in.resolve("dir/text"));
-        assert notExist(in.resolve("file"), in.resolve("dir/file"));
-    }
-
-    @Test
-    public void absent() {
-        Path input = room.locateAbsent("absent");
-        assert notExist(input);
-
-        operate(input);
-
-        assert notExist(input);
-    }
-
-    @Test
-    public void inputNull() {
-        PsychoPath.delete(null);
-    }
-
-    @Test
-    public void children() {
-        Path in = room.locateDirectory("In", $ -> {
-            $.file("file");
-            $.file("text");
-            $.dir("dir", () -> {
-                $.file("file");
-                $.file("text");
-            });
-            $.dir("empty");
+        assert match(directory, $ -> {
+            $.dir("empty-dir");
+            $.dir("dir");
         });
-
-        operate(in, "*");
-
-        assert exist(in, in.resolve("dir"), in.resolve("dir/file"), in.resolve("dir/text"));
-        assert notExist(in.resolve("file"), in.resolve("text"), in.resolve("empty"));
     }
 }
