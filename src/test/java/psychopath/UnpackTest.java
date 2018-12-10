@@ -10,7 +10,7 @@
  */
 package psychopath;
 
-import static psychopath.UnpackOption.*;
+import static psychopath.UnpackOption.StripSingleDirectory;
 
 import java.nio.file.Path;
 import java.util.List;
@@ -19,9 +19,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
 import antibug.CleanRoom;
-import psychopath.Directory;
-import psychopath.Location;
-import psychopath.Locator;
 
 /**
  * @version 2018/12/08 21:08:38
@@ -63,5 +60,32 @@ public class UnpackTest {
         List<Location<?>> children = directory.children().toList();
         assert children.size() == 3;
         assert children.get(0).asFile().getName().equals("1");
+    }
+
+    @Test
+    void stripSingleDirectoryWithNest() {
+        Path zip = room.locateFile("test.zip");
+        room.locateArchive(zip, $ -> {
+            $.dir("inside", () -> {
+                $.dir("nest", () -> {
+                    $.file("1");
+                    $.file("2");
+                    $.dir("dir", () -> {
+                        $.file("child");
+                        $.file("item");
+                    });
+                });
+            });
+        });
+
+        Directory directory = Locator.file(zip).unpack(StripSingleDirectory);
+        List<Location<?>> children = directory.children().toList();
+        assert children.size() == 3;
+        assert children.get(0).asFile().getName().equals("1");
+        assert children.get(1).asFile().getName().equals("2");
+
+        children = children.get(2).children().toList();
+        assert children.get(0).asFile().getName().equals("child");
+        assert children.get(1).asFile().getName().equals("item");
     }
 }

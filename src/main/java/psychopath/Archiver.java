@@ -9,19 +9,19 @@
  */
 package psychopath;
 
-import java.io.BufferedOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.attribute.BasicFileAttributes;
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
+import java.nio.file.Paths;
 import java.util.jar.Manifest;
-import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-import bee.Platform;
+import org.apache.commons.compress.archivers.ArchiveOutputStream;
+import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
+import org.apache.commons.compress.compressors.gzip.GzipCompressorOutputStream;
+
 import kiss.Disposable;
 import kiss.I;
 import kiss.Signal;
@@ -32,7 +32,6 @@ import kiss.Signal;
 public class Archiver {
 
     /** The default encoding. */
-    protected Charset encoding = Platform.Encoding;
 
     /** The default manifest. */
     protected Manifest manifest;
@@ -88,8 +87,30 @@ public class Archiver {
                 if (!Files.isRegularFile(location)) {
                     throw new IllegalArgumentException("'" + location + "' must be regular file.");
                 }
+                
+                try (OutputStream fo = Files.newOutputStream(location));
+                        OutputStream gzo = new GzipCompressorOutputStream(fo);
+                        ArchiveOutputStream o = new TarArchiveOutputStream(gzo)) {
+                   }
+                
+//                Collection<File> filesToArchive = ...
+//                        try (ArchiveOutputStream o = ... create the stream for your format ...) {
+//                            for (File f : filesToArchive) {
+//                                // maybe skip directories for formats like AR that don't store directories
+//                                ArchiveEntry entry = o.createArchiveEntry(f, entryName(f));
+//                                // potentially add more flags to entry
+//                                o.putArchiveEntry(entry);
+//                                if (f.isFile()) {
+//                                    try (InputStream i = Files.newInputStream(f.toPath())) {
+//                                        IOUtils.copy(i, o);
+//                                    }
+//                                }
+//                                o.closeArchiveEntry();
+//                            }
+//                            out.finish();
+//                        }
 
-                Writer archiver = new Writer(location, encoding);
+                Writer archiver = new Writer(location, StandardCharsets.UTF_8);
 
                 if (manifest != null) {
                     ZipEntry entry = new JarEntry(JarFile.MANIFEST_NAME);

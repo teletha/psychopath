@@ -9,37 +9,45 @@
  */
 package psychopath;
 
+import java.util.LinkedList;
 import java.util.List;
-import java.util.function.Consumer;
 
 /**
  * @version 2018/12/09 12:58:14
  */
 public enum UnpackOption {
 
-    StripSingleDirectory(root -> {
-        List<Location<?>> children = root.children().toList();
-        
-        root.repeatMap(r -> r.children().single().as(Directory.class)).flatMap(r -> r.children()).to(file -> {
-            file.moveTo(root);
-        });
-        
-        root.children().single().as(Directory.class);
+    StripSingleDirectory {
+        @Override
+        public void process(Directory root) {
+            Directory current = root;
+            List<Location<?>> list = current.children().toList();
+            LinkedList<Directory> remove = new LinkedList();
 
-        if (children.size() == 1) {
-            children.g
+            while (list.size() == 1 && list.get(0) instanceof Directory) {
+                current = (Directory) list.get(0);
+                list = current.children().toList();
+                remove.add(current);
+            }
+
+            list.forEach(file -> file.moveTo(root));
+            remove.forEach(Directory::delete);
         }
-    });
 
-    /** The processor. */
-    private final Consumer<Directory> process;
+        private List<Location<?>> strip(Location dir) {
+            List<Location<?>> list = dir.children().toList();
+
+            if (list.size() == 1 && list.get(0) instanceof Directory) {
+                return strip(list.get(0));
+            }
+            return list;
+        }
+    };
 
     /**
-     * Hide.
+     * Define option process.
      * 
-     * @param process
+     * @param root
      */
-    private UnpackOption(Consumer<Directory> process) {
-        this.process = process;
-    }
+    public abstract void process(Directory root);
 }

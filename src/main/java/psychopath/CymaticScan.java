@@ -9,9 +9,15 @@
  */
 package psychopath;
 
-import static java.nio.file.FileVisitResult.*;
-import static java.nio.file.StandardCopyOption.*;
-import static java.nio.file.StandardWatchEventKinds.*;
+import static java.nio.file.FileVisitResult.CONTINUE;
+import static java.nio.file.FileVisitResult.SKIP_SUBTREE;
+import static java.nio.file.FileVisitResult.TERMINATE;
+import static java.nio.file.StandardCopyOption.ATOMIC_MOVE;
+import static java.nio.file.StandardCopyOption.COPY_ATTRIBUTES;
+import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
+import static java.nio.file.StandardWatchEventKinds.ENTRY_CREATE;
+import static java.nio.file.StandardWatchEventKinds.ENTRY_DELETE;
+import static java.nio.file.StandardWatchEventKinds.ENTRY_MODIFY;
 
 import java.io.IOException;
 import java.nio.file.ClosedWatchServiceException;
@@ -24,6 +30,7 @@ import java.nio.file.WatchEvent;
 import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.function.BiPredicate;
 
@@ -183,6 +190,22 @@ public class CymaticScan implements FileVisitor<Path>, Runnable, Disposable {
         } catch (IOException e) {
             throw I.quiet(e);
         }
+    }
+
+    /**
+     * <p>
+     * Walk file tree actually.
+     * </p>
+     * 
+     * @return
+     */
+    CymaticScan walk() {
+        try {
+            Files.walkFileTree(original, Collections.EMPTY_SET, Integer.MAX_VALUE, this);
+        } catch (IOException e) {
+            throw I.quiet(e);
+        }
+        return this;
     }
 
     /**
