@@ -33,15 +33,6 @@ public enum UnpackOption {
             list.forEach(file -> file.moveTo(root));
             remove.forEach(Directory::delete);
         }
-
-        private List<Location<?>> strip(Location dir) {
-            List<Location<?>> list = dir.children().toList();
-
-            if (list.size() == 1 && list.get(0) instanceof Directory) {
-                return strip(list.get(0));
-            }
-            return list;
-        }
     };
 
     /**

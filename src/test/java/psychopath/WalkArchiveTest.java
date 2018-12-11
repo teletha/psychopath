@@ -15,7 +15,7 @@ class WalkArchiveTest extends LocationTestHelper {
 
     @Test
     public void zip() {
-        Directory root = locateArchive("test.zip", $ -> {
+        File zip = locateArchive("test.zip", $ -> {
             $.file("text1");
             $.file("text2");
             $.dir("dir1", () -> {
@@ -28,9 +28,9 @@ class WalkArchiveTest extends LocationTestHelper {
             });
         });
 
-        assert root.walkFiles().toList().size() == 6;
-        assert root.walkFiles("*").toList().size() == 2;
-        assert root.walkFiles("!dir1/**").toList().size() == 4;
-        assert root.walkDirectories().toList().size() == 2;
+        assert zip.asArchive().walkFiles().toList().size() == 6;
+        assert zip.asArchive().walkFiles("*").toList().size() == 2;
+        assert zip.asArchive().walkFiles("!dir1/**").toList().size() == 4;
+        assert zip.asArchive().walkDirectories().toList().size() == 2;
     }
 }
