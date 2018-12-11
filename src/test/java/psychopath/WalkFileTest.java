@@ -11,10 +11,7 @@ package psychopath;
 
 import org.junit.jupiter.api.Test;
 
-/**
- * @version 2018/03/31 3:01:30
- */
-class GlobPatternTest extends LocationTestHelper {
+class WalkFileTest extends LocationTestHelper {
 
     @Test
     void topLevelWildcard() {
@@ -118,7 +115,7 @@ class GlobPatternTest extends LocationTestHelper {
     }
 
     @Test
-    void excludeFile() {
+    void exclude() {
         Directory root = locateDirectory("root", $ -> {
             $.file("text1");
             $.file("text2");

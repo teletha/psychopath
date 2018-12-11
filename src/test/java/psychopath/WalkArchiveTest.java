@@ -9,24 +9,13 @@
  */
 package psychopath;
 
-import java.nio.file.Path;
-
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.RegisterExtension;
 
-import antibug.CleanRoom;
-
-/**
- * @version 2018/03/31 3:00:22
- */
-public class WalkTest {
-
-    @RegisterExtension
-    public static final CleanRoom room = new CleanRoom();
+class WalkArchiveTest extends LocationTestHelper {
 
     @Test
     public void zip() {
-        Path root = room.locateArchive("zip", $ -> {
+        Directory root = locateArchive("test.zip", $ -> {
             $.file("text1");
             $.file("text2");
             $.dir("dir1", () -> {
@@ -39,9 +28,9 @@ public class WalkTest {
             });
         });
 
-        assert PsychoPath.walk(root).size() == 6;
-        assert PsychoPath.walk(root, "*").size() == 2;
-        assert PsychoPath.walk(root, "!dir1/**").size() == 4;
-        assert PsychoPath.walkDirectory(root).size() == 2;
+        assert root.walkFiles().toList().size() == 6;
+        assert root.walkFiles("*").toList().size() == 2;
+        assert root.walkFiles("!dir1/**").toList().size() == 4;
+        assert root.walkDirectories().toList().size() == 2;
     }
 }

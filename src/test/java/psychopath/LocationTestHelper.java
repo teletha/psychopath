@@ -11,6 +11,7 @@ package psychopath;
 
 import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 
+import java.nio.file.Path;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -45,6 +46,20 @@ public class LocationTestHelper {
      */
     public final Directory locateAbsentDirectory(String name) {
         return Locator.directory(room.locateAbsent(name));
+    }
+
+    /**
+     * Build file tree structure.
+     * 
+     * @param name A directory name.
+     * @param dsl A definition of file tree.
+     * @return
+     */
+    public final Directory locateArchive(String name, Consumer<FileSystemDSL> dsl) {
+        Path file = room.locateAbsent(name);
+        room.locateArchive(file, dsl);
+
+        return Locator.file(file).asArchive();
     }
 
     /**

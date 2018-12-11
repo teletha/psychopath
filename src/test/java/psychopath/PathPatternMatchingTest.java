@@ -12,18 +12,10 @@ package psychopath;
 import java.util.function.Consumer;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.RegisterExtension;
 
-import antibug.CleanRoom;
 import antibug.CleanRoom.FileSystemDSL;
 
-/**
- * @version 2018/03/31 3:00:27
- */
-public class PathPatternMatchingTest {
-
-    @RegisterExtension
-    public static final CleanRoom room = new CleanRoom();
+class PathPatternMatchingTest extends LocationTestHelper {
 
     private void structure1(FileSystemDSL $) {
         $.dir("directory1", () -> {
@@ -169,12 +161,12 @@ public class PathPatternMatchingTest {
 
     @Test
     public void directory1() {
-        assertDirectoryCount(3, this::structure1);
+        assertDirectoryCount(2, this::structure1);
     }
 
     @Test
     public void directory2() {
-        assertDirectoryCount(10, this::structure2);
+        assertDirectoryCount(9, this::structure2);
     }
 
     @Test
@@ -219,7 +211,7 @@ public class PathPatternMatchingTest {
 
     @Test
     public void directoryPatternNegative() {
-        assertDirectoryCount(4, this::structure2, "!directory1");
+        assertDirectoryCount(3, this::structure2, "!directory1");
     }
 
     /**
@@ -235,7 +227,7 @@ public class PathPatternMatchingTest {
     private void assertCount(int expected, Consumer<FileSystemDSL> pattern, String... patterns) {
         room.with(pattern);
 
-        assert expected == PsychoPath.walk(room.root, patterns).size();
+        assert expected == Locator.directory(room.root).walkFiles(patterns).toList().size();
     }
 
     /**
@@ -244,6 +236,6 @@ public class PathPatternMatchingTest {
     private void assertDirectoryCount(int expected, Consumer<FileSystemDSL> pattern, String... patterns) {
         room.with(pattern);
 
-        assert PsychoPath.walkDirectory(room.root, patterns).size() == expected;
+        assert expected == Locator.directory(room.root).walkDirectories(patterns).toList().size();
     }
 }
