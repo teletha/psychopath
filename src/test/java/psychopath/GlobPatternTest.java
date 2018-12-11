@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 Nameless Production Committee
+ * Copyright (C) 2018 psychopath Development Team
  *
  * Licensed under the MIT License (the "License");
  * you may not use this file except in compliance with the License.
@@ -51,6 +51,28 @@ class GlobPatternTest extends LocationTestHelper {
         assert root.walkFiles("*/*").toList().size() == 6;
         assert root.walkFiles("*/file*").toList().size() == 4;
         assert root.walkFiles("*/*1").toList().size() == 4;
+    }
+
+    @Test
+    void deepWildcard() {
+        Directory directory = locateDirectory("root", $ -> {
+            $.file("text1");
+            $.file("text2");
+            $.dir("dir1", () -> {
+                $.file("text1");
+                $.file("text2");
+            });
+            $.dir("dir2", () -> {
+                $.file("text1");
+                $.file("text2");
+            });
+        });
+
+        assert directory.walkFiles("**").toList().size() == 6;
+        assert directory.walkFiles("dir2/**").toList().size() == 2;
+        directory.walkFiles().to(e -> {
+            assert e.relativePath().equals(directory.relativize(e).toString());
+        });
     }
 
     @Test

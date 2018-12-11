@@ -1,11 +1,11 @@
 /*
- * Copyright (C) 2018 Nameless Production Committee
+ * Copyright (C) 2018 psychopath Development Team
  *
  * Licensed under the MIT License (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *          http://opensource.org/licenses/mit-license.php
+ *          https://opensource.org/licenses/MIT
  */
 package psychopath;
 
@@ -39,7 +39,7 @@ import kiss.I;
 import kiss.Observer;
 
 /**
- * @version 2018/04/08 15:11:29
+ * @version 2018/12/11 9:58:31
  */
 public class CymaticScan implements FileVisitor<Path>, Runnable, Disposable {
 
