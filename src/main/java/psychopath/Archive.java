@@ -72,7 +72,7 @@ public class Archive {
                 archive.create();
             }
 
-            ArchiveOutputStream out = detectCompressor(archive);
+            ArchiveOutputStream out = detectArchiver(archive);
             entries.to(file -> {
                 try {
                     ArchiveEntry entry = out.createArchiveEntry(file.ⅱ.asFile(), file.ⅰ.relativize(file.ⅱ).path());
@@ -93,12 +93,12 @@ public class Archive {
     }
 
     /**
-     * Detect archive file system.
+     * Detect archive type.
      * 
      * @param file A target archive file.
      * @return An archive.
      */
-    static ArchiveOutputStream detectCompressor(File file) {
+    static ArchiveOutputStream detectArchiver(File file) {
         try {
             switch (file.extension()) {
             case "zip":

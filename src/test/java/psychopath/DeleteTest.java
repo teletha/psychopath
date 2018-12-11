@@ -11,9 +11,6 @@ package psychopath;
 
 import org.junit.jupiter.api.Test;
 
-/**
- * @version 2018/12/10 12:34:07
- */
 class DeleteTest extends LocationTestHelper {
 
     @Test
@@ -84,20 +81,18 @@ class DeleteTest extends LocationTestHelper {
         Directory directory = locateDirectory("dir", $ -> {
             $.file("text1");
             $.file("text2");
-            $.dir("empty-dir");
             $.dir("dir", () -> {
                 $.file("nest1");
                 $.file("nest2");
             });
         });
 
-        directory.delete("nest1");
+        directory.delete("text1");
 
         assert match(directory, $ -> {
-            $.file("text1");
             $.file("text2");
-            $.dir("empty-dir");
             $.dir("dir", () -> {
+                $.file("nest1");
                 $.file("nest2");
             });
         });
@@ -108,7 +103,6 @@ class DeleteTest extends LocationTestHelper {
         Directory directory = locateDirectory("dir", $ -> {
             $.file("1.txt");
             $.file("2.txt");
-            $.dir("empty-dir");
             $.dir("dir", () -> {
                 $.file("3.txt");
                 $.file("4.txt");
@@ -118,8 +112,8 @@ class DeleteTest extends LocationTestHelper {
         directory.delete("**.txt");
 
         assert match(directory, $ -> {
-            $.dir("empty-dir");
-            $.dir("dir");
+            $.dir("dir", () -> {
+            });
         });
     }
 }
