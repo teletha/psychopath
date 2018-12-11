@@ -143,17 +143,6 @@ public class Directory extends Location<Directory> {
     }
 
     /**
-     * Walk file tree and collect {@link File}s and {@link Directory}s which are filtered by various
-     * conditions.
-     * 
-     * @param filters Glob patterns.
-     * @return All matched {@link File}s.
-     */
-    public Signal<Location> walk(String... filters) {
-        return walk(Location.class, 3, filters, null, Integer.MAX_VALUE, false);
-    }
-
-    /**
      * Walk file tree and collect {@link File}s which are filtered by various conditions.
      * 
      * @param filters Glob patterns.

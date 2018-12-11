@@ -25,7 +25,7 @@ import antibug.CleanRoom.FileSystemDSL;
 public class LocationTestHelper {
 
     @RegisterExtension
-    private CleanRoom room = new CleanRoom();
+    CleanRoom room = new CleanRoom();
 
     /**
      * Build file tree structure.

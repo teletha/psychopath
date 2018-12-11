@@ -179,10 +179,6 @@ public abstract class Location<Self extends Location> {
      * as if by {@link Path#resolve(Path) resolving} the name of the directory entry against
      * {@code dir}.
      * <p>
-     * When not using the try-with-resources construct, then directory stream's {@code close} method
-     * should be invoked after iteration is completed so as to free any resources held for the open
-     * directory.
-     * <p>
      * When an implementation supports operations on entries in the directory that execute in a
      * race-free manner then the returned directory stream is a {@link SecureDirectoryStream}.
      *
@@ -194,6 +190,22 @@ public abstract class Location<Self extends Location> {
      */
     public abstract Signal<Location<?>> children();
 
+    /**
+     * Return a {@link Signal} to iterate over all entries in this {@link Location}. The entry
+     * returned by the directory stream's {@link DirectoryStream#iterator iterator} are of type
+     * {@code
+     * Path}, each one representing an entry in the directory. The {@code Path} objects are obtained
+     * as if by {@link Path#resolve(Path) resolving} the name of the directory entry against
+     * {@code dir}.
+     * <p>
+     * When an implementation supports operations on entries in the directory that execute in a
+     * race-free manner then the returned directory stream is a {@link SecureDirectoryStream}.
+     *
+     * @return A {@link Signal} which iterate over all entries in this {@link Location}.
+     * @throws SecurityException In the case of the default provider, and a security manager is
+     *             installed, the {@link SecurityManager#checkRead(String) checkRead} method is
+     *             invoked to check read access to the directory.
+     */
     public abstract Signal<Location<?>> descendant();
 
     /**

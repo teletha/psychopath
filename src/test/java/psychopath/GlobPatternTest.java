@@ -9,24 +9,16 @@
  */
 package psychopath;
 
-import java.nio.file.Path;
-
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.RegisterExtension;
-
-import antibug.CleanRoom;
 
 /**
  * @version 2018/03/31 3:01:30
  */
-public class GlobPatternTest {
-
-    @RegisterExtension
-    CleanRoom room = new CleanRoom();
+class GlobPatternTest extends LocationTestHelper {
 
     @Test
-    public void topLevelWildcard() {
-        Path root = room.locateDirectory("root", $ -> {
+    void topLevelWildcard() {
+        Directory root = locateDirectory("root", $ -> {
             $.file("file");
             $.file("text");
             $.dir("dir", () -> {
@@ -34,14 +26,15 @@ public class GlobPatternTest {
                 $.file("text");
             });
         });
-        assert PsychoPath.walk(root, "*").size() == 2;
-        assert PsychoPath.walk(root, "*/text").size() == 1;
-        assert PsychoPath.walk(root, "*", "*/text").size() == 3;
+
+        assert root.walkFiles("*").toList().size() == 2;
+        assert root.walkFiles("*/text").toList().size() == 1;
+        assert root.walkFiles("*", "*/text").toList().size() == 3;
     }
 
     @Test
-    public void secondLevelWildcard() {
-        Path root = room.locateDirectory("root", $ -> {
+    void secondLevelWildcard() {
+        Directory root = locateDirectory("root", $ -> {
             $.file("file");
             $.dir("dir1", () -> {
                 $.file("file1");
@@ -54,14 +47,15 @@ public class GlobPatternTest {
                 $.file("text1");
             });
         });
-        assert PsychoPath.walk(root, "*/*").size() == 6;
-        assert PsychoPath.walk(root, "*/file*").size() == 4;
-        assert PsychoPath.walk(root, "*/*1").size() == 4;
+
+        assert root.walkFiles("*/*").toList().size() == 6;
+        assert root.walkFiles("*/file*").toList().size() == 4;
+        assert root.walkFiles("*/*1").toList().size() == 4;
     }
 
     @Test
-    public void character() {
-        Path root = room.locateDirectory("root", $ -> {
+    void character() {
+        Directory root = locateDirectory("root", $ -> {
             $.file("text1");
             $.file("text2");
             $.dir("dir", () -> {
@@ -69,43 +63,75 @@ public class GlobPatternTest {
                 $.file("text2");
             });
         });
-        assert PsychoPath.walk(root, "text?").size() == 2;
-        assert PsychoPath.walk(root, "????1").size() == 1;
-        assert PsychoPath.walk(root, "**text?").size() == 4;
+
+        assert root.walkFiles("text?").toList().size() == 2;
+        assert root.walkFiles("????1").toList().size() == 1;
+        assert root.walkFiles("**text?").toList().size() == 4;
     }
 
     @Test
-    public void range() {
-        Path root = room.locateDirectory("root", $ -> {
+    void range() {
+        Directory root = locateDirectory("root", $ -> {
             $.file("text1");
             $.file("text2");
             $.file("text3");
             $.file("text4");
         });
-        assert PsychoPath.walk(root, "text[1-2]").size() == 2;
-        assert PsychoPath.walk(root, "text[2-5]").size() == 3;
+
+        assert root.walkFiles("text[1-2]").toList().size() == 2;
+        assert root.walkFiles("text[2-5]").toList().size() == 3;
     }
 
     @Test
-    public void negate() {
-        Path root = room.locateDirectory("root", $ -> {
+    void negate() {
+        Directory root = locateDirectory("root", $ -> {
             $.file("text1");
             $.file("text2");
             $.file("text3");
             $.file("text4");
         });
-        assert PsychoPath.walk(root, "text[!3]").size() == 3;
-        assert PsychoPath.walk(root, "text[!34]").size() == 2;
+
+        assert root.walkFiles("text[!3]").toList().size() == 3;
+        assert root.walkFiles("text[!34]").toList().size() == 2;
     }
 
     @Test
-    public void multiple() {
-        Path root = room.locateDirectory("root", $ -> {
+    void excludeFile() {
+        Directory root = locateDirectory("root", $ -> {
             $.file("text1");
             $.file("text2");
             $.file("text3");
             $.file("text4");
         });
-        assert PsychoPath.walk(root, "**", "!**1", "!**3").size() == 2;
+        assert root.walkFiles("**", "!text1").toList().size() == 3;
+    }
+
+    @Test
+    void excludeDirectory() {
+        Directory root = locateDirectory("root", $ -> {
+            $.file("text1");
+            $.file("text2");
+            $.file("text3");
+            $.file("text4");
+
+            $.dir("ignore", () -> {
+                $.file("text1");
+                $.file("text2");
+                $.file("text3");
+                $.file("text4");
+            });
+        });
+        assert root.walkFiles("**", "!ignore/**").toList().size() == 4;
+    }
+
+    @Test
+    void multiple() {
+        Directory root = locateDirectory("root", $ -> {
+            $.file("text1");
+            $.file("text2");
+            $.file("text3");
+            $.file("text4");
+        });
+        assert root.walkFiles("**", "!**1", "!**3").toList().size() == 2;
     }
 }
