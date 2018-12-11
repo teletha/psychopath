@@ -16,6 +16,7 @@ import java.nio.file.Path;
 
 import org.apache.commons.compress.archivers.ArchiveEntry;
 import org.apache.commons.compress.archivers.ArchiveOutputStream;
+import org.apache.commons.compress.archivers.sevenz.SevenZOutputFile;
 import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
 
 import kiss.I;
@@ -101,6 +102,9 @@ public class Archive {
     static ArchiveOutputStream detectArchiver(File file) {
         try {
             switch (file.extension()) {
+            case "7z":
+                return new SevenZOutputFile(file.asFile());
+
             case "zip":
             default:
                 return new ZipArchiveOutputStream(file.asFile());
