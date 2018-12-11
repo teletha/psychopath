@@ -75,4 +75,23 @@ class UnpackTest extends LocationTestHelper {
             });
         });
     }
+
+    @Test
+    void nonAscii() {
+        File zip = locateArchive("test.zip", $ -> {
+            $.dir("るーと", () -> {
+                $.file("ファイルⅰ");
+                $.file("ファイル②");
+                $.file("ファイル参");
+            });
+        });
+
+        assert match(zip.unpack(), $ -> {
+            $.dir("るーと", () -> {
+                $.file("ファイルⅰ");
+                $.file("ファイル②");
+                $.file("ファイル参");
+            });
+        });
+    }
 }

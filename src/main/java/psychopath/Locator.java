@@ -17,13 +17,49 @@ import kiss.Decoder;
 import kiss.Encoder;
 import kiss.I;
 
-/**
- * @version 2018/06/02 19:35:53
- */
 public class Locator {
 
     static {
         I.load(DirectoryCodec.class, false);
+    }
+
+    /**
+     * Locate {@link Archive}.
+     * 
+     * @param path A path to the archive file.
+     * @return The specified archive.
+     */
+    public static Archive archive(String path) {
+        if (path == null || path.isEmpty()) {
+            throw new IllegalArgumentException("Empty file name is invalid.");
+        }
+        return archive(file(path));
+    }
+
+    /**
+     * Locate {@link Archive}.
+     * 
+     * @param path A path to the archive file.
+     * @return The specified archive.
+     */
+    public static Archive archive(Path path) {
+        if (path == null) {
+            throw new IllegalArgumentException("Empty file name is invalid.");
+        }
+        return archive(file(path));
+    }
+
+    /**
+     * Locate {@link Archive}.
+     * 
+     * @param file A path to the archive file.
+     * @return The specified archive.
+     */
+    public static Archive archive(File file) {
+        if (file == null) {
+            throw new IllegalArgumentException("Empty file name is invalid.");
+        }
+        return new Archive(file);
     }
 
     /**

@@ -103,7 +103,7 @@ public class File extends Location<File> {
      * @return
      */
     public Directory asArchive() {
-        return new Archive(this);
+        return new Directory(Archive.detectFileSystetm(this));
     }
 
     /**

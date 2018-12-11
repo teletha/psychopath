@@ -9,22 +9,87 @@
  */
 package psychopath;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
 
-import kiss.I;
+import org.apache.commons.compress.archivers.ArchiveEntry;
+import org.apache.commons.compress.archivers.ArchiveOutputStream;
+import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
 
-/**
- * @version 2018/07/18 11:13:03
- */
-class Archive extends Directory {
+import kiss.I;
+import kiss.Signal;
+import kiss.Ⅱ;
+
+public class Archive {
+
+    /** The archive file. */
+    private final File archive;
+
+    /** The path entries. */
+    private Signal<Ⅱ<Directory, File>> entries = Signal.empty();
 
     /**
-     * @param path
+     * @param archive An archive path.
      */
-    Archive(File file) {
-        super(detect(file));
+    Archive(File archive) {
+        this.archive = archive.absolutize();
+    }
 
+    /**
+     * Add files.
+     * 
+     * @param files
+     */
+    public Archive add(Signal<File> files) {
+        if (files != null) {
+            entries = entries.merge(files.map(file -> I.pair(file.parent(), file)));
+        }
+        return this;
+    }
+
+    /**
+     * Add pattern matching path.
+     * 
+     * @param base A base path.
+     * @param patterns "glob" include/exclude patterns.
+     */
+    public Archive add(Directory base, String... patterns) {
+        if (base != null) {
+            entries = entries.merge(base.walkFiles(patterns).map(file -> I.pair(base, file)));
+        }
+        return this;
+    }
+
+    /**
+     * Pack all resources.
+     */
+    public void pack() {
+        try {
+            // Location must exist
+            if (archive.isAbsent()) {
+                archive.create();
+            }
+
+            ArchiveOutputStream out = detectCompressor(archive);
+            entries.to(file -> {
+                try {
+                    ArchiveEntry entry = out.createArchiveEntry(file.ⅱ.asFile(), file.ⅰ.relativize(file.ⅱ).path());
+                    out.putArchiveEntry(entry);
+                    try (InputStream in = file.ⅱ.newInputStream()) {
+                        in.transferTo(out);
+                    }
+                    out.closeArchiveEntry();
+
+                } catch (IOException e) {
+                    throw I.quiet(e);
+                }
+            });
+            out.finish();
+        } catch (Exception e) {
+            throw I.quiet(e);
+        }
     }
 
     /**
@@ -33,16 +98,31 @@ class Archive extends Directory {
      * @param file A target archive file.
      * @return An archive.
      */
-    private static Path detect(File file) {
+    static ArchiveOutputStream detectCompressor(File file) {
         try {
             switch (file.extension()) {
             case "zip":
-                return FileSystems.newFileSystem(file.path, null).getPath("/");
-
             default:
-                // If this exception will be thrown, it is bug of this program.
-                // So we must rethrow the wrapped error in here.
-                throw new Error("Unkwown archive [" + file + "].");
+                return new ZipArchiveOutputStream(file.asFile());
+
+            }
+        } catch (Throwable e) {
+            throw I.quiet(e);
+        }
+    }
+
+    /**
+     * Detect archive file system.
+     * 
+     * @param file A target archive file.
+     * @return An archive.
+     */
+    static Path detectFileSystetm(File file) {
+        try {
+            switch (file.extension()) {
+            case "zip":
+            default:
+                return FileSystems.newFileSystem(file.path, null).getPath("/");
             }
         } catch (Throwable e) {
             throw I.quiet(e);

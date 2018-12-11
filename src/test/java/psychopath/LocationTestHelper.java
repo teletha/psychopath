@@ -112,8 +112,7 @@ public class LocationTestHelper {
      */
     public final boolean match(Directory actual, Consumer<FileSystemDSL> expected) {
         Directory e = locateDirectory(actual.name() + " expected", expected);
-
-        assertIterableEquals(actual.descendant().toList(), e.descendant().toList());
+        assertIterableEquals(e.descendant().toList(), actual.descendant().toList());
 
         return true;
     }
