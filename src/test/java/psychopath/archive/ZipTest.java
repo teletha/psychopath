@@ -9,8 +9,6 @@
  */
 package psychopath.archive;
 
-import static psychopath.UnpackOption.StripSingleDirectory;
-
 import org.junit.jupiter.api.Test;
 
 import psychopath.Directory;
@@ -80,48 +78,6 @@ public class ZipTest extends LocationTestHelper {
                 $.file("ファイルⅰ");
                 $.file("ファイル②");
                 $.file("ファイル参");
-            });
-        });
-    }
-
-    @Test
-    void stripSingleDirectory() {
-        File zip = locateArchive("test." + ext, $ -> {
-            $.dir("inside", () -> {
-                $.file("1");
-                $.file("2");
-                $.file("3");
-            });
-        });
-
-        assert match(zip.unpack(StripSingleDirectory), $ -> {
-            $.file("1");
-            $.file("2");
-            $.file("3");
-        });
-    }
-
-    @Test
-    void stripSingleDirectoryWithNest() {
-        File zip = locateArchive("test." + ext, $ -> {
-            $.dir("inside", () -> {
-                $.dir("nest", () -> {
-                    $.file("1");
-                    $.file("2");
-                    $.dir("dir", () -> {
-                        $.file("child");
-                        $.file("item");
-                    });
-                });
-            });
-        });
-
-        assert match(zip.unpack(StripSingleDirectory), $ -> {
-            $.file("1");
-            $.file("2");
-            $.dir("dir", () -> {
-                $.file("child");
-                $.file("item");
             });
         });
     }

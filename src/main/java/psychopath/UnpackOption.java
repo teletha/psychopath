@@ -12,9 +12,6 @@ package psychopath;
 import java.util.LinkedList;
 import java.util.List;
 
-/**
- * @version 2018/12/09 12:58:14
- */
 public enum UnpackOption {
 
     StripSingleDirectory {
