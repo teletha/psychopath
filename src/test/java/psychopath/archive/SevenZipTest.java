@@ -20,7 +20,7 @@ import psychopath.Locator;
 
 public class SevenZipTest extends LocationTestHelper {
 
-    private String ext = "7z";
+    private String ext = "lz4.7z";
 
     @Test
     void pack() {
@@ -33,7 +33,7 @@ public class SevenZipTest extends LocationTestHelper {
             });
         });
 
-        File file = locateFile("test." + ext);
+        File file = locateFile("root." + ext);
         Locator.archive(file).add(dir).pack();
 
         assert match(file.unpack(), $ -> {

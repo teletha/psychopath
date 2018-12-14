@@ -103,7 +103,8 @@ public class Archive {
         try {
             switch (file.extension()) {
             case "7z":
-                return new SevenZOutputFile(file.asFile());
+                new SevenZOutputFile(file.asFile());
+                throw new Error();
 
             case "zip":
             default:
@@ -130,6 +131,79 @@ public class Archive {
             }
         } catch (Throwable e) {
             throw I.quiet(e);
+        }
+    }
+
+    /**
+     * 
+     */
+    private interface Archiver {
+
+        void pack();
+    }
+
+    /**
+     * 
+     */
+    private class Zip implements Archiver {
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void pack() {
+            try {
+                SevenZOutputFile out = new SevenZOutputFile(archive.asFile());
+                entries.to(file -> {
+                    try {
+                        ArchiveEntry entry = out.createArchiveEntry(file.ⅱ.asFile(), file.ⅰ.relativize(file.ⅱ).path());
+                        out.putArchiveEntry(entry);
+                        try (InputStream in = file.ⅱ.newInputStream()) {
+                            out.write();
+                            out.putArchiveEntry(entry);
+                        }
+                        out.closeArchiveEntry();
+
+                    } catch (IOException e) {
+                        throw I.quiet(e);
+                    }
+                });
+                out.finish();
+            } catch (IOException e) {
+                throw I.quiet(e);
+            }
+        }
+    }
+
+    /**
+     * 
+     */
+    private class Zip7 implements Archiver {
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void pack() {
+            try {
+                ArchiveOutputStream out = detectArchiver(archive);
+                entries.to(file -> {
+                    try {
+                        ArchiveEntry entry = out.createArchiveEntry(file.ⅱ.asFile(), file.ⅰ.relativize(file.ⅱ).path());
+                        out.putArchiveEntry(entry);
+                        try (InputStream in = file.ⅱ.newInputStream()) {
+                            in.transferTo(out);
+                        }
+                        out.closeArchiveEntry();
+
+                    } catch (IOException e) {
+                        throw I.quiet(e);
+                    }
+                });
+                out.finish();
+            } catch (IOException e) {
+                throw I.quiet(e);
+            }
         }
     }
 }
