@@ -1,2 +1,2 @@
-psychopath.rar.RARArchiveStreamProvider
-psychopath.sevenz.SevenZipArchiveStreamProvider
+psychopath.archiver.RARArchiveStreamProvider
+psychopath.archiver.SevenZipArchiveStreamProvider

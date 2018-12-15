@@ -97,8 +97,6 @@ public class Archive {
         } catch (Exception e) {
             throw I.quiet(e);
         }
-
-        archive.copyTo(Locator.directory("E:\\"));
     }
 
     /**

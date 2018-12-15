@@ -7,7 +7,7 @@
  *
  *          https://opensource.org/licenses/MIT
  */
-package psychopath.rar;
+package psychopath.archiver;
 
 import java.io.IOException;
 import java.io.InputStream;
