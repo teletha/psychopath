@@ -9,6 +9,10 @@
  */
 package psychopath;
 
+import java.io.IOException;
+import java.io.RandomAccessFile;
+import java.nio.channels.FileLock;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.function.Consumer;
@@ -19,8 +23,52 @@ import kiss.I;
 
 public class Locator {
 
+    /** The root temporary directory for psychopath. */
+    private static final Directory temporaries;
+
+    /** The temporary directory for the current processing JVM. */
+    private static final Path temporary;
+
     static {
         I.load(DirectoryCodec.class, false);
+
+        try {
+            // Create the root temporary directory for psychopath.
+            temporaries = directory(Path.of(System.getProperty("java.io.tmpdir"), "psychopath"));
+
+            // Clean up any old temporary directories by listing all of the files, using a prefix
+            // filter and that don't have a lock file.
+            for (Directory sub : temporaries.walkDirectories("temporary*").toList()) {
+                // create a file to represent the lock
+                RandomAccessFile file = new RandomAccessFile(sub.file("lock").asJavaFile(), "rw");
+
+                // test whether we can acquire lock or not
+                FileLock lock = file.getChannel().tryLock();
+
+                // release lock immediately
+                file.close();
+
+                // delete the all contents in the temporary directory since we could acquire a
+                // exclusive lock
+                if (lock != null) {
+                    try {
+                        sub.delete();
+                    } catch (Exception e) {
+                        // ignore
+                    }
+                }
+            }
+
+            // Create the temporary directory for the current processing JVM.
+            Files.createDirectories(temporaries.path);
+            temporary = Files.createTempDirectory(temporaries.path, "temporary");
+
+            // Create a lock after creating the temporary directory so there is no race condition
+            // with another application trying to clean our temporary directory.
+            new RandomAccessFile(temporary.resolve("lock").toFile(), "rw").getChannel().tryLock();
+        } catch (Exception e) {
+            throw I.quiet(e);
+        }
     }
 
     /**
@@ -154,8 +202,38 @@ public class Locator {
      * 
      * @return
      */
-    public static Directory temporary() {
-        return directory(System.getProperty("java.io.tmpdir"));
+    public static Directory temporaryDirectory() {
+        try {
+            Path path = Files.createTempDirectory(temporary, "temporary");
+
+            // Delete entity file.
+            Files.delete(path);
+
+            // API definition
+            return directory(path);
+        } catch (IOException e) {
+            throw I.quiet(e);
+        }
+    }
+
+    /**
+     * Creates a new abstract file somewhere beneath the system's temporary directory (as defined by
+     * the <code>java.io.tmpdir</code> system property).
+     * 
+     * @return
+     */
+    public static File temporaryFile() {
+        try {
+            Path path = Files.createTempDirectory(temporary, "temporary");
+
+            // Delete entity file.
+            Files.delete(path);
+
+            // API definition
+            return file(path);
+        } catch (IOException e) {
+            throw I.quiet(e);
+        }
     }
 
     public static Consumer<Directory> copy(Path destination, String... patterns) {

@@ -44,6 +44,14 @@ public class Directory extends Location<Directory> {
         return I.signal(this);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Signal<File> asFile() {
+        return Signal.empty();
+    }
+
     public boolean isEmpty() {
         try {
             return Files.list(path).count() == 0;
@@ -79,7 +87,7 @@ public class Directory extends Location<Directory> {
      */
     @Override
     public Signal<Location<?>> descendant() {
-        return I.signal(true, (Location) this, dir -> dir.flatMap(Location::children)).skip(this).map(file -> relativize(file));
+        return I.signal(true, (Location) this, dir -> dir.flatMap(Location<?>::children)).skip(this);
     }
 
     /**
@@ -612,74 +620,6 @@ public class Directory extends Location<Directory> {
     @Override
     public FileLock lock(WiseRunnable failed) {
         return file(".lock").lock(failed);
-    }
-
-    /**
-     * Constructs a relative path between this path and a given path.
-     * <p>
-     * Relativization is the inverse of {@link #resolve(Path) resolution}. This method attempts to
-     * construct a {@link #isAbsolute relative} path that when {@link #resolve(Path) resolved}
-     * against this path, yields a path that locates the same file as the given path. For example,
-     * on UNIX, if this path is {@code "/a/b"} and the given path is {@code "/a/b/c/d"} then the
-     * resulting relative path would be {@code "c/d"}. Where this path and the given path do not
-     * have a {@link #getRoot root} component, then a relative path can be constructed. A relative
-     * path cannot be constructed if only one of the paths have a root component. Where both paths
-     * have a root component then it is implementation dependent if a relative path can be
-     * constructed. If this path and the given path are {@link #equals equal} then an <i>empty
-     * path</i> is returned.
-     * <p>
-     * For any two {@link #normalize normalized} paths <i>p</i> and <i>q</i>, where <i>q</i> does
-     * not have a root component, <blockquote> <i>p</i>{@code .relativize(}<i>p</i>
-     * {@code .resolve(}<i>q</i>{@code )).equals(}<i>q</i>{@code )} </blockquote>
-     * <p>
-     * When symbolic links are supported, then whether the resulting path, when resolved against
-     * this path, yields a path that can be used to locate the {@link Files#isSameFile same} file as
-     * {@code other} is implementation dependent. For example, if this path is {@code "/a/b"} and
-     * the given path is {@code "/a/x"} then the resulting relative path may be {@code
-     * "../x"}. If {@code "b"} is a symbolic link then is implementation dependent if
-     * {@code "a/b/../x"} would locate the same file as {@code "/a/x"}.
-     *
-     * @param other the path to relativize against this path
-     * @return the resulting relative path, or an empty path if both paths are equal
-     * @throws IllegalArgumentException if {@code other} is not a {@code Path} that can be
-     *             relativized against this path
-     */
-    public File relativize(File file) {
-        return Locator.file(path.relativize(file.path));
-    }
-
-    /**
-     * Constructs a relative path between this path and a given path.
-     * <p>
-     * Relativization is the inverse of {@link #resolve(Path) resolution}. This method attempts to
-     * construct a {@link #isAbsolute relative} path that when {@link #resolve(Path) resolved}
-     * against this path, yields a path that locates the same file as the given path. For example,
-     * on UNIX, if this path is {@code "/a/b"} and the given path is {@code "/a/b/c/d"} then the
-     * resulting relative path would be {@code "c/d"}. Where this path and the given path do not
-     * have a {@link #getRoot root} component, then a relative path can be constructed. A relative
-     * path cannot be constructed if only one of the paths have a root component. Where both paths
-     * have a root component then it is implementation dependent if a relative path can be
-     * constructed. If this path and the given path are {@link #equals equal} then an <i>empty
-     * path</i> is returned.
-     * <p>
-     * For any two {@link #normalize normalized} paths <i>p</i> and <i>q</i>, where <i>q</i> does
-     * not have a root component, <blockquote> <i>p</i>{@code .relativize(}<i>p</i>
-     * {@code .resolve(}<i>q</i>{@code )).equals(}<i>q</i>{@code )} </blockquote>
-     * <p>
-     * When symbolic links are supported, then whether the resulting path, when resolved against
-     * this path, yields a path that can be used to locate the {@link Files#isSameFile same} file as
-     * {@code other} is implementation dependent. For example, if this path is {@code "/a/b"} and
-     * the given path is {@code "/a/x"} then the resulting relative path may be {@code
-     * "../x"}. If {@code "b"} is a symbolic link then is implementation dependent if
-     * {@code "a/b/../x"} would locate the same file as {@code "/a/x"}.
-     *
-     * @param other the path to relativize against this path
-     * @return the resulting relative path, or an empty path if both paths are equal
-     * @throws IllegalArgumentException if {@code other} is not a {@code Path} that can be
-     *             relativized against this path
-     */
-    public Directory relativize(Directory directory) {
-        return Locator.directory(path.relativize(directory.path));
     }
 
     /**

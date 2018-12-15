@@ -17,12 +17,16 @@ import static java.nio.file.StandardOpenOption.WRITE;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.UncheckedIOException;
 import java.nio.channels.AsynchronousFileChannel;
 import java.nio.channels.FileLock;
 import java.nio.channels.SeekableByteChannel;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.OpenOption;
@@ -130,6 +134,14 @@ public class File extends Location<File> {
         return Signal.empty();
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Signal<File> asFile() {
+        return I.signal(this);
+    }
+
     public long lastModified() {
         try {
             return Files.getLastModifiedTime(path).toMillis();
@@ -171,6 +183,38 @@ public class File extends Location<File> {
     }
 
     /**
+     * Copies all bytes from a file to an output stream.
+     * <p>
+     * If an I/O error occurs reading from the file or writing to the output stream, then it may do
+     * so after some bytes have been read or written. Consequently the output stream may be in an
+     * inconsistent state. It is strongly recommended that the output stream be promptly closed if
+     * an I/O error occurs.
+     * <p>
+     * This method may block indefinitely writing to the output stream (or reading from the file).
+     * The behavior for the case that the output stream is <i>asynchronously closed</i> or the
+     * thread interrupted during the copy is highly output stream and file system provider specific
+     * and therefore not specified.
+     * <p>
+     * Note that if the given output stream is {@link java.io.Flushable} then its
+     * {@link java.io.Flushable#flush flush} method may need to invoked after this method completes
+     * so as to flush any buffered output.
+     *
+     * @param destination the output stream to write to.
+     * @return the number of bytes read or written
+     * @throws IOException if an I/O error occurs when reading or writing
+     * @throws SecurityException In the case of the default provider, and a security manager is
+     *             installed, the {@link SecurityManager#checkRead(String) checkRead} method is
+     *             invoked to check read access to the file.
+     */
+    public long copyTo(OutputStream destination) {
+        try (OutputStream out = destination) {
+            return Files.copy(path, out);
+        } catch (IOException e) {
+            throw I.quiet(e);
+        }
+    }
+
+    /**
      * Unpack archive file to the same directory that this {@link File} exists.
      * 
      * @param options A list of options.
@@ -201,7 +245,8 @@ public class File extends Location<File> {
      * @return An unpacked directory.
      */
     public Directory unpackTo(Directory destination, Consumer<File> listener, UnpackOption... options) {
-        try (ArchiveInputStream in = detect()) {
+        try (ArchiveInputStream in = new ArchiveStreamFactory()
+                .createArchiveInputStream(extension().replaceAll("7z", "7z-override"), newInputStream())) {
             destination.create();
 
             ArchiveEntry entry = null;
@@ -227,6 +272,16 @@ public class File extends Location<File> {
             option.process(destination);
         }
         return destination;
+    }
+
+    /**
+     * Unpack archive file to the same directory that this {@link File} exists.
+     * 
+     * @param options A list of options.
+     * @return An unpacked directory.
+     */
+    public Directory unpackToTemporary(UnpackOption... options) {
+        return unpackTo(Locator.temporaryDirectory(), options);
     }
 
     /**
@@ -377,6 +432,123 @@ public class File extends Location<File> {
         } catch (IOException e) {
             throw I.quiet(e);
         }
+    }
+
+    /**
+     * Read all lines from a file as a {@code Stream}. Unlike {@link #readAllLines(Path, Charset)
+     * readAllLines}, this method does not read all lines into a {@code List}, but instead populates
+     * lazily as the stream is consumed.
+     * <p>
+     * Bytes from the file are decoded into characters using the specified charset and the same line
+     * terminators as specified by {@code
+     * readAllLines} are supported.
+     * <p>
+     * The returned stream contains a reference to an open file. The file is closed by closing the
+     * stream.
+     * <p>
+     * The file contents should not be modified during the execution of the terminal stream
+     * operation. Otherwise, the result of the terminal stream operation is undefined.
+     * <p>
+     * After this method returns, then any subsequent I/O exception that occurs while reading from
+     * the file or when a malformed or unmappable byte sequence is read, is wrapped in an
+     * {@link UncheckedIOException} that will be thrown from the {@link java.util.stream.Stream}
+     * method that caused the read to take place. In case an {@code IOException} is thrown when
+     * closing the file, it is also wrapped as an {@code UncheckedIOException}.
+     *
+     * @apiNote This method must be used within a try-with-resources statement or similar control
+     *          structure to ensure that the stream's open file is closed promptly after the
+     *          stream's operations have completed.
+     * @implNote This implementation supports good parallel stream performance for the standard
+     *           charsets {@link StandardCharsets#UTF_8 UTF-8}, {@link StandardCharsets#US_ASCII
+     *           US-ASCII} and {@link StandardCharsets#ISO_8859_1 ISO-8859-1}. Such
+     *           <em>line-optimal</em> charsets have the property that the encoded bytes of a line
+     *           feed ('\n') or a carriage return ('\r') are efficiently identifiable from other
+     *           encoded characters when randomly accessing the bytes of the file.
+     *           <p>
+     *           For non-<em>line-optimal</em> charsets the stream source's spliterator has poor
+     *           splitting properties, similar to that of a spliterator associated with an iterator
+     *           or that associated with a stream returned from {@link BufferedReader#lines()}. Poor
+     *           splitting properties can result in poor parallel stream performance.
+     *           <p>
+     *           For <em>line-optimal</em> charsets the stream source's spliterator has good
+     *           splitting properties, assuming the file contains a regular sequence of lines. Good
+     *           splitting properties can result in good parallel stream performance. The
+     *           spliterator for a <em>line-optimal</em> charset takes advantage of the charset
+     *           properties (a line feed or a carriage return being efficient identifiable) such
+     *           that when splitting it can approximately divide the number of covered lines in
+     *           half.
+     * @return the lines from the file as a {@code Stream}
+     * @throws IOException if an I/O error occurs opening the file
+     * @throws SecurityException In the case of the default provider, and a security manager is
+     *             installed, the {@link SecurityManager#checkRead(String) checkRead} method is
+     *             invoked to check read access to the file.
+     */
+    public Signal<String> lines() {
+        return lines(StandardCharsets.UTF_8);
+    }
+
+    /**
+     * Read all lines from a file as a {@code Stream}. Unlike {@link #readAllLines(Path, Charset)
+     * readAllLines}, this method does not read all lines into a {@code List}, but instead populates
+     * lazily as the stream is consumed.
+     * <p>
+     * Bytes from the file are decoded into characters using the specified charset and the same line
+     * terminators as specified by {@code
+     * readAllLines} are supported.
+     * <p>
+     * The returned stream contains a reference to an open file. The file is closed by closing the
+     * stream.
+     * <p>
+     * The file contents should not be modified during the execution of the terminal stream
+     * operation. Otherwise, the result of the terminal stream operation is undefined.
+     * <p>
+     * After this method returns, then any subsequent I/O exception that occurs while reading from
+     * the file or when a malformed or unmappable byte sequence is read, is wrapped in an
+     * {@link UncheckedIOException} that will be thrown from the {@link java.util.stream.Stream}
+     * method that caused the read to take place. In case an {@code IOException} is thrown when
+     * closing the file, it is also wrapped as an {@code UncheckedIOException}.
+     *
+     * @apiNote This method must be used within a try-with-resources statement or similar control
+     *          structure to ensure that the stream's open file is closed promptly after the
+     *          stream's operations have completed.
+     * @implNote This implementation supports good parallel stream performance for the standard
+     *           charsets {@link StandardCharsets#UTF_8 UTF-8}, {@link StandardCharsets#US_ASCII
+     *           US-ASCII} and {@link StandardCharsets#ISO_8859_1 ISO-8859-1}. Such
+     *           <em>line-optimal</em> charsets have the property that the encoded bytes of a line
+     *           feed ('\n') or a carriage return ('\r') are efficiently identifiable from other
+     *           encoded characters when randomly accessing the bytes of the file.
+     *           <p>
+     *           For non-<em>line-optimal</em> charsets the stream source's spliterator has poor
+     *           splitting properties, similar to that of a spliterator associated with an iterator
+     *           or that associated with a stream returned from {@link BufferedReader#lines()}. Poor
+     *           splitting properties can result in poor parallel stream performance.
+     *           <p>
+     *           For <em>line-optimal</em> charsets the stream source's spliterator has good
+     *           splitting properties, assuming the file contains a regular sequence of lines. Good
+     *           splitting properties can result in good parallel stream performance. The
+     *           spliterator for a <em>line-optimal</em> charset takes advantage of the charset
+     *           properties (a line feed or a carriage return being efficient identifiable) such
+     *           that when splitting it can approximately divide the number of covered lines in
+     *           half.
+     * @param cs the charset to use for decoding
+     * @return the lines from the file as a {@code Stream}
+     * @throws IOException if an I/O error occurs opening the file
+     * @throws SecurityException In the case of the default provider, and a security manager is
+     *             installed, the {@link SecurityManager#checkRead(String) checkRead} method is
+     *             invoked to check read access to the file.
+     */
+    public Signal<String> lines(Charset charset) {
+        return new Signal<>((observer, disposer) -> {
+            try (BufferedReader reader = Files.newBufferedReader(path, charset)) {
+                String line = null;
+                while (disposer.isNotDisposed() && (line = reader.readLine()) != null) {
+                    observer.accept(line);
+                }
+            } catch (IOException e) {
+                throw I.quiet(e);
+            }
+            return disposer;
+        });
     }
 
     /**

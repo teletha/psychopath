@@ -9,8 +9,6 @@
  */
 package psychopath.archive;
 
-import static psychopath.UnpackOption.StripSingleDirectory;
-
 import org.junit.jupiter.api.Test;
 
 import psychopath.Directory;
@@ -20,108 +18,50 @@ import psychopath.Locator;
 
 public class SevenZipTest extends LocationTestHelper {
 
-    private String ext = "lz4.7z";
+    private String ext = "7z";
 
     @Test
-    void pack() {
+    void packAndUnpack() {
         Directory dir = locateDirectory("root", $ -> {
-            $.file("file");
+            $.file("file", "text");
             $.dir("inside", () -> {
-                $.file("1");
-                $.file("2");
-                $.file("3");
+                $.file("1", "1");
+                $.file("2", "22");
+                $.file("3", "333");
             });
         });
 
         File file = locateFile("root." + ext);
         Locator.archive(file).add(dir).pack();
 
-        assert match(file.unpack(), $ -> {
-            $.file("file");
+        assert match(file.unpackToTemporary(), $ -> {
+            $.file("file", "text");
             $.dir("inside", () -> {
-                $.file("1");
-                $.file("2");
-                $.file("3");
+                $.file("1", "1");
+                $.file("2", "22");
+                $.file("3", "333");
             });
         });
     }
 
     @Test
-    void unpack() {
-        File zip = locateArchive("test." + ext, $ -> {
-            $.dir("inside", () -> {
-                $.file("1");
-                $.file("2");
-                $.file("3");
-            });
-        });
-
-        assert match(zip.unpack(), $ -> {
-            $.dir("inside", () -> {
-                $.file("1");
-                $.file("2");
-                $.file("3");
-            });
-        });
-    }
-
-    @Test
-    void unpackNonAscii() {
-        File zip = locateArchive("test." + ext, $ -> {
+    void nonAscii() {
+        Directory dir = locateDirectory("root", $ -> {
             $.dir("るーと", () -> {
-                $.file("ファイルⅰ");
-                $.file("ファイル②");
-                $.file("ファイル参");
+                $.file("ファイルⅰ", "ⅰ");
+                $.file("ファイル②", "②");
+                $.file("ファイル参", "参");
             });
         });
 
-        assert match(zip.unpack(), $ -> {
+        File file = locateFile("root." + ext);
+        Locator.archive(file).add(dir).pack();
+
+        assert match(file.unpackToTemporary(), $ -> {
             $.dir("るーと", () -> {
-                $.file("ファイルⅰ");
-                $.file("ファイル②");
-                $.file("ファイル参");
-            });
-        });
-    }
-
-    @Test
-    void stripSingleDirectory() {
-        File zip = locateArchive("test." + ext, $ -> {
-            $.dir("inside", () -> {
-                $.file("1");
-                $.file("2");
-                $.file("3");
-            });
-        });
-
-        assert match(zip.unpack(StripSingleDirectory), $ -> {
-            $.file("1");
-            $.file("2");
-            $.file("3");
-        });
-    }
-
-    @Test
-    void stripSingleDirectoryWithNest() {
-        File zip = locateArchive("test." + ext, $ -> {
-            $.dir("inside", () -> {
-                $.dir("nest", () -> {
-                    $.file("1");
-                    $.file("2");
-                    $.dir("dir", () -> {
-                        $.file("child");
-                        $.file("item");
-                    });
-                });
-            });
-        });
-
-        assert match(zip.unpack(StripSingleDirectory), $ -> {
-            $.file("1");
-            $.file("2");
-            $.dir("dir", () -> {
-                $.file("child");
-                $.file("item");
+                $.file("ファイルⅰ", "ⅰ");
+                $.file("ファイル②", "②");
+                $.file("ファイル参", "参");
             });
         });
     }

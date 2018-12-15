@@ -12,6 +12,7 @@ package psychopath;
 import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 
 import java.nio.file.Path;
+import java.util.List;
 import java.util.function.Consumer;
 
 import org.junit.jupiter.api.extension.RegisterExtension;
@@ -112,7 +113,22 @@ public class LocationTestHelper {
      */
     public final boolean match(Directory actual, Consumer<FileSystemDSL> expected) {
         Directory e = locateDirectory(actual.name() + " expected", expected);
-        assertIterableEquals(e.descendant().toList(), actual.descendant().toList());
+        List<Location<?>> expecteds = e.descendant().toList();
+        List<Location<?>> actuals = actual.descendant().toList();
+
+        for (int i = 0; i < expecteds.size(); i++) {
+            Location<?> expectedLocation = expecteds.get(i);
+            Location<?> actualLocation = actuals.get(i);
+
+            assert e.relativize(expectedLocation).equals(actual.relativize(actualLocation));
+
+            if (expectedLocation.isFile()) {
+                // check contents
+                List<String> expectedContent = expectedLocation.asFile().flatMap(f -> f.lines()).toList();
+                List<String> actualContent = actualLocation.asFile().flatMap(f -> f.lines()).toList();
+                assertIterableEquals(expectedContent, actualContent);
+            }
+        }
 
         return true;
     }

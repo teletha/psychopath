@@ -21,63 +21,47 @@ public class ZipTest extends LocationTestHelper {
     private String ext = "zip";
 
     @Test
-    void pack() {
+    void packAndUnpack() {
         Directory dir = locateDirectory("root", $ -> {
-            $.file("file");
+            $.file("file", "text");
             $.dir("inside", () -> {
-                $.file("1");
-                $.file("2");
-                $.file("3");
+                $.file("1", "1");
+                $.file("2", "22");
+                $.file("3", "333");
             });
         });
 
-        File file = locateFile("test." + ext);
+        File file = locateFile("root." + ext);
         Locator.archive(file).add(dir).pack();
 
-        assert match(file.unpack(), $ -> {
-            $.file("file");
+        assert match(file.unpackToTemporary(), $ -> {
+            $.file("file", "text");
             $.dir("inside", () -> {
-                $.file("1");
-                $.file("2");
-                $.file("3");
+                $.file("1", "1");
+                $.file("2", "22");
+                $.file("3", "333");
             });
         });
     }
 
     @Test
-    void unpack() {
-        File zip = locateArchive("test." + ext, $ -> {
-            $.dir("inside", () -> {
-                $.file("1");
-                $.file("2");
-                $.file("3");
-            });
-        });
-
-        assert match(zip.unpack(), $ -> {
-            $.dir("inside", () -> {
-                $.file("1");
-                $.file("2");
-                $.file("3");
-            });
-        });
-    }
-
-    @Test
-    void unpackNonAscii() {
-        File zip = locateArchive("test." + ext, $ -> {
+    void nonAscii() {
+        Directory dir = locateDirectory("root", $ -> {
             $.dir("るーと", () -> {
-                $.file("ファイルⅰ");
-                $.file("ファイル②");
-                $.file("ファイル参");
+                $.file("ファイルⅰ", "ⅰ");
+                $.file("ファイル②", "②");
+                $.file("ファイル参", "参");
             });
         });
 
-        assert match(zip.unpack(), $ -> {
+        File file = locateFile("root." + ext);
+        Locator.archive(file).add(dir).pack();
+
+        assert match(file.unpackToTemporary(), $ -> {
             $.dir("るーと", () -> {
-                $.file("ファイルⅰ");
-                $.file("ファイル②");
-                $.file("ファイル参");
+                $.file("ファイルⅰ", "ⅰ");
+                $.file("ファイル②", "②");
+                $.file("ファイル参", "参");
             });
         });
     }

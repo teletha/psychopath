@@ -144,8 +144,8 @@ public abstract class Location<Self extends Location> {
      * @throws IllegalArgumentException if {@code other} is not a {@code Path} that can be
      *             relativized against this path
      */
-    public final <T extends Location<T>> T relativize(T other) {
-        return other.convert(path.relativize(other.path));
+    public final <T extends Location> T relativize(T other) {
+        return (T) other.convert(path.relativize(other.path));
     }
 
     /**
@@ -386,7 +386,79 @@ public abstract class Location<Self extends Location> {
         return Files.exists(path, options);
     }
 
+    /**
+     * Tests whether a file is a regular file with opaque content.
+     * <p>
+     * The {@code options} array may be used to indicate how symbolic links are handled for the case
+     * that the file is a symbolic link. By default, symbolic links are followed and the file
+     * attribute of the final target of the link is read. If the option
+     * {@link LinkOption#NOFOLLOW_LINKS NOFOLLOW_LINKS} is present then symbolic links are not
+     * followed.
+     * <p>
+     * Where it is required to distinguish an I/O exception from the case that the file is not a
+     * regular file then the file attributes can be read with the
+     * {@link #readAttributes(Path,Class,LinkOption[]) readAttributes} method and the file type
+     * tested with the {@link BasicFileAttributes#isRegularFile} method.
+     *
+     * @param options options indicating how symbolic links are handled
+     * @return {@code true} if the file is a regular file; {@code false} if the file does not exist,
+     *         is not a regular file, or it cannot be determined if the file is a regular file or
+     *         not.
+     * @throws SecurityException In the case of the default provider, and a security manager is
+     *             installed, its {@link SecurityManager#checkRead(String) checkRead} method denies
+     *             read access to the file.
+     */
+    public final boolean isFile(LinkOption... options) {
+        return Files.isRegularFile(path, options);
+    }
+
+    /**
+     * Tests whether a file is a directory.
+     * <p>
+     * The {@code options} array may be used to indicate how symbolic links are handled for the case
+     * that the file is a symbolic link. By default, symbolic links are followed and the file
+     * attribute of the final target of the link is read. If the option
+     * {@link LinkOption#NOFOLLOW_LINKS NOFOLLOW_LINKS} is present then symbolic links are not
+     * followed.
+     * <p>
+     * Where it is required to distinguish an I/O exception from the case that the file is not a
+     * directory then the file attributes can be read with the
+     * {@link #readAttributes(Path,Class,LinkOption[]) readAttributes} method and the file type
+     * tested with the {@link BasicFileAttributes#isDirectory} method.
+     *
+     * @param options options indicating how symbolic links are handled
+     * @return {@code true} if the file is a directory; {@code false} if the file does not exist, is
+     *         not a directory, or it cannot be determined if the file is a directory or not.
+     * @throws SecurityException In the case of the default provider, and a security manager is
+     *             installed, its {@link SecurityManager#checkRead(String) checkRead} method denies
+     *             read access to the file.
+     */
+    public final boolean isDirectory(LinkOption... options) {
+        return Files.isDirectory(path, options);
+    }
+
+    /**
+     * Tests whether a file is a symbolic link.
+     * <p>
+     * Where it is required to distinguish an I/O exception from the case that the file is not a
+     * symbolic link then the file attributes can be read with the
+     * {@link #readAttributes(Path,Class,LinkOption[]) readAttributes} method and the file type
+     * tested with the {@link BasicFileAttributes#isSymbolicLink} method.
+     *
+     * @return {@code true} if the file is a symbolic link; {@code false} if the file does not
+     *         exist, is not a symbolic link, or it cannot be determined if the file is a symbolic
+     *         link or not.
+     * @throws SecurityException In the case of the default provider, and a security manager is
+     *             installed, its {@link SecurityManager#checkRead(String) checkRead} method denies
+     *             read access to the file.
+     */
+    public final boolean isSymbolicLink() {
+        return Files.isSymbolicLink(path);
+    }
+
     public abstract Signal<Directory> asDirectory();
+
+    public abstract Signal<File> asFile();
 
     /**
      * Returns a {@link File} object representing this path. Where this {@code
@@ -405,7 +477,7 @@ public abstract class Location<Self extends Location> {
      * @throws UnsupportedOperationException if this {@code Path} is not associated with the default
      *             provider
      */
-    public final java.io.File asFile() {
+    public final java.io.File asJavaFile() {
         return path.toFile();
     }
 
@@ -428,7 +500,7 @@ public abstract class Location<Self extends Location> {
      *             from the abstract path (see {@link java.nio.file.FileSystem#getPath
      *             FileSystem.getPath})
      */
-    public final Path asPath() {
+    public final Path asJavaPath() {
         return path;
     }
 

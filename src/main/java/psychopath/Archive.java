@@ -16,6 +16,7 @@ import java.nio.file.Path;
 
 import org.apache.commons.compress.archivers.ArchiveEntry;
 import org.apache.commons.compress.archivers.ArchiveOutputStream;
+import org.apache.commons.compress.archivers.ArchiveStreamFactory;
 import org.apache.commons.compress.archivers.sevenz.SevenZOutputFile;
 import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
 
@@ -67,17 +68,22 @@ public class Archive {
      * Pack all resources.
      */
     public void pack() {
-        try {
+        try (ArchiveOutputStream out = new ArchiveStreamFactory()
+                .createArchiveOutputStream(archive.extension().replaceAll("7z", "7z-override"), archive.newOutputStream())) {
             // Location must exist
             if (archive.isAbsent()) {
                 archive.create();
             }
 
-            ArchiveOutputStream out = detectArchiver(archive);
             entries.to(file -> {
                 try {
-                    ArchiveEntry entry = out.createArchiveEntry(file.ⅱ.asFile(), file.ⅰ.relativize(file.ⅱ).path());
+                    ArchiveEntry entry = out.createArchiveEntry(file.ⅱ.asJavaFile(), file.ⅰ.relativize(file.ⅱ).path());
                     out.putArchiveEntry(entry);
+
+                    if (file.ⅱ.isDirectory()) {
+
+                    }
+
                     try (InputStream in = file.ⅱ.newInputStream()) {
                         in.transferTo(out);
                     }
@@ -91,6 +97,8 @@ public class Archive {
         } catch (Exception e) {
             throw I.quiet(e);
         }
+
+        archive.copyTo(Locator.directory("E:\\"));
     }
 
     /**
@@ -103,12 +111,12 @@ public class Archive {
         try {
             switch (file.extension()) {
             case "7z":
-                new SevenZOutputFile(file.asFile());
+                new SevenZOutputFile(file.asJavaFile());
                 throw new Error();
 
             case "zip":
             default:
-                return new ZipArchiveOutputStream(file.asFile());
+                return new ZipArchiveOutputStream(file.asJavaFile());
 
             }
         } catch (Throwable e) {
@@ -131,79 +139,6 @@ public class Archive {
             }
         } catch (Throwable e) {
             throw I.quiet(e);
-        }
-    }
-
-    /**
-     * 
-     */
-    private interface Archiver {
-
-        void pack();
-    }
-
-    /**
-     * 
-     */
-    private class Zip implements Archiver {
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public void pack() {
-            try {
-                SevenZOutputFile out = new SevenZOutputFile(archive.asFile());
-                entries.to(file -> {
-                    try {
-                        ArchiveEntry entry = out.createArchiveEntry(file.ⅱ.asFile(), file.ⅰ.relativize(file.ⅱ).path());
-                        out.putArchiveEntry(entry);
-                        try (InputStream in = file.ⅱ.newInputStream()) {
-                            out.write();
-                            out.putArchiveEntry(entry);
-                        }
-                        out.closeArchiveEntry();
-
-                    } catch (IOException e) {
-                        throw I.quiet(e);
-                    }
-                });
-                out.finish();
-            } catch (IOException e) {
-                throw I.quiet(e);
-            }
-        }
-    }
-
-    /**
-     * 
-     */
-    private class Zip7 implements Archiver {
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public void pack() {
-            try {
-                ArchiveOutputStream out = detectArchiver(archive);
-                entries.to(file -> {
-                    try {
-                        ArchiveEntry entry = out.createArchiveEntry(file.ⅱ.asFile(), file.ⅰ.relativize(file.ⅱ).path());
-                        out.putArchiveEntry(entry);
-                        try (InputStream in = file.ⅱ.newInputStream()) {
-                            in.transferTo(out);
-                        }
-                        out.closeArchiveEntry();
-
-                    } catch (IOException e) {
-                        throw I.quiet(e);
-                    }
-                });
-                out.finish();
-            } catch (IOException e) {
-                throw I.quiet(e);
-            }
         }
     }
 }

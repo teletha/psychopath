@@ -63,7 +63,7 @@ class LocationTest {
 
     @Test
     void asPath() {
-        Path path = Locator.file("test").asPath();
+        Path path = Locator.file("test").asJavaPath();
         assert path.isAbsolute() == false;
         assert path.getFileName().toString().equals("test");
         assert path.getParent() == null;
@@ -71,7 +71,7 @@ class LocationTest {
 
     @Test
     void asFile() {
-        java.io.File file = Locator.file("test").asFile();
+        java.io.File file = Locator.file("test").asJavaFile();
         assert file.exists() == false;
         assert file.isAbsolute() == false;
         assert file.getName().equals("test");
