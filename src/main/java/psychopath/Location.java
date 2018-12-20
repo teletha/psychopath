@@ -33,9 +33,6 @@ import kiss.Observer;
 import kiss.Signal;
 import kiss.WiseRunnable;
 
-/**
- * @version 2018/05/31 8:34:34
- */
 public abstract class Location<Self extends Location> {
 
     /** The separator flag. */

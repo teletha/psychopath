@@ -46,9 +46,6 @@ import kiss.I;
 import kiss.Signal;
 import kiss.WiseRunnable;
 
-/**
- * @version 2018/05/31 18:23:03
- */
 public class File extends Location<File> {
 
     /**

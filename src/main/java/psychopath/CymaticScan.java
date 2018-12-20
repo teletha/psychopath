@@ -32,10 +32,7 @@ import kiss.Disposable;
 import kiss.I;
 import kiss.Observer;
 
-/**
- * @version 2018/12/11 9:58:31
- */
-public class CymaticScan implements FileVisitor<Path>, Runnable, Disposable {
+class CymaticScan implements FileVisitor<Path>, Runnable, Disposable {
 
     // =======================================================
     // For Pattern Matching Facility

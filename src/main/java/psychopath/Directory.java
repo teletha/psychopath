@@ -26,9 +26,6 @@ import kiss.Observer;
 import kiss.Signal;
 import kiss.WiseRunnable;
 
-/**
- * @version 2018/04/08 12:22:35
- */
 public class Directory extends Location<Directory> {
 
     /**
