@@ -9,28 +9,7 @@
  */
 package psychopath;
 
-import java.util.LinkedList;
-import java.util.List;
-
-public enum UnpackOption {
-
-    StripSingleDirectory {
-        @Override
-        public void process(Directory root) {
-            Directory current = root;
-            List<Location<?>> list = current.children().toList();
-            LinkedList<Directory> remove = new LinkedList();
-
-            while (list.size() == 1 && list.get(0) instanceof Directory) {
-                current = (Directory) list.get(0);
-                list = current.children().toList();
-                remove.add(current);
-            }
-
-            list.forEach(file -> file.moveTo(root));
-            remove.forEach(Directory::delete);
-        }
-    };
+public interface UnpackOption {
 
     /**
      * Define option process.

@@ -9,7 +9,7 @@
  */
 package psychopath.archive;
 
-import static psychopath.UnpackOption.*;
+import static psychopath.UnpackOptions.*;
 
 import org.junit.jupiter.api.Test;
 
