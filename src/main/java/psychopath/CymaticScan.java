@@ -235,7 +235,7 @@ public class CymaticScan implements FileVisitor<Path>, Runnable, Disposable {
             return CONTINUE;
 
         case 4: // walk directory
-            if (from != path && accept(relative, attrs)) {
+            if ((root || from != path) && accept(relative, attrs)) {
                 Directory directory = Locator.directory(path);
                 directory.relative = relative.toString();
                 observer.accept(directory);
@@ -378,8 +378,12 @@ public class CymaticScan implements FileVisitor<Path>, Runnable, Disposable {
             if (patterns.length == 1 && patterns[0].equals("*")) {
                 path.register(service, ENTRY_CREATE, ENTRY_DELETE, ENTRY_MODIFY);
             } else {
-                for (Path dir : PsychoPath.walkDirectory(path)) {
-                    dir.register(service, ENTRY_CREATE, ENTRY_DELETE, ENTRY_MODIFY);
+                if (Files.isDirectory(path)) {
+                    Directory directory = Locator.directory(path);
+
+                    for (Directory dir : directory.walkDirectories().startWith(directory).toList()) {
+                        dir.path.register(service, ENTRY_CREATE, ENTRY_DELETE, ENTRY_MODIFY);
+                    }
                 }
             }
         } catch (Exception e) {
@@ -408,8 +412,8 @@ public class CymaticScan implements FileVisitor<Path>, Runnable, Disposable {
                             if (Files.isDirectory(path) && preVisitDirectory(path, null) == CONTINUE) {
                                 Directory directory = Locator.directory(path);
 
-                                for (Path dir : PsychoPath.walkDirectory(path)) {
-                                    dir.register(service, ENTRY_CREATE, ENTRY_DELETE, ENTRY_MODIFY);
+                                for (Directory dir : directory.walkDirectories().startWith(directory).toList()) {
+                                    dir.path.register(service, ENTRY_CREATE, ENTRY_DELETE, ENTRY_MODIFY);
                                 }
                             }
                         }

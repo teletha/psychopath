@@ -200,7 +200,7 @@ public class Directory extends Location<Directory> {
      * @return All matched {@link File}s.
      */
     public Signal<Directory> walkDirectories(String... filters) {
-        return walk(Directory.class, null, 4, filters, null, Integer.MAX_VALUE, false);
+        return walk(Directory.class, null, 4, filters, null, Integer.MAX_VALUE, false).skip(this);
     }
 
     /**
@@ -210,7 +210,7 @@ public class Directory extends Location<Directory> {
      * @return All matched {@link File}s.
      */
     public Signal<Directory> walkDirectories(BiPredicate<Path, BasicFileAttributes> filters) {
-        return walk(Directory.class, null, 4, null, filters, Integer.MAX_VALUE, false);
+        return walk(Directory.class, null, 4, null, filters, Integer.MAX_VALUE, false).skip(this);
     }
 
     /**
@@ -221,7 +221,7 @@ public class Directory extends Location<Directory> {
      * @return All matched {@link File}s.
      */
     public Signal<Directory> walkDirectories(BiPredicate<Path, BasicFileAttributes> filters, int depth) {
-        return walk(Directory.class, null, 4, null, filters, depth, false);
+        return walk(Directory.class, null, 4, null, filters, depth, false).skip(this);
     }
 
     /**
@@ -248,70 +248,6 @@ public class Directory extends Location<Directory> {
             try {
                 Files.walkFileTree(path, Collections.EMPTY_SET, depth, scanner);
                 observer.complete();
-            } catch (IOException e) {
-                observer.error(e);
-            }
-            return disposer;
-        });
-    }
-
-    /**
-     * <p>
-     * Walk a file tree and collect directories you want to filter by various conditions.
-     * </p>
-     *
-     * @param patterns <a href="#Patterns">include/exclude patterns</a> you want to visit.
-     * @return All matched directories. (<em>not</em> including file)
-     */
-    public Signal<Directory> directories(String... patterns) {
-        return directories(Integer.MAX_VALUE, patterns);
-    }
-
-    /**
-     * <p>
-     * Walk a file tree and collect directories you want to filter by various conditions.
-     * </p>
-     *
-     * @param depth A tree depth to search.
-     * @param patterns <a href="#Patterns">include/exclude patterns</a> you want to visit.
-     * @return All matched directories. (<em>not</em> including file)
-     */
-    public Signal<Directory> directories(int depth, String... patterns) {
-        return new Signal<Directory>((observer, disposer) -> {
-            try {
-                Files.walkFileTree(path, Collections.EMPTY_SET, depth, new CymaticScan(path, null, 4, observer, disposer, patterns));
-            } catch (IOException e) {
-                observer.error(e);
-            }
-            return disposer;
-        });
-    }
-
-    /**
-     * <p>
-     * Walk a file tree and collect directories you want to filter by various conditions.
-     * </p>
-     *
-     * @param filter A directory filter.
-     * @return All matched directories. (<em>not</em> including file)
-     */
-    public Signal<Directory> directories(BiPredicate<Path, BasicFileAttributes> filter) {
-        return directories(Integer.MAX_VALUE, filter);
-    }
-
-    /**
-     * <p>
-     * Walk a file tree and collect directories you want to filter by various conditions.
-     * </p>
-     * 
-     * @param depth A tree depth to search.
-     * @param filter A directory filter.
-     * @return All matched directories. (<em>not</em> including file)
-     */
-    public Signal<Directory> directories(int depth, BiPredicate<Path, BasicFileAttributes> filter) {
-        return new Signal<>((observer, disposer) -> {
-            try {
-                Files.walkFileTree(path, Collections.EMPTY_SET, depth, new CymaticScan(path, null, 4, observer, disposer, filter));
             } catch (IOException e) {
                 observer.error(e);
             }

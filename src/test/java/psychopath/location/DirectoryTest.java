@@ -174,6 +174,6 @@ public class DirectoryTest {
      * @return
      */
     private int findDirectory(String... patterns) {
-        return current.directories(patterns).toList().size();
+        return current.walkDirectories(patterns).toList().size();
     }
 }

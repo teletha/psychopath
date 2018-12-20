@@ -23,6 +23,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import antibug.powerassert.PowerAssertOff;
 import kiss.Disposable;
 import kiss.I;
 import kiss.Observer;
@@ -261,6 +262,7 @@ class ObserveTest extends LocationTestHelper {
     }
 
     @Test
+    @PowerAssertOff
     void modifyFileInCreatedDirectory() {
         Directory directory = locateDirectory("directory");
         File file = locateAbsent("directory/child/file");
