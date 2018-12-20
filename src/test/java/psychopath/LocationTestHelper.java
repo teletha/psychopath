@@ -9,11 +9,13 @@
  */
 package psychopath;
 
-import static org.junit.jupiter.api.Assertions.assertIterableEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.nio.file.Path;
+import java.time.Instant;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.zip.CRC32;
 
 import org.junit.jupiter.api.extension.RegisterExtension;
 
@@ -86,6 +88,17 @@ public class LocationTestHelper {
     /**
      * Build file tree structure.
      * 
+     * @param name A file name.
+     * @param content A content.
+     * @return
+     */
+    public final File locateFile(String name, Instant time, String content) {
+        return Locator.file(room.locateFile(name, time, content));
+    }
+
+    /**
+     * Build file tree structure.
+     * 
      * @param name A directory name.
      * @return
      */
@@ -131,5 +144,59 @@ public class LocationTestHelper {
         }
 
         return true;
+    }
+
+    /**
+     * Helper method to check {@link File} equality as file.
+     */
+    protected static boolean sameFile(File one, File other) {
+        assert one.isPresent() == other.isPresent();
+        assert one.isFile();
+        assert other.isFile();
+        assert one.lastModified() == other.lastModified();
+        assert one.size() == other.size();
+        assert checksum(one) == checksum(other);
+        return true;
+    }
+
+    /**
+     * Helper method to check {@link Directory} equality as directory.
+     * 
+     * @return
+     */
+    protected static boolean sameDirectory(Directory one, Directory other) {
+        assert one.isPresent() == other.isPresent();
+        assert one.isDirectory();
+        assert other.isDirectory();
+        assert one.lastModified() == other.lastModified();
+
+        List<Location<?>> oneChildren = one.children().toList();
+        List<Location<?>> otherChildren = other.children().toList();
+
+        assert oneChildren.size() == otherChildren.size();
+
+        for (int i = 0; i < oneChildren.size(); i++) {
+            Location<?> oneChild = oneChildren.get(i);
+            Location<?> otherChild = otherChildren.get(i);
+
+            if (oneChild.isFile()) {
+                assert sameFile((File) oneChild, (File) otherChild);
+            } else if (oneChild.isDirectory()) {
+                assert sameDirectory((Directory) oneChild, (Directory) otherChild);
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Helper method to compute {@link File} checksume.
+     * 
+     * @return
+     */
+    protected static long checksum(File path) {
+        CRC32 crc = new CRC32();
+        crc.update(path.bytes());
+
+        return crc.getValue();
     }
 }

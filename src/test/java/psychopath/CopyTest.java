@@ -9,117 +9,62 @@
  */
 package psychopath;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-import java.nio.file.NoSuchFileException;
-import java.nio.file.Path;
-import java.nio.file.attribute.BasicFileAttributes;
 import java.time.Instant;
-import java.util.function.BiPredicate;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.RegisterExtension;
 
-import antibug.CleanRoom;
+class CopyTest extends LocationTestHelper {
 
-/**
- * @version 2018/03/31 3:03:35
- */
-public class CopyTest extends PathOperationTestHelper {
+    @Test
+    public void absentToFile() {
+        File in = locateAbsent("absent");
+        File out = locateFile("out");
 
-    @RegisterExtension
-    public CleanRoom room = new CleanRoom();
+        in.copyTo(out);
 
-    /**
-     * <p>
-     * Test operation.
-     * </p>
-     * 
-     * @param one
-     * @param other
-     */
-    private void operate(Path one, Path other, String... patterns) {
-        PsychoPath.copy(one, other, patterns);
-    }
-
-    /**
-     * <p>
-     * Test operation.
-     * </p>
-     * 
-     * @param one
-     * @param other
-     */
-    private void operate(Path one, Path other, BiPredicate<Path, BasicFileAttributes> filter) {
-        PsychoPath.copy(one, other, filter);
+        assert in.isAbsent();
+        assert out.isPresent();
     }
 
     @Test
-    public void nullInput() throws Exception {
-        Path in = null;
-        Path out = room.locateAbsent("null");
+    public void absentToDirectory() {
+        File in = locateAbsent("absent");
+        Directory out = locateDirectory("out");
 
-        assertThrows(NullPointerException.class, () -> operate(in, out));
+        in.copyTo(out);
+
+        assert in.isAbsent();
+        assert out.file("absent").isAbsent();
     }
 
     @Test
-    public void nullOutput() throws Exception {
-        Path in = room.locateAbsent("null");
-        Path out = null;
+    public void absentToAbsent() {
+        File in = locateAbsent("absent");
+        File out = locateAbsent("out");
 
-        assertThrows(NullPointerException.class, () -> operate(in, out));
+        in.copyTo(out);
+
+        assert in.isAbsent();
+        assert out.isAbsent();
     }
 
     @Test
-    public void absentToFile() throws Exception {
-        Path in = room.locateAbsent("absent");
-        Path out = room.locateFile("out");
+    public void fileToFile() {
+        File in = locateFile("In", "Success");
+        File out = locateFile("Out", "This text will be overwritten by input file.");
 
-        operate(in, out);
-
-        assert notExist(in);
-        assert exist(out);
-    }
-
-    @Test
-    public void absentToDirectory() throws Exception {
-        Path in = room.locateAbsent("absent");
-        Path out = room.locateDirectory("out");
-
-        operate(in, out);
-
-        assert notExist(in);
-        assert exist(out);
-    }
-
-    @Test
-    public void absentToAbsent() throws Exception {
-        Path in = room.locateAbsent("absent");
-        Path out = room.locateAbsent("out");
-
-        operate(in, out);
-
-        assert notExist(in);
-        assert notExist(out);
-    }
-
-    @Test
-    public void fileToFile() throws Exception {
-        Path in = room.locateFile("In", "Success");
-        Path out = room.locateFile("Out", "This text will be overwritten by input file.");
-
-        operate(in, out);
+        in.copyTo(out);
 
         assert sameFile(in, out);
     }
 
     @Test
-    public void fileToFileWithSameTimeStamp() throws Exception {
+    public void fileToFileWithSameTimeStamp() {
         Instant now = Instant.now();
-        Path in = room.locateFile("In", now, "Success");
-        Path out = room.locateFile("Out", now, "This text will be overwritten by input file.");
+        File in = locateFile("In", now, "Success");
+        File out = locateFile("Out", now, "This text will be overwritten by input file.");
 
-        operate(in, out);
+        in.copyTo(out);
 
         assert sameFile(in, out);
     }
@@ -127,69 +72,61 @@ public class CopyTest extends PathOperationTestHelper {
     @Test
     public void fileToFileWithDifferentTimeStamp() {
         Instant now = Instant.now();
-        Path in = room.locateFile("In", now, "Success");
-        Path out = room.locateFile("Out", now.plusSeconds(10), "This text will be overwritten by input file.");
+        File in = locateFile("In", now, "Success");
+        File out = locateFile("Out", now.plusSeconds(10), "This text will be overwritten by input file.");
 
-        operate(in, out);
+        in.copyTo(out);
 
         assert sameFile(in, out);
     }
 
     @Test
     public void fileToAbsent() {
-        Path in = room.locateFile("In", "Success");
-        Path out = room.locateAbsent("Out");
-        operate(in, out);
+        File in = locateFile("In", "Success");
+        File out = locateAbsent("Out");
+
+        in.copyTo(out);
 
         assert sameFile(in, out);
     }
 
     @Test
     public void fileToDeepAbsent() {
-        Path in = room.locateFile("In", "Success");
-        Path out = room.locateAbsent("1/2/3");
-        operate(in, out);
+        File in = locateFile("In", "Success");
+        File out = locateAbsent("1/2/3");
+
+        in.copyTo(out);
 
         assert sameFile(in, out);
     }
 
     @Test
     public void fileToDirectory() {
-        Path in = room.locateFile("In", "Success");
-        Path out = room.locateDirectory("Out");
+        File in = locateFile("In", "Success");
+        Directory out = locateDirectory("Out");
 
-        operate(in, out);
+        in.copyTo(out);
 
-        assert sameFile(in, out.resolve("In"));
-    }
-
-    @Test
-    public void directoryToFile() {
-        Path in = room.locateDirectory("In", $ -> {
-            $.file("1", "One");
-        });
-        Path out = room.locateFile("Out");
-
-        assertThrows(NoSuchFileException.class, () -> operate(in, out));
+        assert sameFile(in, out.file("In"));
     }
 
     @Test
     public void directoryToDirectory() {
-        Path in = room.locateDirectory("In", $ -> {
+        Directory in = locateDirectory("In", $ -> {
             $.file("1", "One");
         });
-        Path out = room.locateDirectory("Out", $ -> {
+        Directory out = locateDirectory("Out", $ -> {
             $.file("1", "This text will be overwritten by input file.");
         });
 
-        operate(in, out);
+        in.copyTo(out);
 
-        assert sameDirectory(in, out.resolve("In"));
+        assert sameDirectory(in, out.directory("In"));
     }
 
     @Test
     public void directoryToDirectoryWithFilter() {
-        Path in = room.locateDirectory("In", $ -> {
+        Directory in = locateDirectory("In", $ -> {
             $.file("file");
             $.file("text");
             $.dir("dir", () -> {
@@ -197,42 +134,43 @@ public class CopyTest extends PathOperationTestHelper {
                 $.file("text");
             });
         });
-        Path out = room.locateDirectory("Out");
+        Directory out = locateDirectory("Out");
 
-        operate(in, out, (file, attr) -> file.getFileName().startsWith("file"));
+        in.copyTo(out, (file, attr) -> file.getFileName().startsWith("file"));
 
-        assert sameFile(in.resolve("file"), out.resolve("In/file"));
-        assert sameFile(in.resolve("dir/file"), out.resolve("In/dir/file"));
-        assert notExist(out.resolve("In/text"), out.resolve("In/dir/text"));
+        assert sameFile(in.file("file"), out.file("In/file"));
+        assert sameFile(in.file("dir/file"), out.file("In/dir/file"));
+        assert out.file("In/text").isAbsent();
+        assert out.file("In/dir/text").isAbsent();
     }
 
     @Test
     public void directoryToAbsent() {
-        Path in = room.locateDirectory("In", $ -> {
+        Directory in = locateDirectory("In", $ -> {
             $.file("1", "One");
         });
-        Path out = room.locateAbsent("Out");
+        Directory out = locateAbsentDirectory("Out");
 
-        operate(in, out);
+        in.copyTo(out);
 
-        assert sameDirectory(in, out.resolve("In"));
+        assert sameDirectory(in, out.directory("In"));
     }
 
     @Test
     public void directoryToDeepAbsent() {
-        Path in = room.locateDirectory("In", $ -> {
+        Directory in = locateDirectory("In", $ -> {
             $.file("1", "One");
         });
-        Path out = room.locateAbsent("1/2/3");
+        Directory out = locateAbsentDirectory("1/2/3");
 
-        operate(in, out);
+        in.copyTo(out);
 
-        assert sameDirectory(in, out.resolve("In"));
+        assert sameDirectory(in, out.directory("In"));
     }
 
     @Test
     public void children() {
-        Path in = room.locateDirectory("In", $ -> {
+        Directory in = locateDirectory("In", $ -> {
             $.file("file");
             $.file("text");
             $.dir("dir", () -> {
@@ -241,26 +179,30 @@ public class CopyTest extends PathOperationTestHelper {
             });
             $.dir("empty");
         });
-        Path out = room.locateDirectory("Out");
+        Directory out = locateDirectory("Out");
 
-        operate(in, out, "*");
+        in.copyTo(out, "*");
 
-        assert exist(out.resolve("file"), out.resolve("text"), out.resolve("empty"), out.resolve("dir"));
-        assert notExist(out.resolve("dir/file"), out.resolve("dir/text"));
+        assert out.file("file").isPresent();
+        assert out.file("text").isPresent();
+        assert out.directory("empty").isPresent();
+        assert out.directory("dir").isPresent();
+        assert out.file("dir/file").isAbsent();
+        assert out.file("dir/text").isAbsent();
     }
 
     @Test
     public void descendant() {
-        Path in = room.locateDirectory("In", $ -> {
+        Directory in = locateDirectory("In", $ -> {
             $.file("1", "One");
             $.file("2", "Two");
             $.dir("dir", () -> {
                 $.file("nest");
             });
         });
-        Path out = room.locateDirectory("Out");
+        Directory out = locateDirectory("Out");
 
-        operate(in, out, "**");
+        in.copyTo(out, "**");
 
         assert sameDirectory(in, out);
     }

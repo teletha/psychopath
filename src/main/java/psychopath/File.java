@@ -9,15 +9,13 @@
  */
 package psychopath;
 
-import static java.nio.file.StandardCopyOption.ATOMIC_MOVE;
-import static java.nio.file.StandardCopyOption.COPY_ATTRIBUTES;
-import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
-import static java.nio.file.StandardOpenOption.CREATE;
-import static java.nio.file.StandardOpenOption.WRITE;
-import static java.util.concurrent.TimeUnit.MILLISECONDS;
+import static java.nio.file.StandardCopyOption.*;
+import static java.nio.file.StandardOpenOption.*;
+import static java.util.concurrent.TimeUnit.*;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import java.io.IOError;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -174,11 +172,27 @@ public class File extends Location<File> {
      */
     @Override
     public void copyTo(Directory destination) {
-        try {
-            destination.create();
-            Files.copy(path, destination.file(name()).path, REPLACE_EXISTING, COPY_ATTRIBUTES);
-        } catch (Exception e) {
-            throw I.quiet(e);
+        if (isPresent()) {
+            try {
+                destination.create();
+                Files.copy(path, destination.file(name()).path, REPLACE_EXISTING, COPY_ATTRIBUTES);
+            } catch (Exception e) {
+                throw I.quiet(e);
+            }
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void copyTo(File destination) {
+        if (isPresent()) {
+            try {
+                destination.parent().create();
+                Files.copy(path, destination.path, REPLACE_EXISTING, COPY_ATTRIBUTES);
+            } catch (Exception e) {
+                throw I.quiet(e);
+            }
         }
     }
 
@@ -282,12 +296,6 @@ public class File extends Location<File> {
      */
     public Directory unpackToTemporary(UnpackOption... options) {
         return unpackTo(Locator.temporaryDirectory(), options);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void copyTo(File destination) {
     }
 
     /**
@@ -431,6 +439,30 @@ public class File extends Location<File> {
             return Files.newByteChannel(path, options);
         } catch (IOException e) {
             throw I.quiet(e);
+        }
+    }
+
+    /**
+     * Reads all the bytes from a file. The method ensures that the file is closed when all bytes
+     * have been read or an I/O error, or other runtime exception, is thrown.
+     * <p>
+     * Note that this method is intended for simple cases where it is convenient to read all bytes
+     * into a byte array. It is not intended for reading in large files.
+     *
+     * @param path the path to the file
+     * @return a byte array containing the bytes read from the file
+     * @throws IOException if an I/O error occurs reading from the stream
+     * @throws OutOfMemoryError if an array of the required size cannot be allocated, for example
+     *             the file is larger that {@code 2GB}
+     * @throws SecurityException In the case of the default provider, and a security manager is
+     *             installed, the {@link SecurityManager#checkRead(String) checkRead} method is
+     *             invoked to check read access to the file.
+     */
+    public byte[] bytes() {
+        try {
+            return Files.readAllBytes(path);
+        } catch (IOException e) {
+            throw new IOError(e);
         }
     }
 
