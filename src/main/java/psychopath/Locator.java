@@ -11,10 +11,14 @@ package psychopath;
 
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.channels.FileLock;
+import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.security.CodeSource;
 import java.util.function.Consumer;
 
 import kiss.Decoder;
@@ -124,6 +128,20 @@ public class Locator {
     }
 
     /**
+     * Locate the specified file URL and return the plain {@link File} object.
+     *
+     * @param filePath A location path.
+     * @return A located {@link File}.
+     * @throws NullPointerException If the given file path is null.
+     * @throws SecurityException If a security manager exists and its
+     *             {@link SecurityManager#checkWrite(String)} method does not allow a file to be
+     *             created.
+     */
+    public static File file(URL filePath) {
+        return file(locate(filePath));
+    }
+
+    /**
      * Locate {@link File}.
      * 
      * @param path A path to the file.
@@ -166,6 +184,20 @@ public class Locator {
     }
 
     /**
+     * Locate the specified file URL and return the plain {@link Directory} object.
+     *
+     * @param directoryPath A location path.
+     * @return A located {@link Directory}.
+     * @throws NullPointerException If the given file path is null.
+     * @throws SecurityException If a security manager exists and its
+     *             {@link SecurityManager#checkWrite(String)} method does not allow a file to be
+     *             created.
+     */
+    public static Directory directory(URL directoryPath) {
+        return directory(locate(directoryPath));
+    }
+
+    /**
      * Locate {@link Directory}.
      * 
      * @param path A path to the directory.
@@ -198,19 +230,82 @@ public class Locator {
     }
 
     /**
+     * Locate the class archive (e.g. jar file, classes directory) by the specified sample class. If
+     * the sample class belongs to system classloader (e.g. {@link String}), <code>null</code> will
+     * be returned.
+     *
+     * @param clazz A sample class.
+     * @return A class archive (e.g. jar file, classes directory) or <code>null</code>.
+     */
+    public static Location locate(Class clazz) {
+        // retrieve code source of this sample class
+        CodeSource source = clazz.getProtectionDomain().getCodeSource();
+
+        // API definition
+        return (source == null) ? null : locate(locate(source.getLocation()));
+    }
+
+    /**
+     * Locate the class resource (e.g. in jar file, in classes directory) by the specified sample
+     * class. If the sample class belongs to system classloader (e.g. {@link String}),
+     * <code>null</code> will be returned.
+     *
+     * @param clazz A sample class.
+     * @param filePath A location path.
+     * @return A class resource (e.g. in jar file, in classes directory) or <code>null</code>.
+     */
+    public static File locate(Class clazz, String filePath) {
+        try {
+            Location root = locate(clazz);
+
+            if (!root.isDirectory()) {
+                root = directory(FileSystems.newFileSystem(root.path, null).getPath("/"));
+            }
+
+            Directory dir = (Directory) root;
+            return dir.file(clazz.getName().replaceAll("\\.", "/")).parent().file(filePath);
+        } catch (Exception e) {
+            throw I.quiet(e);
+        }
+    }
+
+    /**
+     * Convert {@link URL} to {@link Path}.
+     * 
+     * @param url
+     * @return
+     */
+    private static Path locate(URL url) {
+        try {
+            // Use File constructor with URI to resolve escaped character.
+            return new java.io.File(url.toURI()).toPath();
+        } catch (URISyntaxException e) {
+            return new java.io.File(url.getPath()).toPath();
+        }
+    }
+
+    /**
+     * Convert {@link Path} to {@link Location}.
+     * 
+     * @param path
+     * @return
+     */
+    private static Location locate(Path path) {
+        if (Files.isDirectory(path)) {
+            return directory(path);
+        } else {
+            return file(path);
+        }
+    }
+
+    /**
      * Locate the system temporary {@link Directory}.
      * 
      * @return
      */
     public static Directory temporaryDirectory() {
         try {
-            Path path = Files.createTempDirectory(temporary, "temporary");
-
-            // Delete entity file.
-            Files.delete(path);
-
-            // API definition
-            return directory(path);
+            return directory(Files.createTempDirectory(temporary, "temporary"));
         } catch (IOException e) {
             throw I.quiet(e);
         }
@@ -224,13 +319,7 @@ public class Locator {
      */
     public static File temporaryFile() {
         try {
-            Path path = Files.createTempDirectory(temporary, "temporary");
-
-            // Delete entity file.
-            Files.delete(path);
-
-            // API definition
-            return file(path);
+            return file(Files.createTempDirectory(temporary, "temporary"));
         } catch (IOException e) {
             throw I.quiet(e);
         }

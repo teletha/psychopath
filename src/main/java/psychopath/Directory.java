@@ -668,7 +668,16 @@ public class Directory extends Location<Directory> {
      *             check {@link LinkPermission}("symbolic").
      */
     public Signal<WatchEvent<Path>> observe(String... patterns) {
-        return PsychoPath.observe(path, patterns);
+        return new Signal<>((observer, disposer) -> {
+            // Create logical file system watch service.
+            CymaticScan watcher = new CymaticScan(path, observer, disposer, patterns);
+
+            // Run in anothor thread.
+            I.schedule(watcher);
+
+            // API definition
+            return watcher;
+        });
     }
 
     /**
