@@ -244,7 +244,7 @@ public class File extends Location<File> {
      * {@inheritDoc}
      */
     @Override
-    public Signal<WatchEvent<Path>> observe() {
+    public Signal<WatchEvent<Location>> observe() {
         return parent().observe(name());
     }
 

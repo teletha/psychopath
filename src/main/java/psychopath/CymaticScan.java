@@ -406,7 +406,7 @@ public class CymaticScan implements FileVisitor<Path>, Runnable, Disposable {
 
                     // pattern matching
                     if (accept(from.relativize(path), null)) {
-                        observer.accept(new Watch(path, event));
+                        observer.accept(new Watch(Locator.locate(path), event));
 
                         if (event.kind() == ENTRY_CREATE) {
                             if (Files.isDirectory(path) && preVisitDirectory(path, null) == CONTINUE) {
@@ -439,22 +439,22 @@ public class CymaticScan implements FileVisitor<Path>, Runnable, Disposable {
     }
 
     /**
-     * @version 2017/04/19 1:19:50
+     * 
      */
-    private static class Watch implements WatchEvent<Path> {
+    private static class Watch implements WatchEvent<Location> {
 
         /** Generic object. */
-        private final Path path;
+        private final Location location;
 
         /** The event holder. */
         private final WatchEvent event;
 
         /**
-         * @param path
+         * @param location
          * @param event
          */
-        private Watch(Path path, WatchEvent event) {
-            this.path = path;
+        private Watch(Location location, WatchEvent event) {
+            this.location = location;
             this.event = event;
         }
 
@@ -478,8 +478,8 @@ public class CymaticScan implements FileVisitor<Path>, Runnable, Disposable {
          * {@inheritDoc}
          */
         @Override
-        public Path context() {
-            return path;
+        public Location context() {
+            return location;
         }
     }
 }

@@ -566,7 +566,7 @@ public class Directory extends Location<Directory> {
      * {@inheritDoc}
      */
     @Override
-    public Signal<WatchEvent<Path>> observe() {
+    public Signal<WatchEvent<Location>> observe() {
         return observe(new String[0]);
     }
 
@@ -603,7 +603,7 @@ public class Directory extends Location<Directory> {
      *             the target file. If a symbolic link is copied the security manager is invoked to
      *             check {@link LinkPermission}("symbolic").
      */
-    public Signal<WatchEvent<Path>> observe(String... patterns) {
+    public Signal<WatchEvent<Location>> observe(String... patterns) {
         return new Signal<>((observer, disposer) -> {
             // Create logical file system watch service.
             CymaticScan watcher = new CymaticScan(path, observer, disposer, patterns);

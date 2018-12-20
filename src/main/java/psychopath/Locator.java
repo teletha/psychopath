@@ -290,7 +290,7 @@ public class Locator {
      * @param path
      * @return
      */
-    private static Location locate(Path path) {
+    public static Location locate(Path path) {
         if (Files.isDirectory(path)) {
             return directory(path);
         } else {

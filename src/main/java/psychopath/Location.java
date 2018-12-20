@@ -713,7 +713,7 @@ public abstract class Location<Self extends Location> {
      *             the target file. If a symbolic link is copied the security manager is invoked to
      *             check {@link LinkPermission}("symbolic").
      */
-    public abstract Signal<WatchEvent<Path>> observe();
+    public abstract Signal<WatchEvent<Location>> observe();
 
     /**
      * {@inheritDoc}

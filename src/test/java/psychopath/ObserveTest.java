@@ -13,7 +13,6 @@ import static java.util.concurrent.TimeUnit.*;
 
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.WatchEvent;
 import java.util.ArrayList;
 import java.util.List;
@@ -515,7 +514,7 @@ class ObserveTest extends LocationTestHelper {
                     throw new AssertionError(event + " event doesn't rise in '" + location + "'.");
                 } else {
                     assert Files
-                            .isSameFile(location.path, retrieved.path) : "Expected is " + location + "   but retrieved is " + retrieved.path;
+                            .isSameFile(location.path, retrieved.location.path) : "Expected is " + location + "   but retrieved is " + retrieved.location;
                 }
             } catch (InterruptedException e) {
                 throw I.quiet(e);
@@ -557,7 +556,7 @@ class ObserveTest extends LocationTestHelper {
      * @version 2011/04/03 14:14:01
      */
     @SuppressWarnings("serial")
-    private static class EventQueue extends SynchronousQueue<Event> implements Observer<WatchEvent<Path>> {
+    private static class EventQueue extends SynchronousQueue<Event> implements Observer<WatchEvent<Location>> {
 
         private EventQueue() {
             super(true);
@@ -567,7 +566,7 @@ class ObserveTest extends LocationTestHelper {
          * {@inheritDoc}
          */
         @Override
-        public void accept(WatchEvent<Path> value) {
+        public void accept(WatchEvent<Location> value) {
             try {
                 put(new Event(value.context(), value.kind().name()));
             } catch (InterruptedException e) {
@@ -577,18 +576,18 @@ class ObserveTest extends LocationTestHelper {
     }
 
     /**
-     * @version 2014/07/18 22:29:13
+     * 
      */
     private static class Event {
 
-        /** The event path. */
-        private final Path path;
+        /** The event location. */
+        private final Location location;
 
         /** The event type. */
         private final String type;
 
-        private Event(Path path, String type) {
-            this.path = path;
+        private Event(Location location, String type) {
+            this.location = location;
             this.type = type;
         }
 
@@ -597,7 +596,7 @@ class ObserveTest extends LocationTestHelper {
          */
         @Override
         public String toString() {
-            return "Event [path=" + path + ", type=" + type + "]";
+            return "Event [path=" + location + ", type=" + type + "]";
         }
     }
 }
