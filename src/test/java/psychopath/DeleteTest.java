@@ -99,7 +99,85 @@ class DeleteTest extends LocationTestHelper {
     }
 
     @Test
-    void patternWildcard() {
+    void patternChildren() {
+        Directory directory = locateDirectory("dir", $ -> {
+            $.file("1.txt");
+            $.file("2.txt");
+            $.dir("dir", () -> {
+                $.file("3.txt");
+                $.file("4.txt");
+            });
+        });
+
+        directory.delete("*");
+
+        assert directory.isPresent();
+        assert match(directory, $ -> {
+        });
+    }
+
+    @Test
+    void patternChildFiles() {
+        Directory directory = locateDirectory("dir", $ -> {
+            $.file("1.txt");
+            $.file("2.txt");
+            $.dir("dir", () -> {
+                $.file("3.txt");
+                $.file("4.txt");
+            });
+        });
+
+        directory.delete("*.txt");
+
+        assert directory.isPresent();
+        assert match(directory, $ -> {
+            $.dir("dir", () -> {
+                $.file("3.txt");
+                $.file("4.txt");
+            });
+        });
+    }
+
+    @Test
+    void patternChildDirectory() {
+        Directory directory = locateDirectory("dir", $ -> {
+            $.file("1.txt");
+            $.file("2.txt");
+            $.dir("dir", () -> {
+                $.file("3.txt");
+                $.file("4.txt");
+            });
+        });
+
+        directory.delete("dir");
+
+        assert directory.isPresent();
+        assert match(directory, $ -> {
+            $.file("1.txt");
+            $.file("2.txt");
+        });
+    }
+
+    @Test
+    void patternDecendant() {
+        Directory directory = locateDirectory("dir", $ -> {
+            $.file("1.txt");
+            $.file("2.txt");
+            $.dir("dir", () -> {
+                $.file("3.txt");
+                $.file("4.txt");
+            });
+        });
+
+        directory.delete("**");
+
+        assert directory.isPresent();
+        assert match(directory, $ -> {
+        });
+    }
+
+    @Test
+    void patternDecendantFiles() {
         Directory directory = locateDirectory("dir", $ -> {
             $.file("1.txt");
             $.file("2.txt");
@@ -111,8 +189,36 @@ class DeleteTest extends LocationTestHelper {
 
         directory.delete("**.txt");
 
+        assert directory.isAbsent();
+    }
+
+    @Test
+    void patternDecendantDirectories() {
+        Directory directory = locateDirectory("dir", $ -> {
+            $.file("1.txt");
+            $.file("2.txt");
+            $.dir("dir1", () -> {
+                $.file("3.txt");
+                $.file("4.txt");
+            });
+            $.dir("dir2", () -> {
+                $.dir("dir21", () -> {
+                    $.file("file");
+                });
+                $.dir("dir22", () -> {
+                    $.file("file");
+                });
+            });
+        });
+
+        directory.delete("**/dir**");
+
         assert match(directory, $ -> {
-            $.dir("dir", () -> {
+            $.file("1.txt");
+            $.file("2.txt");
+            $.dir("dir1", () -> {
+                $.file("3.txt");
+                $.file("4.txt");
             });
         });
     }
