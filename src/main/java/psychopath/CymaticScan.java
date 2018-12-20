@@ -406,6 +406,8 @@ public class CymaticScan implements FileVisitor<Path>, Runnable, Disposable {
 
                         if (event.kind() == ENTRY_CREATE) {
                             if (Files.isDirectory(path) && preVisitDirectory(path, null) == CONTINUE) {
+                                Directory directory = Locator.directory(path);
+
                                 for (Path dir : PsychoPath.walkDirectory(path)) {
                                     dir.register(service, ENTRY_CREATE, ENTRY_DELETE, ENTRY_MODIFY);
                                 }

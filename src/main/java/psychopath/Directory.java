@@ -157,7 +157,7 @@ public class Directory extends Location<Directory> {
      * @return All matched {@link File}s.
      */
     public Signal<Location> walk(String... filters) {
-        return walk(Location.class, 3, filters, null, Integer.MAX_VALUE, false);
+        return walk(Location.class, null, 3, filters, null, Integer.MAX_VALUE, false);
     }
 
     /**
@@ -167,7 +167,7 @@ public class Directory extends Location<Directory> {
      * @return All matched {@link File}s.
      */
     public Signal<File> walkFiles(String... filters) {
-        return walk(File.class, 3, filters, null, Integer.MAX_VALUE, false);
+        return walk(File.class, null, 3, filters, null, Integer.MAX_VALUE, false);
     }
 
     /**
@@ -177,7 +177,7 @@ public class Directory extends Location<Directory> {
      * @return All matched {@link File}s.
      */
     public Signal<File> walkFiles(BiPredicate<Path, BasicFileAttributes> filters) {
-        return walk(File.class, 3, null, filters, Integer.MAX_VALUE, false);
+        return walk(File.class, null, 3, null, filters, Integer.MAX_VALUE, false);
     }
 
     /**
@@ -188,7 +188,7 @@ public class Directory extends Location<Directory> {
      * @return All matched {@link File}s.
      */
     public Signal<File> walkFiles(BiPredicate<Path, BasicFileAttributes> filters, int depth) {
-        return walk(File.class, 3, null, filters, depth, false);
+        return walk(File.class, null, 3, null, filters, depth, false);
     }
 
     /**
@@ -198,7 +198,7 @@ public class Directory extends Location<Directory> {
      * @return All matched {@link File}s.
      */
     public Signal<Directory> walkDirectories(String... filters) {
-        return walk(Directory.class, 4, filters, null, Integer.MAX_VALUE, false);
+        return walk(Directory.class, null, 4, filters, null, Integer.MAX_VALUE, false);
     }
 
     /**
@@ -208,7 +208,7 @@ public class Directory extends Location<Directory> {
      * @return All matched {@link File}s.
      */
     public Signal<Directory> walkDirectories(BiPredicate<Path, BasicFileAttributes> filters) {
-        return walk(Directory.class, 4, null, filters, Integer.MAX_VALUE, false);
+        return walk(Directory.class, null, 4, null, filters, Integer.MAX_VALUE, false);
     }
 
     /**
@@ -219,7 +219,7 @@ public class Directory extends Location<Directory> {
      * @return All matched {@link File}s.
      */
     public Signal<Directory> walkDirectories(BiPredicate<Path, BasicFileAttributes> filters, int depth) {
-        return walk(Directory.class, 4, null, filters, depth, false);
+        return walk(Directory.class, null, 4, null, filters, depth, false);
     }
 
     /**
@@ -231,15 +231,15 @@ public class Directory extends Location<Directory> {
      * @param depth A max file tree depth to search.
      * @return All matched {@link File}s.
      */
-    private <L extends Location> Signal<L> walk(Class<L> clazz, int type, String[] patterns, BiPredicate<Path, BasicFileAttributes> filters, int depth, boolean relatively) {
+    private <L extends Location> Signal<L> walk(Class<L> clazz, Path out, int type, String[] patterns, BiPredicate<Path, BasicFileAttributes> filters, int depth, boolean relatively) {
         return new Signal<L>((observer, disposer) -> {
             // build new scanner
             CymaticScan scanner;
 
             if (filters == null) {
-                scanner = new CymaticScan(path, null, type, observer, disposer, patterns);
+                scanner = new CymaticScan(path, out, type, observer, disposer, patterns);
             } else {
-                scanner = new CymaticScan(path, null, type, observer, disposer, filters);
+                scanner = new CymaticScan(path, out, type, observer, disposer, filters);
             }
 
             // try to scan
@@ -373,7 +373,7 @@ public class Directory extends Location<Directory> {
      *             check {@link LinkPermission}("symbolic").
      */
     public void moveTo(Directory destination, String... patterns) {
-        new Visitor(path, destination.path, 1, patterns).walk();
+        walk(Location.class, destination.path, 1, patterns, null, Integer.MAX_VALUE, false).to(I.NoOP);
     }
 
     /**
@@ -424,7 +424,7 @@ public class Directory extends Location<Directory> {
      *             check {@link LinkPermission}("symbolic").
      */
     public void moveTo(Directory destination, BiPredicate<Path, BasicFileAttributes> filter) {
-        new Visitor(path, destination.path, 1, filter).walk();
+        walk(Location.class, destination.path, 1, null, filter, Integer.MAX_VALUE, false).to(I.NoOP);
     }
 
     /**
@@ -484,7 +484,7 @@ public class Directory extends Location<Directory> {
      *             check {@link LinkPermission}("symbolic").
      */
     public void copyTo(Directory destination, String... patterns) {
-        new Visitor(path, destination.path, 0, patterns).walk();
+        walk(Location.class, destination.path, 0, patterns, null, Integer.MAX_VALUE, false).to(I.NoOP);
     }
 
     /**
@@ -535,7 +535,7 @@ public class Directory extends Location<Directory> {
      *             check {@link LinkPermission}("symbolic").
      */
     public void copyTo(Directory destination, BiPredicate<Path, BasicFileAttributes> filter) {
-        new Visitor(path, destination.path, 0, filter).walk();
+        walk(Location.class, destination.path, 0, null, filter, Integer.MAX_VALUE, false).to(I.NoOP);
     }
 
     /**
@@ -588,7 +588,7 @@ public class Directory extends Location<Directory> {
      *             check {@link LinkPermission}("symbolic").
      */
     public void delete(String... patterns) {
-        new Visitor(path, null, 2, patterns).walk();
+        walk(Location.class, null, 2, patterns, null, Integer.MAX_VALUE, false).to(I.NoOP);
     }
 
     /**
@@ -621,7 +621,7 @@ public class Directory extends Location<Directory> {
      *             check {@link LinkPermission}("symbolic").
      */
     public void delete(BiPredicate<Path, BasicFileAttributes> filter) {
-        new Visitor(path, null, 2, filter).walk();
+        walk(Location.class, null, 2, null, filter, Integer.MAX_VALUE, false).to(I.NoOP);
     }
 
     /**
