@@ -30,7 +30,9 @@ import java.nio.file.Files;
 import java.nio.file.OpenOption;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
+import java.nio.file.WatchEvent;
 import java.nio.file.attribute.FileAttribute;
+import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
 
@@ -236,6 +238,14 @@ public class File extends Location<File> {
         } catch (IOException e) {
             throw I.quiet(e);
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Signal<WatchEvent<Path>> observe() {
+        return parent().observe(name());
     }
 
     /**
@@ -519,6 +529,79 @@ public class File extends Location<File> {
     public String text(Charset charset) {
         try {
             return Files.readString(path, charset);
+        } catch (IOException e) {
+            throw new IOError(e);
+        }
+    }
+
+    /**
+     * Write lines of text to a file. Each line is a char sequence and is written to the file in
+     * sequence with each line terminated by the platform's line separator, as defined by the system
+     * property {@code
+     * line.separator}. Characters are encoded into bytes using the specified charset.
+     * <p>
+     * The {@code options} parameter specifies how the file is created or opened. If no options are
+     * present then this method works as if the {@link StandardOpenOption#CREATE CREATE},
+     * {@link StandardOpenOption#TRUNCATE_EXISTING TRUNCATE_EXISTING}, and
+     * {@link StandardOpenOption#WRITE WRITE} options are present. In other words, it opens the file
+     * for writing, creating the file if it doesn't exist, or initially truncating an existing
+     * {@link #isRegularFile regular-file} to a size of {@code 0}. The method ensures that the file
+     * is closed when all lines have been written (or an I/O error or other runtime exception is
+     * thrown). If an I/O error occurs then it may do so after the file has been created or
+     * truncated, or after some bytes have been written to the file.
+     * 
+     * @param lines an object to iterate over the char sequences
+     * @return the path
+     * @throws IllegalArgumentException if {@code options} contains an invalid combination of
+     *             options
+     * @throws IOException if an I/O error occurs writing to or creating the file, or the text
+     *             cannot be encoded using the specified charset
+     * @throws UnsupportedOperationException if an unsupported option is specified
+     * @throws SecurityException In the case of the default provider, and a security manager is
+     *             installed, the {@link SecurityManager#checkWrite(String) checkWrite} method is
+     *             invoked to check write access to the file. The
+     *             {@link SecurityManager#checkDelete(String) checkDelete} method is invoked to
+     *             check delete access if the file is opened with the {@code DELETE_ON_CLOSE}
+     *             option.
+     */
+    public void text(String... lines) {
+        text(StandardCharsets.UTF_8, lines);
+    }
+
+    /**
+     * Write lines of text to a file. Each line is a char sequence and is written to the file in
+     * sequence with each line terminated by the platform's line separator, as defined by the system
+     * property {@code
+     * line.separator}. Characters are encoded into bytes using the specified charset.
+     * <p>
+     * The {@code options} parameter specifies how the file is created or opened. If no options are
+     * present then this method works as if the {@link StandardOpenOption#CREATE CREATE},
+     * {@link StandardOpenOption#TRUNCATE_EXISTING TRUNCATE_EXISTING}, and
+     * {@link StandardOpenOption#WRITE WRITE} options are present. In other words, it opens the file
+     * for writing, creating the file if it doesn't exist, or initially truncating an existing
+     * {@link #isRegularFile regular-file} to a size of {@code 0}. The method ensures that the file
+     * is closed when all lines have been written (or an I/O error or other runtime exception is
+     * thrown). If an I/O error occurs then it may do so after the file has been created or
+     * truncated, or after some bytes have been written to the file.
+     * 
+     * @param charset the charset to use for encoding
+     * @param lines an object to iterate over the char sequences
+     * @return the path
+     * @throws IllegalArgumentException if {@code options} contains an invalid combination of
+     *             options
+     * @throws IOException if an I/O error occurs writing to or creating the file, or the text
+     *             cannot be encoded using the specified charset
+     * @throws UnsupportedOperationException if an unsupported option is specified
+     * @throws SecurityException In the case of the default provider, and a security manager is
+     *             installed, the {@link SecurityManager#checkWrite(String) checkWrite} method is
+     *             invoked to check write access to the file. The
+     *             {@link SecurityManager#checkDelete(String) checkDelete} method is invoked to
+     *             check delete access if the file is opened with the {@code DELETE_ON_CLOSE}
+     *             option.
+     */
+    public void text(Charset charset, String... lines) {
+        try {
+            Files.write(path, List.of(lines), charset);
         } catch (IOException e) {
             throw new IOError(e);
         }

@@ -16,11 +16,13 @@ import java.nio.file.Files;
 import java.nio.file.LinkPermission;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
+import java.nio.file.WatchEvent;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Collections;
 import java.util.function.BiPredicate;
 
 import kiss.I;
+import kiss.Observer;
 import kiss.Signal;
 import kiss.WiseRunnable;
 
@@ -622,6 +624,51 @@ public class Directory extends Location<Directory> {
      */
     public void delete(BiPredicate<Path, BasicFileAttributes> filter) {
         walk(Location.class, null, 2, null, filter, Integer.MAX_VALUE, false).to(I.NoOP);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Signal<WatchEvent<Path>> observe() {
+        return observe(new String[0]);
+    }
+
+    /**
+     * <p>
+     * Observe the file system change and raises events when a file, directory, or file in a
+     * directory, changes.
+     * </p>
+     * <p>
+     * You can watch for changes in files and subdirectories of the specified directory.
+     * </p>
+     * <p>
+     * The operating system interpret a cut-and-paste action or a move action as a rename action for
+     * a directory and its contents. If you cut and paste a folder with files into a directory being
+     * watched, the {@link Observer} object reports only the directory as new, but not its contents
+     * because they are essentially only renamed.
+     * </p>
+     * <p>
+     * Common file system operations might raise more than one event. For example, when a file is
+     * moved from one directory to another, several Modify and some Create and Delete events might
+     * be raised. Moving a file is a complex operation that consists of multiple simple operations,
+     * therefore raising multiple events. Likewise, some applications might cause additional file
+     * system events that are detected by the {@link Observer}.
+     * </p>
+     *
+     * @param patterns <a href="#Patterns">include/exclude patterns</a> you want to sort out. Ignore
+     *            patterns if you want to observe a file.
+     * @return A observable event stream.
+     * @throws NullPointerException If the specified path or listener is <code>null</code>.
+     * @throws SecurityException In the case of the default provider, and a security manager is
+     *             installed, the {@link SecurityManager#checkRead(String)} method is invoked to
+     *             check read access to the source file, the
+     *             {@link SecurityManager#checkWrite(String)} is invoked to check write access to
+     *             the target file. If a symbolic link is copied the security manager is invoked to
+     *             check {@link LinkPermission}("symbolic").
+     */
+    public Signal<WatchEvent<Path>> observe(String... patterns) {
+        return PsychoPath.observe(path, patterns);
     }
 
     /**

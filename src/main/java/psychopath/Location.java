@@ -704,9 +704,6 @@ public abstract class Location<Self extends Location> {
      * system events that are detected by the {@link Observer}.
      * </p>
      *
-     * @param path A target path you want to observe. (file and directory are acceptable)
-     * @param patterns <a href="#Patterns">include/exclude patterns</a> you want to sort out. Ignore
-     *            patterns if you want to observe a file.
      * @return A observable event stream.
      * @throws NullPointerException If the specified path or listener is <code>null</code>.
      * @throws SecurityException In the case of the default provider, and a security manager is
@@ -716,9 +713,7 @@ public abstract class Location<Self extends Location> {
      *             the target file. If a symbolic link is copied the security manager is invoked to
      *             check {@link LinkPermission}("symbolic").
      */
-    public final Signal<WatchEvent<Path>> observe() {
-        return PsychoPath.observe(path);
-    }
+    public abstract Signal<WatchEvent<Path>> observe();
 
     /**
      * {@inheritDoc}
