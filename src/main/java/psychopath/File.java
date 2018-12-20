@@ -153,11 +153,13 @@ public class File extends Location<File> {
      */
     @Override
     public void moveTo(Directory destination) {
-        try {
-            destination.create();
-            Files.move(path, destination.file(name()).path, ATOMIC_MOVE, REPLACE_EXISTING);
-        } catch (Exception e) {
-            throw I.quiet(e);
+        if (isPresent()) {
+            try {
+                destination.create();
+                Files.move(path, destination.file(name()).path, ATOMIC_MOVE, REPLACE_EXISTING);
+            } catch (Exception e) {
+                throw I.quiet(e);
+            }
         }
     }
 
@@ -165,6 +167,14 @@ public class File extends Location<File> {
      * {@inheritDoc}
      */
     public void moveTo(File destination) {
+        if (isPresent()) {
+            try {
+                destination.parent().create();
+                Files.move(path, destination.path, REPLACE_EXISTING);
+            } catch (Exception e) {
+                throw I.quiet(e);
+            }
+        }
     }
 
     /**
@@ -461,6 +471,54 @@ public class File extends Location<File> {
     public byte[] bytes() {
         try {
             return Files.readAllBytes(path);
+        } catch (IOException e) {
+            throw new IOError(e);
+        }
+    }
+
+    /**
+     * Reads all content from a file into a string, decoding from bytes to characters using the
+     * {@link StandardCharsets#UTF_8 UTF-8} {@link Charset charset}. The method ensures that the
+     * file is closed when all content have been read or an I/O error, or other runtime exception,
+     * is thrown.
+     * <p>
+     * This method is equivalent to: {@code readString(path, StandardCharsets.UTF_8) }
+     *
+     * @return a String containing the content read from the file
+     * @throws IOException if an I/O error occurs reading from the file or a malformed or unmappable
+     *             byte sequence is read
+     * @throws OutOfMemoryError if the file is extremely large, for example larger than {@code 2GB}
+     * @throws SecurityException In the case of the default provider, and a security manager is
+     *             installed, the {@link SecurityManager#checkRead(String) checkRead} method is
+     *             invoked to check read access to the file.
+     */
+    public String text() {
+        return text(StandardCharsets.UTF_8);
+    }
+
+    /**
+     * Reads all characters from a file into a string, decoding from bytes to characters using the
+     * specified {@linkplain Charset charset}. The method ensures that the file is closed when all
+     * content have been read or an I/O error, or other runtime exception, is thrown.
+     * <p>
+     * This method reads all content including the line separators in the middle and/or at the end.
+     * The resulting string will contain line separators as they appear in the file.
+     *
+     * @apiNote This method is intended for simple cases where it is appropriate and convenient to
+     *          read the content of a file into a String. It is not intended for reading very large
+     *          files.
+     * @param cs the charset to use for decoding
+     * @return a String containing the content read from the file
+     * @throws IOException if an I/O error occurs reading from the file or a malformed or unmappable
+     *             byte sequence is read
+     * @throws OutOfMemoryError if the file is extremely large, for example larger than {@code 2GB}
+     * @throws SecurityException In the case of the default provider, and a security manager is
+     *             installed, the {@link SecurityManager#checkRead(String) checkRead} method is
+     *             invoked to check read access to the file.
+     */
+    public String text(Charset charset) {
+        try {
+            return Files.readString(path, charset);
         } catch (IOException e) {
             throw new IOError(e);
         }

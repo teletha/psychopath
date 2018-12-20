@@ -9,203 +9,133 @@
  */
 package psychopath;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-import java.nio.file.NoSuchFileException;
-import java.nio.file.Path;
-import java.nio.file.attribute.BasicFileAttributes;
 import java.time.Instant;
-import java.util.function.BiPredicate;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.RegisterExtension;
 
-import antibug.CleanRoom;
+class MoveTest extends LocationTestHelper {
 
-/**
- * @version 2018/03/31 3:04:16
- */
-public class MoveTest extends PathOperationTestHelper {
+    @Test
+    public void absentToFile() {
+        File in = locateAbsent("absent");
+        File out = locateFile("out");
 
-    @RegisterExtension
-    public CleanRoom room = new CleanRoom();
+        in.moveTo(out);
 
-    /**
-     * <p>
-     * Test operation.
-     * </p>
-     * 
-     * @param one
-     * @param other
-     */
-    private void operate(Path one, Path other, String... patterns) {
-        PsychoPath.move(one, other, patterns);
-    }
-
-    /**
-     * <p>
-     * Test operation.
-     * </p>
-     * 
-     * @param one
-     * @param other
-     */
-    private void operate(Path one, Path other, BiPredicate<Path, BasicFileAttributes> filter) {
-        PsychoPath.move(one, other, filter);
+        assert in.isAbsent();
+        assert out.isPresent();
     }
 
     @Test
-    public void nullInput() throws Exception {
-        Path in = null;
-        Path out = room.locateAbsent("null");
+    public void absentToDirectory() {
+        File in = locateAbsent("absent");
+        Directory out = locateDirectory("out");
 
-        assertThrows(NullPointerException.class, () -> operate(in, out));
+        in.moveTo(out);
+
+        assert in.isAbsent();
+        assert out.file("absent").isAbsent();
     }
 
     @Test
-    public void nullOutput() throws Exception {
-        Path in = room.locateAbsent("null");
-        Path out = null;
+    public void absentToAbsent() {
+        File in = locateAbsent("absent");
+        File out = locateAbsent("out");
 
-        assertThrows(NullPointerException.class, () -> operate(in, out));
+        in.moveTo(out);
+
+        assert in.isAbsent();
+        assert out.isAbsent();
     }
 
     @Test
-    public void absentToFile() throws Exception {
-        Path in = room.locateAbsent("absent");
-        Path out = room.locateFile("out");
+    public void fileToFile() {
+        File in = locateFile("In", "Success");
+        File out = locateFile("Out", "This text will be overwritten by input file.");
 
-        operate(in, out);
+        in.moveTo(out);
 
-        assert notExist(in);
-        assert exist(out);
+        assert in.isAbsent();
+        assert match(out, "Success");
     }
 
     @Test
-    public void absentToDirectory() throws Exception {
-        Path in = room.locateAbsent("absent");
-        Path out = room.locateDirectory("out");
-
-        operate(in, out);
-
-        assert notExist(in);
-        assert exist(out);
-    }
-
-    @Test
-    public void absentToAbsent() throws Exception {
-        Path in = room.locateAbsent("absent");
-        Path out = room.locateAbsent("out");
-
-        operate(in, out);
-
-        assert notExist(in);
-        assert notExist(out);
-    }
-
-    @Test
-    public void fileToFile() throws Exception {
-        Path in = room.locateFile("In", "Success");
-        Path out = room.locateFile("Out", "This text will be overwritten by input file.");
-        Path snapshot = snapshot(in);
-
-        operate(in, out);
-
-        assert notExist(in);
-        assert sameFile(snapshot, out);
-    }
-
-    @Test
-    public void fileToFileWithSameTimeStamp() throws Exception {
+    public void fileToFileWithSameTimeStamp() {
         Instant now = Instant.now();
-        Path in = room.locateFile("In", now, "Success");
-        Path out = room.locateFile("Out", now, "This text will be overwritten by input file.");
-        Path snapshot = snapshot(in);
+        File in = locateFile("In", now, "Success");
+        File out = locateFile("Out", now, "This text will be overwritten by input file.");
 
-        operate(in, out);
+        in.moveTo(out);
 
-        assert notExist(in);
-        assert sameFile(snapshot, out);
+        assert in.isAbsent();
+        assert match(out, now, "Success");
     }
 
     @Test
     public void fileToFileWithDifferentTimeStamp() {
         Instant now = Instant.now();
-        Path in = room.locateFile("In", now, "Success");
-        Path out = room.locateFile("Out", now.plusSeconds(10), "This text will be overwritten by input file.");
-        Path snapshot = snapshot(in);
+        File in = locateFile("In", now, "Success");
+        File out = locateFile("Out", now.plusSeconds(10), "This text will be overwritten by input file.");
 
-        operate(in, out);
+        in.moveTo(out);
 
-        assert notExist(in);
-        assert sameFile(snapshot, out);
+        assert in.isAbsent();
+        assert match(out, now, "Success");
     }
 
     @Test
     public void fileToAbsent() {
-        Path in = room.locateFile("In", "Success");
-        Path out = room.locateAbsent("Out");
-        Path snapshot = snapshot(in);
+        File in = locateFile("In", "Success");
+        File out = locateAbsent("Out");
 
-        operate(in, out);
+        in.moveTo(out);
 
-        assert notExist(in);
-        assert sameFile(snapshot, out);
+        assert in.isAbsent();
+        assert match(out, "Success");
     }
 
     @Test
     public void fileToDeepAbsent() {
-        Path in = room.locateFile("In", "Success");
-        Path out = room.locateAbsent("1/2/3");
-        Path snapshot = snapshot(in);
+        File in = locateFile("In", "Success");
+        File out = locateAbsent("1/2/3");
 
-        operate(in, out);
+        in.moveTo(out);
 
-        assert notExist(in);
-        assert sameFile(snapshot, out);
+        assert in.isAbsent();
+        assert match(out, "Success");
     }
 
     @Test
     public void fileToDirectory() {
-        Path in = room.locateFile("In", "Success");
-        Path out = room.locateDirectory("Out");
-        Path snapshot = snapshot(in);
+        File in = locateFile("In", "Success");
+        Directory out = locateDirectory("Out");
 
-        operate(in, out);
+        in.moveTo(out);
 
-        assert notExist(in);
-        assert sameFile(snapshot, out.resolve("In"));
-    }
-
-    @Test
-    public void directoryToFile() {
-        Path in = room.locateDirectory("In", $ -> {
-            $.file("1", "One");
-        });
-        Path out = room.locateFile("Out");
-
-        assertThrows(NoSuchFileException.class, () -> operate(in, out));
+        assert in.isAbsent();
+        assert match(out.file("In"), "Success");
     }
 
     @Test
     public void directoryToDirectory() {
-        Path in = room.locateDirectory("In", $ -> {
+        Directory in = locateDirectory("In", $ -> {
             $.file("1", "One");
         });
-        Path out = room.locateDirectory("Out", $ -> {
+        Directory out = locateDirectory("Out", $ -> {
             $.file("1", "This text will be overwritten by input file.");
         });
-        Path snapshot = snapshot(in);
 
-        operate(in, out);
+        in.moveTo(out);
 
-        assert notExist(in);
-        assert sameDirectory(snapshot, out.resolve("In"));
+        assert in.isAbsent();
+        assert match(out.directory("In"), $ -> {
+            $.file("1", "One");
+        });
     }
 
     @Test
     public void directoryToDirectoryWithFilter() {
-        Path in = room.locateDirectory("In", $ -> {
+        Directory in = locateDirectory("In", $ -> {
             $.file("file");
             $.file("text");
             $.dir("dir", () -> {
@@ -213,48 +143,52 @@ public class MoveTest extends PathOperationTestHelper {
                 $.file("text");
             });
         });
-        Path out = room.locateDirectory("Out");
-        Path snapshot = snapshot(in);
+        Directory out = locateDirectory("Out");
 
-        operate(in, out, (file, attr) -> file.getFileName().startsWith("file"));
+        in.moveTo(out, (file, attr) -> file.getFileName().startsWith("file"));
 
-        assert sameFile(snapshot.resolve("file"), out.resolve("In/file"));
-        assert sameFile(snapshot.resolve("dir/file"), out.resolve("In/dir/file"));
-        assert notExist(in.resolve("file"), in.resolve("dir/file"));
-        assert notExist(out.resolve("In/text"), out.resolve("In/dir/text"));
+        assert in.isPresent();
+        assert match(out.directory("In"), $ -> {
+            $.file("file");
+            $.dir("dir", () -> {
+                $.file("file");
+            });
+        });
     }
 
     @Test
     public void directoryToAbsent() {
-        Path in = room.locateDirectory("In", $ -> {
+        Directory in = locateDirectory("In", $ -> {
             $.file("1", "One");
         });
-        Path out = room.locateAbsent("Out");
-        Path snapshot = snapshot(in);
+        Directory out = locateAbsentDirectory("Out");
 
-        operate(in, out);
+        in.moveTo(out);
 
-        assert notExist(in);
-        assert sameDirectory(snapshot, out.resolve("In"));
+        assert in.isAbsent();
+        assert match(out.directory("In"), $ -> {
+            $.file("1", "One");
+        });
     }
 
     @Test
     public void directoryToDeepAbsent() {
-        Path in = room.locateDirectory("In", $ -> {
+        Directory in = locateDirectory("In", $ -> {
             $.file("1", "One");
         });
-        Path out = room.locateAbsent("1/2/3");
-        Path snapshot = snapshot(in);
+        Directory out = locateAbsentDirectory("1/2/3");
 
-        operate(in, out);
+        in.moveTo(out);
 
-        assert notExist(in);
-        assert sameDirectory(snapshot, out.resolve("In"));
+        assert in.isAbsent();
+        assert match(out.directory("In"), $ -> {
+            $.file("1", "One");
+        });
     }
 
     @Test
     public void children() {
-        Path in = room.locateDirectory("In", $ -> {
+        Directory in = locateDirectory("In", $ -> {
             $.file("file");
             $.file("text");
             $.dir("dir", () -> {
@@ -263,33 +197,40 @@ public class MoveTest extends PathOperationTestHelper {
             });
             $.dir("empty");
         });
-        Path out = room.locateDirectory("Out");
+        Directory out = locateDirectory("Out");
 
-        operate(in, out, "*");
+        in.moveTo(out, "*");
 
-        assert notExist(in.resolve("file"), in.resolve("text"), in.resolve("empty"));
-        assert exist(in.resolve("dir"), in.resolve("dir/file"), in.resolve("dir/text"));
-
-        assert exist(out.resolve("file"), out.resolve("text"), out.resolve("empty"), out.resolve("dir"));
-        assert notExist(out.resolve("dir/file"), out.resolve("dir/text"));
+        assert in.isPresent();
+        assert match(out, $ -> {
+            $.file("file");
+            $.file("text");
+            $.dir("dir", () -> {
+            });
+            $.dir("empty");
+        });
     }
 
     @Test
     public void descendant() {
-        Path in = room.locateDirectory("In", $ -> {
+        Directory in = locateDirectory("In", $ -> {
             $.file("1", "One");
             $.file("2", "Two");
             $.dir("dir", () -> {
                 $.file("nest");
             });
         });
-        Path out = room.locateDirectory("Out");
-        Path snapshot = snapshot(in);
+        Directory out = locateDirectory("Out");
 
-        operate(in, out, "**");
+        in.moveTo(out, "**");
 
-        assert exist(in);
-        assert children(in).size() == 0;
-        assert sameDirectory(snapshot, out);
+        assert in.isPresent();
+        assert match(out, $ -> {
+            $.file("1", "One");
+            $.file("2", "Two");
+            $.dir("dir", () -> {
+                $.file("nest");
+            });
+        });
     }
 }

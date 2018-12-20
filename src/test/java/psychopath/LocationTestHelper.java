@@ -13,6 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.nio.file.Path;
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.zip.CRC32;
@@ -142,6 +143,33 @@ public class LocationTestHelper {
                 assertIterableEquals(expectedContent, actualContent);
             }
         }
+
+        return true;
+    }
+
+    /**
+     * Test matching file.
+     * 
+     * @param actual An actual file.
+     * @param expectedText An expected content.
+     * @return
+     */
+    public final boolean match(File actual, String expectedText) {
+        assert actual.text().trim().equals(expectedText);
+
+        return true;
+    }
+
+    /**
+     * Test matching file.
+     * 
+     * @param actual An actual file.
+     * @param expectedText An expected content.
+     * @return
+     */
+    public final boolean match(File actual, Instant expectedLastModified, String expectedText) {
+        assert actual.text().trim().equals(expectedText);
+        assert actual.lastModifiedTime().truncatedTo(ChronoUnit.MILLIS).equals(expectedLastModified.truncatedTo(ChronoUnit.MILLIS));
 
         return true;
     }
