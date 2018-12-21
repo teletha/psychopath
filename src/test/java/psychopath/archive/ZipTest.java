@@ -32,7 +32,7 @@ public class ZipTest extends LocationTestHelper {
         });
 
         File file = locateFile("root." + ext);
-        Locator.archive(file).add(dir).pack();
+        Locator.archive().add(dir).packTo(file);
 
         assert match(file.unpackToTemporary(), $ -> {
             $.file("file", "text");
@@ -55,7 +55,7 @@ public class ZipTest extends LocationTestHelper {
         });
 
         File file = locateFile("root." + ext);
-        Locator.archive(file).add(dir).pack();
+        Locator.archive().add(dir).packTo(file);
 
         assert match(file.unpackToTemporary(), $ -> {
             $.dir("るーと", () -> {

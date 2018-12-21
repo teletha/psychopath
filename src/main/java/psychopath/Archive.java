@@ -26,17 +26,13 @@ import kiss.Ⅱ;
 
 public class Archive {
 
-    /** The archive file. */
-    private final File archive;
-
     /** The path entries. */
     private Signal<Ⅱ<Directory, File>> entries = Signal.empty();
 
     /**
-     * @param archive An archive path.
+     * 
      */
-    Archive(File archive) {
-        this.archive = archive.absolutize();
+    Archive() {
     }
 
     /**
@@ -66,8 +62,12 @@ public class Archive {
 
     /**
      * Pack all resources.
+     **
+     * @param archive
      */
-    public void pack() {
+    public void packTo(File archive) {
+        archive = archive.absolutize();
+
         try (ArchiveOutputStream out = new ArchiveStreamFactory()
                 .createArchiveOutputStream(archive.extension().replaceAll("7z", "7z-override"), archive.newOutputStream())) {
             // Location must exist

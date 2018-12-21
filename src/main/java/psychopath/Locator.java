@@ -78,40 +78,11 @@ public class Locator {
     /**
      * Locate {@link Archive}.
      * 
-     * @param path A path to the archive file.
-     * @return The specified archive.
-     */
-    public static Archive archive(String path) {
-        if (path == null || path.isEmpty()) {
-            throw new IllegalArgumentException("Empty file name is invalid.");
-        }
-        return archive(file(path));
-    }
-
-    /**
-     * Locate {@link Archive}.
-     * 
-     * @param path A path to the archive file.
-     * @return The specified archive.
-     */
-    public static Archive archive(Path path) {
-        if (path == null) {
-            throw new IllegalArgumentException("Empty file name is invalid.");
-        }
-        return archive(file(path));
-    }
-
-    /**
-     * Locate {@link Archive}.
-     * 
      * @param file A path to the archive file.
      * @return The specified archive.
      */
-    public static Archive archive(File file) {
-        if (file == null) {
-            throw new IllegalArgumentException("Empty file name is invalid.");
-        }
-        return new Archive(file);
+    public static Archive archive() {
+        return new Archive();
     }
 
     /**
