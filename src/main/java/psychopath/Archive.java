@@ -22,12 +22,12 @@ import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
 
 import kiss.I;
 import kiss.Signal;
-import kiss.Ⅱ;
+import kiss.Ⅲ;
 
 public class Archive {
 
     /** The path entries. */
-    private Signal<Ⅱ<Directory, File>> entries = Signal.empty();
+    private Signal<Ⅲ<Directory, File, String>> entries = Signal.empty();
 
     /**
      * 
@@ -40,9 +40,38 @@ public class Archive {
      * 
      * @param files
      */
+    public Archive add(File... files) {
+        return add("", files);
+    }
+
+    /**
+     * Add files with relative path.
+     * 
+     * @param destinationRelativePath
+     * @param files
+     * @return
+     */
+    public Archive add(String destinationRelativePath, File... files) {
+        return add(destinationRelativePath, I.signal(files));
+    }
+
+    /**
+     * Add files.
+     * 
+     * @param files
+     */
     public Archive add(Signal<File> files) {
+        return add("", files);
+    }
+
+    /**
+     * Add files.
+     * 
+     * @param files
+     */
+    public Archive add(String destinationRelativePath, Signal<File> files) {
         if (files != null) {
-            entries = entries.merge(files.map(file -> I.pair(file.parent(), file)));
+            entries = entries.merge(files.map(file -> I.pair(file.parent(), file, destinationRelativePath)));
         }
         return this;
     }
@@ -54,8 +83,18 @@ public class Archive {
      * @param patterns "glob" include/exclude patterns.
      */
     public Archive add(Directory base, String... patterns) {
+        return add("", base, patterns);
+    }
+
+    /**
+     * Add pattern matching path.
+     * 
+     * @param base A base path.
+     * @param patterns "glob" include/exclude patterns.
+     */
+    public Archive add(String destinationRelativePath, Directory base, String... patterns) {
         if (base != null) {
-            entries = entries.merge(base.walkFiles(patterns).map(file -> I.pair(base, file)));
+            entries = entries.merge(base.walkFiles(patterns).map(file -> I.pair(base, file, destinationRelativePath)));
         }
         return this;
     }
