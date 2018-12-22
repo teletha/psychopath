@@ -104,7 +104,7 @@ public class File extends Location<File> {
      * @return
      */
     public Directory asArchive() {
-        return new Directory(Archive.detectFileSystetm(this));
+        return new Directory(Temporary.detectFileSystetm(this));
     }
 
     /**

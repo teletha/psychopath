@@ -76,16 +76,6 @@ public class Locator {
     }
 
     /**
-     * Locate {@link Archive}.
-     * 
-     * @param file A path to the archive file.
-     * @return The specified archive.
-     */
-    public static Archive archive() {
-        return new Archive();
-    }
-
-    /**
      * Locate {@link File}.
      * 
      * @param path A path to the file.
@@ -267,6 +257,16 @@ public class Locator {
         } else {
             return file(path);
         }
+    }
+
+    /**
+     * Locate {@link Temporary}.
+     * 
+     * @param file A path to the archive file.
+     * @return The specified archive.
+     */
+    public static Temporary temporary() {
+        return new Temporary();
     }
 
     /**
