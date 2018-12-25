@@ -67,9 +67,6 @@ class WalkFileTest extends LocationTestHelper {
 
         assert directory.walkFiles("**").toList().size() == 6;
         assert directory.walkFiles("dir2/**").toList().size() == 2;
-        directory.walkFiles().to(e -> {
-            assert e.relativePath().equals(directory.relativize(e).toString());
-        });
     }
 
     @Test

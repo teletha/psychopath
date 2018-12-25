@@ -99,7 +99,7 @@ public class DirectoryTest {
     }
 
     @Test
-    void fineDirectoryMultiple() {
+    void findDirectoryMultiple() {
         define($ -> {
             $.dir("dir1");
             $.dir("dir2");
@@ -110,7 +110,7 @@ public class DirectoryTest {
     }
 
     @Test
-    void fineDirectoryNest() {
+    void findDirectoryNest() {
         define($ -> {
             $.dir("dir1", () -> {
                 $.dir("nest11");

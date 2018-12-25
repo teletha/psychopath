@@ -41,9 +41,6 @@ public abstract class Location<Self extends Location> {
     /** The actual location. */
     protected final Path path;
 
-    /** The relative path. */
-    String relative;
-
     /**
      * @param path
      */
@@ -72,19 +69,6 @@ public abstract class Location<Self extends Location> {
             return path.toString();
         } else {
             return path.toString().replace(java.io.File.separatorChar, '/');
-        }
-    }
-
-    /**
-     * Compute relative path which is from base directory.
-     * 
-     * @return
-     */
-    public final String relativePath() {
-        if (relative == null) {
-            return toString();
-        } else {
-            return relative;
         }
     }
 
@@ -524,6 +508,86 @@ public abstract class Location<Self extends Location> {
         return path;
     }
 
+    public abstract void create();
+
+    /**
+     * <p>
+     * Delete a input {@link Path}. Simplified strategy is the following:
+     * </p>
+     * <p>
+     * <pre>
+     * if (input.isFile) {
+     *   // Delete input file unconditionaly.
+     * } else {
+     *   // Delete input directory deeply.
+     *   // You can also specify <a href="#Patterns">include/exclude patterns</a>.
+     * }
+     * </pre>
+     * <p>
+     * On some operating systems it may not be possible to remove a file when it is open and in use
+     * by this Java virtual machine or other programs.
+     * </p>
+     *
+     * @throws IOException If an I/O error occurs.
+     * @throws NullPointerException If the specified input file is <code>null</code>.
+     * @throws SecurityException In the case of the default provider, and a security manager is
+     *             installed, the {@link SecurityManager#checkRead(String)} method is invoked to
+     *             check read access to the source file, the
+     *             {@link SecurityManager#checkWrite(String)} is invoked to check write access to
+     *             the target file. If a symbolic link is copied the security manager is invoked to
+     *             check {@link LinkPermission}("symbolic").
+     */
+    public abstract void delete();
+
+    /**
+     * <p>
+     * Copy a input {@link Path} to the output {@link Path} with its attributes. Simplified strategy
+     * is the following:
+     * </p>
+     * <p>
+     * <pre>
+     * if (input.isFile) {
+     *   if (output.isFile) {
+     *     // Copy input file to output file.
+     *   } else {
+     *     // Copy input file to output directory.
+     *   }
+     * } else {
+     *   if (output.isFile) {
+     *     // NoSuchFileException will be thrown.
+     *   } else {
+     *     // Copy input directory under output directory deeply.
+     *     // You can also specify <a href="#Patterns">include/exclude patterns</a>.
+     *   }
+     * }
+     * </pre>
+     * <p>
+     * If the output file already exists, it will be replaced by input file unconditionaly. The
+     * exact file attributes that are copied is platform and file system dependent and therefore
+     * unspecified. Minimally, the last-modified-time is copied to the output file if supported by
+     * both the input and output file store. Copying of file timestamps may result in precision
+     * loss.
+     * </p>
+     * <p>
+     * Copying a file is not an atomic operation. If an {@link IOException} is thrown then it
+     * possible that the output file is incomplete or some of its file attributes have not been
+     * copied from the input file.
+     * </p>
+     *
+     * @param destination An output {@link Path} object which can be file or directory.
+     * @throws IOException If an I/O error occurs.
+     * @throws NullPointerException If the specified input or output file is <code>null</code>.
+     * @throws NoSuchFileException If the input file is directory and the output file is
+     *             <em>not</em> directory.
+     * @throws SecurityException In the case of the default provider, and a security manager is
+     *             installed, the {@link SecurityManager#checkRead(String)} method is invoked to
+     *             check read access to the source file, the
+     *             {@link SecurityManager#checkWrite(String)} is invoked to check write access to
+     *             the target file. If a symbolic link is copied the security manager is invoked to
+     *             check {@link LinkPermission}("symbolic").
+     */
+    public abstract void copyTo(Directory destination);
+
     /**
      * <p>
      * Move a input {@link Path} to an output {@link Path} with its attributes. Simplified strategy
@@ -580,107 +644,6 @@ public abstract class Location<Self extends Location> {
 
     /**
      * <p>
-     * Copy a input {@link Path} to the output {@link Path} with its attributes. Simplified strategy
-     * is the following:
-     * </p>
-     * <p>
-     * <pre>
-     * if (input.isFile) {
-     *   if (output.isFile) {
-     *     // Copy input file to output file.
-     *   } else {
-     *     // Copy input file to output directory.
-     *   }
-     * } else {
-     *   if (output.isFile) {
-     *     // NoSuchFileException will be thrown.
-     *   } else {
-     *     // Copy input directory under output directory deeply.
-     *     // You can also specify <a href="#Patterns">include/exclude patterns</a>.
-     *   }
-     * }
-     * </pre>
-     * <p>
-     * If the output file already exists, it will be replaced by input file unconditionaly. The
-     * exact file attributes that are copied is platform and file system dependent and therefore
-     * unspecified. Minimally, the last-modified-time is copied to the output file if supported by
-     * both the input and output file store. Copying of file timestamps may result in precision
-     * loss.
-     * </p>
-     * <p>
-     * Copying a file is not an atomic operation. If an {@link IOException} is thrown then it
-     * possible that the output file is incomplete or some of its file attributes have not been
-     * copied from the input file.
-     * </p>
-     *
-     * @param destination An output {@link Path} object which can be file or directory.
-     * @throws IOException If an I/O error occurs.
-     * @throws NullPointerException If the specified input or output file is <code>null</code>.
-     * @throws NoSuchFileException If the input file is directory and the output file is
-     *             <em>not</em> directory.
-     * @throws SecurityException In the case of the default provider, and a security manager is
-     *             installed, the {@link SecurityManager#checkRead(String)} method is invoked to
-     *             check read access to the source file, the
-     *             {@link SecurityManager#checkWrite(String)} is invoked to check write access to
-     *             the target file. If a symbolic link is copied the security manager is invoked to
-     *             check {@link LinkPermission}("symbolic").
-     */
-    public abstract void copyTo(Directory destination);
-
-    public abstract void create();
-
-    /**
-     * <p>
-     * Delete a input {@link Path}. Simplified strategy is the following:
-     * </p>
-     * <p>
-     * <pre>
-     * if (input.isFile) {
-     *   // Delete input file unconditionaly.
-     * } else {
-     *   // Delete input directory deeply.
-     *   // You can also specify <a href="#Patterns">include/exclude patterns</a>.
-     * }
-     * </pre>
-     * <p>
-     * On some operating systems it may not be possible to remove a file when it is open and in use
-     * by this Java virtual machine or other programs.
-     * </p>
-     *
-     * @throws IOException If an I/O error occurs.
-     * @throws NullPointerException If the specified input file is <code>null</code>.
-     * @throws SecurityException In the case of the default provider, and a security manager is
-     *             installed, the {@link SecurityManager#checkRead(String)} method is invoked to
-     *             check read access to the source file, the
-     *             {@link SecurityManager#checkWrite(String)} is invoked to check write access to
-     *             the target file. If a symbolic link is copied the security manager is invoked to
-     *             check {@link LinkPermission}("symbolic").
-     */
-    public abstract void delete();
-
-    /**
-     * Implements the same behaviour as the "touch" utility on Unix. It creates a new file with size
-     * 0 or, if the file exists already, it is opened and closed without modifying it, but updating
-     * the file date and time.
-     */
-    public final Self touch() {
-        if (isAbsent()) {
-            create();
-        } else {
-            lastModified(ZonedDateTime.now());
-        }
-        return (Self) this;
-    }
-
-    /**
-     * Try to acquire exclusive lock for this {@link Location}.
-     * 
-     * @return
-     */
-    public abstract FileLock lock(WiseRunnable failed);
-
-    /**
-     * <p>
      * Observe the file system change and raises events when a file, directory, or file in a
      * directory, changes.
      * </p>
@@ -711,6 +674,27 @@ public abstract class Location<Self extends Location> {
      *             check {@link LinkPermission}("symbolic").
      */
     public abstract Signal<WatchEvent<Location>> observe();
+
+    /**
+     * Implements the same behaviour as the "touch" utility on Unix. It creates a new file with size
+     * 0 or, if the file exists already, it is opened and closed without modifying it, but updating
+     * the file date and time.
+     */
+    public final Self touch() {
+        if (isAbsent()) {
+            create();
+        } else {
+            lastModified(ZonedDateTime.now());
+        }
+        return (Self) this;
+    }
+
+    /**
+     * Try to acquire exclusive lock for this {@link Location}.
+     * 
+     * @return
+     */
+    public abstract FileLock lock(WiseRunnable failed);
 
     /**
      * {@inheritDoc}

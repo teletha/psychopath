@@ -67,9 +67,6 @@ class WalkDirectoryTest extends LocationTestHelper {
 
         assert directory.walkDirectories("**").toList().size() == 8;
         assert directory.walkDirectories("dir2/**").toList().size() == 2;
-        directory.walkDirectories().to(e -> {
-            assert e.relativePath().equals(directory.relativize(e).toString());
-        });
     }
 
     @Test

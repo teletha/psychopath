@@ -9,9 +9,15 @@
  */
 package psychopath;
 
-import static java.nio.file.FileVisitResult.*;
-import static java.nio.file.StandardCopyOption.*;
-import static java.nio.file.StandardWatchEventKinds.*;
+import static java.nio.file.FileVisitResult.CONTINUE;
+import static java.nio.file.FileVisitResult.SKIP_SUBTREE;
+import static java.nio.file.FileVisitResult.TERMINATE;
+import static java.nio.file.StandardCopyOption.ATOMIC_MOVE;
+import static java.nio.file.StandardCopyOption.COPY_ATTRIBUTES;
+import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
+import static java.nio.file.StandardWatchEventKinds.ENTRY_CREATE;
+import static java.nio.file.StandardWatchEventKinds.ENTRY_DELETE;
+import static java.nio.file.StandardWatchEventKinds.ENTRY_MODIFY;
 
 import java.io.IOException;
 import java.nio.file.ClosedWatchServiceException;
@@ -233,9 +239,7 @@ class CymaticScan implements FileVisitor<Path>, Runnable, Disposable {
 
         case 4: // walk directory
             if ((root || from != path) && accept(relative, attrs)) {
-                Directory directory = Locator.directory(path);
-                directory.relative = relative.toString();
-                observer.accept(directory);
+                observer.accept(Locator.directory(path));
             }
             // fall-through to reduce footprint
 
@@ -299,9 +303,7 @@ class CymaticScan implements FileVisitor<Path>, Runnable, Disposable {
                     break;
 
                 case 3: // walk file
-                    File file = Locator.file(path);
-                    file.relative = relative.toString();
-                    observer.accept(file);
+                    observer.accept(Locator.file(path));
                     break;
                 }
             } else if (type < 3) {

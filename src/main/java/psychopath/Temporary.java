@@ -145,6 +145,17 @@ public final class Temporary {
     }
 
     /**
+     * Delete all resources.
+     * 
+     * @return
+     */
+    public Temporary delete() {
+        entries.forEach(entry -> entry.accept(0, null, null));
+
+        return this;
+    }
+
+    /**
      * Copy all resources to the specified {@link Directory}.
      * 
      * @param destination A destination {@link Directory}.
