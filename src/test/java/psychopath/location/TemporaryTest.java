@@ -40,6 +40,50 @@ class TemporaryTest extends LocationTestHelper {
 
         Directory destination = temporary.add(dir1).add(dir2).moveTo(locateDirectory("dir3"));
 
+        assert dir1.isAbsent();
+        assert dir2.isAbsent();
+        assert match(destination, $ -> {
+            $.dir("dir1", () -> {
+                $.file("1.txt");
+                $.file("2.txt");
+                $.dir("3", () -> {
+                    $.file("3.txt");
+                });
+            });
+            $.dir("dir2", () -> {
+                $.file("a.txt");
+                $.file("b.txt");
+                $.dir("c", () -> {
+                    $.file("c.txt");
+                });
+            });
+        });
+    }
+
+    @Test
+    void copyTo() {
+        Temporary temporary = Locator.temporary();
+
+        Directory dir1 = locateDirectory("dir1", $ -> {
+            $.file("1.txt");
+            $.file("2.txt");
+            $.dir("3", () -> {
+                $.file("3.txt");
+            });
+        });
+
+        Directory dir2 = locateDirectory("dir2", $ -> {
+            $.file("a.txt");
+            $.file("b.txt");
+            $.dir("c", () -> {
+                $.file("c.txt");
+            });
+        });
+
+        Directory destination = temporary.add(dir1).add(dir2).copyTo(locateDirectory("dir3"));
+
+        assert dir1.isPresent();
+        assert dir2.isPresent();
         assert match(destination, $ -> {
             $.dir("dir1", () -> {
                 $.file("1.txt");

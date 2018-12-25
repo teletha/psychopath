@@ -145,6 +145,19 @@ public final class Temporary {
     }
 
     /**
+     * Copy all resources to the specified {@link Directory}.
+     * 
+     * @param destination A destination {@link Directory}.
+     */
+    public Directory copyTo(Directory destination) {
+        Objects.requireNonNull(destination);
+
+        entries.forEach(entry -> entry.accept(2, destination, null));
+
+        return destination;
+    }
+
+    /**
      * Move all resources to the specified {@link Directory}.
      * 
      * @param destination A destination {@link Directory}.
