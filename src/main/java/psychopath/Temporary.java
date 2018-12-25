@@ -116,14 +116,14 @@ public final class Temporary {
     public Temporary add(String destinationRelativePath, Directory base, String... patterns) {
         if (base != null) {
             entries.add((type, destination, archive) -> {
-                destination = destination.directory(destinationRelativePath);
-
                 switch (type) {
                 case 0:
                     base.delete(patterns);
                     break;
 
                 case 1:
+                    destination = destination.directory(destinationRelativePath);
+
                     if (patterns == null || patterns.length == 0) {
                         base.moveTo(destination);
                     } else {
@@ -132,7 +132,7 @@ public final class Temporary {
                     break;
 
                 case 2:
-                    base.copyTo(destination, patterns);
+                    base.copyTo(destination = destination.directory(destinationRelativePath), patterns);
                     break;
 
                 case 3:

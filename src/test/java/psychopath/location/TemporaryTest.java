@@ -48,7 +48,7 @@ class TemporaryTest extends LocationTestHelper {
                     $.file("3.txt");
                 });
             });
-            $.dir("dir1", () -> {
+            $.dir("dir2", () -> {
                 $.file("a.txt");
                 $.file("b.txt");
                 $.dir("c", () -> {

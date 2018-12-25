@@ -122,14 +122,17 @@ class MoveTest extends LocationTestHelper {
             $.file("1", "One");
         });
         Directory out = locateDirectory("Out", $ -> {
-            $.file("1", "This text will be overwritten by input file.");
+            $.file("1", "This text will be remaining.");
         });
 
         in.moveTo(out);
 
         assert in.isAbsent();
-        assert match(out.directory("In"), $ -> {
-            $.file("1", "One");
+        assert match(out, $ -> {
+            $.file("1", "This text will be remaining.");
+            $.dir("In", () -> {
+                $.file("1", "One");
+            });
         });
     }
 
