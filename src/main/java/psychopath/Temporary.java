@@ -11,8 +11,6 @@ package psychopath;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.FileSystems;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -20,8 +18,6 @@ import java.util.Objects;
 import org.apache.commons.compress.archivers.ArchiveEntry;
 import org.apache.commons.compress.archivers.ArchiveOutputStream;
 import org.apache.commons.compress.archivers.ArchiveStreamFactory;
-import org.apache.commons.compress.archivers.sevenz.SevenZOutputFile;
-import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
 
 import kiss.I;
 import kiss.Signal;
@@ -262,47 +258,6 @@ public final class Temporary {
             }
             out.closeArchiveEntry();
         } catch (IOException e) {
-            throw I.quiet(e);
-        }
-    }
-
-    /**
-     * Detect archive type.
-     * 
-     * @param file A target archive file.
-     * @return An archive.
-     */
-    static ArchiveOutputStream detectArchiver(File file) {
-        try {
-            switch (file.extension()) {
-            case "7z":
-                new SevenZOutputFile(file.asJavaFile());
-                throw new Error();
-
-            case "zip":
-            default:
-                return new ZipArchiveOutputStream(file.asJavaFile());
-
-            }
-        } catch (Throwable e) {
-            throw I.quiet(e);
-        }
-    }
-
-    /**
-     * Detect archive file system.
-     * 
-     * @param file A target archive file.
-     * @return An archive.
-     */
-    static Path detectFileSystetm(File file) {
-        try {
-            switch (file.extension()) {
-            case "zip":
-            default:
-                return FileSystems.newFileSystem(file.path, null).getPath("/");
-            }
-        } catch (Throwable e) {
             throw I.quiet(e);
         }
     }

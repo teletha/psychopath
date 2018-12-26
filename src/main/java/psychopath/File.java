@@ -26,6 +26,7 @@ import java.nio.channels.SeekableByteChannel;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.FileAlreadyExistsException;
+import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.OpenOption;
 import java.nio.file.Path;
@@ -104,7 +105,7 @@ public class File extends Location<File> {
      * @return
      */
     public Directory asArchive() {
-        return new Directory(Temporary.detectFileSystetm(this));
+        return new Directory(detectFileSystetm(this));
     }
 
     /**
@@ -813,6 +814,24 @@ public class File extends Location<File> {
                 return factory.createArchiveInputStream(new BufferedInputStream(newInputStream()));
             }
         } catch (ArchiveException e) {
+            throw I.quiet(e);
+        }
+    }
+
+    /**
+     * Detect archive file system.
+     * 
+     * @param file A target archive file.
+     * @return An archive.
+     */
+    private static Path detectFileSystetm(File file) {
+        try {
+            switch (file.extension()) {
+            case "zip":
+            default:
+                return FileSystems.newFileSystem(file.path, null).getPath("/");
+            }
+        } catch (Throwable e) {
             throw I.quiet(e);
         }
     }
