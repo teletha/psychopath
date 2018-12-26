@@ -21,6 +21,7 @@ import org.apache.commons.compress.archivers.ArchiveStreamFactory;
 
 import kiss.I;
 import kiss.Signal;
+import kiss.Ⅱ;
 
 public final class Temporary {
 
@@ -75,7 +76,7 @@ public final class Temporary {
                  * {@inheritDoc}
                  */
                 @Override
-                public void delete() {
+                public void delete(String... patterns) {
                     files.to(File::delete);
                 }
 
@@ -83,7 +84,7 @@ public final class Temporary {
                  * {@inheritDoc}
                  */
                 @Override
-                public void moveTo(Directory destination) {
+                public void moveTo(Directory destination, String... patterns) {
                     files.to(file -> file.moveTo(destination.directory(destinationRelativePath)));
                 }
 
@@ -91,7 +92,7 @@ public final class Temporary {
                  * {@inheritDoc}
                  */
                 @Override
-                public void copyTo(Directory destination) {
+                public void copyTo(Directory destination, String... patterns) {
                     files.to(file -> file.copyTo(destination.directory(destinationRelativePath)));
                 }
 
@@ -99,7 +100,7 @@ public final class Temporary {
                  * {@inheritDoc}
                  */
                 @Override
-                public void packTo(ArchiveOutputStream archive) {
+                public void packTo(ArchiveOutputStream archive, String... patterns) {
                     files.to(file -> pack(archive, file.parent(), file, destinationRelativePath));
                 }
 
@@ -107,8 +108,8 @@ public final class Temporary {
                  * {@inheritDoc}
                  */
                 @Override
-                public Signal<File> walk() {
-                    return files;
+                public Signal<Ⅱ<Directory, File>> walk() {
+                    return files.map(file -> I.pair(file.parent(), file));
                 }
             });
         }
@@ -139,40 +140,40 @@ public final class Temporary {
                  * {@inheritDoc}
                  */
                 @Override
-                public void delete() {
-                    base.delete(patterns);
+                public void delete(String... additions) {
+                    base.delete(I.array(patterns, additions));
                 }
 
                 /**
                  * {@inheritDoc}
                  */
                 @Override
-                public void moveTo(Directory destination) {
-                    base.moveTo(destination.directory(destinationRelativePath), patterns);
+                public void moveTo(Directory destination, String... additions) {
+                    base.moveTo(destination.directory(destinationRelativePath), I.array(patterns, additions));
                 }
 
                 /**
                  * {@inheritDoc}
                  */
                 @Override
-                public void copyTo(Directory destination) {
-                    base.copyTo(destination.directory(destinationRelativePath), patterns);
+                public void copyTo(Directory destination, String... additions) {
+                    base.copyTo(destination.directory(destinationRelativePath), I.array(patterns, additions));
                 }
 
                 /**
                  * {@inheritDoc}
                  */
                 @Override
-                public void packTo(ArchiveOutputStream archive) {
-                    base.walkFiles(patterns).to(file -> pack(archive, base, file, destinationRelativePath));
+                public void packTo(ArchiveOutputStream archive, String... additions) {
+                    base.walkFiles(I.array(patterns, additions)).to(file -> pack(archive, base, file, destinationRelativePath));
                 }
 
                 /**
                  * {@inheritDoc}
                  */
                 @Override
-                public Signal<File> walk() {
-                    return base.walkFiles();
+                public Signal<Ⅱ<Directory, File>> walk() {
+                    return base.walkFiles().map(file -> I.pair(base, file));
                 }
             });
         }
@@ -184,8 +185,8 @@ public final class Temporary {
      * 
      * @return
      */
-    public Temporary delete() {
-        operations.forEach(Operation::delete);
+    public Temporary delete(String... patterns) {
+        operations.forEach(operation -> operation.delete(patterns));
 
         return this;
     }
@@ -195,10 +196,10 @@ public final class Temporary {
      * 
      * @param destination A destination {@link Directory}.
      */
-    public Directory copyTo(Directory destination) {
+    public Directory copyTo(Directory destination, String... patterns) {
         Objects.requireNonNull(destination);
 
-        operations.forEach(operation -> operation.copyTo(destination));
+        operations.forEach(operation -> operation.copyTo(destination, patterns));
 
         return destination;
     }
@@ -208,10 +209,10 @@ public final class Temporary {
      * 
      * @param destination A destination {@link Directory}.
      */
-    public Directory moveTo(Directory destination) {
+    public Directory moveTo(Directory destination, String... patterns) {
         Objects.requireNonNull(destination);
 
-        operations.forEach(operation -> operation.moveTo(destination));
+        operations.forEach(operation -> operation.moveTo(destination, patterns));
 
         return destination;
     }
@@ -221,10 +222,10 @@ public final class Temporary {
      * 
      * @param archive
      */
-    public void packTo(File archive) {
+    public void packTo(File archive, String... patterns) {
         try (ArchiveOutputStream out = new ArchiveStreamFactory()
                 .createArchiveOutputStream(archive.extension().replaceAll("7z", "7z-override"), archive.newOutputStream())) {
-            operations.forEach(operation -> operation.packTo(out));
+            operations.forEach(operation -> operation.packTo(out, patterns));
             out.finish();
         } catch (Exception e) {
             throw I.quiet(e);
@@ -236,7 +237,7 @@ public final class Temporary {
      * 
      * @return
      */
-    public Signal<File> walk() {
+    public Signal<Ⅱ<Directory, File>> walk() {
         return I.signal(operations).concatMap(Operation::walk);
     }
 
@@ -269,35 +270,40 @@ public final class Temporary {
 
         /**
          * Delete resources.
+         * 
+         * @param patterns
          */
-        void delete();
+        void delete(String... patterns);
 
         /**
          * Move reosources to the specified {@link Directory}.
          * 
          * @param destination
+         * @param patterns
          */
-        void moveTo(Directory destination);
+        void moveTo(Directory destination, String... patterns);
 
         /**
          * Copy reosources to the specified {@link Directory}.
          * 
          * @param destination
+         * @param patterns
          */
-        void copyTo(Directory destination);
+        void copyTo(Directory destination, String... patterns);
 
         /**
          * Pack reosources to the specified {@link File}.
          * 
+         * @param patterns
          * @param destination
          */
-        void packTo(ArchiveOutputStream archive);
+        void packTo(ArchiveOutputStream archive, String... patterns);
 
         /**
          * List up all resources.
          * 
          * @return
          */
-        Signal<File> walk();
+        Signal<Ⅱ<Directory, File>> walk();
     }
 }

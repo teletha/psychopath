@@ -13,6 +13,7 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
+import kiss.Ⅱ;
 import psychopath.Directory;
 import psychopath.File;
 import psychopath.LocationTestHelper;
@@ -158,7 +159,39 @@ class TemporaryTest extends LocationTestHelper {
             });
         });
 
-        List<File> files = temporary.add(dir1).add(dir2).walk().toList();
+        List<Ⅱ<Directory, File>> files = temporary.add(dir1).add(dir2).walk().toList();
         assert files.size() == 6;
+    }
+
+    @Test
+    void combinePattern() {
+        Temporary temporary = Locator.temporary();
+
+        Directory dir1 = locateDirectory("dir1", $ -> {
+            $.file("1.xml");
+            $.file("2.java");
+            $.dir("3", () -> {
+                $.file("3.txt");
+            });
+        });
+
+        Directory dir2 = locateDirectory("dir2", $ -> {
+            $.file("a.xml");
+            $.file("b.java");
+            $.dir("c", () -> {
+                $.file("c.txt");
+            });
+        });
+
+        temporary.add(dir1, "**.text").add(dir2, "**.java").delete("**.xml");
+
+        assert match(dir1, $ -> {
+            $.file("2.java");
+        });
+        assert match(dir2, $ -> {
+            $.dir("c", () -> {
+                $.file("c.txt");
+            });
+        });
     }
 }
