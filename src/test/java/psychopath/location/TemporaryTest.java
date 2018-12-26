@@ -159,7 +159,7 @@ class TemporaryTest extends LocationTestHelper {
             });
         });
 
-        List<Ⅱ<Directory, File>> files = temporary.add(dir1).add(dir2).walk().toList();
+        List<Ⅱ<Directory, File>> files = temporary.add(dir1).add(dir2).walkFiles().toList();
         assert files.size() == 6;
     }
 

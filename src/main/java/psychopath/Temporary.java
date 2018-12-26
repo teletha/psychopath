@@ -11,6 +11,7 @@ package psychopath;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -32,6 +33,32 @@ public final class Temporary {
      * 
      */
     Temporary() {
+    }
+
+    /**
+     * Add path.
+     * 
+     * @param files
+     */
+    public Temporary add(Path path) {
+        Location location = Locator.locate(path);
+
+        if (location.isDirectory()) {
+            return add((Directory) location);
+        } else {
+            return add((File) location);
+        }
+    }
+
+    /**
+     * Merge resources.
+     * 
+     * @param temporary
+     * @return
+     */
+    public Temporary add(Temporary temporary) {
+        operations.addAll(temporary.operations);
+        return this;
     }
 
     /**
@@ -108,8 +135,16 @@ public final class Temporary {
                  * {@inheritDoc}
                  */
                 @Override
-                public Signal<Ⅱ<Directory, File>> walk() {
+                public Signal<Ⅱ<Directory, File>> walkFiles(String... patterns) {
                     return files.map(file -> I.pair(file.parent(), file));
+                }
+
+                /**
+                 * {@inheritDoc}
+                 */
+                @Override
+                public Signal<Ⅱ<Directory, Directory>> walkDirectories(String... patterns) {
+                    return Signal.empty();
                 }
             });
         }
@@ -172,8 +207,16 @@ public final class Temporary {
                  * {@inheritDoc}
                  */
                 @Override
-                public Signal<Ⅱ<Directory, File>> walk() {
-                    return base.walkFiles().map(file -> I.pair(base, file));
+                public Signal<Ⅱ<Directory, File>> walkFiles(String... additions) {
+                    return base.walkFiles(I.array(patterns, additions)).map(file -> I.pair(base, file));
+                }
+
+                /**
+                 * {@inheritDoc}
+                 */
+                @Override
+                public Signal<Ⅱ<Directory, Directory>> walkDirectories(String... additions) {
+                    return base.walkDirectories(I.array(patterns, additions)).map(dir -> I.pair(base, dir));
                 }
             });
         }
@@ -233,12 +276,21 @@ public final class Temporary {
     }
 
     /**
-     * List up all resources.
+     * List up all {@link File}s.
      * 
      * @return
      */
-    public Signal<Ⅱ<Directory, File>> walk() {
-        return I.signal(operations).concatMap(Operation::walk);
+    public Signal<Ⅱ<Directory, File>> walkFiles(String... patterns) {
+        return I.signal(operations).concatMap(op -> op.walkFiles(patterns));
+    }
+
+    /**
+     * List up all {@link Directory}.
+     * 
+     * @return
+     */
+    public Signal<Ⅱ<Directory, Directory>> walkDirectories(String... patterns) {
+        return I.signal(operations).concatMap(op -> op.walkDirectories(patterns));
     }
 
     /**
@@ -302,8 +354,17 @@ public final class Temporary {
         /**
          * List up all resources.
          * 
+         * @param patterns
          * @return
          */
-        Signal<Ⅱ<Directory, File>> walk();
+        Signal<Ⅱ<Directory, File>> walkFiles(String... patterns);
+
+        /**
+         * List up all resources.
+         * 
+         * @param patterns
+         * @return
+         */
+        Signal<Ⅱ<Directory, Directory>> walkDirectories(String... patterns);
     }
 }
