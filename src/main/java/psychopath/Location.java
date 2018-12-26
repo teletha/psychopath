@@ -232,6 +232,10 @@ public abstract class Location<Self extends Location> {
      * @see BasicFileAttributes#lastModifiedTime
      */
     public final long lastModified(LinkOption... options) {
+        if (Files.notExists(path)) {
+            return -1;
+        }
+
         try {
             return Files.getLastModifiedTime(path).toMillis();
         } catch (IOException e) {

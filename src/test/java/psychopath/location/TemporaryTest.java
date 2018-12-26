@@ -13,7 +13,6 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
-import kiss.Ⅱ;
 import psychopath.Directory;
 import psychopath.File;
 import psychopath.LocationTestHelper;
@@ -107,6 +106,42 @@ class TemporaryTest extends LocationTestHelper {
     }
 
     @Test
+    void copyToPatterns() {
+        Temporary temporary = Locator.temporary();
+
+        Directory dir1 = locateDirectory("dir1", $ -> {
+            $.file("1.txt");
+            $.file("2.xml");
+            $.dir("3", () -> {
+                $.file("3.txt");
+            });
+        });
+
+        Directory dir2 = locateDirectory("dir2", $ -> {
+            $.file("a.txt");
+            $.file("b.xml");
+            $.dir("c", () -> {
+                $.file("c.txt");
+            });
+        });
+
+        Directory destination = temporary.add(dir1).add(dir2).copyTo(locateDirectory("dir3"), "**", "!**.xml");
+
+        assert dir1.isPresent();
+        assert dir2.isPresent();
+        assert match(destination, $ -> {
+            $.file("1.txt");
+            $.dir("3", () -> {
+                $.file("3.txt");
+            });
+            $.file("a.txt");
+            $.dir("c", () -> {
+                $.file("c.txt");
+            });
+        });
+    }
+
+    @Test
     void delete() {
         Temporary temporary = Locator.temporary();
 
@@ -159,7 +194,7 @@ class TemporaryTest extends LocationTestHelper {
             });
         });
 
-        List<Ⅱ<Directory, File>> files = temporary.add(dir1).add(dir2).walkFiles().toList();
+        List<File> files = temporary.add(dir1).add(dir2).walkFiles().toList();
         assert files.size() == 6;
     }
 

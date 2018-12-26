@@ -140,14 +140,6 @@ public class File extends Location<File> {
         return I.signal(this);
     }
 
-    public long lastModified() {
-        try {
-            return Files.getLastModifiedTime(path).toMillis();
-        } catch (IOException e) {
-            throw I.quiet(e);
-        }
-    }
-
     /**
      * {@inheritDoc}
      */

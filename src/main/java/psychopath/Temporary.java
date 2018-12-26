@@ -66,7 +66,7 @@ public final class Temporary {
      * 
      * @param files
      */
-    public Temporary add(File... files) {
+    public Temporary add(Location... files) {
         return add("", files);
     }
 
@@ -77,7 +77,7 @@ public final class Temporary {
      * @param files
      * @return
      */
-    public Temporary add(String destinationRelativePath, File... files) {
+    public Temporary add(String destinationRelativePath, Location... files) {
         return add(destinationRelativePath, I.signal(files));
     }
 
@@ -86,7 +86,7 @@ public final class Temporary {
      * 
      * @param files
      */
-    public Temporary add(Signal<File> files) {
+    public Temporary add(Signal<? extends Location> files) {
         return add("", files);
     }
 
@@ -95,7 +95,7 @@ public final class Temporary {
      * 
      * @param files
      */
-    public Temporary add(String destinationRelativePath, Signal<File> files) {
+    public Temporary add(String destinationRelativePath, Signal<? extends Location> files) {
         if (files != null) {
             operations.add(new Operation() {
 
@@ -104,7 +104,13 @@ public final class Temporary {
                  */
                 @Override
                 public void delete(String... patterns) {
-                    files.to(File::delete);
+                    files.to(e -> {
+                        if (e.isDirectory()) {
+                            ((Directory) e).delete(patterns);
+                        } else {
+                            e.delete();
+                        }
+                    });
                 }
 
                 /**
@@ -112,7 +118,13 @@ public final class Temporary {
                  */
                 @Override
                 public void moveTo(Directory destination, String... patterns) {
-                    files.to(file -> file.moveTo(destination.directory(destinationRelativePath)));
+                    files.to(e -> {
+                        if (e.isDirectory()) {
+                            ((Directory) e).moveTo(destination.directory(destinationRelativePath), patterns);
+                        } else {
+                            e.moveTo(destination.directory(destinationRelativePath));
+                        }
+                    });
                 }
 
                 /**
@@ -120,7 +132,13 @@ public final class Temporary {
                  */
                 @Override
                 public void copyTo(Directory destination, String... patterns) {
-                    files.to(file -> file.copyTo(destination.directory(destinationRelativePath)));
+                    files.to(e -> {
+                        if (e.isDirectory()) {
+                            ((Directory) e).copyTo(destination.directory(destinationRelativePath), patterns);
+                        } else {
+                            e.copyTo(destination.directory(destinationRelativePath));
+                        }
+                    });
                 }
 
                 /**
@@ -128,7 +146,13 @@ public final class Temporary {
                  */
                 @Override
                 public void packTo(ArchiveOutputStream archive, String... patterns) {
-                    files.to(file -> pack(archive, file.parent(), file, destinationRelativePath));
+                    files.to(e -> {
+                        if (e.isDirectory()) {
+                            ((Directory) e).walkFiles(patterns).to(file -> pack(archive, (Directory) e, file, destinationRelativePath));
+                        } else {
+                            pack(archive, e.parent(), (File) e, destinationRelativePath);
+                        }
+                    });
                 }
 
                 /**
@@ -136,7 +160,14 @@ public final class Temporary {
                  */
                 @Override
                 public Signal<Ⅱ<Directory, File>> walkFiles(String... patterns) {
-                    return files.map(file -> I.pair(file.parent(), file));
+                    return files.flatMap(e -> {
+                        if (e.isDirectory()) {
+                            Directory d = (Directory) e;
+                            return d.walkFiles(patterns).map(s -> I.pair(d, s));
+                        } else {
+                            return I.signal(I.pair(e.parent(), (File) e));
+                        }
+                    });
                 }
 
                 /**
@@ -144,7 +175,14 @@ public final class Temporary {
                  */
                 @Override
                 public Signal<Ⅱ<Directory, Directory>> walkDirectories(String... patterns) {
-                    return Signal.empty();
+                    return files.flatMap(e -> {
+                        if (e.isDirectory()) {
+                            Directory d = (Directory) e;
+                            return d.walkDirectories(patterns).map(s -> I.pair(d, s));
+                        } else {
+                            return Signal.empty();
+                        }
+                    });
                 }
             });
         }
@@ -280,7 +318,16 @@ public final class Temporary {
      * 
      * @return
      */
-    public Signal<Ⅱ<Directory, File>> walkFiles(String... patterns) {
+    public Signal<File> walkFiles(String... patterns) {
+        return walkFilesWithBase(patterns).map(Ⅱ<Directory, File>::ⅱ);
+    }
+
+    /**
+     * List up all {@link File}s.
+     * 
+     * @return
+     */
+    public Signal<Ⅱ<Directory, File>> walkFilesWithBase(String... patterns) {
         return I.signal(operations).concatMap(op -> op.walkFiles(patterns));
     }
 
@@ -289,7 +336,16 @@ public final class Temporary {
      * 
      * @return
      */
-    public Signal<Ⅱ<Directory, Directory>> walkDirectories(String... patterns) {
+    public Signal<Directory> walkDirectories(String... patterns) {
+        return walkDirectoriesWithBase(patterns).map(Ⅱ<Directory, Directory>::ⅱ);
+    }
+
+    /**
+     * List up all {@link Directory}.
+     * 
+     * @return
+     */
+    public Signal<Ⅱ<Directory, Directory>> walkDirectoriesWithBase(String... patterns) {
         return I.signal(operations).concatMap(op -> op.walkDirectories(patterns));
     }
 
