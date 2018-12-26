@@ -25,12 +25,11 @@ import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
 
 import kiss.I;
 import kiss.Signal;
-import kiss.WiseTriConsumer;
 
 public final class Temporary {
 
-    /** The path entries. */
-    private final List<WiseTriConsumer<Integer, Directory, ArchiveOutputStream>> entries = new ArrayList();
+    /** The operations. */
+    private final List<Operation> operations = new ArrayList();
 
     /**
      * 
@@ -74,23 +73,46 @@ public final class Temporary {
      */
     public Temporary add(String destinationRelativePath, Signal<File> files) {
         if (files != null) {
-            entries.add((type, destination, archive) -> {
-                switch (type) {
-                case 0:
+            operations.add(new Operation() {
+
+                /**
+                 * {@inheritDoc}
+                 */
+                @Override
+                public void delete() {
                     files.to(File::delete);
-                    break;
+                }
 
-                case 1:
+                /**
+                 * {@inheritDoc}
+                 */
+                @Override
+                public void moveTo(Directory destination) {
                     files.to(file -> file.moveTo(destination.directory(destinationRelativePath)));
-                    break;
+                }
 
-                case 2:
+                /**
+                 * {@inheritDoc}
+                 */
+                @Override
+                public void copyTo(Directory destination) {
                     files.to(file -> file.copyTo(destination.directory(destinationRelativePath)));
-                    break;
+                }
 
-                case 3:
+                /**
+                 * {@inheritDoc}
+                 */
+                @Override
+                public void packTo(ArchiveOutputStream archive) {
                     files.to(file -> pack(archive, file.parent(), file, destinationRelativePath));
-                    break;
+                }
+
+                /**
+                 * {@inheritDoc}
+                 */
+                @Override
+                public Signal<File> walk() {
+                    return files;
                 }
             });
         }
@@ -115,29 +137,46 @@ public final class Temporary {
      */
     public Temporary add(String destinationRelativePath, Directory base, String... patterns) {
         if (base != null) {
-            entries.add((type, destination, archive) -> {
-                switch (type) {
-                case 0:
+            operations.add(new Operation() {
+
+                /**
+                 * {@inheritDoc}
+                 */
+                @Override
+                public void delete() {
                     base.delete(patterns);
-                    break;
+                }
 
-                case 1:
-                    destination = destination.directory(destinationRelativePath);
+                /**
+                 * {@inheritDoc}
+                 */
+                @Override
+                public void moveTo(Directory destination) {
+                    base.moveTo(destination.directory(destinationRelativePath), patterns);
+                }
 
-                    if (patterns == null || patterns.length == 0) {
-                        base.moveTo(destination);
-                    } else {
-                        base.moveTo(destination, patterns);
-                    }
-                    break;
+                /**
+                 * {@inheritDoc}
+                 */
+                @Override
+                public void copyTo(Directory destination) {
+                    base.copyTo(destination.directory(destinationRelativePath), patterns);
+                }
 
-                case 2:
-                    base.copyTo(destination = destination.directory(destinationRelativePath), patterns);
-                    break;
-
-                case 3:
+                /**
+                 * {@inheritDoc}
+                 */
+                @Override
+                public void packTo(ArchiveOutputStream archive) {
                     base.walkFiles(patterns).to(file -> pack(archive, base, file, destinationRelativePath));
-                    break;
+                }
+
+                /**
+                 * {@inheritDoc}
+                 */
+                @Override
+                public Signal<File> walk() {
+                    return base.walkFiles();
                 }
             });
         }
@@ -150,7 +189,7 @@ public final class Temporary {
      * @return
      */
     public Temporary delete() {
-        entries.forEach(entry -> entry.accept(0, null, null));
+        operations.forEach(Operation::delete);
 
         return this;
     }
@@ -163,7 +202,7 @@ public final class Temporary {
     public Directory copyTo(Directory destination) {
         Objects.requireNonNull(destination);
 
-        entries.forEach(entry -> entry.accept(2, destination, null));
+        operations.forEach(operation -> operation.copyTo(destination));
 
         return destination;
     }
@@ -176,7 +215,7 @@ public final class Temporary {
     public Directory moveTo(Directory destination) {
         Objects.requireNonNull(destination);
 
-        entries.forEach(entry -> entry.accept(1, destination, null));
+        operations.forEach(operation -> operation.moveTo(destination));
 
         return destination;
     }
@@ -189,11 +228,20 @@ public final class Temporary {
     public void packTo(File archive) {
         try (ArchiveOutputStream out = new ArchiveStreamFactory()
                 .createArchiveOutputStream(archive.extension().replaceAll("7z", "7z-override"), archive.newOutputStream())) {
-            entries.forEach(entry -> entry.accept(3, null, out));
+            operations.forEach(operation -> operation.packTo(out));
             out.finish();
         } catch (Exception e) {
             throw I.quiet(e);
         }
+    }
+
+    /**
+     * List up all resources.
+     * 
+     * @return
+     */
+    public Signal<File> walk() {
+        return I.signal(operations).concatMap(Operation::walk);
     }
 
     /**
@@ -257,5 +305,44 @@ public final class Temporary {
         } catch (Throwable e) {
             throw I.quiet(e);
         }
+    }
+
+    /**
+     * Definition of {@link Temporary} operation.
+     */
+    private interface Operation {
+
+        /**
+         * Delete resources.
+         */
+        void delete();
+
+        /**
+         * Move reosources to the specified {@link Directory}.
+         * 
+         * @param destination
+         */
+        void moveTo(Directory destination);
+
+        /**
+         * Copy reosources to the specified {@link Directory}.
+         * 
+         * @param destination
+         */
+        void copyTo(Directory destination);
+
+        /**
+         * Pack reosources to the specified {@link File}.
+         * 
+         * @param destination
+         */
+        void packTo(ArchiveOutputStream archive);
+
+        /**
+         * List up all resources.
+         * 
+         * @return
+         */
+        Signal<File> walk();
     }
 }

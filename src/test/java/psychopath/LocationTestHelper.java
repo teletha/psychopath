@@ -126,6 +126,8 @@ public class LocationTestHelper {
      * @return
      */
     public final boolean match(Directory actual, Consumer<FileSystemDSL> expected) {
+        assert actual.isPresent();
+
         Directory e = locateDirectory(actual.name() + " expected", expected);
         List<Location<?>> expecteds = e.descendant().toList();
         List<Location<?>> actuals = actual.descendant().toList();

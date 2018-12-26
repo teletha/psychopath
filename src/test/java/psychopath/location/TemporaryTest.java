@@ -9,9 +9,12 @@
  */
 package psychopath.location;
 
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
 
 import psychopath.Directory;
+import psychopath.File;
 import psychopath.LocationTestHelper;
 import psychopath.Locator;
 import psychopath.Temporary;
@@ -100,5 +103,62 @@ class TemporaryTest extends LocationTestHelper {
                 });
             });
         });
+    }
+
+    @Test
+    void delete() {
+        Temporary temporary = Locator.temporary();
+
+        Directory dir1 = locateDirectory("dir1", $ -> {
+            $.file("1.txt");
+            $.file("2.java");
+            $.dir("3", () -> {
+                $.file("3.txt");
+            });
+        });
+
+        Directory dir2 = locateDirectory("dir2", $ -> {
+            $.file("a.txt");
+            $.file("b.java");
+            $.dir("c", () -> {
+                $.file("c.txt");
+            });
+        });
+
+        temporary.add(dir1, "**.text").add(dir2, "**.java").delete();
+
+        assert match(dir1, $ -> {
+            $.file("1.txt");
+        });
+        assert match(dir2, $ -> {
+            $.file("a.txt");
+            $.dir("c", () -> {
+                $.file("c.txt");
+            });
+        });
+    }
+
+    @Test
+    void walk() {
+        Temporary temporary = Locator.temporary();
+
+        Directory dir1 = locateDirectory("dir1", $ -> {
+            $.file("1.txt");
+            $.file("2.java");
+            $.dir("3", () -> {
+                $.file("3.txt");
+            });
+        });
+
+        Directory dir2 = locateDirectory("dir2", $ -> {
+            $.file("a.txt");
+            $.file("b.java");
+            $.dir("c", () -> {
+                $.file("c.txt");
+            });
+        });
+
+        List<File> files = temporary.add(dir1).add(dir2).walk().toList();
+        assert files.size() == 6;
     }
 }
