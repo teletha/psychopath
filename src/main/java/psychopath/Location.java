@@ -717,6 +717,21 @@ public abstract class Location<Self extends Location> implements Comparable<Loca
     }
 
     /**
+     * Test matching the specified pattern to this {@link Location}.
+     * 
+     * @param pattern A glob pattern.
+     * @return A result.
+     */
+    public final boolean match(String... patterns) {
+        for (String pattern : patterns) {
+            if (match(pattern)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override

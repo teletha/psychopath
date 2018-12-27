@@ -95,6 +95,14 @@ public final class Folder {
      */
     public Folder add(Signal<? extends Location> resources) {
         if (resources != null) {
+            Signal<Operation> ops = resources.map(location -> {
+                if (location.isDirectory()) {
+                    return new DirectoryOperation((Directory) location, null);
+                } else {
+                    return new FileOperation((File) location);
+                }
+            });
+
             operations.add(new Operation() {
 
                 /**
@@ -102,13 +110,7 @@ public final class Folder {
                  */
                 @Override
                 public void delete(String... patterns) {
-                    resources.to(e -> {
-                        if (e.isDirectory()) {
-                            ((Directory) e).delete(patterns);
-                        } else {
-                            e.delete();
-                        }
-                    });
+                    ops.to(op -> op.delete(patterns));
                 }
 
                 /**
@@ -116,13 +118,7 @@ public final class Folder {
                  */
                 @Override
                 public void moveTo(Directory destination, String... patterns) {
-                    resources.to(e -> {
-                        if (e.isDirectory()) {
-                            ((Directory) e).moveTo(destination, patterns);
-                        } else {
-                            e.moveTo(destination);
-                        }
-                    });
+                    ops.to(op -> op.moveTo(destination, patterns));
                 }
 
                 /**
@@ -130,13 +126,7 @@ public final class Folder {
                  */
                 @Override
                 public void copyTo(Directory destination, String... patterns) {
-                    resources.to(e -> {
-                        if (e.isDirectory()) {
-                            ((Directory) e).copyTo(destination, patterns);
-                        } else {
-                            e.copyTo(destination);
-                        }
-                    });
+                    ops.to(op -> op.copyTo(destination, patterns));
                 }
 
                 /**
@@ -144,13 +134,7 @@ public final class Folder {
                  */
                 @Override
                 public void packTo(ArchiveOutputStream archive, Directory relative, String... patterns) {
-                    resources.to(e -> {
-                        if (e.isDirectory()) {
-                            ((Directory) e).walkFiles(patterns).to(file -> pack(archive, e.parent(), file, relative));
-                        } else {
-                            pack(archive, e.parent(), (File) e, relative);
-                        }
-                    });
+                    ops.to(op -> op.packTo(archive, relative, patterns));
                 }
 
                 /**
@@ -158,24 +142,7 @@ public final class Folder {
                  */
                 @Override
                 public Signal<Ⅱ<Directory, File>> walkFiles(String... patterns) {
-                    return resources.flatMap(e -> {
-                        Directory directory;
-                        String[] p;
-
-                        if (e.isDirectory()) {
-                            directory = (Directory) e;
-                            p = patterns;
-                        } else {
-                            directory = e.parent();
-                            if (patterns.length == 0) {
-                                p = new String[] {e.name()};
-                            } else {
-                                p = patterns;
-                            }
-                        }
-
-                        return directory.walkFiles(p).map(file -> I.pair(directory, file));
-                    });
+                    return ops.flatMap(op -> op.walkFiles(patterns));
                 }
 
                 /**
@@ -183,14 +150,7 @@ public final class Folder {
                  */
                 @Override
                 public Signal<Ⅱ<Directory, Directory>> walkDirectories(String... patterns) {
-                    return resources.flatMap(e -> {
-                        if (e.isDirectory()) {
-                            Directory d = (Directory) e;
-                            return d.walkDirectories(patterns).map(s -> I.pair(d, s));
-                        } else {
-                            return Signal.empty();
-                        }
-                    });
+                    return ops.flatMap(op -> op.walkDirectories(patterns));
                 }
 
                 /**
@@ -213,64 +173,7 @@ public final class Folder {
      */
     public Folder add(Directory base, String... patterns) {
         if (base != null) {
-            operations.add(new Operation() {
-
-                /**
-                 * {@inheritDoc}
-                 */
-                @Override
-                public void delete(String... additions) {
-                    base.delete(I.array(patterns, additions));
-                }
-
-                /**
-                 * {@inheritDoc}
-                 */
-                @Override
-                public void moveTo(Directory destination, String... additions) {
-                    base.moveTo(destination, I.array(patterns, additions));
-                }
-
-                /**
-                 * {@inheritDoc}
-                 */
-                @Override
-                public void copyTo(Directory destination, String... additions) {
-                    base.copyTo(destination, I.array(patterns, additions));
-                }
-
-                /**
-                 * {@inheritDoc}
-                 */
-                @Override
-                public void packTo(ArchiveOutputStream archive, Directory relative, String... additions) {
-                    base.walkFiles(I.array(patterns, additions)).to(file -> pack(archive, base.parent(), file, relative));
-                }
-
-                /**
-                 * {@inheritDoc}
-                 */
-                @Override
-                public Signal<Ⅱ<Directory, File>> walkFiles(String... additions) {
-                    return base.walkFiles(I.array(patterns, additions)).map(file -> I.pair(base, file));
-                }
-
-                /**
-                 * {@inheritDoc}
-                 */
-                @Override
-                public Signal<Ⅱ<Directory, Directory>> walkDirectories(String... additions) {
-                    return base.walkDirectories(I.array(patterns, additions)).map(dir -> I.pair(base, dir));
-                }
-
-                /**
-                 * {@inheritDoc}
-                 */
-                @Override
-                public Signal<Location> entry() {
-                    return I.signal(base);
-                }
-            });
+            operations.add(new DirectoryOperation(base, patterns));
         }
         return this;
     }
@@ -465,7 +368,7 @@ public final class Folder {
      * @param file
      * @param relative
      */
-    private void pack(ArchiveOutputStream out, Directory directory, File file, Directory relative) {
+    private static void pack(ArchiveOutputStream out, Directory directory, File file, Directory relative) {
         try {
             ArchiveEntry entry = out.createArchiveEntry(file.asJavaFile(), relative.file(directory.relativize(file)).path());
             out.putArchiveEntry(entry);
@@ -532,6 +435,157 @@ public final class Folder {
         Signal<Ⅱ<Directory, Directory>> walkDirectories(String... patterns);
 
         Signal<Location> entry();
+    }
+
+    /**
+     * Operation for {@link File}.
+     */
+    private static class FileOperation implements Operation {
+
+        private final File file;
+
+        /**
+         * @param file
+         */
+        private FileOperation(File file) {
+            this.file = file;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void delete(String... patterns) {
+            file.delete();
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void moveTo(Directory destination, String... patterns) {
+            file.moveTo(destination);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void copyTo(Directory destination, String... patterns) {
+            file.copyTo(destination);
+
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void packTo(ArchiveOutputStream archive, Directory relative, String... patterns) {
+            pack(archive, file.parent(), file, relative);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public Signal<Ⅱ<Directory, File>> walkFiles(String... patterns) {
+            if (patterns.length == 0 || file.match(patterns)) {
+                return I.signal(I.pair(file.parent(), file));
+            } else {
+                return Signal.empty();
+            }
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public Signal<Ⅱ<Directory, Directory>> walkDirectories(String... patterns) {
+            return Signal.empty();
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public Signal<Location> entry() {
+            return I.signal(file);
+        }
+    }
+
+    /**
+     * Operation for {@link File}.
+     */
+    private static class DirectoryOperation implements Operation {
+
+        private final Directory directory;
+
+        private final String[] patternsWhenAdd;
+
+        /**
+         * @param directory
+         * @param patterns
+         */
+        private DirectoryOperation(Directory directory, String[] patterns) {
+            this.directory = directory;
+            this.patternsWhenAdd = patterns;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void delete(String... patterns) {
+            directory.delete(I.array(patterns, patternsWhenAdd));
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void moveTo(Directory destination, String... patterns) {
+            directory.moveTo(destination, I.array(patterns, patternsWhenAdd));
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void copyTo(Directory destination, String... patterns) {
+            directory.copyTo(destination, I.array(patterns, patternsWhenAdd));
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void packTo(ArchiveOutputStream archive, Directory relative, String... patterns) {
+            directory.walkFiles(I.array(patterns, patternsWhenAdd)).to(file -> pack(archive, directory.parent(), file, relative));
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public Signal<Ⅱ<Directory, File>> walkFiles(String... patterns) {
+            return directory.walkFiles(I.array(patterns, patternsWhenAdd)).map(file -> I.pair(directory, file));
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public Signal<Ⅱ<Directory, Directory>> walkDirectories(String... patterns) {
+            return directory.walkDirectories(I.array(patterns, patternsWhenAdd)).map(dir -> I.pair(directory, dir));
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public Signal<Location> entry() {
+            return I.signal(directory);
+        }
     }
 
     /**
