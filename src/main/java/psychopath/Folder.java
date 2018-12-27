@@ -146,7 +146,7 @@ public final class Folder {
                 public void packTo(ArchiveOutputStream archive, Directory relative, String... patterns) {
                     resources.to(e -> {
                         if (e.isDirectory()) {
-                            ((Directory) e).walkFiles(patterns).to(file -> pack(archive, (Directory) e, file, relative));
+                            ((Directory) e).walkFiles(patterns).to(file -> pack(archive, e.parent(), file, relative));
                         } else {
                             pack(archive, e.parent(), (File) e, relative);
                         }
@@ -159,12 +159,22 @@ public final class Folder {
                 @Override
                 public Signal<Ⅱ<Directory, File>> walkFiles(String... patterns) {
                     return resources.flatMap(e -> {
+                        Directory directory;
+                        String[] p;
+
                         if (e.isDirectory()) {
-                            Directory d = (Directory) e;
-                            return d.walkFiles(patterns).map(s -> I.pair(d, s));
+                            directory = (Directory) e;
+                            p = patterns;
                         } else {
-                            return I.signal(I.pair(e.parent(), (File) e));
+                            directory = e.parent();
+                            if (patterns.length == 0) {
+                                p = new String[] {e.name()};
+                            } else {
+                                p = patterns;
+                            }
                         }
+
+                        return directory.walkFiles(p).map(file -> I.pair(directory, file));
                     });
                 }
 

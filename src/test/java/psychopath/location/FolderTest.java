@@ -10,12 +10,12 @@
 package psychopath.location;
 
 import java.nio.file.Path;
-import java.util.List;
 import java.util.function.Consumer;
 
 import org.junit.jupiter.api.Test;
 
 import antibug.CleanRoom.FileSystemDSL;
+import kiss.I;
 import psychopath.Directory;
 import psychopath.File;
 import psychopath.Folder;
@@ -82,14 +82,189 @@ class FolderTest extends LocationTestHelper {
 
     @Test
     void addDirectory() {
-        Folder folder = Locator.folder().add(Locator.directory("absent")).add(Locator.directory("dir/child"));
-        assert folder.entries().toList().size() == 2;
+        Directory dir1 = locateDirectory("dir1", $ -> {
+            $.dir("child1", () -> {
+                $.file("11.jar");
+                $.file("12.txt");
+            });
+            $.dir("child2", () -> {
+                $.file("21.jar");
+                $.file("22.txt");
+            });
+        });
+
+        Directory dir2 = locateDirectory("dir2", $ -> {
+            $.dir("sub1", () -> {
+                $.file("11.jar");
+                $.file("12.txt");
+            });
+            $.dir("sub2", () -> {
+                $.file("21.jar");
+                $.file("22.txt");
+            });
+        });
+
+        Folder folder = Locator.folder().add(dir1).add(dir2);
+
+        assert matchDestination(folder, $ -> {
+            $.dir("dir1", () -> {
+                $.dir("child1", () -> {
+                    $.file("11.jar");
+                    $.file("12.txt");
+                });
+                $.dir("child2", () -> {
+                    $.file("21.jar");
+                    $.file("22.txt");
+                });
+            });
+            $.dir("dir2", () -> {
+                $.dir("sub1", () -> {
+                    $.file("11.jar");
+                    $.file("12.txt");
+                });
+                $.dir("sub2", () -> {
+                    $.file("21.jar");
+                    $.file("22.txt");
+                });
+            });
+        });
     }
 
     @Test
     void addNullDirectory() {
         Folder folder = Locator.folder().add((Directory) null);
         assert folder.entries().toList().size() == 0;
+    }
+
+    @Test
+    void addDirectoryWithAddPattern() {
+        Directory dir1 = locateDirectory("dir1", $ -> {
+            $.dir("child1", () -> {
+                $.file("11.jar");
+                $.file("12.txt");
+            });
+            $.dir("child2", () -> {
+                $.file("21.jar");
+                $.file("22.txt");
+            });
+        });
+
+        Directory dir2 = locateDirectory("dir2", $ -> {
+            $.dir("sub1", () -> {
+                $.file("11.jar");
+                $.file("12.txt");
+            });
+            $.dir("sub2", () -> {
+                $.file("21.jar");
+                $.file("22.txt");
+            });
+        });
+
+        Folder folder = Locator.folder().add(dir1, "**.jar").add(dir2, "**.txt");
+
+        assert matchDestination(folder, $ -> {
+            $.dir("dir1", () -> {
+                $.dir("child1", () -> {
+                    $.file("11.jar");
+                });
+                $.dir("child2", () -> {
+                    $.file("21.jar");
+                });
+            });
+            $.dir("dir2", () -> {
+                $.dir("sub1", () -> {
+                    $.file("12.txt");
+                });
+                $.dir("sub2", () -> {
+                    $.file("22.txt");
+                });
+            });
+        });
+    }
+
+    @Test
+    void addSignalDirectory() {
+        Folder temporary = Locator.folder();
+
+        Directory root = locateDirectory("root", $ -> {
+            $.dir("child1", () -> {
+                $.file("11.txt");
+                $.file("12.txt");
+            });
+            $.dir("child2", () -> {
+                $.file("21.txt");
+                $.file("22.txt");
+            });
+            $.dir("sub3", () -> {
+                $.file("31.txt");
+                $.file("32.txt");
+            });
+        });
+
+        temporary.add(root.walkDirectories("child*")).delete("*1.txt");
+
+        assert match(root, $ -> {
+            $.dir("child1", () -> {
+                $.file("12.txt");
+            });
+            $.dir("child2", () -> {
+                $.file("22.txt");
+            });
+            $.dir("sub3", () -> {
+                $.file("31.txt");
+                $.file("32.txt");
+            });
+        });
+    }
+
+    @Test
+    void addDirectorySignal() {
+        Directory dir1 = locateDirectory("dir1", $ -> {
+            $.dir("child1", () -> {
+                $.file("11.jar");
+                $.file("12.txt");
+            });
+            $.dir("child2", () -> {
+                $.file("21.jar");
+                $.file("22.txt");
+            });
+        });
+
+        Directory dir2 = locateDirectory("dir2", $ -> {
+            $.dir("sub1", () -> {
+                $.file("11.jar");
+                $.file("12.txt");
+            });
+            $.dir("sub2", () -> {
+                $.file("21.jar");
+                $.file("22.txt");
+            });
+        });
+
+        Folder folder = Locator.folder().add(I.signal(dir1, dir2));
+
+        assert matchDestination(folder, $ -> {
+            $.dir("dir1", () -> {
+                $.dir("child1", () -> {
+                    $.file("11.jar");
+                    $.file("12.txt");
+                });
+                $.dir("child2", () -> {
+                    $.file("21.jar");
+                    $.file("22.txt");
+                });
+            });
+            $.dir("dir2", () -> {
+                $.dir("sub1", () -> {
+                    $.file("11.jar");
+                    $.file("12.txt");
+                });
+                $.dir("sub2", () -> {
+                    $.file("21.jar");
+                    $.file("22.txt");
+                });
+            });
+        });
     }
 
     @Test
@@ -146,8 +321,8 @@ class FolderTest extends LocationTestHelper {
     }
 
     @Test
-    void destinationAddDirectoryPattern() {
-        Folder folder = Locator.folder().add(Locator.directory("lib"), e -> e.add(locateDirectory("sub", $ -> {
+    void destinationAddDirectoryWithPattern() {
+        Folder folder = Locator.folder().add("lib", e -> e.add(locateDirectory("sub", $ -> {
             $.file("one.jar");
             $.file("other.jar");
             $.file("no-match.txt");
@@ -218,164 +393,36 @@ class FolderTest extends LocationTestHelper {
     }
 
     @Test
-    void addSignalDirectory() {
-        Folder temporary = Locator.folder();
-
-        Directory root = locateDirectory("root", $ -> {
-            $.dir("child1", () -> {
-                $.file("11.txt");
-                $.file("12.txt");
-            });
-            $.dir("child2", () -> {
-                $.file("21.txt");
-                $.file("22.txt");
-            });
-            $.dir("sub3", () -> {
-                $.file("31.txt");
-                $.file("32.txt");
-            });
-        });
-
-        temporary.add(root.walkDirectories("child*")).delete("*1.txt");
-
-        assert match(root, $ -> {
-            $.dir("child1", () -> {
-                $.file("12.txt");
-            });
-            $.dir("child2", () -> {
-                $.file("22.txt");
-            });
-            $.dir("sub3", () -> {
-                $.file("31.txt");
-                $.file("32.txt");
-            });
-        });
-    }
-
-    @Test
-    void moveTo() {
-        Folder temporary = Locator.folder();
-
-        Directory dir1 = locateDirectory("dir1", $ -> {
+    void copy() {
+        File file = locateFile("file.txt");
+        Directory directory = locateDirectory("dir", $ -> {
             $.file("1.txt");
-            $.file("2.txt");
+            $.file("2.java");
             $.dir("3", () -> {
                 $.file("3.txt");
             });
         });
 
-        Directory dir2 = locateDirectory("dir2", $ -> {
-            $.file("a.txt");
-            $.file("b.txt");
-            $.dir("c", () -> {
-                $.file("c.txt");
-            });
-        });
-
-        Directory destination = temporary.add(dir1).add(dir2).moveTo(locateDirectory("dir3"));
-
-        assert dir1.isAbsent();
-        assert dir2.isAbsent();
-        assert match(destination, $ -> {
-            $.dir("dir1", () -> {
+        Directory output = Locator.folder().add(file).add(directory).add(directory, "**").copyTo(locateDirectory("output"));
+        assert match(output, $ -> {
+            $.file("file.txt");
+            $.dir("dir", () -> {
                 $.file("1.txt");
-                $.file("2.txt");
+                $.file("2.java");
                 $.dir("3", () -> {
                     $.file("3.txt");
                 });
             });
-            $.dir("dir2", () -> {
-                $.file("a.txt");
-                $.file("b.txt");
-                $.dir("c", () -> {
-                    $.file("c.txt");
-                });
-            });
-        });
-    }
-
-    @Test
-    void copyTo() {
-        Folder temporary = Locator.folder();
-
-        Directory dir1 = locateDirectory("dir1", $ -> {
             $.file("1.txt");
-            $.file("2.txt");
+            $.file("2.java");
             $.dir("3", () -> {
                 $.file("3.txt");
-            });
-        });
-
-        Directory dir2 = locateDirectory("dir2", $ -> {
-            $.file("a.txt");
-            $.file("b.txt");
-            $.dir("c", () -> {
-                $.file("c.txt");
-            });
-        });
-
-        Directory destination = temporary.add(dir1).add(dir2).copyTo(locateDirectory("dir3"));
-
-        assert dir1.isPresent();
-        assert dir2.isPresent();
-        assert match(destination, $ -> {
-            $.dir("dir1", () -> {
-                $.file("1.txt");
-                $.file("2.txt");
-                $.dir("3", () -> {
-                    $.file("3.txt");
-                });
-            });
-            $.dir("dir2", () -> {
-                $.file("a.txt");
-                $.file("b.txt");
-                $.dir("c", () -> {
-                    $.file("c.txt");
-                });
-            });
-        });
-    }
-
-    @Test
-    void copyToPatterns() {
-        Folder temporary = Locator.folder();
-
-        Directory dir1 = locateDirectory("dir1", $ -> {
-            $.file("1.txt");
-            $.file("2.xml");
-            $.dir("3", () -> {
-                $.file("3.txt");
-            });
-        });
-
-        Directory dir2 = locateDirectory("dir2", $ -> {
-            $.file("a.txt");
-            $.file("b.xml");
-            $.dir("c", () -> {
-                $.file("c.txt");
-            });
-        });
-
-        Directory destination = temporary.add(dir1).add(dir2).copyTo(locateDirectory("dir3"), "**", "!**.xml");
-
-        assert dir1.isPresent();
-        assert dir2.isPresent();
-        assert match(destination, $ -> {
-            $.file("1.txt");
-            $.dir("3", () -> {
-                $.file("3.txt");
-            });
-            $.file("a.txt");
-            $.dir("c", () -> {
-                $.file("c.txt");
             });
         });
     }
 
     @Test
     void delete() {
-        Folder temporary = Locator.folder();
-
         Directory dir1 = locateDirectory("dir1", $ -> {
             $.file("1.txt");
             $.file("2.java");
@@ -383,7 +430,30 @@ class FolderTest extends LocationTestHelper {
                 $.file("3.txt");
             });
         });
+        Directory dir2 = locateDirectory("dir2", $ -> {
+            $.file("a.txt");
+            $.file("b.java");
+            $.dir("c", () -> {
+                $.file("c.txt");
+            });
+        });
+        assert dir1.isPresent();
+        assert dir2.isPresent();
 
+        Locator.folder().add(dir1, dir2).delete();
+        assert dir1.isAbsent();
+        assert dir2.isAbsent();
+    }
+
+    @Test
+    void deleteWithPattern() {
+        Directory dir1 = locateDirectory("dir1", $ -> {
+            $.file("1.txt");
+            $.file("2.java");
+            $.dir("3", () -> {
+                $.file("3.txt");
+            });
+        });
         Directory dir2 = locateDirectory("dir2", $ -> {
             $.file("a.txt");
             $.file("b.java");
@@ -392,10 +462,37 @@ class FolderTest extends LocationTestHelper {
             });
         });
 
-        temporary.add(dir1, "**.text").add(dir2, "**.java").delete();
+        Locator.folder().add(dir1, dir2).delete("**.txt");
 
         assert match(dir1, $ -> {
+            $.file("2.java");
+        });
+        assert match(dir2, $ -> {
+            $.file("b.java");
+        });
+    }
+
+    @Test
+    void deleteWithAddPattern() {
+        Directory dir1 = locateDirectory("dir1", $ -> {
             $.file("1.txt");
+            $.file("2.java");
+            $.dir("3", () -> {
+                $.file("3.txt");
+            });
+        });
+        Directory dir2 = locateDirectory("dir2", $ -> {
+            $.file("a.txt");
+            $.file("b.java");
+            $.dir("c", () -> {
+                $.file("c.txt");
+            });
+        });
+
+        Locator.folder().add(dir1, "**.txt").add(dir2, "**.java").delete();
+
+        assert match(dir1, $ -> {
+            $.file("2.java");
         });
         assert match(dir2, $ -> {
             $.file("a.txt");
@@ -406,9 +503,7 @@ class FolderTest extends LocationTestHelper {
     }
 
     @Test
-    void walk() {
-        Folder temporary = Locator.folder();
-
+    void deleteWithCombinePattern() {
         Directory dir1 = locateDirectory("dir1", $ -> {
             $.file("1.txt");
             $.file("2.java");
@@ -416,7 +511,6 @@ class FolderTest extends LocationTestHelper {
                 $.file("3.txt");
             });
         });
-
         Directory dir2 = locateDirectory("dir2", $ -> {
             $.file("a.txt");
             $.file("b.java");
@@ -425,39 +519,44 @@ class FolderTest extends LocationTestHelper {
             });
         });
 
-        List<File> files = temporary.add(dir1).add(dir2).walkFiles().toList();
-        assert files.size() == 6;
+        Locator.folder().add(dir1, "**.txt").add(dir2, "**.java").delete("**c.txt");
+
+        assert match(dir1, $ -> {
+            $.file("2.java");
+        });
+        assert match(dir2, $ -> {
+            $.file("a.txt");
+        });
     }
 
     @Test
-    void combinePattern() {
-        Folder temporary = Locator.folder();
-
+    void walkFiles() {
+        File file1 = locateFile("file1.txt");
+        File file2 = locateFile("file2.txt");
         Directory dir1 = locateDirectory("dir1", $ -> {
-            $.file("1.xml");
+            $.file("1.txt");
             $.file("2.java");
             $.dir("3", () -> {
                 $.file("3.txt");
             });
         });
-
         Directory dir2 = locateDirectory("dir2", $ -> {
-            $.file("a.xml");
+            $.file("a.txt");
             $.file("b.java");
             $.dir("c", () -> {
                 $.file("c.txt");
             });
         });
 
-        temporary.add(dir1, "**.text").add(dir2, "**.java").delete("**.xml");
-
-        assert match(dir1, $ -> {
-            $.file("2.java");
-        });
-        assert match(dir2, $ -> {
-            $.dir("c", () -> {
-                $.file("c.txt");
-            });
-        });
+        assert Locator.folder().add(file1, file2, dir1, dir2).walkFiles().toList().size() == 8;
+        // pattern
+        assert Locator.folder().add(file1, file2, dir1, dir2).walkFiles("**.java").toList().size() == 2;
+        assert Locator.folder().add(file1, file2, dir1, dir2).walkFiles("**.txt", "!c/**").toList().size() == 5;
+        // add pattern
+        assert Locator.folder().add(dir1, "**.java").add(dir2, "**.txt").walkFiles().toList().size() == 3;
+        assert Locator.folder().add(dir1, "!**.java").add(dir2, "!**.txt").walkFiles().toList().size() == 3;
+        // combine pattern
+        assert Locator.folder().add(dir1, "**.java").add(dir2, "**.txt").walkFiles().toList().size() == 3;
+        assert Locator.folder().add(dir1, "!**.java").add(dir2, "!**.txt").walkFiles().toList().size() == 3;
     }
 }
