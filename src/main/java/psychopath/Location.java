@@ -33,7 +33,7 @@ import kiss.Observer;
 import kiss.Signal;
 import kiss.WiseRunnable;
 
-public abstract class Location<Self extends Location> {
+public abstract class Location<Self extends Location> implements Comparable<Location> {
 
     /** The separator flag. */
     private static final boolean useNativeSeparator = java.io.File.separatorChar == '/';
@@ -726,6 +726,14 @@ public abstract class Location<Self extends Location> {
     @Override
     public final String toString() {
         return path.toString();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final int compareTo(Location o) {
+        return path.compareTo(o.path);
     }
 
     /**

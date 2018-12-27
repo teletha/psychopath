@@ -76,6 +76,16 @@ public class Locator {
     }
 
     /**
+     * Locate {@link Folder}.
+     * 
+     * @param file A path to the archive file.
+     * @return The specified archive.
+     */
+    public static Folder folder() {
+        return new Folder();
+    }
+
+    /**
      * Locate {@link File}.
      * 
      * @param path A path to the file.
@@ -246,6 +256,16 @@ public class Locator {
     }
 
     /**
+     * Convert path to {@link Location}.
+     * 
+     * @param path
+     * @return
+     */
+    public static Location locate(String path) {
+        return locate(Path.of(path));
+    }
+
+    /**
      * Convert {@link Path} to {@link Location}.
      * 
      * @param path
@@ -257,16 +277,6 @@ public class Locator {
         } else {
             return file(path);
         }
-    }
-
-    /**
-     * Locate {@link Temporary}.
-     * 
-     * @param file A path to the archive file.
-     * @return The specified archive.
-     */
-    public static Temporary temporary() {
-        return new Temporary();
     }
 
     /**

@@ -15,6 +15,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Function;
 
 import org.apache.commons.compress.archivers.ArchiveEntry;
 import org.apache.commons.compress.archivers.ArchiveOutputStream;
@@ -24,7 +25,10 @@ import kiss.I;
 import kiss.Signal;
 import kiss.Ⅱ;
 
-public final class Temporary {
+/**
+ * Virtual directory to manage resource from various entries.
+ */
+public final class Folder {
 
     /** The operations. */
     private final List<Operation> operations = new ArrayList();
@@ -32,71 +36,65 @@ public final class Temporary {
     /**
      * 
      */
-    Temporary() {
+    Folder() {
     }
 
     /**
-     * Add path.
+     * Add entry by path expression.
      * 
-     * @param files
+     * @param entry A path to entry.
+     * @return Chainable API.
      */
-    public Temporary add(Path path) {
-        Location location = Locator.locate(path);
-
-        if (location.isDirectory()) {
-            return add((Directory) location);
-        } else {
-            return add((File) location);
+    public Folder add(String entry) {
+        if (entry == null) {
+            return this;
         }
+        return add(Locator.locate(entry));
     }
 
     /**
-     * Merge resources.
+     * Add entry by {@link Path}.
      * 
-     * @param temporary
-     * @return
+     * @param entry A path to entry.
+     * @return Chainable API.
      */
-    public Temporary add(Temporary temporary) {
-        operations.addAll(temporary.operations);
+    public Folder add(Path entry) {
+        if (entry == null) {
+            return this;
+        }
+        return add(Locator.locate(entry));
+    }
+
+    /**
+     * Merge entries from other {@link Folder}.
+     * 
+     * @param folder A entries to merge.
+     * @return Chainable API.
+     */
+    public Folder add(Folder folder) {
+        if (folder != null) {
+            operations.addAll(folder.operations);
+        }
         return this;
     }
 
     /**
-     * Add files.
+     * Add entries by {@link Location}.
      * 
-     * @param files
+     * @param entry A location to entry.
+     * @return Chainable API.
      */
-    public Temporary add(Location... files) {
-        return add("", files);
+    public Folder add(Location... entries) {
+        return add(I.signal(entries));
     }
 
     /**
-     * Add files with relative path.
+     * Add resources.
      * 
-     * @param destinationRelativePath
-     * @param files
-     * @return
+     * @param resources
      */
-    public Temporary add(String destinationRelativePath, Location... files) {
-        return add(destinationRelativePath, I.signal(files));
-    }
-
-    /**
-     * Add files.
-     * 
-     * @param files
-     */
-    public Temporary add(Signal<? extends Location> files) {
-        return add("", files);
-    }
-
-    /**
-     * Add files.
-     * 
-     * @param files
-     */
-    public Temporary add(String destinationRelativePath, Signal<? extends Location> files) {
-        if (files != null) {
+    public Folder add(Signal<? extends Location> resources) {
+        if (resources != null) {
             operations.add(new Operation() {
 
                 /**
@@ -104,7 +102,7 @@ public final class Temporary {
                  */
                 @Override
                 public void delete(String... patterns) {
-                    files.to(e -> {
+                    resources.to(e -> {
                         if (e.isDirectory()) {
                             ((Directory) e).delete(patterns);
                         } else {
@@ -118,11 +116,11 @@ public final class Temporary {
                  */
                 @Override
                 public void moveTo(Directory destination, String... patterns) {
-                    files.to(e -> {
+                    resources.to(e -> {
                         if (e.isDirectory()) {
-                            ((Directory) e).moveTo(destination.directory(destinationRelativePath), patterns);
+                            ((Directory) e).moveTo(destination, patterns);
                         } else {
-                            e.moveTo(destination.directory(destinationRelativePath));
+                            e.moveTo(destination);
                         }
                     });
                 }
@@ -132,11 +130,11 @@ public final class Temporary {
                  */
                 @Override
                 public void copyTo(Directory destination, String... patterns) {
-                    files.to(e -> {
+                    resources.to(e -> {
                         if (e.isDirectory()) {
-                            ((Directory) e).copyTo(destination.directory(destinationRelativePath), patterns);
+                            ((Directory) e).copyTo(destination, patterns);
                         } else {
-                            e.copyTo(destination.directory(destinationRelativePath));
+                            e.copyTo(destination);
                         }
                     });
                 }
@@ -145,12 +143,12 @@ public final class Temporary {
                  * {@inheritDoc}
                  */
                 @Override
-                public void packTo(ArchiveOutputStream archive, String... patterns) {
-                    files.to(e -> {
+                public void packTo(ArchiveOutputStream archive, Directory relative, String... patterns) {
+                    resources.to(e -> {
                         if (e.isDirectory()) {
-                            ((Directory) e).walkFiles(patterns).to(file -> pack(archive, (Directory) e, file, destinationRelativePath));
+                            ((Directory) e).walkFiles(patterns).to(file -> pack(archive, (Directory) e, file, relative));
                         } else {
-                            pack(archive, e.parent(), (File) e, destinationRelativePath);
+                            pack(archive, e.parent(), (File) e, relative);
                         }
                     });
                 }
@@ -160,7 +158,7 @@ public final class Temporary {
                  */
                 @Override
                 public Signal<Ⅱ<Directory, File>> walkFiles(String... patterns) {
-                    return files.flatMap(e -> {
+                    return resources.flatMap(e -> {
                         if (e.isDirectory()) {
                             Directory d = (Directory) e;
                             return d.walkFiles(patterns).map(s -> I.pair(d, s));
@@ -175,7 +173,7 @@ public final class Temporary {
                  */
                 @Override
                 public Signal<Ⅱ<Directory, Directory>> walkDirectories(String... patterns) {
-                    return files.flatMap(e -> {
+                    return resources.flatMap(e -> {
                         if (e.isDirectory()) {
                             Directory d = (Directory) e;
                             return d.walkDirectories(patterns).map(s -> I.pair(d, s));
@@ -183,6 +181,14 @@ public final class Temporary {
                             return Signal.empty();
                         }
                     });
+                }
+
+                /**
+                 * {@inheritDoc}
+                 */
+                @Override
+                public Signal<Location> entry() {
+                    return resources.as(Location.class);
                 }
             });
         }
@@ -195,17 +201,7 @@ public final class Temporary {
      * @param base A base path.
      * @param patterns "glob" include/exclude patterns.
      */
-    public Temporary add(Directory base, String... patterns) {
-        return add("", base, patterns);
-    }
-
-    /**
-     * Add pattern matching path.
-     * 
-     * @param base A base path.
-     * @param patterns "glob" include/exclude patterns.
-     */
-    public Temporary add(String destinationRelativePath, Directory base, String... patterns) {
+    public Folder add(Directory base, String... patterns) {
         if (base != null) {
             operations.add(new Operation() {
 
@@ -222,7 +218,7 @@ public final class Temporary {
                  */
                 @Override
                 public void moveTo(Directory destination, String... additions) {
-                    base.moveTo(destination.directory(destinationRelativePath), I.array(patterns, additions));
+                    base.moveTo(destination, I.array(patterns, additions));
                 }
 
                 /**
@@ -230,15 +226,15 @@ public final class Temporary {
                  */
                 @Override
                 public void copyTo(Directory destination, String... additions) {
-                    base.copyTo(destination.directory(destinationRelativePath), I.array(patterns, additions));
+                    base.copyTo(destination, I.array(patterns, additions));
                 }
 
                 /**
                  * {@inheritDoc}
                  */
                 @Override
-                public void packTo(ArchiveOutputStream archive, String... additions) {
-                    base.walkFiles(I.array(patterns, additions)).to(file -> pack(archive, base, file, destinationRelativePath));
+                public void packTo(ArchiveOutputStream archive, Directory relative, String... additions) {
+                    base.walkFiles(I.array(patterns, additions)).to(file -> pack(archive, base, file, relative));
                 }
 
                 /**
@@ -256,7 +252,99 @@ public final class Temporary {
                 public Signal<Ⅱ<Directory, Directory>> walkDirectories(String... additions) {
                     return base.walkDirectories(I.array(patterns, additions)).map(dir -> I.pair(base, dir));
                 }
+
+                /**
+                 * {@inheritDoc}
+                 */
+                @Override
+                public Signal<Location> entry() {
+                    return I.signal(base);
+                }
             });
+        }
+        return this;
+    }
+
+    /**
+     * <p>
+     * Use destination relative path for entries.
+     * </p>
+     * <pre>
+     * folder.add("main.jar").add("lib", entry -> entry.add("one.jar").add("other.jar"));
+     * folder.copyTo("output");
+     * </pre>
+     * <p>
+     * {@link Folder} will deploy jars into "lib" directory.
+     * </p>
+     * <pre>
+     * output
+     *   - main.jar
+     *   - lib
+     *     - one.jar
+     *     - other.jar
+     * </pre>
+     * 
+     * @param relative A destination relative path.
+     * @param entries Your entries.
+     * @return
+     */
+    public Folder add(String relative, Function<Folder, Folder> entries) {
+        return add(Locator.directory(relative), entries);
+    }
+
+    /**
+     * <p>
+     * Use destination relative path for entries.
+     * </p>
+     * <pre>
+     * folder.add("main.jar").add("lib", entry -> entry.add("one.jar").add("other.jar"));
+     * folder.copyTo("output");
+     * </pre>
+     * <p>
+     * {@link Folder} will deploy jars into "lib" directory.
+     * </p>
+     * <pre>
+     * output
+     *   - main.jar
+     *   - lib
+     *     - one.jar
+     *     - other.jar
+     * </pre>
+     * 
+     * @param relative A destination relative path.
+     * @param entries Your entries.
+     * @return
+     */
+    public Folder add(Path relative, Function<Folder, Folder> entries) {
+        return add(Locator.directory(relative), entries);
+    }
+
+    /**
+     * <p>
+     * Use destination relative path for entries.
+     * </p>
+     * <pre>
+     * folder.add("main.jar").add("lib", entry -> entry.add("one.jar").add("other.jar"));
+     * folder.copyTo("output");
+     * </pre>
+     * <p>
+     * {@link Folder} will deploy jars into "lib" directory.
+     * </p>
+     * <pre>
+     * output
+     *   - main.jar
+     *   - lib
+     *     - one.jar
+     *     - other.jar
+     * </pre>
+     * 
+     * @param relative A destination relative path.
+     * @param entries Your entries.
+     * @return
+     */
+    public Folder add(Directory relative, Function<Folder, Folder> entries) {
+        if (entries != null) {
+            operations.addAll(I.signal(entries.apply(Locator.folder()).operations).map(op -> new Allocator(op, relative)).toList());
         }
         return this;
     }
@@ -266,7 +354,7 @@ public final class Temporary {
      * 
      * @return
      */
-    public Temporary delete(String... patterns) {
+    public Folder delete(String... patterns) {
         operations.forEach(operation -> operation.delete(patterns));
 
         return this;
@@ -303,14 +391,15 @@ public final class Temporary {
      * 
      * @param archive
      */
-    public void packTo(File archive, String... patterns) {
+    public File packTo(File archive, String... patterns) {
         try (ArchiveOutputStream out = new ArchiveStreamFactory()
                 .createArchiveOutputStream(archive.extension().replaceAll("7z", "7z-override"), archive.newOutputStream())) {
-            operations.forEach(operation -> operation.packTo(out, patterns));
+            operations.forEach(operation -> operation.packTo(out, Locator.directory(""), patterns));
             out.finish();
         } catch (Exception e) {
             throw I.quiet(e);
         }
+        return archive;
     }
 
     /**
@@ -328,7 +417,7 @@ public final class Temporary {
      * @return
      */
     public Signal<Ⅱ<Directory, File>> walkFilesWithBase(String... patterns) {
-        return I.signal(operations).concatMap(op -> op.walkFiles(patterns));
+        return I.signal(operations).flatMap(op -> op.walkFiles(patterns));
     }
 
     /**
@@ -346,7 +435,16 @@ public final class Temporary {
      * @return
      */
     public Signal<Ⅱ<Directory, Directory>> walkDirectoriesWithBase(String... patterns) {
-        return I.signal(operations).concatMap(op -> op.walkDirectories(patterns));
+        return I.signal(operations).flatMap(op -> op.walkDirectories(patterns));
+    }
+
+    /**
+     * List up all entries.
+     * 
+     * @return
+     */
+    public Signal<Location> entries() {
+        return I.signal(operations).flatMap(Operation::entry);
     }
 
     /**
@@ -357,9 +455,9 @@ public final class Temporary {
      * @param file
      * @param relative
      */
-    private void pack(ArchiveOutputStream out, Directory directory, File file, String relative) {
+    private void pack(ArchiveOutputStream out, Directory directory, File file, Directory relative) {
         try {
-            ArchiveEntry entry = out.createArchiveEntry(file.asJavaFile(), directory.relativize(file).path());
+            ArchiveEntry entry = out.createArchiveEntry(file.asJavaFile(), relative.file(directory.relativize(file)).path());
             out.putArchiveEntry(entry);
 
             try (InputStream in = file.newInputStream()) {
@@ -372,7 +470,7 @@ public final class Temporary {
     }
 
     /**
-     * Definition of {@link Temporary} operation.
+     * Definition of {@link Folder} operation.
      */
     private interface Operation {
 
@@ -402,10 +500,10 @@ public final class Temporary {
         /**
          * Pack reosources to the specified {@link File}.
          * 
+         * @param relative
          * @param patterns
-         * @param destination
          */
-        void packTo(ArchiveOutputStream archive, String... patterns);
+        void packTo(ArchiveOutputStream archive, Directory relative, String... patterns);
 
         /**
          * List up all resources.
@@ -422,5 +520,84 @@ public final class Temporary {
          * @return
          */
         Signal<Ⅱ<Directory, Directory>> walkDirectories(String... patterns);
+
+        Signal<Location> entry();
+    }
+
+    /**
+     * Allocator for destination path.
+     */
+    private static class Allocator implements Operation {
+
+        /** The delegation. */
+        private final Operation delegator;
+
+        /** The destination relative path. */
+        private final Directory relative;
+
+        /**
+         * @param delegator
+         * @param relative
+         */
+        private Allocator(Operation delegator, Directory relative) {
+            this.delegator = delegator;
+            this.relative = relative;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void delete(String... patterns) {
+            delegator.delete(patterns);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void moveTo(Directory destination, String... patterns) {
+            delegator.moveTo(destination.directory(relative), patterns);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void copyTo(Directory destination, String... patterns) {
+            delegator.copyTo(destination.directory(relative), patterns);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void packTo(ArchiveOutputStream archive, Directory relative, String... patterns) {
+            delegator.packTo(archive, this.relative, patterns);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public Signal<Ⅱ<Directory, File>> walkFiles(String... patterns) {
+            return delegator.walkFiles(patterns);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public Signal<Ⅱ<Directory, Directory>> walkDirectories(String... patterns) {
+            return delegator.walkDirectories(patterns);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public Signal<Location> entry() {
+            return delegator.entry();
+        }
     }
 }

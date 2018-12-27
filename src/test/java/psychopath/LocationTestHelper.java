@@ -9,11 +9,12 @@
  */
 package psychopath;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 
 import java.nio.file.Path;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.Comparator;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.zip.CRC32;
@@ -129,14 +130,14 @@ public class LocationTestHelper {
         assert actual.isPresent();
 
         Directory e = locateDirectory(actual.name() + " expected", expected);
-        List<Location<?>> expecteds = e.descendant().toList();
-        List<Location<?>> actuals = actual.descendant().toList();
+        List<Location<?>> expecteds = e.descendant().sort(Comparator.naturalOrder()).toList();
+        List<Location<?>> actuals = actual.descendant().sort(Comparator.naturalOrder()).toList();
 
         for (int i = 0; i < expecteds.size(); i++) {
             Location<?> expectedLocation = expecteds.get(i);
             Location<?> actualLocation = actuals.get(i);
 
-            assert e.relativize(expectedLocation).equals(actual.relativize(actualLocation));
+            assert e.relativize(expectedLocation).path().equals(actual.relativize(actualLocation).path());
 
             if (expectedLocation.isFile()) {
                 // check contents
