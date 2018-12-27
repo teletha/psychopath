@@ -16,7 +16,7 @@ import psychopath.File;
 import psychopath.LocationTestHelper;
 import psychopath.Locator;
 
-public class SevenZipTest extends LocationTestHelper {
+class SevenZipTest extends LocationTestHelper {
 
     private String ext = "7z";
 
@@ -35,11 +35,13 @@ public class SevenZipTest extends LocationTestHelper {
         Locator.folder().add(dir).packTo(file);
 
         assert match(file.unpackToTemporary(), $ -> {
-            $.file("file", "text");
-            $.dir("inside", () -> {
-                $.file("1", "1");
-                $.file("2", "22");
-                $.file("3", "333");
+            $.dir("root", () -> {
+                $.file("file", "text");
+                $.dir("inside", () -> {
+                    $.file("1", "1");
+                    $.file("2", "22");
+                    $.file("3", "333");
+                });
             });
         });
     }
@@ -58,10 +60,12 @@ public class SevenZipTest extends LocationTestHelper {
         Locator.folder().add(dir).packTo(file);
 
         assert match(file.unpackToTemporary(), $ -> {
-            $.dir("るーと", () -> {
-                $.file("ファイルⅰ", "ⅰ");
-                $.file("ファイル②", "②");
-                $.file("ファイル参", "参");
+            $.dir("root", () -> {
+                $.dir("るーと", () -> {
+                    $.file("ファイルⅰ", "ⅰ");
+                    $.file("ファイル②", "②");
+                    $.file("ファイル参", "参");
+                });
             });
         });
     }

@@ -128,6 +128,41 @@ class FolderTest extends LocationTestHelper {
         });
     }
 
+    @Test
+    void destinationAddDirectory() {
+        Folder folder = Locator.folder().add(Locator.directory("lib"), e -> e.add(locateDirectory("sub", $ -> {
+            $.file("one.jar");
+            $.file("other.jar");
+        })));
+
+        assert matchDestination(folder, $ -> {
+            $.dir("lib", () -> {
+                $.dir("sub", () -> {
+                    $.file("one.jar");
+                    $.file("other.jar");
+                });
+            });
+        });
+    }
+
+    @Test
+    void destinationAddDirectoryPattern() {
+        Folder folder = Locator.folder().add(Locator.directory("lib"), e -> e.add(locateDirectory("sub", $ -> {
+            $.file("one.jar");
+            $.file("other.jar");
+            $.file("no-match.txt");
+        }), "**.jar"));
+
+        assert matchDestination(folder, $ -> {
+            $.dir("lib", () -> {
+                $.dir("sub", () -> {
+                    $.file("one.jar");
+                    $.file("other.jar");
+                });
+            });
+        });
+    }
+
     /**
      * Helper method to test copied, packed and moved file structures.
      * 
@@ -164,7 +199,7 @@ class FolderTest extends LocationTestHelper {
      * @return
      */
     private boolean matchPackDestination(Folder folder, Consumer<FileSystemDSL> expected) {
-        assert match(folder.packTo(locateFile("pack.zip")).asArchive(), expected);
+        assert match(folder.packTo(locateFile("pack.zip")).unpackToTemporary(), expected);
 
         return true;
     }

@@ -9,11 +9,13 @@
  */
 package psychopath;
 
-import static java.nio.file.StandardCopyOption.*;
-import static java.nio.file.StandardOpenOption.*;
-import static java.util.concurrent.TimeUnit.*;
+import static java.nio.file.StandardCopyOption.ATOMIC_MOVE;
+import static java.nio.file.StandardCopyOption.COPY_ATTRIBUTES;
+import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
+import static java.nio.file.StandardOpenOption.CREATE;
+import static java.nio.file.StandardOpenOption.WRITE;
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOError;
 import java.io.IOException;
@@ -38,10 +40,8 @@ import java.util.Set;
 import java.util.function.Consumer;
 
 import org.apache.commons.compress.archivers.ArchiveEntry;
-import org.apache.commons.compress.archivers.ArchiveException;
 import org.apache.commons.compress.archivers.ArchiveInputStream;
 import org.apache.commons.compress.archivers.ArchiveStreamFactory;
-import org.apache.commons.compress.archivers.StreamingNotSupportedException;
 
 import kiss.I;
 import kiss.Signal;
@@ -789,25 +789,6 @@ public class File extends Location<File> {
     @Override
     protected File convert(Path path) {
         return Locator.file(path);
-    }
-
-    /**
-     * Detect archive file system.
-     * 
-     * @return An archive.
-     */
-    private ArchiveInputStream detect() {
-        ArchiveStreamFactory factory = new ArchiveStreamFactory(System.getProperty("file.encoding"));
-
-        try {
-            try {
-                return factory.createArchiveInputStream(extension(), new BufferedInputStream(newInputStream()));
-            } catch (StreamingNotSupportedException e) {
-                return factory.createArchiveInputStream(new BufferedInputStream(newInputStream()));
-            }
-        } catch (ArchiveException e) {
-            throw I.quiet(e);
-        }
     }
 
     /**
