@@ -77,4 +77,17 @@ class LocationTest {
         assert file.getName().equals("test");
         assert file.getParentFile() == null;
     }
+
+    @Test
+    void match() {
+        assert Locator.file("file").match("file") == true;
+        assert Locator.file("file").match("fil?") == true;
+        assert Locator.file("dir/file").match("*/file") == true;
+        assert Locator.file("file").match("**") == true;
+
+        assert Locator.file("file").match("not") == false;
+        assert Locator.file("file").match("!not") == true;
+        assert Locator.file("dir/file").match("not/**") == false;
+        assert Locator.file("dir/file").match("!not/**") == true;
+    }
 }

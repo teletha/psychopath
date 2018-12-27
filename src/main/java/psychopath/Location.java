@@ -701,6 +701,22 @@ public abstract class Location<Self extends Location> implements Comparable<Loca
     public abstract FileLock lock(WiseRunnable failed);
 
     /**
+     * Test matching the specified pattern to this {@link Location}.
+     * 
+     * @param pattern A glob pattern.
+     * @return A result.
+     */
+    public final boolean match(String pattern) {
+        boolean result = true;
+
+        if (pattern.charAt(0) == '!') {
+            pattern = pattern.substring(1);
+            result = false;
+        }
+        return path.getFileSystem().getPathMatcher("glob:".concat(pattern)).matches(path) == result;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
