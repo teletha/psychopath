@@ -464,9 +464,35 @@ public abstract class Location<Self extends Location> implements Comparable<Loca
         return Files.isSymbolicLink(path);
     }
 
-    public abstract Signal<Directory> asDirectory();
+    /**
+     * Convert to {@link Directory} if it is possible. If this {@link Location} indicate
+     * {@link File}, throw error.
+     * 
+     * @throws IllegalStateException If this {@link Location} is NOT {@link Directory}.
+     * @return {@link Directory} interface.
+     */
+    public final Directory asDirectory() {
+        if (isAbsent() || isDirectory()) {
+            return Locator.directory(path);
+        } else {
+            throw new IllegalStateException("[" + path + "] is not directory.");
+        }
+    }
 
-    public abstract Signal<File> asFile();
+    /**
+     * Convert to {@link File} if it is possible. If this {@link Location} indicate
+     * {@link Directory}, throw error.
+     * 
+     * @throws IllegalStateException If this {@link Location} is NOT {@link File}.
+     * @return {@link File} interface.
+     */
+    public final File asFile() {
+        if (isAbsent() || !isDirectory()) {
+            return Locator.file(path);
+        } else {
+            throw new IllegalStateException("[" + path + "] is not file.");
+        }
+    }
 
     /**
      * Returns a {@link File} object representing this path. Where this {@code

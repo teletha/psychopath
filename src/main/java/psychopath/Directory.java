@@ -35,22 +35,6 @@ public class Directory extends Location<Directory> {
         super(path);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Signal<Directory> asDirectory() {
-        return I.signal(this);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Signal<File> asFile() {
-        return Signal.empty();
-    }
-
     public boolean isEmpty() {
         try {
             return Files.list(path).count() == 0;

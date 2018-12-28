@@ -9,7 +9,7 @@
  */
 package psychopath;
 
-import static org.junit.jupiter.api.Assertions.assertIterableEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.nio.file.Path;
 import java.time.Instant;
@@ -141,8 +141,8 @@ public class LocationTestHelper {
 
             if (expectedLocation.isFile()) {
                 // check contents
-                List<String> expectedContent = expectedLocation.asFile().flatMap(f -> f.lines()).toList();
-                List<String> actualContent = actualLocation.asFile().flatMap(f -> f.lines()).toList();
+                List<String> expectedContent = expectedLocation.asFile().lines().toList();
+                List<String> actualContent = actualLocation.asFile().lines().toList();
                 assertIterableEquals(expectedContent, actualContent);
             }
         }

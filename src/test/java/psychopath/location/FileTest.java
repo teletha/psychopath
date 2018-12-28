@@ -24,9 +24,6 @@ import psychopath.File;
 import psychopath.Location;
 import psychopath.Locator;
 
-/**
- * @version 2018/05/31 8:45:32
- */
 class FileTest {
 
     @RegisterExtension
