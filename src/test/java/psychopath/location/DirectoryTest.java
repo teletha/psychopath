@@ -9,109 +9,89 @@
  */
 package psychopath.location;
 
-import java.util.function.Consumer;
-
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.RegisterExtension;
 
-import antibug.CleanRoom;
-import antibug.CleanRoom.FileSystemDSL;
 import psychopath.Directory;
-import psychopath.File;
 import psychopath.Location;
-import psychopath.Locator;
+import psychopath.LocationTestHelper;
 
-/**
- * @version 2018/04/08 15:21:41
- */
-public class DirectoryTest {
-
-    @RegisterExtension
-    static final CleanRoom room = new CleanRoom();
-
-    private Directory current;
-
-    @BeforeEach
-    void setup() {
-        current = null;
-    }
+class DirectoryTest extends LocationTestHelper {
 
     @Test
     void name() {
-        // relative
-        assert relative("name").name().equals("name");
-        assert relative("nest/name").name().equals("name");
-        assert relative("root/nest/name").name().equals("name");
+        // locateAbsentDirectory
+        assert locateAbsentDirectory("name").name().equals("name");
+        assert locateAbsentDirectory("nest/name").name().equals("name");
+        assert locateAbsentDirectory("root/nest/name").name().equals("name");
 
         // absolute
-        assert absolute("name").name().equals("name");
-        assert absolute("nest/name").name().equals("name");
-        assert absolute("root/nest/name").name().equals("name");
+        assert locateAbsoluteAbsentDirectory("name").name().equals("name");
+        assert locateAbsoluteAbsentDirectory("nest/name").name().equals("name");
+        assert locateAbsoluteAbsentDirectory("root/nest/name").name().equals("name");
     }
 
     @Test
     void absolutize() {
-        // relative
-        Location relative = relative("name");
-        Location absolute = relative.absolutize();
-        assert relative != absolute;
+        // locateAbsentDirectory
+        Location locateAbsentDirectory = locateAbsentDirectory("name");
+        Location absolute = locateAbsentDirectory.absolutize();
+        assert locateAbsentDirectory != absolute;
         assert absolute.isAbsolute();
 
         // absolute
-        relative = absolute("name");
-        absolute = relative.absolutize();
-        assert relative == absolute;
+        locateAbsentDirectory = locateAbsoluteAbsentDirectory("name");
+        absolute = locateAbsentDirectory.absolutize();
+        assert locateAbsentDirectory == absolute;
         assert absolute.isAbsolute();
     }
 
     @Test
     void parent() {
-        // relative
-        assert relative("a/b").parent().equals(relative("a"));
-        assert relative("a/b/c").parent().equals(relative("a/b"));
+        // locateAbsentDirectory
+        assert locateAbsentDirectory("a/b").parent().equals(locateAbsentDirectory("a"));
+        assert locateAbsentDirectory("a/b/c").parent().equals(locateAbsentDirectory("a/b"));
 
         // absolute
-        assert absolute("a/b").parent().equals(absolute("a"));
-        assert absolute("a/b/c").parent().equals(absolute("a/b"));
+        assert locateAbsoluteAbsentDirectory("a/b").parent().equals(locateAbsoluteAbsentDirectory("a"));
+        assert locateAbsoluteAbsentDirectory("a/b/c").parent().equals(locateAbsoluteAbsentDirectory("a/b"));
     }
 
     @Test
     void equal() {
-        // relative
-        assert relative("a").equals(relative("a"));
-        assert relative("a/b").equals(relative("a/b"));
-        assert relative("../a").equals(relative("../a"));
+        // locateAbsentDirectory
+        assert locateAbsentDirectory("a").equals(locateAbsentDirectory("a"));
+        assert locateAbsentDirectory("a/b").equals(locateAbsentDirectory("a/b"));
+        assert locateAbsentDirectory("../a").equals(locateAbsentDirectory("../a"));
 
         // absolute
-        assert absolute("a").equals(absolute("a"));
-        assert absolute("a/b").equals(absolute("a/b"));
-        assert absolute("../a").equals(absolute("../a"));
+        assert locateAbsoluteAbsentDirectory("a").equals(locateAbsoluteAbsentDirectory("a"));
+        assert locateAbsoluteAbsentDirectory("a/b").equals(locateAbsoluteAbsentDirectory("a/b"));
+        assert locateAbsoluteAbsentDirectory("../a").equals(locateAbsoluteAbsentDirectory("../a"));
     }
 
     @Test
     void findDirectorySingle() {
-        define($ -> {
+        Directory directory = locateDirectory("dir", $ -> {
             $.dir("dir1");
         });
 
-        assert findDirectory() == 1;
+        assert directory.walkDirectories().toList().size() == 1;
     }
 
     @Test
     void findDirectoryMultiple() {
-        define($ -> {
+        Directory directory = locateDirectory("dir", $ -> {
             $.dir("dir1");
             $.dir("dir2");
             $.dir("dir3");
         });
 
-        assert findDirectory() == 3;
+        assert directory.walkDirectories().toList().size() == 3;
     }
 
     @Test
     void findDirectoryNest() {
-        define($ -> {
+        Directory dir = locateDirectory("dir", $ -> {
             $.dir("dir1", () -> {
                 $.dir("nest11");
                 $.dir("nest12");
@@ -128,52 +108,10 @@ public class DirectoryTest {
             $.file("fileC");
         });
 
-        assert findDirectory() == 6;
-        assert findDirectory("*") == 2;
-        assert findDirectory("*/*") == 4;
-        assert findDirectory("**") == 6;
-        assert findDirectory("*", "*/*1") == 4;
-    }
-
-    /**
-     * Helper to locate {@link File}.
-     * 
-     * @param path
-     * @return
-     */
-    private Directory relative(String path) {
-        return Locator.directory(room.locateAbsent(path));
-    }
-
-    /**
-     * Helper to locate {@link File}.
-     * 
-     * @param path
-     * @return
-     */
-    private Directory absolute(String path) {
-        return Locator.directory(room.locateAbsent(path).toAbsolutePath());
-    }
-
-    /**
-     * Helper.
-     * 
-     * @param definition
-     * @return
-     */
-    private Directory define(Consumer<FileSystemDSL> definition) {
-        room.with(definition);
-
-        return current = Locator.directory(room.root);
-    }
-
-    /**
-     * Compute directory size.
-     * 
-     * @param patterns
-     * @return
-     */
-    private int findDirectory(String... patterns) {
-        return current.walkDirectories(patterns).toList().size();
+        assert dir.walkDirectories().toList().size() == 6;
+        assert dir.walkDirectories("*").toList().size() == 2;
+        assert dir.walkDirectories("*/*").toList().size() == 4;
+        assert dir.walkDirectories("**").toList().size() == 6;
+        assert dir.walkDirectories("*", "*/*1").toList().size() == 4;
     }
 }

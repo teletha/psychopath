@@ -24,9 +24,6 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 import antibug.CleanRoom;
 import antibug.CleanRoom.FileSystemDSL;
 
-/**
- * @version 2018/12/10 12:32:53
- */
 public class LocationTestHelper {
 
     @RegisterExtension
@@ -48,8 +45,28 @@ public class LocationTestHelper {
      * @param name A file name.
      * @return
      */
+    public final File locateAbsoluteAbsent(String name) {
+        return Locator.file(room.locateAbsent(name).toAbsolutePath());
+    }
+
+    /**
+     * Build file tree structure.
+     * 
+     * @param name A file name.
+     * @return
+     */
     public final Directory locateAbsentDirectory(String name) {
         return Locator.directory(room.locateAbsent(name));
+    }
+
+    /**
+     * Build file tree structure.
+     * 
+     * @param name A file name.
+     * @return
+     */
+    public final Directory locateAbsoluteAbsentDirectory(String name) {
+        return Locator.directory(room.locateAbsent(name).toAbsolutePath());
     }
 
     /**

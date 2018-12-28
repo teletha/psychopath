@@ -12,158 +12,144 @@ package psychopath.location;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.nio.file.Path;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.RegisterExtension;
 
-import antibug.CleanRoom;
 import psychopath.Directory;
 import psychopath.File;
 import psychopath.Location;
-import psychopath.Locator;
+import psychopath.LocationTestHelper;
 
-class FileTest {
+class FileTest extends LocationTestHelper {
 
-    @RegisterExtension
-    CleanRoom room = new CleanRoom();
-
-    /** The relative root path. */
-    String relativeRoot = room.root.toString().replace(java.io.File.separatorChar, '/') + "/";
-
-    /** The absolute root path. */
-    String absoluteRoot = room.root.toAbsolutePath().toString().replace(java.io.File.separatorChar, '/') + "/";
+    @Test
+    void asFile() {
+    }
 
     @Test
     void name() {
-        // relative
-        assert relative("name").name().equals("name");
-        assert relative("nest/name").name().equals("name");
-        assert relative("root/nest/name").name().equals("name");
+        // locateAbsent
+        assert locateAbsent("name").name().equals("name");
+        assert locateAbsent("nest/name").name().equals("name");
+        assert locateAbsent("root/nest/name").name().equals("name");
 
-        // absolute
-        assert absolute("name").name().equals("name");
-        assert absolute("nest/name").name().equals("name");
-        assert absolute("root/nest/name").name().equals("name");
+        // locateAbsoluteAbsent
+        assert locateAbsoluteAbsent("name").name().equals("name");
+        assert locateAbsoluteAbsent("nest/name").name().equals("name");
+        assert locateAbsoluteAbsent("root/nest/name").name().equals("name");
     }
 
     @Test
     void base() {
-        // relative
-        assert relative("test").base().equals("test");
-        assert relative("test.txt").base().equals("test");
-        assert relative("test.dummy.log").base().equals("test.dummy");
-        assert relative("text.").base().equals("text");
-        assert relative(".gitignore").base().equals("");
+        // locateAbsent
+        assert locateAbsent("test").base().equals("test");
+        assert locateAbsent("test.txt").base().equals("test");
+        assert locateAbsent("test.dummy.log").base().equals("test.dummy");
+        assert locateAbsent("text.").base().equals("text");
+        assert locateAbsent(".gitignore").base().equals("");
 
-        // absolute
-        assert absolute("test").base().equals("test");
-        assert absolute("test.txt").base().equals("test");
-        assert absolute("test.dummy.log").base().equals("test.dummy");
-        assert absolute("text.").base().equals("text");
-        assert absolute(".gitignore").base().equals("");
+        // locateAbsoluteAbsent
+        assert locateAbsoluteAbsent("test").base().equals("test");
+        assert locateAbsoluteAbsent("test.txt").base().equals("test");
+        assert locateAbsoluteAbsent("test.dummy.log").base().equals("test.dummy");
+        assert locateAbsoluteAbsent("text.").base().equals("text");
+        assert locateAbsoluteAbsent(".gitignore").base().equals("");
     }
 
     @Test
     void extension() {
-        // relative
-        assert relative("test").extension().equals("");
-        assert relative("test.txt").extension().equals("txt");
-        assert relative("test.dummy.log").extension().equals("log");
-        assert relative("text.").extension().equals("");
-        assert relative(".gitignore").extension().equals("gitignore");
+        // locateAbsent
+        assert locateAbsent("test").extension().equals("");
+        assert locateAbsent("test.txt").extension().equals("txt");
+        assert locateAbsent("test.dummy.log").extension().equals("log");
+        assert locateAbsent("text.").extension().equals("");
+        assert locateAbsent(".gitignore").extension().equals("gitignore");
 
-        // absolute
-        assert absolute("test").extension().equals("");
-        assert absolute("test.txt").extension().equals("txt");
-        assert absolute("test.dummy.log").extension().equals("log");
-        assert absolute("text.").extension().equals("");
-        assert absolute(".gitignore").extension().equals("gitignore");
+        // locateAbsoluteAbsent
+        assert locateAbsoluteAbsent("test").extension().equals("");
+        assert locateAbsoluteAbsent("test.txt").extension().equals("txt");
+        assert locateAbsoluteAbsent("test.dummy.log").extension().equals("log");
+        assert locateAbsoluteAbsent("text.").extension().equals("");
+        assert locateAbsoluteAbsent(".gitignore").extension().equals("gitignore");
     }
 
     @Test
     void locateByNewBaseName() {
-        // relative
-        assert relative("test").base("new").path().equals(relativeRoot + "new");
-        assert relative("test.txt").base("new").path().equals(relativeRoot + "new.txt");
-        assert relative("test.dummy.log").base("new").path().equals(relativeRoot + "new.log");
-        assert relative("text.").base("new").path().equals(relativeRoot + "new");
-        assert relative(".gitignore").base("new").path().equals(relativeRoot + "new.gitignore");
-        assert relative("dir/file").base("new").path().equals(relativeRoot + "dir/new");
-        assert relative("root/dir/file").base("new").path().equals(relativeRoot + "root/dir/new");
+        // locateAbsent
+        assert locateAbsent("test").base("new").name().equals("new");
+        assert locateAbsent("test.txt").base("new").name().equals("new.txt");
+        assert locateAbsent("test.dummy.log").base("new").name().equals("new.log");
+        assert locateAbsent("text.").base("new").name().equals("new");
+        assert locateAbsent(".gitignore").base("new").name().equals("new.gitignore");
 
-        // absolute
-        assert absolute("test").base("new").path().equals(absoluteRoot + "new");
-        assert absolute("test.txt").base("new").path().equals(absoluteRoot + "new.txt");
-        assert absolute("test.dummy.log").base("new").path().equals(absoluteRoot + "new.log");
-        assert absolute("text.").base("new").path().equals(absoluteRoot + "new");
-        assert absolute(".gitignore").base("new").path().equals(absoluteRoot + "new.gitignore");
-        assert absolute("dir/file").base("new").path().equals(absoluteRoot + "dir/new");
-        assert absolute("root/dir/file").base("new").path().equals(absoluteRoot + "root/dir/new");
+        // locateAbsoluteAbsent
+        assert locateAbsoluteAbsent("test").base("new").name().equals("new");
+        assert locateAbsoluteAbsent("test.txt").base("new").name().equals("new.txt");
+        assert locateAbsoluteAbsent("test.dummy.log").base("new").name().equals("new.log");
+        assert locateAbsoluteAbsent("text.").base("new").name().equals("new");
+        assert locateAbsoluteAbsent(".gitignore").base("new").name().equals("new.gitignore");
     }
 
     @Test
     void locateByNewExtension() {
-        // relative
-        assert relative("test").extension("new").path().equals(relativeRoot + "test.new");
-        assert relative("test.txt").extension("new").path().equals(relativeRoot + "test.new");
-        assert relative("test.dummy.log").extension("new").path().equals(relativeRoot + "test.dummy.new");
-        assert relative("text.").extension("new").path().equals(relativeRoot + "text.new");
-        assert relative(".gitignore").extension("new").path().equals(relativeRoot + ".new");
+        // locateAbsent
+        assert locateAbsent("test").extension("new").name().equals("test.new");
+        assert locateAbsent("test.txt").extension("new").name().equals("test.new");
+        assert locateAbsent("test.dummy.log").extension("new").name().equals("test.dummy.new");
+        assert locateAbsent("text.").extension("new").name().equals("text.new");
+        assert locateAbsent(".gitignore").extension("new").name().equals(".new");
 
-        // absolute
-        assert absolute("test").extension("new").path().equals(absoluteRoot + "test.new");
-        assert absolute("test.txt").extension("new").path().equals(absoluteRoot + "test.new");
-        assert absolute("test.dummy.log").extension("new").path().equals(absoluteRoot + "test.dummy.new");
-        assert absolute("text.").extension("new").path().equals(absoluteRoot + "text.new");
-        assert absolute(".gitignore").extension("new").path().equals(absoluteRoot + ".new");
+        // locateAbsoluteAbsent
+        assert locateAbsoluteAbsent("test").extension("new").name().equals("test.new");
+        assert locateAbsoluteAbsent("test.txt").extension("new").name().equals("test.new");
+        assert locateAbsoluteAbsent("test.dummy.log").extension("new").name().equals("test.dummy.new");
+        assert locateAbsoluteAbsent("text.").extension("new").name().equals("text.new");
+        assert locateAbsoluteAbsent(".gitignore").extension("new").name().equals(".new");
     }
 
     @Test
     void absolutize() {
-        // relative
-        Location relative = relative("name");
-        Location absolute = relative.absolutize();
-        assert relative != absolute;
-        assert absolute.isAbsolute();
+        // locateAbsent
+        Location locateAbsent = locateAbsent("name");
+        Location locateAbsoluteAbsent = locateAbsent.absolutize();
+        assert locateAbsent != locateAbsoluteAbsent;
+        assert locateAbsoluteAbsent.isAbsolute();
 
-        // absolute
-        relative = absolute("name");
-        absolute = relative.absolutize();
-        assert relative == absolute;
-        assert absolute.isAbsolute();
+        // locateAbsoluteAbsent
+        locateAbsent = locateAbsoluteAbsent("name");
+        locateAbsoluteAbsent = locateAbsent.absolutize();
+        assert locateAbsent == locateAbsoluteAbsent;
+        assert locateAbsoluteAbsent.isAbsolute();
     }
 
     @Test
     void parent() {
-        // relative
-        assert relative("a/b").parent().equals(relativeDirectory("a"));
-        assert relative("a/b/c").parent().equals(relativeDirectory("a/b"));
+        // locateAbsent
+        assert locateAbsent("a/b").parent().equals(locateAbsentDirectory("a"));
+        assert locateAbsent("a/b/c").parent().equals(locateAbsentDirectory("a/b"));
 
-        // absolute
-        assert absolute("a/b").parent().equals(absoluteDirectory("a"));
-        assert absolute("a/b/c").parent().equals(absoluteDirectory("a/b"));
+        // locateAbsoluteAbsent
+        assert locateAbsoluteAbsent("a/b").parent().equals(locateAbsoluteAbsentDirectory("a"));
+        assert locateAbsoluteAbsent("a/b/c").parent().equals(locateAbsoluteAbsentDirectory("a/b"));
     }
 
     @Test
     void equal() {
-        // relative
-        assert relative("a").equals(relative("a"));
-        assert relative("a/b").equals(relative("a/b"));
-        assert relative("../a").equals(relative("../a"));
+        // locateAbsent
+        assert locateAbsent("a").equals(locateAbsent("a"));
+        assert locateAbsent("a/b").equals(locateAbsent("a/b"));
+        assert locateAbsent("../a").equals(locateAbsent("../a"));
 
-        // absolute
-        assert absolute("a").equals(absolute("a"));
-        assert absolute("a/b").equals(absolute("a/b"));
-        assert absolute("../a").equals(absolute("../a"));
+        // locateAbsoluteAbsent
+        assert locateAbsoluteAbsent("a").equals(locateAbsoluteAbsent("a"));
+        assert locateAbsoluteAbsent("a/b").equals(locateAbsoluteAbsent("a/b"));
+        assert locateAbsoluteAbsent("../a").equals(locateAbsoluteAbsent("../a"));
     }
 
     @Test
-    @Disabled
     void copyTo() {
-        File file = at(room.locateFile("base", "ok"));
-        Directory dest = Locator.directory(room.locateDirectory("dest"));
+        File file = locateFile("base", "ok");
+        Directory dest = locateDirectory("dest");
         assert dest.isEmpty() == true;
 
         file.copyTo(dest);
@@ -174,7 +160,7 @@ class FileTest {
 
     @Test
     void newInputStream() throws IOException {
-        File file = at(room.locateFile("test", "contents"));
+        File file = locateFile("test", "contents");
         assert file.isPresent();
         assert file.size() != 0;
 
@@ -184,7 +170,7 @@ class FileTest {
 
     @Test
     void newOutputStream() throws Exception {
-        File file = at(room.locateAbsent("test"));
+        File file = locateAbsent("test");
         assert file.isAbsent();
 
         OutputStream stream = file.newOutputStream();
@@ -192,55 +178,5 @@ class FileTest {
         stream.close();
         assert file.isPresent();
         assert file.size() != 0;
-    }
-
-    /**
-     * Helper to locate {@link File}.
-     * 
-     * @param path
-     * @return
-     */
-    private File relative(String path) {
-        return Locator.file(room.locateAbsent(path));
-    }
-
-    /**
-     * Helper to locate {@link File}.
-     * 
-     * @param path
-     * @return
-     */
-    private File absolute(String path) {
-        return Locator.file(room.locateAbsent(path).toAbsolutePath());
-    }
-
-    /**
-     * Helper to locate {@link File}.
-     * 
-     * @param path
-     * @return
-     */
-    private Directory relativeDirectory(String path) {
-        return Locator.directory(room.locateAbsent(path));
-    }
-
-    /**
-     * Helper to locate {@link File}.
-     * 
-     * @param path
-     * @return
-     */
-    private Directory absoluteDirectory(String path) {
-        return Locator.directory(room.locateAbsent(path).toAbsolutePath());
-    }
-
-    /**
-     * Helper to locate {@link File}.
-     * 
-     * @param path
-     * @return
-     */
-    private File at(Path path) {
-        return Locator.file(path);
     }
 }
