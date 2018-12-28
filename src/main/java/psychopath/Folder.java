@@ -370,6 +370,7 @@ public final class Folder {
      */
     private static void pack(ArchiveOutputStream out, Directory directory, File file, Directory relative) {
         try {
+            System.out.println(directory + "  " + file);
             ArchiveEntry entry = out.createArchiveEntry(file.asJavaFile(), relative.file(directory.relativize(file)).path());
             out.putArchiveEntry(entry);
 
@@ -560,7 +561,7 @@ public final class Folder {
          */
         @Override
         public void packTo(ArchiveOutputStream archive, Directory relative, String... patterns) {
-            directory.walkFiles(I.array(patterns, patternsWhenAdd)).to(file -> pack(archive, directory.parent(), file, relative));
+            directory.walkFiles(I.array(patterns, patternsWhenAdd)).to(file -> pack(archive, directory, file, relative));
         }
 
         /**

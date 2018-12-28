@@ -137,6 +137,22 @@ class MoveTest extends LocationTestHelper {
     }
 
     @Test
+    public void directoryToDirectoryWithPattern() {
+        Directory in = locateDirectory("In", $ -> {
+            $.file("1", "One");
+        });
+        Directory out = locateDirectory("Out", $ -> {
+            $.file("1", "This text will be overwritten by input file.");
+        });
+
+        in.moveTo(out, "**");
+
+        assert match(out, $ -> {
+            $.file("1", "One");
+        });
+    }
+
+    @Test
     public void directoryToDirectoryWithFilter() {
         Directory in = locateDirectory("In", $ -> {
             $.file("file");

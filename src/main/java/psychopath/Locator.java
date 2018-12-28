@@ -34,7 +34,7 @@ public class Locator {
     private static final Path temporary;
 
     static {
-        I.load(DirectoryCodec.class, false);
+        I.load(DirectoryCodec.class, true);
 
         try {
             // Create the root temporary directory for psychopath.

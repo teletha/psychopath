@@ -183,6 +183,48 @@ class FolderTest extends LocationTestHelper {
     }
 
     @Test
+    void addDirectoryWithAddPattern2() {
+        Directory dir1 = locateDirectory("dir1", $ -> {
+            $.dir("child1", () -> {
+                $.file("11.jar");
+                $.file("12.txt");
+            });
+            $.dir("child2", () -> {
+                $.file("21.jar");
+                $.file("22.txt");
+            });
+        });
+
+        Directory dir2 = locateDirectory("dir2", $ -> {
+            $.dir("sub1", () -> {
+                $.file("11.jar");
+                $.file("12.txt");
+            });
+            $.dir("sub2", () -> {
+                $.file("21.jar");
+                $.file("22.txt");
+            });
+        });
+
+        Folder folder = Locator.folder().add(dir1, "**").add(dir2, "**");
+
+        assert matchDestination(folder, $ -> {
+            $.dir("child1", () -> {
+                $.file("11.jar");
+            });
+            $.dir("child2", () -> {
+                $.file("21.jar");
+            });
+            $.dir("sub1", () -> {
+                $.file("12.txt");
+            });
+            $.dir("sub2", () -> {
+                $.file("22.txt");
+            });
+        });
+    }
+
+    @Test
     void addSignalDirectory() {
         Folder temporary = Locator.folder();
 

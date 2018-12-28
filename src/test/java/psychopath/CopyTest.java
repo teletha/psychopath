@@ -116,12 +116,28 @@ class CopyTest extends LocationTestHelper {
             $.file("1", "One");
         });
         Directory out = locateDirectory("Out", $ -> {
-            $.file("1", "This text will be overwritten by input file.");
+            $.file("1", "This text will be remaining.");
         });
 
         in.copyTo(out);
 
         assert sameDirectory(in, out.directory("In"));
+    }
+
+    @Test
+    public void directoryToDirectoryWithPattern() {
+        Directory in = locateDirectory("In", $ -> {
+            $.file("1", "One");
+        });
+        Directory out = locateDirectory("Out", $ -> {
+            $.file("1", "This text will be overwritten by input file.");
+        });
+
+        in.copyTo(out, "**");
+
+        assert match(out, $ -> {
+            $.file("1", "One");
+        });
     }
 
     @Test
