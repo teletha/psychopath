@@ -11,60 +11,24 @@ package psychopath.archive;
 
 import org.junit.jupiter.api.Test;
 
-import psychopath.Directory;
 import psychopath.File;
 import psychopath.LocationTestHelper;
 import psychopath.Locator;
 
 class RarTest extends LocationTestHelper {
 
-    private String ext = "rar";
-
     @Test
-    void packAndUnpack() {
-        Directory dir = locateDirectory("root", $ -> {
-            $.file("file", "text");
-            $.dir("inside", () -> {
-                $.file("1", "1");
-                $.file("2", "22");
-                $.file("3", "333");
-            });
-        });
-
-        File file = locateFile("root." + ext);
-        Locator.folder().add(dir).packTo(file);
-
-        assert match(file.unpackToTemporary(), $ -> {
+    void unpack() {
+        File archive = Locator.file("src/test/resources/root.rar");
+        assert archive.isPresent();
+        assert match(archive.unpackToTemporary(), $ -> {
             $.dir("root", () -> {
-                $.file("file", "text");
-                $.dir("inside", () -> {
-                    $.file("1", "1");
-                    $.file("2", "22");
-                    $.file("3", "333");
-                });
-            });
-        });
-    }
-
-    @Test
-    void nonAscii() {
-        Directory dir = locateDirectory("root", $ -> {
-            $.dir("るーと", () -> {
-                $.file("ファイルⅰ", "ⅰ");
-                $.file("ファイル②", "②");
-                $.file("ファイル参", "参");
-            });
-        });
-
-        File file = locateFile("root." + ext);
-        Locator.folder().add(dir).packTo(file);
-
-        assert match(file.unpackToTemporary(), $ -> {
-            $.dir("root", () -> {
-                $.dir("るーと", () -> {
-                    $.file("ファイルⅰ", "ⅰ");
-                    $.file("ファイル②", "②");
-                    $.file("ファイル参", "参");
+                $.file("1.txt", "1");
+                $.file("2.txt", "2");
+                $.file("3.txt", "3");
+                $.dir("sub", () -> {
+                    $.file("non-ascii1.txt", "①");
+                    $.file("non-ascii2.txt", "Ⅱ");
                 });
             });
         });

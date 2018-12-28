@@ -69,4 +69,21 @@ class SevenZipTest extends LocationTestHelper {
             });
         });
     }
+
+    @Test
+    void unpack() {
+        File archive = Locator.file("src/test/resources/root." + ext);
+        assert archive.isPresent();
+        assert match(archive.unpackToTemporary(), $ -> {
+            $.dir("root", () -> {
+                $.file("1.txt", "1");
+                $.file("2.txt", "2");
+                $.file("3.txt", "3");
+                $.dir("sub", () -> {
+                    $.file("non-ascii1.txt", "①");
+                    $.file("non-ascii2.txt", "Ⅱ");
+                });
+            });
+        });
+    }
 }
