@@ -24,7 +24,6 @@ import org.apache.commons.compress.archivers.ArchiveOutputStream;
 import org.apache.commons.compress.archivers.ArchiveStreamProvider;
 import org.apache.commons.compress.archivers.sevenz.SevenZFile;
 import org.apache.commons.compress.archivers.sevenz.SevenZOutputFile;
-import org.apache.commons.compress.compressors.zstandard.ZstdCompressorInputStream;
 import org.apache.commons.compress.utils.SeekableInMemoryByteChannel;
 
 import kiss.I;
@@ -36,7 +35,7 @@ public class SevenZipArchiveStreamProvider implements ArchiveStreamProvider {
      */
     @Override
     public ArchiveInputStream createArchiveInputStream(String name, InputStream input, String encoding) throws ArchiveException {
-        try (InputStream in = new ZstdCompressorInputStream(input)) {
+        try (InputStream in = input) {
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             input.transferTo(out);
 
