@@ -23,17 +23,13 @@ import psychopath.LocationTestHelper;
 class FileTest extends LocationTestHelper {
 
     @Test
-    void asFile() {
-    }
-
-    @Test
     void name() {
-        // locateAbsent
+        // absent
         assert locateAbsent("name").name().equals("name");
         assert locateAbsent("nest/name").name().equals("name");
         assert locateAbsent("root/nest/name").name().equals("name");
 
-        // locateAbsoluteAbsent
+        // absolute
         assert locateAbsoluteAbsent("name").name().equals("name");
         assert locateAbsoluteAbsent("nest/name").name().equals("name");
         assert locateAbsoluteAbsent("root/nest/name").name().equals("name");
@@ -41,14 +37,14 @@ class FileTest extends LocationTestHelper {
 
     @Test
     void base() {
-        // locateAbsent
+        // absent
         assert locateAbsent("test").base().equals("test");
         assert locateAbsent("test.txt").base().equals("test");
         assert locateAbsent("test.dummy.log").base().equals("test.dummy");
         assert locateAbsent("text.").base().equals("text");
         assert locateAbsent(".gitignore").base().equals("");
 
-        // locateAbsoluteAbsent
+        // absolute
         assert locateAbsoluteAbsent("test").base().equals("test");
         assert locateAbsoluteAbsent("test.txt").base().equals("test");
         assert locateAbsoluteAbsent("test.dummy.log").base().equals("test.dummy");
@@ -58,14 +54,14 @@ class FileTest extends LocationTestHelper {
 
     @Test
     void extension() {
-        // locateAbsent
+        // absent
         assert locateAbsent("test").extension().equals("");
         assert locateAbsent("test.txt").extension().equals("txt");
         assert locateAbsent("test.dummy.log").extension().equals("log");
         assert locateAbsent("text.").extension().equals("");
         assert locateAbsent(".gitignore").extension().equals("gitignore");
 
-        // locateAbsoluteAbsent
+        // absolute
         assert locateAbsoluteAbsent("test").extension().equals("");
         assert locateAbsoluteAbsent("test.txt").extension().equals("txt");
         assert locateAbsoluteAbsent("test.dummy.log").extension().equals("log");
@@ -75,14 +71,14 @@ class FileTest extends LocationTestHelper {
 
     @Test
     void locateByNewBaseName() {
-        // locateAbsent
+        // absent
         assert locateAbsent("test").base("new").name().equals("new");
         assert locateAbsent("test.txt").base("new").name().equals("new.txt");
         assert locateAbsent("test.dummy.log").base("new").name().equals("new.log");
         assert locateAbsent("text.").base("new").name().equals("new");
         assert locateAbsent(".gitignore").base("new").name().equals("new.gitignore");
 
-        // locateAbsoluteAbsent
+        // absolute
         assert locateAbsoluteAbsent("test").base("new").name().equals("new");
         assert locateAbsoluteAbsent("test.txt").base("new").name().equals("new.txt");
         assert locateAbsoluteAbsent("test.dummy.log").base("new").name().equals("new.log");
@@ -92,14 +88,14 @@ class FileTest extends LocationTestHelper {
 
     @Test
     void locateByNewExtension() {
-        // locateAbsent
+        // absent
         assert locateAbsent("test").extension("new").name().equals("test.new");
         assert locateAbsent("test.txt").extension("new").name().equals("test.new");
         assert locateAbsent("test.dummy.log").extension("new").name().equals("test.dummy.new");
         assert locateAbsent("text.").extension("new").name().equals("text.new");
         assert locateAbsent(".gitignore").extension("new").name().equals(".new");
 
-        // locateAbsoluteAbsent
+        // absolute
         assert locateAbsoluteAbsent("test").extension("new").name().equals("test.new");
         assert locateAbsoluteAbsent("test.txt").extension("new").name().equals("test.new");
         assert locateAbsoluteAbsent("test.dummy.log").extension("new").name().equals("test.dummy.new");
@@ -109,13 +105,13 @@ class FileTest extends LocationTestHelper {
 
     @Test
     void absolutize() {
-        // locateAbsent
+        // absent
         Location locateAbsent = locateAbsent("name");
         Location locateAbsoluteAbsent = locateAbsent.absolutize();
         assert locateAbsent != locateAbsoluteAbsent;
         assert locateAbsoluteAbsent.isAbsolute();
 
-        // locateAbsoluteAbsent
+        // absolute
         locateAbsent = locateAbsoluteAbsent("name");
         locateAbsoluteAbsent = locateAbsent.absolutize();
         assert locateAbsent == locateAbsoluteAbsent;
@@ -124,23 +120,23 @@ class FileTest extends LocationTestHelper {
 
     @Test
     void parent() {
-        // locateAbsent
+        // absent
         assert locateAbsent("a/b").parent().equals(locateAbsentDirectory("a"));
         assert locateAbsent("a/b/c").parent().equals(locateAbsentDirectory("a/b"));
 
-        // locateAbsoluteAbsent
+        // absolute
         assert locateAbsoluteAbsent("a/b").parent().equals(locateAbsoluteAbsentDirectory("a"));
         assert locateAbsoluteAbsent("a/b/c").parent().equals(locateAbsoluteAbsentDirectory("a/b"));
     }
 
     @Test
     void equal() {
-        // locateAbsent
+        // absent
         assert locateAbsent("a").equals(locateAbsent("a"));
         assert locateAbsent("a/b").equals(locateAbsent("a/b"));
         assert locateAbsent("../a").equals(locateAbsent("../a"));
 
-        // locateAbsoluteAbsent
+        // absolute
         assert locateAbsoluteAbsent("a").equals(locateAbsoluteAbsent("a"));
         assert locateAbsoluteAbsent("a/b").equals(locateAbsoluteAbsent("a/b"));
         assert locateAbsoluteAbsent("../a").equals(locateAbsoluteAbsent("../a"));

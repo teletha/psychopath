@@ -9,23 +9,34 @@
  */
 package psychopath.location;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.RegisterExtension;
 
-import antibug.CleanRoom;
 import antibug.Code;
+import psychopath.Directory;
+import psychopath.File;
+import psychopath.LocationTestHelper;
 import psychopath.Locator;
 
-/**
- * @version 2018/05/31 8:42:45
- */
-class LocationTest {
+class LocationTest extends LocationTestHelper {
 
-    @RegisterExtension
-    static final CleanRoom room = new CleanRoom();
+    @Test
+    void asFile() {
+        assert locateAbsent("absent").asFile() instanceof File;
+        assert locateFile("file").asFile() instanceof File;
+        assertThrows(IllegalStateException.class, () -> locateDirectory("not file").asFile());
+    }
+
+    @Test
+    void asDirectory() {
+        assert locateAbsent("absent").asDirectory() instanceof Directory;
+        assert locateDirectory("directory").asDirectory() instanceof Directory;
+        assertThrows(IllegalStateException.class, () -> locateFile("not directory").asDirectory());
+    }
 
     @Test
     void fileByString() {
@@ -35,7 +46,7 @@ class LocationTest {
         assert Locator.file("inDirectory/file").isAbsent();
 
         // absolute
-        String base = room.root.toAbsolutePath().toString();
+        String base = locateAbsoluteAbsentDirectory("test").toString();
         assert Locator.file(base + "/test.file").isAbsent();
         assert Locator.file(base + "/noExtensionFile").isAbsent();
         assert Locator.file(base + "/inDirectory/file").isAbsent();
@@ -52,7 +63,7 @@ class LocationTest {
         assert Locator.file(Paths.get("inDirectory/file")).isAbsent();
 
         // absolute absent
-        Path base = room.root.toAbsolutePath();
+        Path base = locateAbsoluteAbsentDirectory("test").asJavaPath();
         assert Locator.file(base.resolve("test.file")).isAbsent();
         assert Locator.file(base.resolve("noExtensionFile")).isAbsent();
         assert Locator.file(base.resolve("inDirectory/file")).isAbsent();
