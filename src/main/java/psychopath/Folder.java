@@ -561,7 +561,7 @@ public final class Folder {
          */
         @Override
         public void packTo(ArchiveOutputStream archive, Directory relative, String... patterns) {
-            directory.walkFiles(I.array(patterns, patternsWhenAdd)).to(file -> pack(archive, directory, file, relative));
+            directory.walkFiles(I.array(patterns, patternsWhenAdd)).to(file -> pack(archive, directory.parent(), file, relative));
         }
 
         /**
