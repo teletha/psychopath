@@ -21,6 +21,7 @@ import psychopath.File;
 import psychopath.Folder;
 import psychopath.LocationTestHelper;
 import psychopath.Locator;
+import psychopath.Option;
 
 class FolderTest extends LocationTestHelper {
 
@@ -360,6 +361,22 @@ class FolderTest extends LocationTestHelper {
                 });
             });
         });
+    }
+
+    @Test
+    void testName() {
+        Directory dir1 = locateDirectory("dir1", $ -> {
+            $.dir("child1", () -> {
+                $.file("11.jar");
+                $.file("12.txt");
+            });
+            $.dir("child2", () -> {
+                $.file("21.jar");
+                $.file("22.txt");
+            });
+        });
+        Locator.folder().add2(dir1, op -> op.glob("child*"));
+        Locator.folder().add2(dir1, Option.glob("child*"));
     }
 
     @Test
