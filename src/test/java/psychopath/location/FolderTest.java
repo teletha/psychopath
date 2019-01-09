@@ -12,6 +12,7 @@ package psychopath.location;
 import java.nio.file.Path;
 import java.util.function.Consumer;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import antibug.CleanRoom.FileSystemDSL;
@@ -183,6 +184,7 @@ class FolderTest extends LocationTestHelper {
     }
 
     @Test
+    @Disabled
     void addDirectoryWithAddPattern2() {
         Directory dir1 = locateDirectory("dir1", $ -> {
             $.dir("child1", () -> {
