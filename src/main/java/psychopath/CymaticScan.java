@@ -85,17 +85,13 @@ class CymaticScan implements FileVisitor<Path>, Runnable, Disposable {
      * <li>5 - observe</li>
      * </ol>
      */
-    CymaticScan(Path from, Path to, int type, Observer observer, Disposable disposer, String... patterns) {
+    CymaticScan(Path from, Path to, int type, Observer observer, Disposable disposer, Option.PathManagement option) {
         this(from, to, type, observer, disposer, (BiPredicate) null);
 
-        if (patterns == null) {
-            patterns = new String[0];
-        }
-
         // Parse and create path matchers.
-        for (String pattern : patterns) {
+        for (String pattern : option.patterns) {
             // convert pattern to reduce unnecessary file system scanning
-            if (pattern.equals("*") && patterns.length == 1) {
+            if (pattern.equals("*") && option.patterns.size() == 1) {
                 this.from = from;
                 this.root = false;
             } else if (pattern.equals("**")) {
@@ -361,14 +357,14 @@ class CymaticScan implements FileVisitor<Path>, Runnable, Disposable {
      * @param observer A event listener.
      * @param patterns Name matching patterns.
      */
-    CymaticScan(Path path, Observer observer, Disposable disposer, String... patterns) {
-        this(path, null, 5, observer, disposer, patterns);
+    CymaticScan(Path path, Observer observer, Disposable disposer, Option.PathManagement option) {
+        this(path, null, 5, observer, disposer, option);
 
         try {
             this.service = path.getFileSystem().newWatchService();
 
             // register
-            if (patterns.length == 1 && patterns[0].equals("*")) {
+            if (option.patterns.size() == 1 && option.patterns.get(0).equals("*")) {
                 path.register(service, ENTRY_CREATE, ENTRY_DELETE, ENTRY_MODIFY);
             } else {
                 if (Files.isDirectory(path)) {

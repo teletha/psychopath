@@ -220,7 +220,7 @@ public class Directory extends Location<Directory> {
             CymaticScan scanner;
 
             if (filters == null) {
-                scanner = new CymaticScan(path, out, type, observer, disposer, patterns);
+                scanner = new CymaticScan(path, out, type, observer, disposer, Option.glob(patterns));
             } else {
                 scanner = new CymaticScan(path, out, type, observer, disposer, filters);
             }
@@ -587,7 +587,7 @@ public class Directory extends Location<Directory> {
     public Signal<WatchEvent<Location>> observe(String... patterns) {
         return new Signal<>((observer, disposer) -> {
             // Create logical file system watch service.
-            CymaticScan watcher = new CymaticScan(path, observer, disposer, patterns);
+            CymaticScan watcher = new CymaticScan(path, observer, disposer, Option.glob(patterns));
 
             // Run in anothor thread.
             I.schedule(watcher);

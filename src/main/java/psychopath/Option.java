@@ -10,8 +10,10 @@
 package psychopath;
 
 import java.nio.file.Path;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.BiPredicate;
 
 public interface Option {
 
@@ -23,6 +25,16 @@ public interface Option {
      */
     static PathManagement glob(String... patterns) {
         return new PathManagement().glob(patterns);
+    }
+
+    /**
+     * Build {@link PathManagement} option with {@link PathManagement#take(BiPredicate)}.
+     * 
+     * @param filter A location filter.
+     * @return New created {@link PathManagement}.
+     */
+    static PathManagement take(BiPredicate<Path, BasicFileAttributes> filter) {
+        return new PathManagement().take(filter);
     }
 
     /**
@@ -52,6 +64,9 @@ public interface Option {
         /** The glob patterns. */
         List<String> patterns = new ArrayList();
 
+        /** The generic filter. */
+        BiPredicate<Path, BasicFileAttributes> filter;
+
         /** The departure's root handling. */
         boolean ignoreRoot;
 
@@ -73,6 +88,19 @@ public interface Option {
         public PathManagement glob(String... patterns) {
             if (patterns != null) {
                 this.patterns.addAll(List.of(patterns));
+            }
+            return this;
+        }
+
+        /**
+         * Specify generic filter to specify location.
+         * 
+         * @param filter
+         * @return
+         */
+        public PathManagement take(BiPredicate<Path, BasicFileAttributes> filter) {
+            if (filter != null) {
+                this.filter = filter;
             }
             return this;
         }
