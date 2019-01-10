@@ -9,7 +9,9 @@
  */
 package psychopath;
 
+import java.nio.file.FileSystems;
 import java.nio.file.Path;
+import java.nio.file.PathMatcher;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.List;
@@ -62,7 +64,16 @@ public interface Option {
     class PathManagement {
 
         /** The glob patterns. */
-        List<String> patterns = new ArrayList();
+        private List<String> patterns = new ArrayList();
+
+        /** The include file patterns. */
+        BiPredicate<Path, BasicFileAttributes> include;
+
+        /** The exclude file patterns. */
+        BiPredicate<Path, BasicFileAttributes> exclude;
+
+        /** The exclude directory pattern. */
+        BiPredicate<Path, BasicFileAttributes> directory;
 
         /** The generic filter. */
         BiPredicate<Path, BasicFileAttributes> filter;
@@ -87,7 +98,19 @@ public interface Option {
          */
         public PathManagement glob(String... patterns) {
             if (patterns != null) {
-                this.patterns.addAll(List.of(patterns));
+                // Parse and create path matchers.
+                for (String pattern : patterns) {
+                    if (pattern.charAt(0) != '!') {
+                        // include
+                        include = glob(include, pattern);
+                    } else if (pattern.endsWith("/**")) {
+                        // exclude directory
+                        directory = glob(directory, pattern.substring(1, pattern.length() - 3));
+                    } else {
+                        // exclude files
+                        exclude = glob(exclude, pattern.substring(1));
+                    }
+                }
             }
             return this;
         }
@@ -163,5 +186,24 @@ public interface Option {
             }
             return this;
         }
+
+        /**
+         * <p>
+         * Create {@link BiPredicate} filter by using the specified glob pattern.
+         * </p>
+         * 
+         * @param base
+         * @param pattern
+         * @return
+         */
+        private static BiPredicate<Path, BasicFileAttributes> glob(BiPredicate<Path, BasicFileAttributes> base, String pattern) {
+            // Default file system doesn't support close method, so we can ignore to release
+            // resource.
+            PathMatcher matcher = FileSystems.getDefault().getPathMatcher("glob:".concat(pattern));
+            BiPredicate<Path, BasicFileAttributes> filter = (path, attrs) -> matcher.matches(path);
+
+            return base == null ? filter : base.or(filter);
+        }
+
     }
 }
