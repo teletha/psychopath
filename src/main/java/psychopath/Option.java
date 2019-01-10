@@ -9,6 +9,7 @@
  */
 package psychopath;
 
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +21,7 @@ public interface Option {
      * @param patterns A list of glob patterns.
      * @return New created {@link PathManagement}.
      */
-    public static PathManagement glob(String... patterns) {
+    static PathManagement glob(String... patterns) {
         return new PathManagement().glob(patterns);
     }
 
@@ -29,7 +30,7 @@ public interface Option {
      * 
      * @return New created {@link PathManagement}.
      */
-    public static PathManagement ignoreRoot() {
+    static PathManagement ignoreRoot() {
         return new PathManagement().ignoreRoot();
     }
 
@@ -39,14 +40,14 @@ public interface Option {
      * @param relativePath A relative path from the destination's root {@link Directory}.
      * @return New created {@link PathManagement}.
      */
-    public static PathManagement allocateIn(String relativePath) {
+    static PathManagement allocateIn(String relativePath) {
         return new PathManagement().allocateIn(relativePath);
     }
 
     /**
      * 
      */
-    public class PathManagement {
+    class PathManagement {
 
         /** The glob patterns. */
         List<String> patterns = new ArrayList();
@@ -55,7 +56,13 @@ public interface Option {
         boolean ignoreRoot;
 
         /** The destination's root handling. */
-        String relativePath;
+        Directory relativePath;
+
+        /**
+         * Hide.
+         */
+        private PathManagement() {
+        }
 
         /**
          * Specify glob pattern to specify location.
@@ -68,12 +75,6 @@ public interface Option {
                 this.patterns.addAll(List.of(patterns));
             }
             return this;
-        }
-
-        /**
-         * Hide.
-         */
-        private PathManagement() {
         }
 
         /**
@@ -102,7 +103,34 @@ public interface Option {
          * @return
          */
         public PathManagement allocateIn(String relativePath) {
+            return allocateIn(Locator.directory(relativePath));
+        }
+
+        /**
+         * <p>
+         * All files will be allocated in the specified destination directory.
+         * </p>
+         * 
+         * @param relativePath A relative path from the destination's root {@link Directory}.
+         * @return
+         */
+        public PathManagement allocateIn(Path relativePath) {
+            return allocateIn(Locator.directory(relativePath));
+        }
+
+        /**
+         * <p>
+         * All files will be allocated in the specified destination directory.
+         * </p>
+         * 
+         * @param relativePath A relative path from the destination's root {@link Directory}.
+         * @return
+         */
+        public PathManagement allocateIn(Directory relativePath) {
             if (relativePath != null) {
+                if (relativePath.isAbsolute()) {
+                    throw new IllegalArgumentException("Only relative path is acceptable. [" + relativePath + "]");
+                }
                 this.relativePath = relativePath;
             }
             return this;
