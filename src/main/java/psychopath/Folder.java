@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
-import java.util.function.UnaryOperator;
 
 import org.apache.commons.compress.archivers.ArchiveEntry;
 import org.apache.commons.compress.archivers.ArchiveOutputStream;
@@ -176,16 +175,6 @@ public final class Folder {
         if (base != null) {
             operations.add(new DirectoryOperation(base, patterns));
         }
-        return this;
-    }
-
-    public Folder add2(Directory base, UnaryOperator<SelectOption> op) {
-        SelectOption o = op.apply(new SelectOption());
-
-        return this;
-    }
-
-    public Folder add2(Directory base, SelectOption option) {
         return this;
     }
 
