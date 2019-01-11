@@ -33,6 +33,7 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.function.BiPredicate;
+import java.util.function.Function;
 
 import kiss.Disposable;
 import kiss.I;
@@ -91,13 +92,15 @@ class CymaticScan implements FileVisitor<Path>, Runnable, Disposable {
      * <li>5 - observe</li>
      * </ol>
      */
-    CymaticScan(Path from, Path to, int type, Observer observer, Disposable disposer, Option.PathManagement option) {
+    CymaticScan(Path from, Path to, int type, Observer observer, Disposable disposer, Function<LocatableOption, LocatableOption> option) {
+        LocatableOption o = option.apply(I.make(LocatableOption.class));
+
         this.original = from;
         this.type = type;
         this.observer = observer;
         this.disposer = disposer;
-        this.include = option.filter;
-        this.root = option.filter == null && !isZip(from);
+        this.include = o.filter;
+        this.root = o.filter == null && !isZip(from);
 
         try {
             boolean directory = Files.isDirectory(from);
@@ -120,14 +123,14 @@ class CymaticScan implements FileVisitor<Path>, Runnable, Disposable {
             throw I.quiet(e);
         }
 
-        this.root = option.acceptRoot;
+        this.root = o.acceptRoot;
 
         if (this.root == false) {
             this.from = from;
         }
 
         // Parse and create path matchers.
-        for (String pattern : option.patterns) {
+        for (String pattern : o.patterns) {
             if (pattern.charAt(0) != '!') {
                 // include
                 include = glob(include, pattern);
@@ -340,7 +343,7 @@ class CymaticScan implements FileVisitor<Path>, Runnable, Disposable {
      * @param patterns Name matching patterns.
      */
     CymaticScan(Path path, Observer observer, Disposable disposer, String... patterns) {
-        this(path, null, 5, observer, disposer, Option.glob(patterns));
+        this(path, null, 5, observer, disposer, o -> o.glob(patterns));
 
         try {
             this.service = path.getFileSystem().newWatchService();

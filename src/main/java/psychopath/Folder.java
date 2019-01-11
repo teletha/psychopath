@@ -24,7 +24,6 @@ import org.apache.commons.compress.archivers.ArchiveStreamFactory;
 import kiss.I;
 import kiss.Signal;
 import kiss.Ⅱ;
-import psychopath.Option.PathManagement;
 
 /**
  * Virtual directory to manage resource from various entries.
@@ -185,96 +184,97 @@ public final class Folder {
      * @param base A base path.
      * @param patterns "glob" include/exclude patterns.
      */
-    public Folder add(Directory base, Option.PathManagement option) {
+    public Folder add(Directory base, Function<LocatableOption, LocatableOption> option) {
         if (base != null) {
             operations.add(new DirectoryOperation(base, option));
         }
         return this;
     }
 
-    /**
-     * <p>
-     * Use destination relative path for entries.
-     * </p>
-     * <pre>
-     * folder.add("main.jar").add("lib", entry -> entry.add("one.jar").add("other.jar"));
-     * folder.copyTo("output");
-     * </pre>
-     * <p>
-     * {@link Folder} will deploy jars into "lib" directory.
-     * </p>
-     * <pre>
-     * output
-     *   - main.jar
-     *   - lib
-     *     - one.jar
-     *     - other.jar
-     * </pre>
-     * 
-     * @param relative A destination relative path.
-     * @param entries Your entries.
-     * @return
-     */
-    public Folder add(String relative, Function<Folder, Folder> entries) {
-        return add(Locator.directory(relative), entries);
-    }
-
-    /**
-     * <p>
-     * Use destination relative path for entries.
-     * </p>
-     * <pre>
-     * folder.add("main.jar").add("lib", entry -> entry.add("one.jar").add("other.jar"));
-     * folder.copyTo("output");
-     * </pre>
-     * <p>
-     * {@link Folder} will deploy jars into "lib" directory.
-     * </p>
-     * <pre>
-     * output
-     *   - main.jar
-     *   - lib
-     *     - one.jar
-     *     - other.jar
-     * </pre>
-     * 
-     * @param relative A destination relative path.
-     * @param entries Your entries.
-     * @return
-     */
-    public Folder add(Path relative, Function<Folder, Folder> entries) {
-        return add(Locator.directory(relative), entries);
-    }
-
-    /**
-     * <p>
-     * Use destination relative path for entries.
-     * </p>
-     * <pre>
-     * folder.add("main.jar").add("lib", entry -> entry.add("one.jar").add("other.jar"));
-     * folder.copyTo("output");
-     * </pre>
-     * <p>
-     * {@link Folder} will deploy jars into "lib" directory.
-     * </p>
-     * <pre>
-     * output
-     *   - main.jar
-     *   - lib
-     *     - one.jar
-     *     - other.jar
-     * </pre>
-     * 
-     * @param relative A destination relative path.
-     * @param entries Your entries.
-     * @return
-     */
-    public Folder add(Directory relative, Function<Folder, Folder> entries) {
-        if (entries != null) {
-            operations.addAll(I.signal(entries.apply(Locator.folder()).operations).map(op -> new Allocator(op, relative)).toList());
-        }
-        return this;
-    }
+    // /**
+    // * <p>
+    // * Use destination relative path for entries.
+    // * </p>
+    // * <pre>
+    // * folder.add("main.jar").add("lib", entry -> entry.add("one.jar").add("other.jar"));
+    // * folder.copyTo("output");
+    // * </pre>
+    // * <p>
+    // * {@link Folder} will deploy jars into "lib" directory.
+    // * </p>
+    // * <pre>
+    // * output
+    // * - main.jar
+    // * - lib
+    // * - one.jar
+    // * - other.jar
+    // * </pre>
+    // *
+    // * @param relative A destination relative path.
+    // * @param entries Your entries.
+    // * @return
+    // */
+    // public Folder add(String relative, Function<Folder, Folder> entries) {
+    // return add(Locator.directory(relative), entries);
+    // }
+    //
+    // /**
+    // * <p>
+    // * Use destination relative path for entries.
+    // * </p>
+    // * <pre>
+    // * folder.add("main.jar").add("lib", entry -> entry.add("one.jar").add("other.jar"));
+    // * folder.copyTo("output");
+    // * </pre>
+    // * <p>
+    // * {@link Folder} will deploy jars into "lib" directory.
+    // * </p>
+    // * <pre>
+    // * output
+    // * - main.jar
+    // * - lib
+    // * - one.jar
+    // * - other.jar
+    // * </pre>
+    // *
+    // * @param relative A destination relative path.
+    // * @param entries Your entries.
+    // * @return
+    // */
+    // public Folder add(Path relative, Function<Folder, Folder> entries) {
+    // return add(Locator.directory(relative), entries);
+    // }
+    //
+    // /**
+    // * <p>
+    // * Use destination relative path for entries.
+    // * </p>
+    // * <pre>
+    // * folder.add("main.jar").add("lib", entry -> entry.add("one.jar").add("other.jar"));
+    // * folder.copyTo("output");
+    // * </pre>
+    // * <p>
+    // * {@link Folder} will deploy jars into "lib" directory.
+    // * </p>
+    // * <pre>
+    // * output
+    // * - main.jar
+    // * - lib
+    // * - one.jar
+    // * - other.jar
+    // * </pre>
+    // *
+    // * @param relative A destination relative path.
+    // * @param entries Your entries.
+    // * @return
+    // */
+    // public Folder add(Directory relative, Function<Folder, Folder> entries) {
+    // if (entries != null) {
+    // operations.addAll(I.signal(entries.apply(Locator.folder()).operations).map(op -> new
+    // Allocator(op, relative)).toList());
+    // }
+    // return this;
+    // }
 
     /**
      * Delete all resources.
@@ -534,7 +534,7 @@ public final class Folder {
 
         private final Directory directory;
 
-        private final PathManagement option;
+        private final Function<LocatableOption, LocatableOption> option;
 
         /**
          * @param directory
@@ -542,14 +542,14 @@ public final class Folder {
          */
         private DirectoryOperation(Directory directory, String[] patterns) {
             this.directory = directory;
-            this.option = Option.glob(patterns);
+            this.option = o -> o.glob(patterns);
         }
 
         /**
          * @param directory
          * @param patterns
          */
-        private DirectoryOperation(Directory directory, Option.PathManagement option) {
+        private DirectoryOperation(Directory directory, Function<LocatableOption, LocatableOption> option) {
             this.directory = directory;
             this.option = option;
         }
@@ -559,7 +559,7 @@ public final class Folder {
          */
         @Override
         public void delete(String... patterns) {
-            directory.delete(option.glob(patterns));
+            directory.delete(option.andThen(o -> o.glob(patterns)));
         }
 
         /**
@@ -567,7 +567,7 @@ public final class Folder {
          */
         @Override
         public void moveTo(Directory destination, String... patterns) {
-            directory.moveTo(destination, option.glob(patterns));
+            directory.moveTo(destination, option.andThen(o -> o.glob(patterns)));
         }
 
         /**
@@ -575,7 +575,7 @@ public final class Folder {
          */
         @Override
         public void copyTo(Directory destination, String... patterns) {
-            directory.copyTo(destination, option.glob(patterns));
+            directory.copyTo(destination, option.andThen(o -> o.glob(patterns)));
         }
 
         /**
@@ -583,7 +583,7 @@ public final class Folder {
          */
         @Override
         public void packTo(ArchiveOutputStream archive, Directory relative, String... patterns) {
-            directory.walkFiles(option.glob(patterns)).to(file -> pack(archive, directory.parent(), file, relative));
+            directory.walkFiles(option.andThen(o -> o.glob(patterns))).to(file -> pack(archive, directory.parent(), file, relative));
         }
 
         /**
@@ -591,7 +591,7 @@ public final class Folder {
          */
         @Override
         public Signal<Ⅱ<Directory, File>> walkFiles(String... patterns) {
-            return directory.walkFiles(option.glob(patterns)).map(file -> I.pair(directory, file));
+            return directory.walkFiles(option.andThen(o -> o.glob(patterns))).map(file -> I.pair(directory, file));
         }
 
         /**
@@ -599,7 +599,7 @@ public final class Folder {
          */
         @Override
         public Signal<Ⅱ<Directory, Directory>> walkDirectories(String... patterns) {
-            return directory.walkDirectories(option.glob(patterns)).map(dir -> I.pair(directory, dir));
+            return directory.walkDirectories(option.andThen(o -> o.glob(patterns))).map(dir -> I.pair(directory, dir));
         }
 
         /**

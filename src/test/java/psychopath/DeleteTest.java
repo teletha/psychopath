@@ -169,7 +169,7 @@ class DeleteTest extends LocationTestHelper {
             });
         });
 
-        directory.delete(Option.glob("**").ignoreRoot());
+        directory.delete(o -> o.glob("**").ignoreRoot());
 
         assert directory.isPresent();
         assert match(directory, $ -> {
