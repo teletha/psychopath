@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.BiPredicate;
 
-public class LocatableOption {
+public class Option {
 
     /** The glob patterns. */
     List<String> patterns = new ArrayList();
@@ -36,7 +36,7 @@ public class LocatableOption {
     /**
      * Hide.
      */
-    LocatableOption() {
+    Option() {
     }
 
     /**
@@ -45,7 +45,7 @@ public class LocatableOption {
      * @param depthToSearch
      * @return
      */
-    public LocatableOption depth(int depthToSearch) {
+    public Option depth(int depthToSearch) {
         this.depth = depthToSearch;
         return this;
     }
@@ -56,7 +56,7 @@ public class LocatableOption {
      * @param patterns
      * @return
      */
-    public LocatableOption glob(String... patterns) {
+    public Option glob(String... patterns) {
         if (patterns != null) {
             this.patterns.addAll(Set.of(patterns));
         }
@@ -69,7 +69,7 @@ public class LocatableOption {
      * @param filter
      * @return
      */
-    public LocatableOption take(BiPredicate<Path, BasicFileAttributes> filter) {
+    public Option take(BiPredicate<Path, BasicFileAttributes> filter) {
         if (filter != null) {
             this.filter = filter;
         }
@@ -88,7 +88,7 @@ public class LocatableOption {
      * 
      * @return
      */
-    public LocatableOption ignoreRoot() {
+    public Option ignoreRoot() {
         this.acceptRoot = false;
         return this;
     }
@@ -101,7 +101,7 @@ public class LocatableOption {
      * @param relativePath A relative path from the destination's root {@link Directory}.
      * @return
      */
-    public LocatableOption allocateIn(String relativePath) {
+    public Option allocateIn(String relativePath) {
         return allocateIn(Locator.directory(relativePath));
     }
 
@@ -113,7 +113,7 @@ public class LocatableOption {
      * @param relativePath A relative path from the destination's root {@link Directory}.
      * @return
      */
-    public LocatableOption allocateIn(Path relativePath) {
+    public Option allocateIn(Path relativePath) {
         return allocateIn(Locator.directory(relativePath));
     }
 
@@ -125,7 +125,7 @@ public class LocatableOption {
      * @param relativePath A relative path from the destination's root {@link Directory}.
      * @return
      */
-    public LocatableOption allocateIn(Directory relativePath) {
+    public Option allocateIn(Directory relativePath) {
         if (relativePath != null) {
             if (relativePath.isAbsolute()) {
                 throw new IllegalArgumentException("Only relative path is acceptable. [" + relativePath + "]");

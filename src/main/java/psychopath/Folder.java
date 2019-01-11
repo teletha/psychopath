@@ -184,7 +184,7 @@ public final class Folder {
      * @param base A base path.
      * @param patterns "glob" include/exclude patterns.
      */
-    public Folder add(Directory base, Function<LocatableOption, LocatableOption> option) {
+    public Folder add(Directory base, Function<Option, Option> option) {
         if (base != null) {
             operations.add(new DirectoryOperation(base, option));
         }
@@ -534,7 +534,7 @@ public final class Folder {
 
         private final Directory directory;
 
-        private final Function<LocatableOption, LocatableOption> option;
+        private final Function<Option, Option> option;
 
         /**
          * @param directory
@@ -549,7 +549,7 @@ public final class Folder {
          * @param directory
          * @param patterns
          */
-        private DirectoryOperation(Directory directory, Function<LocatableOption, LocatableOption> option) {
+        private DirectoryOperation(Directory directory, Function<Option, Option> option) {
             this.directory = directory;
             this.option = option;
         }

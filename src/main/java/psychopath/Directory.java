@@ -158,7 +158,7 @@ public class Directory extends Location<Directory> {
      * @param filters Glob patterns.
      * @return All matched {@link File}s.
      */
-    public Signal<File> walkFiles(Function<LocatableOption, LocatableOption> option) {
+    public Signal<File> walkFiles(Function<Option, Option> option) {
         return walk(File.class, this, 3, option, false);
     }
 
@@ -178,7 +178,7 @@ public class Directory extends Location<Directory> {
      * @param filters Glob patterns.
      * @return All matched {@link File}s.
      */
-    public Signal<Directory> walkDirectories(Function<LocatableOption, LocatableOption> option) {
+    public Signal<Directory> walkDirectories(Function<Option, Option> option) {
         return walk(Directory.class, this, 4, option, false).skip(this);
     }
 
@@ -191,14 +191,14 @@ public class Directory extends Location<Directory> {
      * @param depth A max file tree depth to search.
      * @return All matched {@link File}s.
      */
-    private <L extends Location> Signal<L> walk(Class<L> clazz, Directory out, int type, Function<LocatableOption, LocatableOption> option, boolean relatively) {
+    private <L extends Location> Signal<L> walk(Class<L> clazz, Directory out, int type, Function<Option, Option> option, boolean relatively) {
         return new Signal<L>((observer, disposer) -> {
             // build new scanner
             CymaticScan scanner = new CymaticScan(this, out, type, observer, disposer, option);
 
             // try to scan
             try {
-                Files.walkFileTree(path, Collections.EMPTY_SET, option.apply(I.make(LocatableOption.class)).depth, scanner);
+                Files.walkFileTree(path, Collections.EMPTY_SET, option.apply(I.make(Option.class)).depth, scanner);
                 observer.complete();
             } catch (IOException e) {
                 observer.error(e);
@@ -313,7 +313,7 @@ public class Directory extends Location<Directory> {
      *             the target file. If a symbolic link is copied the security manager is invoked to
      *             check {@link LinkPermission}("symbolic").
      */
-    public void moveTo(Directory destination, Function<LocatableOption, LocatableOption> option) {
+    public void moveTo(Directory destination, Function<Option, Option> option) {
         walk(Location.class, destination, 1, option, false).to(I.NoOP);
     }
 
@@ -425,7 +425,7 @@ public class Directory extends Location<Directory> {
      *             the target file. If a symbolic link is copied the security manager is invoked to
      *             check {@link LinkPermission}("symbolic").
      */
-    public void copyTo(Directory destination, Function<LocatableOption, LocatableOption> option) {
+    public void copyTo(Directory destination, Function<Option, Option> option) {
         walk(Location.class, destination, 0, option, false).to(I.NoOP);
     }
 
@@ -511,7 +511,7 @@ public class Directory extends Location<Directory> {
      *             the target file. If a symbolic link is copied the security manager is invoked to
      *             check {@link LinkPermission}("symbolic").
      */
-    public void delete(Function<LocatableOption, LocatableOption> option) {
+    public void delete(Function<Option, Option> option) {
         walk(Location.class, this, 2, option, false).to(I.NoOP);
     }
 

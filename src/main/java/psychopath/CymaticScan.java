@@ -30,7 +30,6 @@ import java.nio.file.WatchEvent;
 import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.function.BiPredicate;
 import java.util.function.Function;
@@ -44,22 +43,23 @@ class CymaticScan implements FileVisitor<Path>, Runnable, Disposable {
     // =======================================================
     // For Pattern Matching Facility
     // =======================================================
-    private Path original;
+    /** The user speecified event listener. */
+    private final Observer observer;
 
     /** The user speecified event listener. */
-    private Observer observer;
-
-    /** The user speecified event listener. */
-    private Disposable disposer;
+    private final Disposable disposer;
 
     /** The source. */
-    private Path from;
+    private final Path from;
 
     /** The destination. */
-    private Path to;
+    private final Path to;
 
     /** The operation type. */
-    private int type;
+    private final int type;
+
+    /** Can we accept root directory? */
+    private final boolean root;
 
     /** The include file patterns. */
     private BiPredicate<Path, BasicFileAttributes> include;
@@ -69,9 +69,6 @@ class CymaticScan implements FileVisitor<Path>, Runnable, Disposable {
 
     /** The exclude directory pattern. */
     private BiPredicate<Path, BasicFileAttributes> directory;
-
-    /** Can we accept root directory? */
-    private boolean root;
 
     /** Flags whether the current directory can be deleted or not. */
     private final LinkedList deletable = new LinkedList();
@@ -92,10 +89,9 @@ class CymaticScan implements FileVisitor<Path>, Runnable, Disposable {
      * <li>5 - observe</li>
      * </ol>
      */
-    CymaticScan(Directory from, Directory to, int type, Observer observer, Disposable disposer, Function<LocatableOption, LocatableOption> option) {
-        LocatableOption o = option.apply(new LocatableOption());
+    CymaticScan(Directory from, Directory to, int type, Observer observer, Disposable disposer, Function<Option, Option> option) {
+        Option o = option.apply(new Option());
 
-        this.original = from.path;
         this.type = type;
         this.observer = observer;
         this.disposer = disposer;
@@ -140,22 +136,6 @@ class CymaticScan implements FileVisitor<Path>, Runnable, Disposable {
         BiPredicate<Path, BasicFileAttributes> filter = (path, attrs) -> matcher.matches(path);
 
         return base == null ? filter : base.or(filter);
-    }
-
-    /**
-     * <p>
-     * Walk file tree actually.
-     * </p>
-     * 
-     * @return
-     */
-    CymaticScan walk() {
-        try {
-            Files.walkFileTree(original, Collections.EMPTY_SET, Integer.MAX_VALUE, this);
-        } catch (IOException e) {
-            throw I.quiet(e);
-        }
-        return this;
     }
 
     /**
@@ -295,7 +275,6 @@ class CymaticScan implements FileVisitor<Path>, Runnable, Disposable {
     // =======================================================
     // For File Watching Facility
     // =======================================================
-
     /** The actual file event notification facility. */
     private WatchService service;
 
@@ -304,7 +283,7 @@ class CymaticScan implements FileVisitor<Path>, Runnable, Disposable {
      * Sinobu's file event notification facility.
      * </p>
      *
-     * @param path A target directory.
+     * @param directory A target directory.
      * @param observer A event listener.
      * @param patterns Name matching patterns.
      */
