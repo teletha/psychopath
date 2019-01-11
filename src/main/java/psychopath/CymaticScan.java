@@ -92,7 +92,33 @@ class CymaticScan implements FileVisitor<Path>, Runnable, Disposable {
      * </ol>
      */
     CymaticScan(Path from, Path to, int type, Observer observer, Disposable disposer, Option.PathManagement option) {
-        this(from, to, type, observer, disposer, (BiPredicate) null);
+        this.original = from;
+        this.type = type;
+        this.observer = observer;
+        this.disposer = disposer;
+        this.include = option.filter;
+        this.root = option.filter == null && !isZip(from);
+
+        try {
+            boolean directory = Files.isDirectory(from);
+
+            // The copy and move operations need the root path.
+            this.from = directory && type < 2 ? from.getParent() : from;
+
+            // The copy and move operations need destination. If the source is file,
+            // so destination must be file and its name is equal to source file.
+            this.to = !directory && type < 2 && Files.isDirectory(to) ? to.resolve(from.getFileName()) : to;
+
+            if (type < 2 && 1 < to.getNameCount()) {
+                Files.createDirectories(to.getParent());
+            }
+
+            if (type < 3) {
+                deletable = new LinkedList();
+            }
+        } catch (IOException e) {
+            throw I.quiet(e);
+        }
 
         this.root = option.acceptRoot;
 
@@ -133,52 +159,6 @@ class CymaticScan implements FileVisitor<Path>, Runnable, Disposable {
         BiPredicate<Path, BasicFileAttributes> filter = (path, attrs) -> matcher.matches(path);
 
         return base == null ? filter : base.or(filter);
-    }
-
-    /**
-     * <p>
-     * Utility for file tree traversal.
-     * </p>
-     * <p>
-     * Type parameter represents the following:
-     * </p>
-     * <ol>
-     * <li>0 - copy</li>
-     * <li>1 - move</li>
-     * <li>2 - delete</li>
-     * <li>3 - file scan</li>
-     * <li>4 - directory scan</li>
-     * <li>5 - observe</li>
-     * </ol>
-     */
-    CymaticScan(Path from, Path to, int type, Observer observer, Disposable disposer, BiPredicate<Path, BasicFileAttributes> filter) {
-        this.original = from;
-        this.type = type;
-        this.observer = observer;
-        this.disposer = disposer;
-        this.include = filter;
-        this.root = filter == null && !isZip(from);
-
-        try {
-            boolean directory = Files.isDirectory(from);
-
-            // The copy and move operations need the root path.
-            this.from = directory && type < 2 ? from.getParent() : from;
-
-            // The copy and move operations need destination. If the source is file,
-            // so destination must be file and its name is equal to source file.
-            this.to = !directory && type < 2 && Files.isDirectory(to) ? to.resolve(from.getFileName()) : to;
-
-            if (type < 2 && 1 < to.getNameCount()) {
-                Files.createDirectories(to.getParent());
-            }
-
-            if (type < 3) {
-                deletable = new LinkedList();
-            }
-        } catch (IOException e) {
-            throw I.quiet(e);
-        }
     }
 
     /**

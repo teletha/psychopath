@@ -242,7 +242,7 @@ public class Directory extends Location<Directory> {
             if (filters == null) {
                 scanner = new CymaticScan(path, out, type, observer, disposer, Option.glob(patterns));
             } else {
-                scanner = new CymaticScan(path, out, type, observer, disposer, filters);
+                scanner = new CymaticScan(path, out, type, observer, disposer, Option.take(filters));
             }
 
             // try to scan
