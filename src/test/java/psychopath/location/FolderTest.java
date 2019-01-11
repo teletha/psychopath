@@ -22,6 +22,7 @@ import psychopath.File;
 import psychopath.Folder;
 import psychopath.LocationTestHelper;
 import psychopath.Locator;
+import psychopath.Option;
 
 class FolderTest extends LocationTestHelper {
 
@@ -451,7 +452,11 @@ class FolderTest extends LocationTestHelper {
             });
         });
 
-        Directory output = Locator.folder().add(file).add(directory).add(directory, "**").copyTo(locateDirectory("output"));
+        Directory output = Locator.folder()
+                .add(file)
+                .add(directory)
+                .add(directory, Option.glob("**").ignoreRoot())
+                .copyTo(locateDirectory("output"));
         assert match(output, $ -> {
             $.file("file.txt");
             $.dir("dir", () -> {

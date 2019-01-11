@@ -24,6 +24,7 @@ import org.apache.commons.compress.archivers.ArchiveStreamFactory;
 import kiss.I;
 import kiss.Signal;
 import kiss.Ⅱ;
+import psychopath.Option.PathManagement;
 
 /**
  * Virtual directory to manage resource from various entries.
@@ -97,7 +98,7 @@ public final class Folder {
         if (resources != null) {
             Signal<Operation> ops = resources.map(location -> {
                 if (location.isDirectory()) {
-                    return new DirectoryOperation((Directory) location, null);
+                    return new DirectoryOperation((Directory) location, (String[]) null);
                 } else {
                     return new FileOperation((File) location);
                 }
@@ -174,6 +175,19 @@ public final class Folder {
     public Folder add(Directory base, String... patterns) {
         if (base != null) {
             operations.add(new DirectoryOperation(base, patterns));
+        }
+        return this;
+    }
+
+    /**
+     * Add pattern matching path.
+     * 
+     * @param base A base path.
+     * @param patterns "glob" include/exclude patterns.
+     */
+    public Folder add(Directory base, Option.PathManagement option) {
+        if (base != null) {
+            operations.add(new DirectoryOperation(base, option));
         }
         return this;
     }
@@ -520,7 +534,7 @@ public final class Folder {
 
         private final Directory directory;
 
-        private final String[] patternsWhenAdd;
+        private final PathManagement option;
 
         /**
          * @param directory
@@ -528,7 +542,16 @@ public final class Folder {
          */
         private DirectoryOperation(Directory directory, String[] patterns) {
             this.directory = directory;
-            this.patternsWhenAdd = patterns;
+            this.option = Option.glob(patterns);
+        }
+
+        /**
+         * @param directory
+         * @param patterns
+         */
+        private DirectoryOperation(Directory directory, Option.PathManagement option) {
+            this.directory = directory;
+            this.option = option;
         }
 
         /**
@@ -536,7 +559,7 @@ public final class Folder {
          */
         @Override
         public void delete(String... patterns) {
-            directory.delete(I.array(patterns, patternsWhenAdd));
+            directory.delete(option.glob(patterns));
         }
 
         /**
@@ -544,7 +567,7 @@ public final class Folder {
          */
         @Override
         public void moveTo(Directory destination, String... patterns) {
-            directory.moveTo(destination, I.array(patterns, patternsWhenAdd));
+            directory.moveTo(destination, option.glob(patterns));
         }
 
         /**
@@ -552,7 +575,7 @@ public final class Folder {
          */
         @Override
         public void copyTo(Directory destination, String... patterns) {
-            directory.copyTo(destination, I.array(patterns, patternsWhenAdd));
+            directory.copyTo(destination, option.glob(patterns));
         }
 
         /**
@@ -560,7 +583,7 @@ public final class Folder {
          */
         @Override
         public void packTo(ArchiveOutputStream archive, Directory relative, String... patterns) {
-            directory.walkFiles(I.array(patterns, patternsWhenAdd)).to(file -> pack(archive, directory.parent(), file, relative));
+            directory.walkFiles(option.glob(patterns)).to(file -> pack(archive, directory.parent(), file, relative));
         }
 
         /**
@@ -568,7 +591,7 @@ public final class Folder {
          */
         @Override
         public Signal<Ⅱ<Directory, File>> walkFiles(String... patterns) {
-            return directory.walkFiles(I.array(patterns, patternsWhenAdd)).map(file -> I.pair(directory, file));
+            return directory.walkFiles(option.glob(patterns)).map(file -> I.pair(directory, file));
         }
 
         /**
@@ -576,7 +599,7 @@ public final class Folder {
          */
         @Override
         public Signal<Ⅱ<Directory, Directory>> walkDirectories(String... patterns) {
-            return directory.walkDirectories(I.array(patterns, patternsWhenAdd)).map(dir -> I.pair(directory, dir));
+            return directory.walkDirectories(option.glob(patterns)).map(dir -> I.pair(directory, dir));
         }
 
         /**

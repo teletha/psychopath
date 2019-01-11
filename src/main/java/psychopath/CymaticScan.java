@@ -9,9 +9,15 @@
  */
 package psychopath;
 
-import static java.nio.file.FileVisitResult.*;
-import static java.nio.file.StandardCopyOption.*;
-import static java.nio.file.StandardWatchEventKinds.*;
+import static java.nio.file.FileVisitResult.CONTINUE;
+import static java.nio.file.FileVisitResult.SKIP_SUBTREE;
+import static java.nio.file.FileVisitResult.TERMINATE;
+import static java.nio.file.StandardCopyOption.ATOMIC_MOVE;
+import static java.nio.file.StandardCopyOption.COPY_ATTRIBUTES;
+import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
+import static java.nio.file.StandardWatchEventKinds.ENTRY_CREATE;
+import static java.nio.file.StandardWatchEventKinds.ENTRY_DELETE;
+import static java.nio.file.StandardWatchEventKinds.ENTRY_MODIFY;
 
 import java.io.IOException;
 import java.nio.file.ClosedWatchServiceException;
@@ -91,6 +97,11 @@ class CymaticScan implements FileVisitor<Path>, Runnable, Disposable {
         this.include = option.include;
         this.exclude = option.exclude;
         this.directory = option.directory;
+        this.root = option.acceptRoot;
+
+        if (this.root == false) {
+            this.from = from;
+        }
 
         // // Parse and create path matchers.
         // for (String pattern : option.patterns) {
@@ -361,14 +372,14 @@ class CymaticScan implements FileVisitor<Path>, Runnable, Disposable {
      * @param observer A event listener.
      * @param patterns Name matching patterns.
      */
-    CymaticScan(Path path, Observer observer, Disposable disposer, Option.PathManagement option) {
-        this(path, null, 5, observer, disposer, option);
+    CymaticScan(Path path, Observer observer, Disposable disposer, String... patterns) {
+        this(path, null, 5, observer, disposer, Option.glob(patterns));
 
         try {
             this.service = path.getFileSystem().newWatchService();
 
             // register
-            if (option.patterns.size() == 1 && option.patterns.get(0).equals("*")) {
+            if (patterns.length == 1 && patterns[0].equals("*")) {
                 path.register(service, ENTRY_CREATE, ENTRY_DELETE, ENTRY_MODIFY);
             } else {
                 if (Files.isDirectory(path)) {

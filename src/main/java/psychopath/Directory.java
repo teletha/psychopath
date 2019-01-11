@@ -156,6 +156,16 @@ public class Directory extends Location<Directory> {
     /**
      * Walk file tree and collect {@link File}s which are filtered by various conditions.
      * 
+     * @param filters Glob patterns.
+     * @return All matched {@link File}s.
+     */
+    public Signal<File> walkFiles(Option.PathManagement option) {
+        return walk(File.class, null, 3, option, Integer.MAX_VALUE, false);
+    }
+
+    /**
+     * Walk file tree and collect {@link File}s which are filtered by various conditions.
+     * 
      * @param filters Your condition.
      * @return All matched {@link File}s.
      */
@@ -182,6 +192,16 @@ public class Directory extends Location<Directory> {
      */
     public Signal<Directory> walkDirectories(String... filters) {
         return walk(Directory.class, null, 4, filters, null, Integer.MAX_VALUE, false).skip(this);
+    }
+
+    /**
+     * Walk file tree and collect {@link File}s which are filtered by various conditions.
+     * 
+     * @param filters Glob patterns.
+     * @return All matched {@link File}s.
+     */
+    public Signal<Directory> walkDirectories(Option.PathManagement option) {
+        return walk(Directory.class, null, 4, option, Integer.MAX_VALUE, false).skip(this);
     }
 
     /**
@@ -224,6 +244,31 @@ public class Directory extends Location<Directory> {
             } else {
                 scanner = new CymaticScan(path, out, type, observer, disposer, filters);
             }
+
+            // try to scan
+            try {
+                Files.walkFileTree(path, Collections.EMPTY_SET, depth, scanner);
+                observer.complete();
+            } catch (IOException e) {
+                observer.error(e);
+            }
+            return disposer;
+        });
+    }
+
+    /**
+     * Walk file tree and collect {@link File}s which are filtered by various conditions.
+     * 
+     * @param type Scan type.
+     * @param patterns Glob patterns.
+     * @param filters Your condition.
+     * @param depth A max file tree depth to search.
+     * @return All matched {@link File}s.
+     */
+    private <L extends Location> Signal<L> walk(Class<L> clazz, Path out, int type, Option.PathManagement option, int depth, boolean relatively) {
+        return new Signal<L>((observer, disposer) -> {
+            // build new scanner
+            CymaticScan scanner = new CymaticScan(path, out, type, observer, disposer, option);
 
             // try to scan
             try {
@@ -293,6 +338,57 @@ public class Directory extends Location<Directory> {
      */
     public void moveTo(Directory destination, String... patterns) {
         walk(Location.class, destination.path, 1, patterns, null, Integer.MAX_VALUE, false).to(I.NoOP);
+    }
+
+    /**
+     * <p>
+     * Move a input {@link Path} to an output {@link Path} with its attributes. Simplified strategy
+     * is the following:
+     * </p>
+     * <p>
+     * <pre>
+     * if (input.isFile) {
+     *   if (output.isFile) {
+     *     // Move input file to output file.
+     *   } else {
+     *     // Move input file under output directory.
+     *   }
+     * } else {
+     *   if (output.isFile) {
+     *     // NoSuchFileException will be thrown.
+     *   } else {
+     *     // Move input directory under output directory deeply.
+     *     // You can also specify <a href="#Patterns">include/exclude patterns</a>.
+     *   }
+     * }
+     * </pre>
+     * <p>
+     * If the output file already exists, it will be replaced by input file unconditionaly. The
+     * exact file attributes that are copied is platform and file system dependent and therefore
+     * unspecified. Minimally, the last-modified-time is copied to the output file if supported by
+     * both the input and output file store. Copying of file timestamps may result in precision
+     * loss.
+     * </p>
+     * <p>
+     * Moving a file is an atomic operation.
+     * </p>
+     *
+     * @param input A input {@link Path} object which can be file or directory.
+     * @param output An output {@link Path} object which can be file or directory.
+     * @param filter A file filter to move.
+     * @throws IOException If an I/O error occurs.
+     * @throws NullPointerException If the specified input or output file is <code>null</code>.
+     * @throws NoSuchFileException If the input file is directory and the output file is
+     *             <em>not</em> directory.
+     * @throws SecurityException In the case of the default provider, and a security manager is
+     *             installed, the {@link SecurityManager#checkRead(String)} method is invoked to
+     *             check read access to the source file, the
+     *             {@link SecurityManager#checkWrite(String)} is invoked to check write access to
+     *             the target file. If a symbolic link is copied the security manager is invoked to
+     *             check {@link LinkPermission}("symbolic").
+     */
+    public void moveTo(Directory destination, Option.PathManagement option) {
+        walk(Location.class, destination.path, 1, option, Integer.MAX_VALUE, false).to(I.NoOP);
     }
 
     /**
@@ -424,6 +520,58 @@ public class Directory extends Location<Directory> {
      *     // NoSuchFileException will be thrown.
      *   } else {
      *     // Copy input directory under output directory deeply.
+     *     // You can also specify <a href="#Patterns">include/exclude patterns</a>.
+     *   }
+     * }
+     * </pre>
+     * <p>
+     * If the output file already exists, it will be replaced by input file unconditionaly. The
+     * exact file attributes that are copied is platform and file system dependent and therefore
+     * unspecified. Minimally, the last-modified-time is copied to the output file if supported by
+     * both the input and output file store. Copying of file timestamps may result in precision
+     * loss.
+     * </p>
+     * <p>
+     * Copying a file is not an atomic operation. If an {@link IOException} is thrown then it
+     * possible that the output file is incomplete or some of its file attributes have not been
+     * copied from the input file.
+     * </p>
+     *
+     * @param destination An output {@link Path} object which can be file or directory.
+     * @param patterns <a href="#Patterns">include/exclude patterns</a> you want to sort out.
+     * @throws IOException If an I/O error occurs.
+     * @throws NullPointerException If the specified input or output file is <code>null</code>.
+     * @throws NoSuchFileException If the input file is directory and the output file is
+     *             <em>not</em> directory.
+     * @throws SecurityException In the case of the default provider, and a security manager is
+     *             installed, the {@link SecurityManager#checkRead(String)} method is invoked to
+     *             check read access to the source file, the
+     *             {@link SecurityManager#checkWrite(String)} is invoked to check write access to
+     *             the target file. If a symbolic link is copied the security manager is invoked to
+     *             check {@link LinkPermission}("symbolic").
+     */
+    public void copyTo(Directory destination, Option.PathManagement option) {
+        walk(Location.class, destination.path, 0, option, Integer.MAX_VALUE, false).to(I.NoOP);
+    }
+
+    /**
+     * <p>
+     * Copy a input {@link Path} to the output {@link Path} with its attributes. Simplified strategy
+     * is the following:
+     * </p>
+     * <p>
+     * <pre>
+     * if (input.isFile) {
+     *   if (output.isFile) {
+     *     // Copy input file to output file.
+     *   } else {
+     *     // Copy input file to output directory.
+     *   }
+     * } else {
+     *   if (output.isFile) {
+     *     // NoSuchFileException will be thrown.
+     *   } else {
+     *     // Copy input directory under output directory deeply.
      *   }
      * }
      * </pre>
@@ -529,6 +677,39 @@ public class Directory extends Location<Directory> {
      * </p>
      *
      * @param input A input {@link Path} object which can be file or directory.
+     * @param patterns <a href="#Patterns">include/exclude patterns</a> you want to sort out.
+     * @throws IOException If an I/O error occurs.
+     * @throws NullPointerException If the specified input file is <code>null</code>.
+     * @throws SecurityException In the case of the default provider, and a security manager is
+     *             installed, the {@link SecurityManager#checkRead(String)} method is invoked to
+     *             check read access to the source file, the
+     *             {@link SecurityManager#checkWrite(String)} is invoked to check write access to
+     *             the target file. If a symbolic link is copied the security manager is invoked to
+     *             check {@link LinkPermission}("symbolic").
+     */
+    public void delete(Option.PathManagement option) {
+        walk(Location.class, null, 2, option, Integer.MAX_VALUE, false).to(I.NoOP);
+    }
+
+    /**
+     * <p>
+     * Delete a input {@link Path}. Simplified strategy is the following:
+     * </p>
+     * <p>
+     * <pre>
+     * if (input.isFile) {
+     *   // Delete input file unconditionaly.
+     * } else {
+     *   // Delete input directory deeply.
+     *   // You can also specify <a href="#Patterns">include/exclude patterns</a>.
+     * }
+     * </pre>
+     * <p>
+     * On some operating systems it may not be possible to remove a file when it is open and in use
+     * by this Java virtual machine or other programs.
+     * </p>
+     *
+     * @param input A input {@link Path} object which can be file or directory.
      * @param filter A file filter.
      * @throws IOException If an I/O error occurs.
      * @throws NullPointerException If the specified input file is <code>null</code>.
@@ -587,7 +768,7 @@ public class Directory extends Location<Directory> {
     public Signal<WatchEvent<Location>> observe(String... patterns) {
         return new Signal<>((observer, disposer) -> {
             // Create logical file system watch service.
-            CymaticScan watcher = new CymaticScan(path, observer, disposer, Option.glob(patterns));
+            CymaticScan watcher = new CymaticScan(path, observer, disposer, patterns);
 
             // Run in anothor thread.
             I.schedule(watcher);

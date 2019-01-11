@@ -40,7 +40,7 @@ public interface Option {
     }
 
     /**
-     * Build {@link PathManagement} option with {@link PathManagement#ignoreRoot}.
+     * Build {@link PathManagement} option with {@link PathManagement#acceptRoot}.
      * 
      * @return New created {@link PathManagement}.
      */
@@ -79,7 +79,7 @@ public interface Option {
         BiPredicate<Path, BasicFileAttributes> filter;
 
         /** The departure's root handling. */
-        boolean ignoreRoot;
+        boolean acceptRoot = true;
 
         /** The destination's root handling. */
         Directory relativePath;
@@ -109,6 +109,7 @@ public interface Option {
                     } else {
                         // exclude files
                         exclude = glob(exclude, pattern.substring(1));
+                        // directory = glob(directory, pattern.substring(1));
                     }
                 }
             }
@@ -141,7 +142,7 @@ public interface Option {
          * @return
          */
         public PathManagement ignoreRoot() {
-            this.ignoreRoot = true;
+            this.acceptRoot = false;
             return this;
         }
 
