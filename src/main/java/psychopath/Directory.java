@@ -16,7 +16,7 @@ import java.nio.file.Files;
 import java.nio.file.LinkPermission;
 import java.nio.file.Path;
 import java.nio.file.WatchEvent;
-import java.util.Collections;
+import java.util.Set;
 import java.util.function.Function;
 
 import kiss.I;
@@ -132,53 +132,60 @@ public class Directory extends Location<Directory> {
     }
 
     /**
-     * Walk file tree and collect {@link File}s which are filtered by various conditions.
+     * Shorthand method to {@link #walkFiles(Function)} with glob patterns.
      * 
-     * @param filters Glob patterns.
-     * @return All matched {@link File}s.
+     * @param patterns A glob patterns.
      */
-    public Signal<Location> walk(String... filters) {
-        return walk(Location.class, this, 3, o -> o.glob(filters), false);
+    public Signal<Location> walk(String... patterns) {
+        return walk(o -> o.glob(patterns));
     }
 
     /**
-     * Walk file tree and collect {@link File}s which are filtered by various conditions.
+     * Walk file tree and collect {@link Location}s which are filtered by various {@link Option}.
      * 
-     * @param filters Glob patterns.
-     * @return All matched {@link File}s.
+     * @param option A {@link Option} builder.
+     * @return All matched {@link Location}s.
      */
-    public Signal<File> walkFiles(String... filters) {
-        return walk(File.class, this, 3, o -> o.glob(filters), false);
+    public Signal<Location> walk(Function<Option, Option> option) {
+        return walk(Location.class, this, 3, option);
     }
 
     /**
-     * Walk file tree and collect {@link File}s which are filtered by various conditions.
+     * Shorthand method to {@link #walkFiles(Function)} with glob patterns.
      * 
-     * @param filters Glob patterns.
+     * @param patterns A glob patterns.
+     */
+    public Signal<File> walkFiles(String... patterns) {
+        return walkFiles(o -> o.glob(patterns));
+    }
+
+    /**
+     * Walk file tree and collect {@link File}s which are filtered by various {@link Option}.
+     * 
+     * @param option A {@link Option} builder.
      * @return All matched {@link File}s.
      */
     public Signal<File> walkFiles(Function<Option, Option> option) {
-        return walk(File.class, this, 3, option, false);
+        return walk(File.class, this, 3, option);
     }
 
     /**
-     * Walk file tree and collect {@link File}s which are filtered by various conditions.
+     * Shorthand method to {@link #walkDirectories(Function)} with glob patterns.
      * 
-     * @param filters Glob patterns.
-     * @return All matched {@link File}s.
+     * @param patterns A glob patterns.
      */
     public Signal<Directory> walkDirectories(String... filters) {
-        return walk(Directory.class, this, 4, o -> o.glob(filters), false).skip(this);
+        return walkDirectories(o -> o.glob(filters));
     }
 
     /**
-     * Walk file tree and collect {@link File}s which are filtered by various conditions.
+     * Walk file tree and collect {@link Directory}s which are filtered by various {@link Option}.
      * 
-     * @param filters Glob patterns.
-     * @return All matched {@link File}s.
+     * @param option A {@link Option} builder.
+     * @return All matched {@link Directory}s.
      */
     public Signal<Directory> walkDirectories(Function<Option, Option> option) {
-        return walk(Directory.class, this, 4, option, false).skip(this);
+        return walk(Directory.class, this, 4, option).skip(this);
     }
 
     /**
@@ -190,14 +197,11 @@ public class Directory extends Location<Directory> {
      * @param depth A max file tree depth to search.
      * @return All matched {@link File}s.
      */
-    private <L extends Location> Signal<L> walk(Class<L> clazz, Directory out, int type, Function<Option, Option> option, boolean relatively) {
+    private <L extends Location> Signal<L> walk(Class<L> clazz, Directory out, int type, Function<Option, Option> option) {
         return new Signal<L>((observer, disposer) -> {
-            // build new scanner
-            CymaticScan scanner = new CymaticScan(this, out, type, observer, disposer, option);
-
-            // try to scan
             try {
-                Files.walkFileTree(path, Collections.EMPTY_SET, option.apply(I.make(Option.class)).depth, scanner);
+                Option o = option.apply(new Option());
+                Files.walkFileTree(path, Set.of(), o.depth, new CymaticScan(this, out, type, observer, disposer, option));
                 observer.complete();
             } catch (IOException e) {
                 observer.error(e);
@@ -244,6 +248,7 @@ public class Directory extends Location<Directory> {
      * by this Java virtual machine or other programs.
      * </p>
      *
+     * @param option A {@link Option} builder.
      * @throws IOException If an I/O error occurs.
      * @throws SecurityException In the case of the default provider, and a security manager is
      *             installed, the {@link SecurityManager#checkRead(String)} method is invoked to
@@ -253,7 +258,7 @@ public class Directory extends Location<Directory> {
      *             check {@link LinkPermission}("symbolic").
      */
     public void delete(Function<Option, Option> option) {
-        walk(Location.class, this, 2, option, false).to(I.NoOP);
+        walk(Location.class, this, 2, option).to(I.NoOP);
     }
 
     /**
@@ -292,6 +297,7 @@ public class Directory extends Location<Directory> {
      * </p>
      *
      * @param destination An output {@link Directory}.
+     * @param option A {@link Option} builder.
      * @throws IOException If an I/O error occurs.
      * @throws SecurityException In the case of the default provider, and a security manager is
      *             installed, the {@link SecurityManager#checkRead(String)} method is invoked to
@@ -301,7 +307,7 @@ public class Directory extends Location<Directory> {
      *             check {@link LinkPermission}("symbolic").
      */
     public void copyTo(Directory destination, Function<Option, Option> option) {
-        walk(Location.class, destination, 0, option, false).to(I.NoOP);
+        walk(Location.class, destination, 0, option).to(I.NoOP);
     }
 
     /**
@@ -338,6 +344,7 @@ public class Directory extends Location<Directory> {
      * </p>
      *
      * @param destination An output {@link Path} object which can be file or directory.
+     * @param option A {@link Option} builder.
      * @throws IOException If an I/O error occurs.
      * @throws SecurityException In the case of the default provider, and a security manager is
      *             installed, the {@link SecurityManager#checkRead(String)} method is invoked to
@@ -347,7 +354,7 @@ public class Directory extends Location<Directory> {
      *             check {@link LinkPermission}("symbolic").
      */
     public void moveTo(Directory destination, Function<Option, Option> option) {
-        walk(Location.class, destination, 1, option, false).to(I.NoOP);
+        walk(Location.class, destination, 1, option).to(I.NoOP);
     }
 
     /**
