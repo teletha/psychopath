@@ -15,6 +15,7 @@ import java.nio.file.PathMatcher;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.function.BiPredicate;
 
 public interface Option {
@@ -64,16 +65,7 @@ public interface Option {
     class PathManagement {
 
         /** The glob patterns. */
-        private List<String> patterns = new ArrayList();
-
-        /** The include file patterns. */
-        BiPredicate<Path, BasicFileAttributes> include;
-
-        /** The exclude file patterns. */
-        BiPredicate<Path, BasicFileAttributes> exclude;
-
-        /** The exclude directory pattern. */
-        BiPredicate<Path, BasicFileAttributes> directory;
+        List<String> patterns = new ArrayList();
 
         /** The generic filter. */
         BiPredicate<Path, BasicFileAttributes> filter;
@@ -98,20 +90,7 @@ public interface Option {
          */
         public PathManagement glob(String... patterns) {
             if (patterns != null) {
-                // Parse and create path matchers.
-                for (String pattern : patterns) {
-                    if (pattern.charAt(0) != '!') {
-                        // include
-                        include = glob(include, pattern);
-                    } else if (pattern.endsWith("/**")) {
-                        // exclude directory
-                        directory = glob(directory, pattern.substring(1, pattern.length() - 3));
-                    } else {
-                        // exclude files
-                        exclude = glob(exclude, pattern.substring(1));
-                        // directory = glob(directory, pattern.substring(1));
-                    }
-                }
+                this.patterns.addAll(Set.of(patterns));
             }
             return this;
         }

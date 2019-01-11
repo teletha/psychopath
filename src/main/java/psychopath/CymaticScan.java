@@ -94,41 +94,28 @@ class CymaticScan implements FileVisitor<Path>, Runnable, Disposable {
     CymaticScan(Path from, Path to, int type, Observer observer, Disposable disposer, Option.PathManagement option) {
         this(from, to, type, observer, disposer, (BiPredicate) null);
 
-        this.include = option.include;
-        this.exclude = option.exclude;
-        this.directory = option.directory;
         this.root = option.acceptRoot;
 
         if (this.root == false) {
             this.from = from;
         }
 
-        // // Parse and create path matchers.
-        // for (String pattern : option.patterns) {
-        // // convert pattern to reduce unnecessary file system scanning
-        // if (pattern.equals("*") && option.patterns.size() == 1) {
-        // this.from = from;
-        // this.root = false;
-        // } else if (pattern.equals("**")) {
-        // this.from = from;
-        // this.root = false;
-        // continue;
-        // }
-        //
-        // if (pattern.charAt(0) != '!') {
-        // // include
-        // include = glob(include, pattern);
-        // } else if (pattern.endsWith("/**")) {
-        // // exclude directory
-        // directory = glob(directory, pattern.substring(1, pattern.length() - 3));
-        // } else if (type < 4) {
-        // // exclude files
-        // exclude = glob(exclude, pattern.substring(1));
-        // } else {
-        // // exclude directory
-        // directory = glob(directory, pattern.substring(1));
-        // }
-        // }
+        // Parse and create path matchers.
+        for (String pattern : option.patterns) {
+            if (pattern.charAt(0) != '!') {
+                // include
+                include = glob(include, pattern);
+            } else if (pattern.endsWith("/**")) {
+                // exclude directory
+                directory = glob(directory, pattern.substring(1, pattern.length() - 3));
+            } else if (type < 4) {
+                // exclude files
+                exclude = glob(exclude, pattern.substring(1));
+            } else {
+                // exclude directory
+                directory = glob(directory, pattern.substring(1));
+            }
+        }
     }
 
     /**
