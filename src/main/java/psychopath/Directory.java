@@ -139,7 +139,7 @@ public class Directory extends Location<Directory> {
      * @return All matched {@link File}s.
      */
     public Signal<Location> walk(String... filters) {
-        return walk(Location.class, null, 3, o -> o.glob(filters), false);
+        return walk(Location.class, this, 3, o -> o.glob(filters), false);
     }
 
     /**
@@ -149,7 +149,7 @@ public class Directory extends Location<Directory> {
      * @return All matched {@link File}s.
      */
     public Signal<File> walkFiles(String... filters) {
-        return walk(File.class, null, 3, o -> o.glob(filters), false);
+        return walk(File.class, this, 3, o -> o.glob(filters), false);
     }
 
     /**
@@ -159,7 +159,7 @@ public class Directory extends Location<Directory> {
      * @return All matched {@link File}s.
      */
     public Signal<File> walkFiles(Function<LocatableOption, LocatableOption> option) {
-        return walk(File.class, null, 3, option, false);
+        return walk(File.class, this, 3, option, false);
     }
 
     /**
@@ -169,7 +169,7 @@ public class Directory extends Location<Directory> {
      * @return All matched {@link File}s.
      */
     public Signal<Directory> walkDirectories(String... filters) {
-        return walk(Directory.class, null, 4, o -> o.glob(filters), false).skip(this);
+        return walk(Directory.class, this, 4, o -> o.glob(filters), false).skip(this);
     }
 
     /**
@@ -179,7 +179,7 @@ public class Directory extends Location<Directory> {
      * @return All matched {@link File}s.
      */
     public Signal<Directory> walkDirectories(Function<LocatableOption, LocatableOption> option) {
-        return walk(Directory.class, null, 4, option, false).skip(this);
+        return walk(Directory.class, this, 4, option, false).skip(this);
     }
 
     /**
@@ -191,7 +191,7 @@ public class Directory extends Location<Directory> {
      * @param depth A max file tree depth to search.
      * @return All matched {@link File}s.
      */
-    private <L extends Location> Signal<L> walk(Class<L> clazz, Path out, int type, Function<LocatableOption, LocatableOption> option, boolean relatively) {
+    private <L extends Location> Signal<L> walk(Class<L> clazz, Directory out, int type, Function<LocatableOption, LocatableOption> option, boolean relatively) {
         return new Signal<L>((observer, disposer) -> {
             // build new scanner
             CymaticScan scanner = new CymaticScan(this, out, type, observer, disposer, option);
@@ -263,7 +263,7 @@ public class Directory extends Location<Directory> {
      *             check {@link LinkPermission}("symbolic").
      */
     public void moveTo(Directory destination, String... patterns) {
-        walk(Location.class, destination.path, 1, o -> o.glob(patterns), false).to(I.NoOP);
+        walk(Location.class, destination, 1, o -> o.glob(patterns), false).to(I.NoOP);
     }
 
     /**
@@ -314,7 +314,7 @@ public class Directory extends Location<Directory> {
      *             check {@link LinkPermission}("symbolic").
      */
     public void moveTo(Directory destination, Function<LocatableOption, LocatableOption> option) {
-        walk(Location.class, destination.path, 1, option, false).to(I.NoOP);
+        walk(Location.class, destination, 1, option, false).to(I.NoOP);
     }
 
     /**
@@ -374,7 +374,7 @@ public class Directory extends Location<Directory> {
      *             check {@link LinkPermission}("symbolic").
      */
     public void copyTo(Directory destination, String... patterns) {
-        walk(Location.class, destination.path, 0, o -> o.glob(patterns), false).to(I.NoOP);
+        walk(Location.class, destination, 0, o -> o.glob(patterns), false).to(I.NoOP);
     }
 
     /**
@@ -426,7 +426,7 @@ public class Directory extends Location<Directory> {
      *             check {@link LinkPermission}("symbolic").
      */
     public void copyTo(Directory destination, Function<LocatableOption, LocatableOption> option) {
-        walk(Location.class, destination.path, 0, option, false).to(I.NoOP);
+        walk(Location.class, destination, 0, option, false).to(I.NoOP);
     }
 
     /**
@@ -479,7 +479,7 @@ public class Directory extends Location<Directory> {
      *             check {@link LinkPermission}("symbolic").
      */
     public void delete(String... patterns) {
-        walk(Location.class, null, 2, o -> o.glob(patterns), false).to(I.NoOP);
+        walk(Location.class, this, 2, o -> o.glob(patterns), false).to(I.NoOP);
     }
 
     /**
@@ -512,7 +512,7 @@ public class Directory extends Location<Directory> {
      *             check {@link LinkPermission}("symbolic").
      */
     public void delete(Function<LocatableOption, LocatableOption> option) {
-        walk(Location.class, null, 2, option, false).to(I.NoOP);
+        walk(Location.class, this, 2, option, false).to(I.NoOP);
     }
 
     /**

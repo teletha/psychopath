@@ -92,7 +92,7 @@ class CymaticScan implements FileVisitor<Path>, Runnable, Disposable {
      * <li>5 - observe</li>
      * </ol>
      */
-    CymaticScan(Directory from, Path to, int type, Observer observer, Disposable disposer, Function<LocatableOption, LocatableOption> option) {
+    CymaticScan(Directory from, Directory to, int type, Observer observer, Disposable disposer, Function<LocatableOption, LocatableOption> option) {
         LocatableOption o = option.apply(new LocatableOption());
 
         this.original = from.path;
@@ -105,7 +105,7 @@ class CymaticScan implements FileVisitor<Path>, Runnable, Disposable {
         // The copy and move operations need the root path.
         if (root && type < 2) from = from.parent();
         this.from = from.path;
-        this.to = to;
+        this.to = to.path;
 
         // Parse and create path matchers.
         for (String pattern : o.patterns) {
@@ -309,7 +309,7 @@ class CymaticScan implements FileVisitor<Path>, Runnable, Disposable {
      * @param patterns Name matching patterns.
      */
     CymaticScan(Directory directory, Observer observer, Disposable disposer, String... patterns) {
-        this(directory, null, 5, observer, disposer, o -> o.glob(patterns));
+        this(directory, directory, 5, observer, disposer, o -> o.glob(patterns));
 
         try {
             this.service = directory.path.getFileSystem().newWatchService();
