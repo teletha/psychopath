@@ -542,24 +542,14 @@ public abstract class Location<Self extends Location> implements Comparable<Loca
 
     /**
      * <p>
-     * Delete a input {@link Path}. Simplified strategy is the following:
+     * Delete this {@link Location}.
      * </p>
-     * <p>
-     * <pre>
-     * if (input.isFile) {
-     *   // Delete input file unconditionaly.
-     * } else {
-     *   // Delete input directory deeply.
-     *   // You can also specify <a href="#Patterns">include/exclude patterns</a>.
-     * }
-     * </pre>
      * <p>
      * On some operating systems it may not be possible to remove a file when it is open and in use
      * by this Java virtual machine or other programs.
      * </p>
      *
      * @throws IOException If an I/O error occurs.
-     * @throws NullPointerException If the specified input file is <code>null</code>.
      * @throws SecurityException In the case of the default provider, and a security manager is
      *             installed, the {@link SecurityManager#checkRead(String)} method is invoked to
      *             check read access to the source file, the
@@ -571,26 +561,8 @@ public abstract class Location<Self extends Location> implements Comparable<Loca
 
     /**
      * <p>
-     * Copy a input {@link Path} to the output {@link Path} with its attributes. Simplified strategy
-     * is the following:
+     * Copy this {@link Location} to the output {@link Directory} with its attributes.
      * </p>
-     * <p>
-     * <pre>
-     * if (input.isFile) {
-     *   if (output.isFile) {
-     *     // Copy input file to output file.
-     *   } else {
-     *     // Copy input file to output directory.
-     *   }
-     * } else {
-     *   if (output.isFile) {
-     *     // NoSuchFileException will be thrown.
-     *   } else {
-     *     // Copy input directory under output directory deeply.
-     *     // You can also specify <a href="#Patterns">include/exclude patterns</a>.
-     *   }
-     * }
-     * </pre>
      * <p>
      * If the output file already exists, it will be replaced by input file unconditionaly. The
      * exact file attributes that are copied is platform and file system dependent and therefore
@@ -604,11 +576,8 @@ public abstract class Location<Self extends Location> implements Comparable<Loca
      * copied from the input file.
      * </p>
      *
-     * @param destination An output {@link Path} object which can be file or directory.
+     * @param destination An output {@link Directory}.
      * @throws IOException If an I/O error occurs.
-     * @throws NullPointerException If the specified input or output file is <code>null</code>.
-     * @throws NoSuchFileException If the input file is directory and the output file is
-     *             <em>not</em> directory.
      * @throws SecurityException In the case of the default provider, and a security manager is
      *             installed, the {@link SecurityManager#checkRead(String)} method is invoked to
      *             check read access to the source file, the
@@ -620,26 +589,8 @@ public abstract class Location<Self extends Location> implements Comparable<Loca
 
     /**
      * <p>
-     * Move a input {@link Path} to an output {@link Path} with its attributes. Simplified strategy
-     * is the following:
+     * Move this {@link Location} to an output {@link Directory} with its attributes.
      * </p>
-     * <p>
-     * <pre>
-     * if (input.isFile) {
-     *   if (output.isFile) {
-     *     // Move input file to output file.
-     *   } else {
-     *     // Move input file under output directory.
-     *   }
-     * } else {
-     *   if (output.isFile) {
-     *     // NoSuchFileException will be thrown.
-     *   } else {
-     *     // Move input directory under output directory deeply.
-     *     // You can also specify <a href="#Patterns">include/exclude patterns</a>.
-     *   }
-     * }
-     * </pre>
      * <p>
      * If the output file already exists, it will be replaced by input file unconditionaly. The
      * exact file attributes that are copied is platform and file system dependent and therefore
@@ -653,9 +604,6 @@ public abstract class Location<Self extends Location> implements Comparable<Loca
      *
      * @param destination An output {@link Path} object which can be file or directory.
      * @throws IOException If an I/O error occurs.
-     * @throws NullPointerException If the specified input or output file is <code>null</code>.
-     * @throws NoSuchFileException If the input file is directory and the output file is
-     *             <em>not</em> directory.
      * @throws SecurityException In the case of the default provider, and a security manager is
      *             installed, the {@link SecurityManager#checkRead(String)} method is invoked to
      *             check read access to the source file, the

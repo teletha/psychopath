@@ -14,7 +14,6 @@ import java.nio.channels.FileLock;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.LinkPermission;
-import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.WatchEvent;
 import java.util.Collections;
@@ -211,228 +210,6 @@ public class Directory extends Location<Directory> {
      * {@inheritDoc}
      */
     @Override
-    public void moveTo(Directory destination) {
-        moveTo(destination, new String[0]);
-    }
-
-    /**
-     * <p>
-     * Move a input {@link Path} to an output {@link Path} with its attributes. Simplified strategy
-     * is the following:
-     * </p>
-     * <p>
-     * <pre>
-     * if (input.isFile) {
-     *   if (output.isFile) {
-     *     // Move input file to output file.
-     *   } else {
-     *     // Move input file under output directory.
-     *   }
-     * } else {
-     *   if (output.isFile) {
-     *     // NoSuchFileException will be thrown.
-     *   } else {
-     *     // Move input directory under output directory deeply.
-     *     // You can also specify <a href="#Patterns">include/exclude patterns</a>.
-     *   }
-     * }
-     * </pre>
-     * <p>
-     * If the output file already exists, it will be replaced by input file unconditionaly. The
-     * exact file attributes that are copied is platform and file system dependent and therefore
-     * unspecified. Minimally, the last-modified-time is copied to the output file if supported by
-     * both the input and output file store. Copying of file timestamps may result in precision
-     * loss.
-     * </p>
-     * <p>
-     * Moving a file is an atomic operation.
-     * </p>
-     *
-     * @param input A input {@link Path} object which can be file or directory.
-     * @param output An output {@link Path} object which can be file or directory.
-     * @param filter A file filter to move.
-     * @throws IOException If an I/O error occurs.
-     * @throws NullPointerException If the specified input or output file is <code>null</code>.
-     * @throws NoSuchFileException If the input file is directory and the output file is
-     *             <em>not</em> directory.
-     * @throws SecurityException In the case of the default provider, and a security manager is
-     *             installed, the {@link SecurityManager#checkRead(String)} method is invoked to
-     *             check read access to the source file, the
-     *             {@link SecurityManager#checkWrite(String)} is invoked to check write access to
-     *             the target file. If a symbolic link is copied the security manager is invoked to
-     *             check {@link LinkPermission}("symbolic").
-     */
-    public void moveTo(Directory destination, String... patterns) {
-        walk(Location.class, destination, 1, o -> o.glob(patterns), false).to(I.NoOP);
-    }
-
-    /**
-     * <p>
-     * Move a input {@link Path} to an output {@link Path} with its attributes. Simplified strategy
-     * is the following:
-     * </p>
-     * <p>
-     * <pre>
-     * if (input.isFile) {
-     *   if (output.isFile) {
-     *     // Move input file to output file.
-     *   } else {
-     *     // Move input file under output directory.
-     *   }
-     * } else {
-     *   if (output.isFile) {
-     *     // NoSuchFileException will be thrown.
-     *   } else {
-     *     // Move input directory under output directory deeply.
-     *     // You can also specify <a href="#Patterns">include/exclude patterns</a>.
-     *   }
-     * }
-     * </pre>
-     * <p>
-     * If the output file already exists, it will be replaced by input file unconditionaly. The
-     * exact file attributes that are copied is platform and file system dependent and therefore
-     * unspecified. Minimally, the last-modified-time is copied to the output file if supported by
-     * both the input and output file store. Copying of file timestamps may result in precision
-     * loss.
-     * </p>
-     * <p>
-     * Moving a file is an atomic operation.
-     * </p>
-     *
-     * @param input A input {@link Path} object which can be file or directory.
-     * @param output An output {@link Path} object which can be file or directory.
-     * @param filter A file filter to move.
-     * @throws IOException If an I/O error occurs.
-     * @throws NullPointerException If the specified input or output file is <code>null</code>.
-     * @throws NoSuchFileException If the input file is directory and the output file is
-     *             <em>not</em> directory.
-     * @throws SecurityException In the case of the default provider, and a security manager is
-     *             installed, the {@link SecurityManager#checkRead(String)} method is invoked to
-     *             check read access to the source file, the
-     *             {@link SecurityManager#checkWrite(String)} is invoked to check write access to
-     *             the target file. If a symbolic link is copied the security manager is invoked to
-     *             check {@link LinkPermission}("symbolic").
-     */
-    public void moveTo(Directory destination, Function<Option, Option> option) {
-        walk(Location.class, destination, 1, option, false).to(I.NoOP);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void copyTo(Directory destination) {
-        copyTo(destination, new String[0]);
-    }
-
-    /**
-     * <p>
-     * Copy a input {@link Path} to the output {@link Path} with its attributes. Simplified strategy
-     * is the following:
-     * </p>
-     * <p>
-     * <pre>
-     * if (input.isFile) {
-     *   if (output.isFile) {
-     *     // Copy input file to output file.
-     *   } else {
-     *     // Copy input file to output directory.
-     *   }
-     * } else {
-     *   if (output.isFile) {
-     *     // NoSuchFileException will be thrown.
-     *   } else {
-     *     // Copy input directory under output directory deeply.
-     *     // You can also specify <a href="#Patterns">include/exclude patterns</a>.
-     *   }
-     * }
-     * </pre>
-     * <p>
-     * If the output file already exists, it will be replaced by input file unconditionaly. The
-     * exact file attributes that are copied is platform and file system dependent and therefore
-     * unspecified. Minimally, the last-modified-time is copied to the output file if supported by
-     * both the input and output file store. Copying of file timestamps may result in precision
-     * loss.
-     * </p>
-     * <p>
-     * Copying a file is not an atomic operation. If an {@link IOException} is thrown then it
-     * possible that the output file is incomplete or some of its file attributes have not been
-     * copied from the input file.
-     * </p>
-     *
-     * @param destination An output {@link Path} object which can be file or directory.
-     * @param patterns <a href="#Patterns">include/exclude patterns</a> you want to sort out.
-     * @throws IOException If an I/O error occurs.
-     * @throws NullPointerException If the specified input or output file is <code>null</code>.
-     * @throws NoSuchFileException If the input file is directory and the output file is
-     *             <em>not</em> directory.
-     * @throws SecurityException In the case of the default provider, and a security manager is
-     *             installed, the {@link SecurityManager#checkRead(String)} method is invoked to
-     *             check read access to the source file, the
-     *             {@link SecurityManager#checkWrite(String)} is invoked to check write access to
-     *             the target file. If a symbolic link is copied the security manager is invoked to
-     *             check {@link LinkPermission}("symbolic").
-     */
-    public void copyTo(Directory destination, String... patterns) {
-        walk(Location.class, destination, 0, o -> o.glob(patterns), false).to(I.NoOP);
-    }
-
-    /**
-     * <p>
-     * Copy a input {@link Path} to the output {@link Path} with its attributes. Simplified strategy
-     * is the following:
-     * </p>
-     * <p>
-     * <pre>
-     * if (input.isFile) {
-     *   if (output.isFile) {
-     *     // Copy input file to output file.
-     *   } else {
-     *     // Copy input file to output directory.
-     *   }
-     * } else {
-     *   if (output.isFile) {
-     *     // NoSuchFileException will be thrown.
-     *   } else {
-     *     // Copy input directory under output directory deeply.
-     *     // You can also specify <a href="#Patterns">include/exclude patterns</a>.
-     *   }
-     * }
-     * </pre>
-     * <p>
-     * If the output file already exists, it will be replaced by input file unconditionaly. The
-     * exact file attributes that are copied is platform and file system dependent and therefore
-     * unspecified. Minimally, the last-modified-time is copied to the output file if supported by
-     * both the input and output file store. Copying of file timestamps may result in precision
-     * loss.
-     * </p>
-     * <p>
-     * Copying a file is not an atomic operation. If an {@link IOException} is thrown then it
-     * possible that the output file is incomplete or some of its file attributes have not been
-     * copied from the input file.
-     * </p>
-     *
-     * @param destination An output {@link Path} object which can be file or directory.
-     * @param patterns <a href="#Patterns">include/exclude patterns</a> you want to sort out.
-     * @throws IOException If an I/O error occurs.
-     * @throws NullPointerException If the specified input or output file is <code>null</code>.
-     * @throws NoSuchFileException If the input file is directory and the output file is
-     *             <em>not</em> directory.
-     * @throws SecurityException In the case of the default provider, and a security manager is
-     *             installed, the {@link SecurityManager#checkRead(String)} method is invoked to
-     *             check read access to the source file, the
-     *             {@link SecurityManager#checkWrite(String)} is invoked to check write access to
-     *             the target file. If a symbolic link is copied the security manager is invoked to
-     *             check {@link LinkPermission}("symbolic").
-     */
-    public void copyTo(Directory destination, Function<Option, Option> option) {
-        walk(Location.class, destination, 0, option, false).to(I.NoOP);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public void create() {
         try {
             Files.createDirectories(path);
@@ -450,60 +227,24 @@ public class Directory extends Location<Directory> {
     }
 
     /**
-     * <p>
-     * Delete a input {@link Path}. Simplified strategy is the following:
-     * </p>
-     * <p>
-     * <pre>
-     * if (input.isFile) {
-     *   // Delete input file unconditionaly.
-     * } else {
-     *   // Delete input directory deeply.
-     *   // You can also specify <a href="#Patterns">include/exclude patterns</a>.
-     * }
-     * </pre>
-     * <p>
-     * On some operating systems it may not be possible to remove a file when it is open and in use
-     * by this Java virtual machine or other programs.
-     * </p>
-     *
-     * @param input A input {@link Path} object which can be file or directory.
-     * @param patterns <a href="#Patterns">include/exclude patterns</a> you want to sort out.
-     * @throws IOException If an I/O error occurs.
-     * @throws NullPointerException If the specified input file is <code>null</code>.
-     * @throws SecurityException In the case of the default provider, and a security manager is
-     *             installed, the {@link SecurityManager#checkRead(String)} method is invoked to
-     *             check read access to the source file, the
-     *             {@link SecurityManager#checkWrite(String)} is invoked to check write access to
-     *             the target file. If a symbolic link is copied the security manager is invoked to
-     *             check {@link LinkPermission}("symbolic").
+     * Shorthand method to {@link #delete(Function)} with glob patterns.
+     * 
+     * @param patterns A glob patterns.
      */
     public void delete(String... patterns) {
-        walk(Location.class, this, 2, o -> o.glob(patterns), false).to(I.NoOP);
+        delete(o -> o.glob(patterns));
     }
 
     /**
      * <p>
-     * Delete a input {@link Path}. Simplified strategy is the following:
+     * Delete this {@link Directory} by using various {@link Option}.
      * </p>
-     * <p>
-     * <pre>
-     * if (input.isFile) {
-     *   // Delete input file unconditionaly.
-     * } else {
-     *   // Delete input directory deeply.
-     *   // You can also specify <a href="#Patterns">include/exclude patterns</a>.
-     * }
-     * </pre>
      * <p>
      * On some operating systems it may not be possible to remove a file when it is open and in use
      * by this Java virtual machine or other programs.
      * </p>
      *
-     * @param input A input {@link Path} object which can be file or directory.
-     * @param patterns <a href="#Patterns">include/exclude patterns</a> you want to sort out.
      * @throws IOException If an I/O error occurs.
-     * @throws NullPointerException If the specified input file is <code>null</code>.
      * @throws SecurityException In the case of the default provider, and a security manager is
      *             installed, the {@link SecurityManager#checkRead(String)} method is invoked to
      *             check read access to the source file, the
@@ -513,6 +254,100 @@ public class Directory extends Location<Directory> {
      */
     public void delete(Function<Option, Option> option) {
         walk(Location.class, this, 2, option, false).to(I.NoOP);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void copyTo(Directory destination) {
+        copyTo(destination, new String[0]);
+    }
+
+    /**
+     * Shorthand method to {@link #copyTo(Directory, Function)} with glob patterns.
+     * 
+     * @param destination A destination {@link Directory}.
+     * @param patterns A glob patterns.
+     */
+    public void copyTo(Directory destination, String... patterns) {
+        copyTo(destination, o -> o.glob(patterns));
+    }
+
+    /**
+     * <p>
+     * Copy this {@link Directory} to the output {@link Directory} by using various {@link Option}.
+     * </p>
+     * <p>
+     * If the output file already exists, it will be replaced by input file unconditionaly. The
+     * exact file attributes that are copied is platform and file system dependent and therefore
+     * unspecified. Minimally, the last-modified-time is copied to the output file if supported by
+     * both the input and output file store. Copying of file timestamps may result in precision
+     * loss.
+     * </p>
+     * <p>
+     * Copying a file is not an atomic operation. If an {@link IOException} is thrown then it
+     * possible that the output file is incomplete or some of its file attributes have not been
+     * copied from the input file.
+     * </p>
+     *
+     * @param destination An output {@link Directory}.
+     * @throws IOException If an I/O error occurs.
+     * @throws SecurityException In the case of the default provider, and a security manager is
+     *             installed, the {@link SecurityManager#checkRead(String)} method is invoked to
+     *             check read access to the source file, the
+     *             {@link SecurityManager#checkWrite(String)} is invoked to check write access to
+     *             the target file. If a symbolic link is copied the security manager is invoked to
+     *             check {@link LinkPermission}("symbolic").
+     */
+    public void copyTo(Directory destination, Function<Option, Option> option) {
+        walk(Location.class, destination, 0, option, false).to(I.NoOP);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void moveTo(Directory destination) {
+        moveTo(destination, new String[0]);
+    }
+
+    /**
+     * Shorthand method to {@link #moveTo(Directory, Function)} with glob patterns.
+     * 
+     * @param destination A destination {@link Directory}.
+     * @param patterns A glob patterns.
+     */
+    public void moveTo(Directory destination, String... patterns) {
+        moveTo(destination, o -> o.glob(patterns));
+    }
+
+    /**
+     * <p>
+     * Move this {@link Directory} to an output {@link Directory} by using various {@link Option}s.
+     * </p>
+     * <p>
+     * If the output file already exists, it will be replaced by input file unconditionaly. The
+     * exact file attributes that are copied is platform and file system dependent and therefore
+     * unspecified. Minimally, the last-modified-time is copied to the output file if supported by
+     * both the input and output file store. Copying of file timestamps may result in precision
+     * loss.
+     * </p>
+     * <p>
+     * Moving a file is an atomic operation.
+     * </p>
+     *
+     * @param destination An output {@link Path} object which can be file or directory.
+     * @throws IOException If an I/O error occurs.
+     * @throws SecurityException In the case of the default provider, and a security manager is
+     *             installed, the {@link SecurityManager#checkRead(String)} method is invoked to
+     *             check read access to the source file, the
+     *             {@link SecurityManager#checkWrite(String)} is invoked to check write access to
+     *             the target file. If a symbolic link is copied the security manager is invoked to
+     *             check {@link LinkPermission}("symbolic").
+     */
+    public void moveTo(Directory destination, Function<Option, Option> option) {
+        walk(Location.class, destination, 1, option, false).to(I.NoOP);
     }
 
     /**

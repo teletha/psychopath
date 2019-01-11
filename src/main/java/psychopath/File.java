@@ -27,6 +27,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
+import java.nio.file.LinkPermission;
 import java.nio.file.OpenOption;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
@@ -125,28 +126,23 @@ public class File extends Location<File> {
      * {@inheritDoc}
      */
     @Override
-    public void moveTo(Directory destination) {
-        if (isPresent()) {
-            try {
-                destination.create();
-                Files.move(path, destination.file(name()).path, ATOMIC_MOVE, REPLACE_EXISTING);
-            } catch (Exception e) {
-                throw I.quiet(e);
-            }
+    public void create() {
+        try {
+            Files.createFile(path);
+        } catch (IOException e) {
+            throw I.quiet(e);
         }
     }
 
     /**
      * {@inheritDoc}
      */
-    public void moveTo(File destination) {
-        if (isPresent()) {
-            try {
-                destination.parent().create();
-                Files.move(path, destination.path, REPLACE_EXISTING);
-            } catch (Exception e) {
-                throw I.quiet(e);
-            }
+    @Override
+    public void delete() {
+        try {
+            Files.deleteIfExists(path);
+        } catch (IOException e) {
+            throw I.quiet(e);
         }
     }
 
@@ -155,18 +151,34 @@ public class File extends Location<File> {
      */
     @Override
     public void copyTo(Directory destination) {
-        if (isPresent()) {
-            try {
-                destination.create();
-                Files.copy(path, destination.file(name()).path, REPLACE_EXISTING, COPY_ATTRIBUTES);
-            } catch (Exception e) {
-                throw I.quiet(e);
-            }
-        }
+        copyTo(destination.file(name()));
     }
 
     /**
-     * {@inheritDoc}
+     * <p>
+     * Copy this {@link File} to the output {@link File} with its attributes.
+     * </p>
+     * <p>
+     * If the output file already exists, it will be replaced by input file unconditionaly. The
+     * exact file attributes that are copied is platform and file system dependent and therefore
+     * unspecified. Minimally, the last-modified-time is copied to the output file if supported by
+     * both the input and output file store. Copying of file timestamps may result in precision
+     * loss.
+     * </p>
+     * <p>
+     * Copying a file is not an atomic operation. If an {@link IOException} is thrown then it
+     * possible that the output file is incomplete or some of its file attributes have not been
+     * copied from the input file.
+     * </p>
+     *
+     * @param destination An output {@link Directory}.
+     * @throws IOException If an I/O error occurs.
+     * @throws SecurityException In the case of the default provider, and a security manager is
+     *             installed, the {@link SecurityManager#checkRead(String)} method is invoked to
+     *             check read access to the source file, the
+     *             {@link SecurityManager#checkWrite(String)} is invoked to check write access to
+     *             the target file. If a symbolic link is copied the security manager is invoked to
+     *             check {@link LinkPermission}("symbolic").
      */
     public void copyTo(File destination) {
         if (isPresent()) {
@@ -208,6 +220,49 @@ public class File extends Location<File> {
             return Files.copy(path, out);
         } catch (IOException e) {
             throw I.quiet(e);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void moveTo(Directory destination) {
+        moveTo(destination.file(name()));
+    }
+
+    /**
+     * <p>
+     * Move this {@link File} to an output {@link File} with its attributes.
+     * </p>
+     * <p>
+     * If the output file already exists, it will be replaced by input file unconditionaly. The
+     * exact file attributes that are copied is platform and file system dependent and therefore
+     * unspecified. Minimally, the last-modified-time is copied to the output file if supported by
+     * both the input and output file store. Copying of file timestamps may result in precision
+     * loss.
+     * </p>
+     * <p>
+     * Moving a file is an atomic operation.
+     * </p>
+     *
+     * @param destination An output {@link Path} object which can be file or directory.
+     * @throws IOException If an I/O error occurs.
+     * @throws SecurityException In the case of the default provider, and a security manager is
+     *             installed, the {@link SecurityManager#checkRead(String)} method is invoked to
+     *             check read access to the source file, the
+     *             {@link SecurityManager#checkWrite(String)} is invoked to check write access to
+     *             the target file. If a symbolic link is copied the security manager is invoked to
+     *             check {@link LinkPermission}("symbolic").
+     */
+    public void moveTo(File destination) {
+        if (isPresent()) {
+            try {
+                destination.parent().create();
+                Files.move(path, destination.path, REPLACE_EXISTING);
+            } catch (Exception e) {
+                throw I.quiet(e);
+            }
         }
     }
 
@@ -287,30 +342,6 @@ public class File extends Location<File> {
      */
     public Directory unpackToTemporary(UnpackOption... options) {
         return unpackTo(Locator.temporaryDirectory(), options);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void create() {
-        try {
-            Files.createFile(path);
-        } catch (IOException e) {
-            throw I.quiet(e);
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void delete() {
-        try {
-            Files.deleteIfExists(path);
-        } catch (IOException e) {
-            throw I.quiet(e);
-        }
     }
 
     /**
