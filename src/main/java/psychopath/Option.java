@@ -76,10 +76,24 @@ public interface Option {
         /** The destination's root handling. */
         Directory relativePath;
 
+        /** The depth of directory digging. */
+        int depth = Integer.MAX_VALUE;
+
         /**
          * Hide.
          */
         private PathManagement() {
+        }
+
+        /**
+         * Sepcify the depth of directory traversing.
+         * 
+         * @param depthToSearch
+         * @return
+         */
+        public PathManagement depth(int depthToSearch) {
+            this.depth = depthToSearch;
+            return this;
         }
 
         /**

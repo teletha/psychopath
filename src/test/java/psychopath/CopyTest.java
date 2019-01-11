@@ -152,7 +152,7 @@ class CopyTest extends LocationTestHelper {
         });
         Directory out = locateDirectory("Out");
 
-        in.copyTo(out, (file, attr) -> file.getFileName().startsWith("file"));
+        in.copyTo(out, Option.take((file, attr) -> file.getFileName().startsWith("file")));
 
         assert sameFile(in.file("file"), out.file("In/file"));
         assert sameFile(in.file("dir/file"), out.file("In/dir/file"));

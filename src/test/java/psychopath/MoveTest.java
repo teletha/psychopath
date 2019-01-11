@@ -164,7 +164,7 @@ class MoveTest extends LocationTestHelper {
         });
         Directory out = locateDirectory("Out");
 
-        in.moveTo(out, (file, attr) -> file.getFileName().startsWith("file"));
+        in.moveTo(out, Option.take((file, attr) -> file.getFileName().startsWith("file")));
 
         assert in.isPresent();
         assert match(out.directory("In"), $ -> {
