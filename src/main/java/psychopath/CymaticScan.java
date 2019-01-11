@@ -74,7 +74,7 @@ class CymaticScan implements FileVisitor<Path>, Runnable, Disposable {
     private boolean root;
 
     /** Flags whether the current directory can be deleted or not. */
-    private LinkedList deletable;
+    private final LinkedList deletable = new LinkedList();
 
     /**
      * <p>
@@ -92,42 +92,20 @@ class CymaticScan implements FileVisitor<Path>, Runnable, Disposable {
      * <li>5 - observe</li>
      * </ol>
      */
-    CymaticScan(Path from, Path to, int type, Observer observer, Disposable disposer, Function<LocatableOption, LocatableOption> option) {
-        LocatableOption o = option.apply(I.make(LocatableOption.class));
+    CymaticScan(Directory from, Path to, int type, Observer observer, Disposable disposer, Function<LocatableOption, LocatableOption> option) {
+        LocatableOption o = option.apply(new LocatableOption());
 
-        this.original = from;
+        this.original = from.path;
         this.type = type;
         this.observer = observer;
         this.disposer = disposer;
         this.include = o.filter;
-        this.root = o.filter == null && !isZip(from);
-
-        try {
-            boolean directory = Files.isDirectory(from);
-
-            // The copy and move operations need the root path.
-            this.from = directory && type < 2 ? from.getParent() : from;
-
-            // The copy and move operations need destination. If the source is file,
-            // so destination must be file and its name is equal to source file.
-            this.to = !directory && type < 2 && Files.isDirectory(to) ? to.resolve(from.getFileName()) : to;
-
-            if (type < 2 && 1 < to.getNameCount()) {
-                Files.createDirectories(to.getParent());
-            }
-
-            if (type < 3) {
-                deletable = new LinkedList();
-            }
-        } catch (IOException e) {
-            throw I.quiet(e);
-        }
-
         this.root = o.acceptRoot;
 
-        if (this.root == false) {
-            this.from = from;
-        }
+        // The copy and move operations need the root path.
+        if (root && type < 2) from = from.parent();
+        this.from = from.path;
+        this.to = to;
 
         // Parse and create path matchers.
         for (String pattern : o.patterns) {
@@ -298,18 +276,6 @@ class CymaticScan implements FileVisitor<Path>, Runnable, Disposable {
 
     /**
      * <p>
-     * Helper method to check zip path.
-     * </p>
-     * 
-     * @param path A path to check.
-     * @return
-     */
-    private static boolean isZip(Path path) {
-        return path.getClass().getSimpleName().endsWith("ZipPath");
-    }
-
-    /**
-     * <p>
      * Helper method to test whether the path is acceptable or not.
      * </p>
      *
@@ -342,19 +308,17 @@ class CymaticScan implements FileVisitor<Path>, Runnable, Disposable {
      * @param observer A event listener.
      * @param patterns Name matching patterns.
      */
-    CymaticScan(Path path, Observer observer, Disposable disposer, String... patterns) {
-        this(path, null, 5, observer, disposer, o -> o.glob(patterns));
+    CymaticScan(Directory directory, Observer observer, Disposable disposer, String... patterns) {
+        this(directory, null, 5, observer, disposer, o -> o.glob(patterns));
 
         try {
-            this.service = path.getFileSystem().newWatchService();
+            this.service = directory.path.getFileSystem().newWatchService();
 
             // register
             if (patterns.length == 1 && patterns[0].equals("*")) {
-                path.register(service, ENTRY_CREATE, ENTRY_DELETE, ENTRY_MODIFY);
+                directory.path.register(service, ENTRY_CREATE, ENTRY_DELETE, ENTRY_MODIFY);
             } else {
-                if (Files.isDirectory(path)) {
-                    Directory directory = Locator.directory(path);
-
+                if (directory.isPresent()) {
                     for (Directory dir : directory.walkDirectories().startWith(directory).toList()) {
                         dir.path.register(service, ENTRY_CREATE, ENTRY_DELETE, ENTRY_MODIFY);
                     }

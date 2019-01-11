@@ -194,7 +194,7 @@ public class Directory extends Location<Directory> {
     private <L extends Location> Signal<L> walk(Class<L> clazz, Path out, int type, Function<LocatableOption, LocatableOption> option, boolean relatively) {
         return new Signal<L>((observer, disposer) -> {
             // build new scanner
-            CymaticScan scanner = new CymaticScan(path, out, type, observer, disposer, option);
+            CymaticScan scanner = new CymaticScan(this, out, type, observer, disposer, option);
 
             // try to scan
             try {
@@ -559,7 +559,7 @@ public class Directory extends Location<Directory> {
     public Signal<WatchEvent<Location>> observe(String... patterns) {
         return new Signal<>((observer, disposer) -> {
             // Create logical file system watch service.
-            CymaticScan watcher = new CymaticScan(path, observer, disposer, patterns);
+            CymaticScan watcher = new CymaticScan(this, observer, disposer, patterns);
 
             // Run in anothor thread.
             I.schedule(watcher);
