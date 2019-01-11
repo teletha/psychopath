@@ -97,7 +97,7 @@ public final class Folder {
         if (resources != null) {
             Signal<Operation> ops = resources.map(location -> {
                 if (location.isDirectory()) {
-                    return new DirectoryOperation((Directory) location, (String[]) null);
+                    return new DirectoryOperation((Directory) location, Function.identity());
                 } else {
                     return new FileOperation((File) location);
                 }
@@ -172,10 +172,7 @@ public final class Folder {
      * @param patterns "glob" include/exclude patterns.
      */
     public Folder add(Directory base, String... patterns) {
-        if (base != null) {
-            operations.add(new DirectoryOperation(base, patterns));
-        }
-        return this;
+        return add(base, o -> o.glob(patterns));
     }
 
     /**
@@ -190,91 +187,6 @@ public final class Folder {
         }
         return this;
     }
-
-    // /**
-    // * <p>
-    // * Use destination relative path for entries.
-    // * </p>
-    // * <pre>
-    // * folder.add("main.jar").add("lib", entry -> entry.add("one.jar").add("other.jar"));
-    // * folder.copyTo("output");
-    // * </pre>
-    // * <p>
-    // * {@link Folder} will deploy jars into "lib" directory.
-    // * </p>
-    // * <pre>
-    // * output
-    // * - main.jar
-    // * - lib
-    // * - one.jar
-    // * - other.jar
-    // * </pre>
-    // *
-    // * @param relative A destination relative path.
-    // * @param entries Your entries.
-    // * @return
-    // */
-    // public Folder add(String relative, Function<Folder, Folder> entries) {
-    // return add(Locator.directory(relative), entries);
-    // }
-    //
-    // /**
-    // * <p>
-    // * Use destination relative path for entries.
-    // * </p>
-    // * <pre>
-    // * folder.add("main.jar").add("lib", entry -> entry.add("one.jar").add("other.jar"));
-    // * folder.copyTo("output");
-    // * </pre>
-    // * <p>
-    // * {@link Folder} will deploy jars into "lib" directory.
-    // * </p>
-    // * <pre>
-    // * output
-    // * - main.jar
-    // * - lib
-    // * - one.jar
-    // * - other.jar
-    // * </pre>
-    // *
-    // * @param relative A destination relative path.
-    // * @param entries Your entries.
-    // * @return
-    // */
-    // public Folder add(Path relative, Function<Folder, Folder> entries) {
-    // return add(Locator.directory(relative), entries);
-    // }
-    //
-    // /**
-    // * <p>
-    // * Use destination relative path for entries.
-    // * </p>
-    // * <pre>
-    // * folder.add("main.jar").add("lib", entry -> entry.add("one.jar").add("other.jar"));
-    // * folder.copyTo("output");
-    // * </pre>
-    // * <p>
-    // * {@link Folder} will deploy jars into "lib" directory.
-    // * </p>
-    // * <pre>
-    // * output
-    // * - main.jar
-    // * - lib
-    // * - one.jar
-    // * - other.jar
-    // * </pre>
-    // *
-    // * @param relative A destination relative path.
-    // * @param entries Your entries.
-    // * @return
-    // */
-    // public Folder add(Directory relative, Function<Folder, Folder> entries) {
-    // if (entries != null) {
-    // operations.addAll(I.signal(entries.apply(Locator.folder()).operations).map(op -> new
-    // Allocator(op, relative)).toList());
-    // }
-    // return this;
-    // }
 
     /**
      * Delete all resources.
@@ -528,7 +440,7 @@ public final class Folder {
     }
 
     /**
-     * Operation for {@link File}.
+     * Operation for {@link Directory}.
      */
     private static class DirectoryOperation implements Operation {
 
@@ -538,16 +450,7 @@ public final class Folder {
 
         /**
          * @param directory
-         * @param patterns
-         */
-        private DirectoryOperation(Directory directory, String[] patterns) {
-            this.directory = directory;
-            this.option = o -> o.glob(patterns);
-        }
-
-        /**
-         * @param directory
-         * @param patterns
+         * @param option
          */
         private DirectoryOperation(Directory directory, Function<Option, Option> option) {
             this.directory = directory;
@@ -608,83 +511,6 @@ public final class Folder {
         @Override
         public Signal<Location> entry() {
             return I.signal(directory);
-        }
-    }
-
-    /**
-     * Allocator for destination path.
-     */
-    private static class Allocator implements Operation {
-
-        /** The delegation. */
-        private final Operation delegator;
-
-        /** The destination relative path. */
-        private final Directory relative;
-
-        /**
-         * @param delegator
-         * @param relative
-         */
-        private Allocator(Operation delegator, Directory relative) {
-            this.delegator = delegator;
-            this.relative = relative;
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public void delete(String... patterns) {
-            delegator.delete(patterns);
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public void moveTo(Directory destination, String... patterns) {
-            delegator.moveTo(destination.directory(relative), patterns);
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public void copyTo(Directory destination, String... patterns) {
-            delegator.copyTo(destination.directory(relative), patterns);
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public void packTo(ArchiveOutputStream archive, Directory relative, String... patterns) {
-            delegator.packTo(archive, this.relative, patterns);
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public Signal<Ⅱ<Directory, File>> walkFiles(String... patterns) {
-            return delegator.walkFiles(patterns);
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public Signal<Ⅱ<Directory, Directory>> walkDirectories(String... patterns) {
-            return delegator.walkDirectories(patterns);
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public Signal<Location> entry() {
-            return delegator.entry();
         }
     }
 }
