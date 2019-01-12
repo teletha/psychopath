@@ -9,11 +9,14 @@
  */
 package psychopath;
 
-import static java.nio.file.StandardCopyOption.*;
-import static java.nio.file.StandardOpenOption.*;
-import static java.util.concurrent.TimeUnit.*;
+import static java.nio.file.StandardCopyOption.COPY_ATTRIBUTES;
+import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
+import static java.nio.file.StandardOpenOption.CREATE;
+import static java.nio.file.StandardOpenOption.WRITE;
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOError;
 import java.io.IOException;
 import java.io.InputStream;
@@ -427,6 +430,59 @@ public class File extends Location<File> {
         try {
             parent().create();
             return Files.newOutputStream(path, options);
+        } catch (IOException e) {
+            throw I.quiet(e);
+        }
+    }
+
+    /**
+     * Opens a file for reading, returning a {@code BufferedReader} to read text from the file in an
+     * efficient manner. Bytes from the file are decoded into characters using the
+     * {@link StandardCharsets#UTF_8 UTF-8} {@link Charset charset}.
+     * <p>
+     * This method works as if invoking it were equivalent to evaluating the expression: <pre>{@code
+     * Files.newBufferedReader(path, StandardCharsets.UTF_8)
+     * }</pre>
+     *
+     * @return a new buffered reader, with default buffer size, to read text from the file
+     * @throws IOException if an I/O error occurs opening the file
+     * @throws SecurityException In the case of the default provider, and a security manager is
+     *             installed, the {@link SecurityManager#checkRead(String) checkRead} method is
+     *             invoked to check read access to the file.
+     */
+    public BufferedReader newBufferedReader() {
+        try {
+            return Files.newBufferedReader(path);
+        } catch (IOException e) {
+            throw I.quiet(e);
+        }
+    }
+
+    /**
+     * Opens or creates a file for writing, returning a {@code BufferedWriter} to write text to the
+     * file in an efficient manner. The text is encoded into bytes for writing using the
+     * {@link StandardCharsets#UTF_8 UTF-8} {@link Charset charset}.
+     * <p>
+     * This method works as if invoking it were equivalent to evaluating the expression: <pre>{@code
+     * Files.newBufferedWriter(path, StandardCharsets.UTF_8, options)
+     * }</pre>
+     *
+     * @param options options specifying how the file is opened
+     * @return a new buffered writer, with default buffer size, to write text to the file
+     * @throws IllegalArgumentException if {@code options} contains an invalid combination of
+     *             options
+     * @throws IOException if an I/O error occurs opening or creating the file
+     * @throws UnsupportedOperationException if an unsupported option is specified
+     * @throws SecurityException In the case of the default provider, and a security manager is
+     *             installed, the {@link SecurityManager#checkWrite(String) checkWrite} method is
+     *             invoked to check write access to the file. The
+     *             {@link SecurityManager#checkDelete(String) checkDelete} method is invoked to
+     *             check delete access if the file is opened with the {@code DELETE_ON_CLOSE}
+     *             option.
+     */
+    public BufferedWriter newBufferedWriter(OpenOption... options) {
+        try {
+            return Files.newBufferedWriter(path, options);
         } catch (IOException e) {
             throw I.quiet(e);
         }
