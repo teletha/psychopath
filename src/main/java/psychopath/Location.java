@@ -438,6 +438,28 @@ public abstract class Location<Self extends Location> implements Comparable<Loca
     }
 
     /**
+     * Tests whether a file is readable. This method checks that a file exists and that this Java
+     * virtual machine has appropriate privileges that would allow it open the file for reading.
+     * Depending on the implementation, this method may require to read file permissions, access
+     * control lists, or other file attributes in order to check the effective access to the file.
+     * Consequently, this method may not be atomic with respect to other file system operations.
+     * <p>
+     * Note that the result of this method is immediately outdated, there is no guarantee that a
+     * subsequent attempt to open the file for reading will succeed (or even that it will access the
+     * same file). Care should be taken when using this method in security sensitive applications.
+     *
+     * @return {@code true} if the file exists and is readable; {@code false} if the file does not
+     *         exist, read access would be denied because the Java virtual machine has insufficient
+     *         privileges, or access cannot be determined
+     * @throws SecurityException In the case of the default provider, and a security manager is
+     *             installed, the {@link SecurityManager#checkRead(String) checkRead} is invoked to
+     *             check read access to the file.
+     */
+    public final boolean isReadable() {
+        return Files.isReadable(path);
+    }
+
+    /**
      * Tests whether a file is a regular file with opaque content.
      * <p>
      * The {@code options} array may be used to indicate how symbolic links are handled for the case
