@@ -280,6 +280,16 @@ public class Locator {
     }
 
     /**
+     * Convert {@link java.io.File} to {@link Location}.
+     * 
+     * @param path
+     * @return
+     */
+    public static Location locate(java.io.File path) {
+        return locate(path.toPath());
+    }
+
+    /**
      * Locate the system temporary {@link Directory}.
      * 
      * @return
