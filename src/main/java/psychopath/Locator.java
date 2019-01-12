@@ -300,7 +300,7 @@ public class Locator {
      */
     public static File temporaryFile() {
         try {
-            return file(Files.createTempDirectory(temporary, "temporary"));
+            return file(Files.createTempFile(temporary, "temporary", ".tmp"));
         } catch (IOException e) {
             throw I.quiet(e);
         }
