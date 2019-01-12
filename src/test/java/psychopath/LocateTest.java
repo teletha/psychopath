@@ -91,4 +91,18 @@ class LocateTest extends LocationTestHelper {
         Location archive = Locator.locate(Map.class);
         assert archive == null;
     }
+
+    @Test
+    void temporaryFile() {
+        File file = Locator.temporaryFile();
+        assert file.isPresent();
+        assert file.isFile();
+    }
+
+    @Test
+    void temporaryDirectory() {
+        Directory directory = Locator.temporaryDirectory();
+        assert directory.isPresent();
+        assert directory.isDirectory();
+    }
 }
