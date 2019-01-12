@@ -60,6 +60,49 @@ public abstract class Location<Self extends Location> implements Comparable<Loca
     }
 
     /**
+     * Retrieve the base name of this {@link Location}.
+     * 
+     * @return A base name.
+     */
+    public final String base() {
+        String name = name();
+        int index = name.lastIndexOf(".");
+        return index == -1 ? name : name.substring(0, index);
+    }
+
+    /**
+     * Locate {@link Location} with the specified new base name, but extension is same.
+     * 
+     * @param newBaseName A new base name.
+     * @return New located {@link Location}.
+     */
+    public final Self base(String newBaseName) {
+        String extension = extension();
+        return convert(path.resolveSibling(extension.isEmpty() ? newBaseName : newBaseName + "." + extension));
+    }
+
+    /**
+     * Retrieve the extension of this {@link Location}.
+     * 
+     * @return An extension or empty if it has no extension.
+     */
+    public final String extension() {
+        String name = name();
+        int index = name.lastIndexOf(".");
+        return index == -1 ? "" : name.substring(index + 1);
+    }
+
+    /**
+     * Locate {@link Location} with the specified new extension, but base name is same.
+     * 
+     * @param newExtension A new extension.
+     * @return New located {@link Location}.
+     */
+    public final Self extension(String newExtension) {
+        return convert(path.resolveSibling(base() + "." + newExtension));
+    }
+
+    /**
      * Returns the path expression of this {@link Location}.
      * 
      * @return A path to this {@link Location}.
