@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 psychopath Development Team
+ * Copyright (C) 2019 psychopath Development Team
  *
  * Licensed under the MIT License (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.CodeSource;
-import java.util.function.Consumer;
 
 import kiss.Decoder;
 import kiss.Encoder;
@@ -290,19 +289,6 @@ public class Locator {
     }
 
     /**
-     * Locate the system temporary {@link Directory}.
-     * 
-     * @return
-     */
-    public static Directory temporaryDirectory() {
-        try {
-            return directory(Files.createTempDirectory(temporary, "temporary"));
-        } catch (IOException e) {
-            throw I.quiet(e);
-        }
-    }
-
-    /**
      * Creates a new abstract file somewhere beneath the system's temporary directory (as defined by
      * the <code>java.io.tmpdir</code> system property).
      * 
@@ -316,24 +302,17 @@ public class Locator {
         }
     }
 
-    public static Consumer<Directory> copy(Path destination, String... patterns) {
-        return copy(directory(destination), patterns);
-    }
-
-    public static Consumer<Directory> copy(Directory destination, String... patterns) {
-        return departure -> {
-            departure.copyTo(departure, patterns);
-        };
-    }
-
-    public static Consumer<Directory> move(Path destination, String... patterns) {
-        return move(directory(destination), patterns);
-    }
-
-    public static Consumer<Directory> move(Directory destination, String... patterns) {
-        return departure -> {
-            departure.moveTo(departure, patterns);
-        };
+    /**
+     * Locate the system temporary {@link Directory}.
+     * 
+     * @return
+     */
+    public static Directory temporaryDirectory() {
+        try {
+            return directory(Files.createTempDirectory(temporary, "temporary"));
+        } catch (IOException e) {
+            throw I.quiet(e);
+        }
     }
 
     /**
