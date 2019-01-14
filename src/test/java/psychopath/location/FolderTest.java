@@ -492,7 +492,7 @@ class FolderTest extends LocationTestHelper {
         assert dir1.isPresent();
         assert dir2.isPresent();
 
-        Locator.folder().add(dir1, dir2).delete();
+        Locator.folder().add(dir1).add(dir2).delete();
         assert dir1.isAbsent();
         assert dir2.isAbsent();
     }
@@ -514,7 +514,7 @@ class FolderTest extends LocationTestHelper {
             });
         });
 
-        Locator.folder().add(dir1, dir2).delete("**.txt");
+        Locator.folder().add(dir1).add(dir2).delete("**.txt");
 
         assert match(dir1, $ -> {
             $.file("2.java");
@@ -600,10 +600,10 @@ class FolderTest extends LocationTestHelper {
             });
         });
 
-        assert Locator.folder().add(file1, file2, dir1, dir2).walkFiles().toList().size() == 8;
+        assert Locator.folder().add(file1).add(file2).add(dir1).add(dir2).walkFiles().toList().size() == 8;
         // pattern
-        assert Locator.folder().add(file1, file2, dir1, dir2).walkFiles("**.java").toList().size() == 2;
-        assert Locator.folder().add(file1, file2, dir1, dir2).walkFiles("**.txt", "!c/**").toList().size() == 5;
+        assert Locator.folder().add(file1).add(file2).add(dir1).add(dir2).walkFiles("**.java").toList().size() == 2;
+        assert Locator.folder().add(file1).add(file2).add(dir1).add(dir2).walkFiles("**.txt", "!c/**").toList().size() == 5;
         // add pattern
         assert Locator.folder().add(dir1, "**.java").add(dir2, "**.txt").walkFiles().toList().size() == 3;
         assert Locator.folder().add(dir1, "!**.java").add(dir2, "!**.txt").walkFiles().toList().size() == 3;

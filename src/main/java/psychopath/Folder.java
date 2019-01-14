@@ -46,10 +46,20 @@ public final class Folder {
      * @return Chainable API.
      */
     public Folder add(String entry) {
+        return add(entry, Function.identity());
+    }
+
+    /**
+     * Add entry by path expression.
+     * 
+     * @param entry A path to entry.
+     * @return Chainable API.
+     */
+    public Folder add(String entry, Function<Option, Option> option) {
         if (entry == null) {
             return this;
         }
-        return add(Locator.locate(entry));
+        return add(Locator.locate(entry), option);
     }
 
     /**
@@ -59,21 +69,31 @@ public final class Folder {
      * @return Chainable API.
      */
     public Folder add(Path entry) {
+        return add(entry, Function.identity());
+    }
+
+    /**
+     * Add entry by {@link Path}.
+     * 
+     * @param entry A path to entry.
+     * @return Chainable API.
+     */
+    public Folder add(Path entry, Function<Option, Option> option) {
         if (entry == null) {
             return this;
         }
-        return add(Locator.locate(entry));
+        return add(Locator.locate(entry), option);
     }
 
     /**
      * Merge entries from other {@link Folder}.
      * 
-     * @param folder A entries to merge.
+     * @param entries A entries to merge.
      * @return Chainable API.
      */
-    public Folder add(Folder folder) {
-        if (folder != null) {
-            operations.addAll(folder.operations);
+    public Folder add(Folder entries) {
+        if (entries != null) {
+            operations.addAll(entries.operations);
         }
         return this;
     }
@@ -84,22 +104,41 @@ public final class Folder {
      * @param entry A location to entry.
      * @return Chainable API.
      */
-    public Folder add(Location... entries) {
-        return add(I.signal(entries));
+    public Folder add(Location entry) {
+        return add(I.signal(entry), Function.identity());
     }
 
     /**
-     * Add resources.
+     * Add entries by {@link Location}.
      * 
-     * @param resources
+     * @param entry A location to entry.
+     * @return Chainable API.
      */
-    public Folder add(Signal<? extends Location> resources) {
-        if (resources != null) {
-            Signal<Operation> ops = resources.map(location -> {
+    public Folder add(Location entry, Function<Option, Option> option) {
+        return add(I.signal(entry), option);
+    }
+
+    /**
+     * Add entries.
+     * 
+     * @param entries
+     */
+    public Folder add(Signal<? extends Location> entries) {
+        return add(entries, Function.identity());
+    }
+
+    /**
+     * Add entries.
+     * 
+     * @param entries
+     */
+    public Folder add(Signal<? extends Location> entries, Function<Option, Option> option) {
+        if (entries != null) {
+            Signal<Operation> ops = entries.map(location -> {
                 if (location.isDirectory()) {
-                    return new DirectoryOperation((Directory) location, Function.identity());
+                    return new DirectoryOperation((Directory) location, option);
                 } else {
-                    return new FileOperation((File) location);
+                    return new FileOperation((File) location, option);
                 }
             });
 
@@ -158,7 +197,7 @@ public final class Folder {
                  */
                 @Override
                 public Signal<Location> entry() {
-                    return resources.as(Location.class);
+                    return entries.as(Location.class);
                 }
             });
         }
@@ -370,11 +409,14 @@ public final class Folder {
 
         private final File file;
 
+        private final Function<Option, Option> option;
+
         /**
          * @param file
          */
-        private FileOperation(File file) {
+        private FileOperation(File file, Function<Option, Option> option) {
             this.file = file;
+            this.option = option;
         }
 
         /**
