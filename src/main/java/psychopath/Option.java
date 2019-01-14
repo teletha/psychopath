@@ -101,8 +101,8 @@ public class Option {
      * @param relativePath A relative path from the destination's root {@link Directory}.
      * @return
      */
-    public Option allocateIn(String relativePath) {
-        return allocateIn(Locator.directory(relativePath));
+    public Option in(String relativePath) {
+        return in(Locator.directory(relativePath));
     }
 
     /**
@@ -113,8 +113,8 @@ public class Option {
      * @param relativePath A relative path from the destination's root {@link Directory}.
      * @return
      */
-    public Option allocateIn(Path relativePath) {
-        return allocateIn(Locator.directory(relativePath));
+    public Option in(Path relativePath) {
+        return in(Locator.directory(relativePath));
     }
 
     /**
@@ -125,7 +125,7 @@ public class Option {
      * @param relativePath A relative path from the destination's root {@link Directory}.
      * @return
      */
-    public Option allocateIn(Directory relativePath) {
+    public Option in(Directory relativePath) {
         if (relativePath != null) {
             if (relativePath.isAbsolute()) {
                 throw new IllegalArgumentException("Only relative path is acceptable. [" + relativePath + "]");

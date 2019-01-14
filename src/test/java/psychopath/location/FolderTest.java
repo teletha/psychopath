@@ -311,6 +311,77 @@ class FolderTest extends LocationTestHelper {
         });
     }
 
+    @Test
+    void destinationPathString() {
+        Folder folder = Locator.folder().add("lib", e -> e.add(locateFile("one.jar")).add(locateFile("other.jar")));
+
+        assert matchDestination(folder, $ -> {
+            $.dir("lib", () -> {
+                $.file("one.jar");
+                $.file("other.jar");
+            });
+        });
+    }
+
+    @Test
+    void destinationPath() {
+        Folder folder = Locator.folder().add(Path.of("lib"), e -> e.add(locateFile("one.jar")).add(locateFile("other.jar")));
+
+        assert matchDestination(folder, $ -> {
+            $.dir("lib", () -> {
+                $.file("one.jar");
+                $.file("other.jar");
+            });
+        });
+    }
+
+    @Test
+    void destinationDirectory() {
+        Folder folder = Locator.folder().add(Locator.directory("lib"), e -> e.add(locateFile("one.jar")).add(locateFile("other.jar")));
+
+        assert matchDestination(folder, $ -> {
+            $.dir("lib", () -> {
+                $.file("one.jar");
+                $.file("other.jar");
+            });
+        });
+    }
+
+    @Test
+    void destinationAddDirectory() {
+        Folder folder = Locator.folder().add(Locator.directory("lib"), e -> e.add(locateDirectory("sub", $ -> {
+            $.file("one.jar");
+            $.file("other.jar");
+        })));
+
+        assert matchDestination(folder, $ -> {
+            $.dir("lib", () -> {
+                $.dir("sub", () -> {
+                    $.file("one.jar");
+                    $.file("other.jar");
+                });
+            });
+        });
+    }
+
+    @Test
+    void destinationAddDirectoryWithPattern() {
+        Folder folder = Locator.folder().add("lib", e -> e.add(locateDirectory("sub", $ -> {
+            $.file("one.jar");
+            $.file("other.jar");
+            $.file("no-match.txt");
+        }), "**.jar"));
+
+        assert matchDestination(folder, $ -> {
+            $.dir("lib", () -> {
+                $.dir("sub", () -> {
+                    $.file("one.jar");
+                    $.file("other.jar");
+                });
+            });
+        });
+    }
+
     // @Test
     // void destinationPathString() {
     // Folder folder = Locator.folder().add("lib", e ->
