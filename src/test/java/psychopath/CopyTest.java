@@ -133,7 +133,7 @@ class CopyTest extends LocationTestHelper {
             $.file("1", "This text will be overwritten by input file.");
         });
 
-        in.copyTo(out, o -> o.glob("**").ignoreRoot());
+        in.copyTo(out, o -> o.glob("**").strip());
 
         assert match(out, $ -> {
             $.file("1", "One");
@@ -197,7 +197,7 @@ class CopyTest extends LocationTestHelper {
         });
         Directory out = locateDirectory("Out");
 
-        in.copyTo(out, o -> o.glob("*").ignoreRoot());
+        in.copyTo(out, o -> o.glob("*").strip());
 
         assert out.file("file").isPresent();
         assert out.file("text").isPresent();
@@ -218,7 +218,7 @@ class CopyTest extends LocationTestHelper {
         });
         Directory out = locateDirectory("Out");
 
-        in.copyTo(out, o -> o.glob("**").ignoreRoot());
+        in.copyTo(out, o -> o.glob("**").strip());
 
         assert sameDirectory(in, out);
     }

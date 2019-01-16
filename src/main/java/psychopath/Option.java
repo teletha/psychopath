@@ -85,7 +85,7 @@ public class Option {
      * 
      * @return
      */
-    public Option ignoreRoot() {
+    public Option strip() {
         this.acceptRoot = false;
         return this;
     }

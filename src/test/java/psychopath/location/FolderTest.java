@@ -450,7 +450,7 @@ class FolderTest extends LocationTestHelper {
         Directory output = Locator.folder()
                 .add(file)
                 .add(directory)
-                .add(directory, o -> o.glob("**").ignoreRoot())
+                .add(directory, o -> o.glob("**").strip())
                 .copyTo(locateDirectory("output"));
         assert match(output, $ -> {
             $.file("file.txt");
