@@ -15,6 +15,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 import org.apache.commons.compress.archivers.ArchiveEntry;
@@ -228,6 +229,92 @@ public final class Folder {
     }
 
     /**
+     * <p>
+     * Use destination relative path for entries.
+     * </p>
+     * <pre>
+     * folder.add("main.jar").add("lib", entry -> entry.add("one.jar").add("other.jar"));
+     * folder.copyTo("output");
+     * </pre>
+     * <p>
+     * {@link Folder} will deploy jars into "lib" directory.
+     * </p>
+     * <pre>
+     * output
+     * - main.jar
+     * - lib
+     * - one.jar
+     * - other.jar
+     * </pre>
+     *
+     * @param relative A destination relative path.
+     * @param entries Your entries.
+     * @return
+     */
+    public Folder addIn(String relative, Consumer<Folder> entries) {
+        return addIn(Locator.directory(relative), entries);
+    }
+
+    /**
+     * <p>
+     * Use destination relative path for entries.
+     * </p>
+     * <pre>
+     * folder.add("main.jar").add("lib", entry -> entry.add("one.jar").add("other.jar"));
+     * folder.copyTo("output");
+     * </pre>
+     * <p>
+     * {@link Folder} will deploy jars into "lib" directory.
+     * </p>
+     * <pre>
+     * output
+     * - main.jar
+     * - lib
+     * - one.jar
+     * - other.jar
+     * </pre>
+     *
+     * @param relative A destination relative path.
+     * @param entries Your entries.
+     * @return
+     */
+    public Folder addIn(Path relative, Consumer<Folder> entries) {
+        return addIn(Locator.directory(relative), entries);
+    }
+
+    /**
+     * <p>
+     * Use destination relative path for entries.
+     * </p>
+     * <pre>
+     * folder.add("main.jar").add("lib", entry -> entry.add("one.jar").add("other.jar"));
+     * folder.copyTo("output");
+     * </pre>
+     * <p>
+     * {@link Folder} will deploy jars into "lib" directory.
+     * </p>
+     * <pre>
+     * output
+     * - main.jar
+     * - lib
+     * - one.jar
+     * - other.jar
+     * </pre>
+     *
+     * @param relative A destination relative path.
+     * @param entries Your entries.
+     * @return
+     */
+    public Folder addIn(Directory relative, Consumer<Folder> entries) {
+        if (entries != null) {
+            Folder folder = Locator.folder();
+            entries.accept(folder);
+            operations.addAll(I.signal(folder.operations).map(o -> new Allocator(o, relative)).toList());
+        }
+        return this;
+    }
+
+    /**
      * Delete all resources.
      * 
      * @return
@@ -400,6 +487,83 @@ public final class Folder {
         Signal<Ⅱ<Directory, Directory>> walkDirectories(String... patterns);
 
         Signal<Location> entry();
+    }
+
+    /**
+     * Allocator for destination path.
+     */
+    private static class Allocator implements Operation {
+
+        /** The delegation. */
+        private final Operation delegator;
+
+        /** The destination relative path. */
+        private final Directory relative;
+
+        /**
+         * @param delegator
+         * @param relative
+         */
+        private Allocator(Operation delegator, Directory relative) {
+            this.delegator = delegator;
+            this.relative = relative;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void delete(String... patterns) {
+            delegator.delete(patterns);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void moveTo(Directory destination, String... patterns) {
+            delegator.moveTo(destination.directory(relative), patterns);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void copyTo(Directory destination, String... patterns) {
+            delegator.copyTo(destination.directory(relative), patterns);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void packTo(ArchiveOutputStream archive, Directory relative, String... patterns) {
+            delegator.packTo(archive, this.relative, patterns);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public Signal<Ⅱ<Directory, File>> walkFiles(String... patterns) {
+            return delegator.walkFiles(patterns);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public Signal<Ⅱ<Directory, Directory>> walkDirectories(String... patterns) {
+            return delegator.walkDirectories(patterns);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public Signal<Location> entry() {
+            return delegator.entry();
+        }
     }
 
     /**

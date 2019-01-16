@@ -313,7 +313,7 @@ class FolderTest extends LocationTestHelper {
 
     @Test
     void destinationPathString() {
-        Folder folder = Locator.folder().add("lib", e -> e.add(locateFile("one.jar")).add(locateFile("other.jar")));
+        Folder folder = Locator.folder().addIn("lib", e -> e.add(locateFile("one.jar")).add(locateFile("other.jar")));
 
         assert matchDestination(folder, $ -> {
             $.dir("lib", () -> {
@@ -325,7 +325,7 @@ class FolderTest extends LocationTestHelper {
 
     @Test
     void destinationPath() {
-        Folder folder = Locator.folder().add(Path.of("lib"), e -> e.add(locateFile("one.jar")).add(locateFile("other.jar")));
+        Folder folder = Locator.folder().addIn(Path.of("lib"), e -> e.add(locateFile("one.jar")).add(locateFile("other.jar")));
 
         assert matchDestination(folder, $ -> {
             $.dir("lib", () -> {
@@ -337,7 +337,7 @@ class FolderTest extends LocationTestHelper {
 
     @Test
     void destinationDirectory() {
-        Folder folder = Locator.folder().add(Locator.directory("lib"), e -> e.add(locateFile("one.jar")).add(locateFile("other.jar")));
+        Folder folder = Locator.folder().addIn(Locator.directory("lib"), e -> e.add(locateFile("one.jar")).add(locateFile("other.jar")));
 
         assert matchDestination(folder, $ -> {
             $.dir("lib", () -> {
@@ -349,7 +349,7 @@ class FolderTest extends LocationTestHelper {
 
     @Test
     void destinationAddDirectory() {
-        Folder folder = Locator.folder().add(Locator.directory("lib"), e -> e.add(locateDirectory("sub", $ -> {
+        Folder folder = Locator.folder().addIn(Locator.directory("lib"), e -> e.add(locateDirectory("sub", $ -> {
             $.file("one.jar");
             $.file("other.jar");
         })));
@@ -366,7 +366,7 @@ class FolderTest extends LocationTestHelper {
 
     @Test
     void destinationAddDirectoryWithPattern() {
-        Folder folder = Locator.folder().add("lib", e -> e.add(locateDirectory("sub", $ -> {
+        Folder folder = Locator.folder().addIn("lib", e -> e.add(locateDirectory("sub", $ -> {
             $.file("one.jar");
             $.file("other.jar");
             $.file("no-match.txt");
@@ -381,81 +381,6 @@ class FolderTest extends LocationTestHelper {
             });
         });
     }
-
-    // @Test
-    // void destinationPathString() {
-    // Folder folder = Locator.folder().add("lib", e ->
-    // e.add(locateFile("one.jar")).add(locateFile("other.jar")));
-    //
-    // assert matchDestination(folder, $ -> {
-    // $.dir("lib", () -> {
-    // $.file("one.jar");
-    // $.file("other.jar");
-    // });
-    // });
-    // }
-    //
-    // @Test
-    // void destinationPath() {
-    // Folder folder = Locator.folder().add(Path.of("lib"), e ->
-    // e.add(locateFile("one.jar")).add(locateFile("other.jar")));
-    //
-    // assert matchDestination(folder, $ -> {
-    // $.dir("lib", () -> {
-    // $.file("one.jar");
-    // $.file("other.jar");
-    // });
-    // });
-    // }
-    //
-    // @Test
-    // void destinationDirectory() {
-    // Folder folder = Locator.folder().add(Locator.directory("lib"), e ->
-    // e.add(locateFile("one.jar")).add(locateFile("other.jar")));
-    //
-    // assert matchDestination(folder, $ -> {
-    // $.dir("lib", () -> {
-    // $.file("one.jar");
-    // $.file("other.jar");
-    // });
-    // });
-    // }
-    //
-    // @Test
-    // void destinationAddDirectory() {
-    // Folder folder = Locator.folder().add(Locator.directory("lib"), e ->
-    // e.add(locateDirectory("sub", $ -> {
-    // $.file("one.jar");
-    // $.file("other.jar");
-    // })));
-    //
-    // assert matchDestination(folder, $ -> {
-    // $.dir("lib", () -> {
-    // $.dir("sub", () -> {
-    // $.file("one.jar");
-    // $.file("other.jar");
-    // });
-    // });
-    // });
-    // }
-    //
-    // @Test
-    // void destinationAddDirectoryWithPattern() {
-    // Folder folder = Locator.folder().add("lib", e -> e.add(locateDirectory("sub", $ -> {
-    // $.file("one.jar");
-    // $.file("other.jar");
-    // $.file("no-match.txt");
-    // }), "**.jar"));
-    //
-    // assert matchDestination(folder, $ -> {
-    // $.dir("lib", () -> {
-    // $.dir("sub", () -> {
-    // $.file("one.jar");
-    // $.file("other.jar");
-    // });
-    // });
-    // });
-    // }
 
     /**
      * Helper method to test copied, packed and moved file structures.
