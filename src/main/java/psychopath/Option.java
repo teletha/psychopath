@@ -27,9 +27,6 @@ public class Option {
     /** The departure's root handling. */
     boolean acceptRoot = true;
 
-    /** The destination's root handling. */
-    Directory relativePath;
-
     /** The depth of directory digging. */
     int depth = Integer.MAX_VALUE;
 
@@ -90,48 +87,6 @@ public class Option {
      */
     public Option ignoreRoot() {
         this.acceptRoot = false;
-        return this;
-    }
-
-    /**
-     * <p>
-     * All files will be allocated in the specified destination directory.
-     * </p>
-     * 
-     * @param relativePath A relative path from the destination's root {@link Directory}.
-     * @return
-     */
-    public Option in(String relativePath) {
-        return in(Locator.directory(relativePath));
-    }
-
-    /**
-     * <p>
-     * All files will be allocated in the specified destination directory.
-     * </p>
-     * 
-     * @param relativePath A relative path from the destination's root {@link Directory}.
-     * @return
-     */
-    public Option in(Path relativePath) {
-        return in(Locator.directory(relativePath));
-    }
-
-    /**
-     * <p>
-     * All files will be allocated in the specified destination directory.
-     * </p>
-     * 
-     * @param relativePath A relative path from the destination's root {@link Directory}.
-     * @return
-     */
-    public Option in(Directory relativePath) {
-        if (relativePath != null) {
-            if (relativePath.isAbsolute()) {
-                throw new IllegalArgumentException("Only relative path is acceptable. [" + relativePath + "]");
-            }
-            this.relativePath = relativePath;
-        }
         return this;
     }
 
