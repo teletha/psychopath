@@ -9,7 +9,7 @@
  */
 package psychopath;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 
 import java.nio.file.Path;
 import java.time.Instant;
@@ -149,6 +149,8 @@ public class LocationTestHelper {
         Directory e = locateDirectory(actual.name() + " expected", expected);
         List<Location<?>> expecteds = e.descendant().sort(Comparator.naturalOrder()).toList();
         List<Location<?>> actuals = actual.descendant().sort(Comparator.naturalOrder()).toList();
+
+        assert expecteds.size() == actuals.size() : "\r\nexpected " + expecteds + "\r\nactual " + actuals;
 
         for (int i = 0; i < expecteds.size(); i++) {
             Location<?> expectedLocation = expecteds.get(i);

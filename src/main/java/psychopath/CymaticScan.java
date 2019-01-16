@@ -12,7 +12,6 @@ package psychopath;
 import static java.nio.file.FileVisitResult.CONTINUE;
 import static java.nio.file.FileVisitResult.SKIP_SUBTREE;
 import static java.nio.file.FileVisitResult.TERMINATE;
-import static java.nio.file.StandardCopyOption.ATOMIC_MOVE;
 import static java.nio.file.StandardCopyOption.COPY_ATTRIBUTES;
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 import static java.nio.file.StandardWatchEventKinds.ENTRY_CREATE;
@@ -161,7 +160,7 @@ class CymaticScan implements FileVisitor<Path>, Runnable, Disposable {
         switch (type) {
         case 0: // copy
         case 1: // move
-            Files.createDirectories(to.resolve(relative));
+            Files.createDirectories(to.resolve(relative.toString()));
             // fall-through to reduce footprint
 
         case 2: // delete
@@ -193,7 +192,7 @@ class CymaticScan implements FileVisitor<Path>, Runnable, Disposable {
         switch (type) {
         case 0: // copy
         case 1: // move
-            Files.setLastModifiedTime(to.resolve(from.relativize(path)), Files.getLastModifiedTime(path));
+            Files.setLastModifiedTime(to.resolve(from.relativize(path).toString()), Files.getLastModifiedTime(path));
             // fall-through to reduce footprint
 
         case 2: // delete
@@ -224,11 +223,11 @@ class CymaticScan implements FileVisitor<Path>, Runnable, Disposable {
             if (accept(relative, attrs)) {
                 switch (type) {
                 case 0: // copy
-                    Files.copy(path, to.resolve(relative), COPY_ATTRIBUTES, REPLACE_EXISTING);
+                    Files.copy(path, to.resolve(relative.toString()), COPY_ATTRIBUTES, REPLACE_EXISTING);
                     break;
 
                 case 1: // move
-                    Files.move(path, to.resolve(relative), ATOMIC_MOVE, REPLACE_EXISTING);
+                    Files.move(path, to.resolve(relative.toString()), REPLACE_EXISTING);
                     break;
 
                 case 2: // delete

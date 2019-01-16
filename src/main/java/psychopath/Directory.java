@@ -26,11 +26,21 @@ import kiss.WiseRunnable;
 
 public class Directory extends Location<Directory> {
 
+    private final Function<Option, Option> option;
+
     /**
      * @param path
      */
     Directory(Path path) {
+        this(path, Function.identity());
+    }
+
+    /**
+     * 
+     */
+    Directory(Path path, Function<Option, Option> option) {
         super(path);
+        this.option = option;
     }
 
     public boolean isEmpty() {
@@ -201,9 +211,11 @@ public class Directory extends Location<Directory> {
         return new Signal<L>((observer, disposer) -> {
             try {
                 Option o = option.apply(new Option());
-                Files.walkFileTree(path, Set.of(), o.depth, new CymaticScan(this, out, type, observer, disposer, option));
+                Files.walkFileTree(path, Set
+                        .of(), o.depth, new CymaticScan(this, out, type, observer, disposer, option.andThen(this.option)));
                 observer.complete();
-            } catch (IOException e) {
+            } catch (Throwable e) {
+                e.printStackTrace();
                 observer.error(e);
             }
             return disposer;

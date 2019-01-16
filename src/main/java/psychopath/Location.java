@@ -530,6 +530,15 @@ public abstract class Location<Self extends Location> implements Comparable<Loca
     }
 
     /**
+     * Test whether this location indicates root or not.
+     * 
+     * @return
+     */
+    public final boolean isRoot() {
+        return path.getNameCount() == 0;
+    }
+
+    /**
      * Convert to {@link Directory} if it is possible. If this {@link Location} indicate
      * {@link File}, throw error.
      * 

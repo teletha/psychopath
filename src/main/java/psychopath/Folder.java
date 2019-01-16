@@ -15,12 +15,16 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
 import org.apache.commons.compress.archivers.ArchiveEntry;
 import org.apache.commons.compress.archivers.ArchiveOutputStream;
 import org.apache.commons.compress.archivers.ArchiveStreamFactory;
+import org.apache.commons.compress.archivers.jar.JarArchiveEntry;
+import org.apache.commons.compress.archivers.sevenz.SevenZArchiveEntry;
+import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 
 import kiss.I;
 import kiss.Signal;
@@ -100,6 +104,19 @@ public final class Folder {
     }
 
     /**
+     * Merge entries from other {@link Folder}.
+     * 
+     * @param entries A entries to merge.
+     * @return Chainable API.
+     */
+    public Folder add(Folder entries, Function<Option, Option> option) {
+        if (entries != null) {
+            operations.addAll(entries.operations);
+        }
+        return this;
+    }
+
+    /**
      * Add entries by {@link Location}.
      * 
      * @param entry A location to entry.
@@ -165,16 +182,16 @@ public final class Folder {
                  * {@inheritDoc}
                  */
                 @Override
-                public void copyTo(Directory destination, String... patterns) {
-                    ops.to(op -> op.copyTo(destination, patterns));
+                public void copyTo(Directory destination, Function<Option, Option> option) {
+                    ops.to(op -> op.copyTo(destination, option));
                 }
 
                 /**
                  * {@inheritDoc}
                  */
                 @Override
-                public void packTo(ArchiveOutputStream archive, Directory relative, String... patterns) {
-                    ops.to(op -> op.packTo(archive, relative, patterns));
+                public void packTo(ArchiveOutputStream archive, BiFunction<String, File, ArchiveEntry> builder, Directory relative, Function<Option, Option> option) {
+                    ops.to(op -> op.packTo(archive, builder, relative, option));
                 }
 
                 /**
@@ -357,9 +374,11 @@ public final class Folder {
      * @param archive
      */
     public File packTo(File archive, String... patterns) {
+        BiFunction<String, File, ArchiveEntry> builder = detectEntryBuilder(archive.extension());
+
         try (ArchiveOutputStream out = new ArchiveStreamFactory()
                 .createArchiveOutputStream(archive.extension().replaceAll("7z", "7z-override"), archive.newOutputStream())) {
-            operations.forEach(operation -> operation.packTo(out, Locator.directory(""), patterns));
+            operations.forEach(operation -> operation.packTo(out, builder, Locator.directory(""), patterns));
             out.finish();
         } catch (Exception e) {
             throw I.quiet(e);
@@ -420,9 +439,9 @@ public final class Folder {
      * @param file
      * @param relative
      */
-    private static void pack(ArchiveOutputStream out, Directory directory, File file, Directory relative) {
+    private static void pack(ArchiveOutputStream out, BiFunction<String, File, ArchiveEntry> builder, Directory directory, File file, Directory relative) {
         try {
-            ArchiveEntry entry = out.createArchiveEntry(file.asJavaFile(), relative.file(directory.relativize(file)).path());
+            ArchiveEntry entry = builder.apply(relative.file(directory.relativize(file).toString()).path(), file);
             out.putArchiveEntry(entry);
 
             try (InputStream in = file.newInputStream()) {
@@ -431,6 +450,35 @@ public final class Folder {
             out.closeArchiveEntry();
         } catch (IOException e) {
             throw I.quiet(e);
+        }
+    }
+
+    private static BiFunction<String, File, ArchiveEntry> detectEntryBuilder(String extension) {
+        switch (extension) {
+        case "jar":
+            return (name, file) -> {
+                JarArchiveEntry entry = new JarArchiveEntry(name);
+
+                return entry;
+            };
+
+        case "zip":
+            return (name, file) -> {
+                ZipArchiveEntry entry = new ZipArchiveEntry(name);
+
+                return entry;
+            };
+
+        case "7z":
+            return (name, file) -> {
+                SevenZArchiveEntry entry = new SevenZArchiveEntry();
+                entry.setName(name);
+
+                return entry;
+            };
+
+        default:
+            throw new Error();
         }
     }
 
@@ -460,7 +508,17 @@ public final class Folder {
          * @param destination
          * @param patterns
          */
-        void copyTo(Directory destination, String... patterns);
+        default void copyTo(Directory destination, String... patterns) {
+            copyTo(destination, o -> o.glob(patterns));
+        }
+
+        /**
+         * Copy reosources to the specified {@link Directory}.
+         * 
+         * @param destination
+         * @param patterns
+         */
+        void copyTo(Directory destination, Function<Option, Option> option);
 
         /**
          * Pack reosources to the specified {@link File}.
@@ -468,7 +526,17 @@ public final class Folder {
          * @param relative
          * @param patterns
          */
-        void packTo(ArchiveOutputStream archive, Directory relative, String... patterns);
+        default void packTo(ArchiveOutputStream archive, BiFunction<String, File, ArchiveEntry> builder, Directory relative, String... patterns) {
+            packTo(archive, builder, relative, o -> o.glob(patterns));
+        }
+
+        /**
+         * Pack reosources to the specified {@link File}.
+         * 
+         * @param relative
+         * @param patterns
+         */
+        void packTo(ArchiveOutputStream archive, BiFunction<String, File, ArchiveEntry> builder, Directory relative, Function<Option, Option> option);
 
         /**
          * List up all resources.
@@ -529,16 +597,16 @@ public final class Folder {
          * {@inheritDoc}
          */
         @Override
-        public void copyTo(Directory destination, String... patterns) {
-            delegator.copyTo(destination.directory(relative), patterns);
+        public void copyTo(Directory destination, Function<Option, Option> option) {
+            delegator.copyTo(destination.directory(relative), option);
         }
 
         /**
          * {@inheritDoc}
          */
         @Override
-        public void packTo(ArchiveOutputStream archive, Directory relative, String... patterns) {
-            delegator.packTo(archive, this.relative, patterns);
+        public void packTo(ArchiveOutputStream archive, BiFunction<String, File, ArchiveEntry> builder, Directory relative, Function<Option, Option> option) {
+            delegator.packTo(archive, builder, this.relative, option);
         }
 
         /**
@@ -603,7 +671,7 @@ public final class Folder {
          * {@inheritDoc}
          */
         @Override
-        public void copyTo(Directory destination, String... patterns) {
+        public void copyTo(Directory destination, Function<Option, Option> option) {
             file.copyTo(destination);
 
         }
@@ -612,8 +680,8 @@ public final class Folder {
          * {@inheritDoc}
          */
         @Override
-        public void packTo(ArchiveOutputStream archive, Directory relative, String... patterns) {
-            pack(archive, file.parent(), file, relative);
+        public void packTo(ArchiveOutputStream archive, BiFunction<String, File, ArchiveEntry> builder, Directory relative, Function<Option, Option> option) {
+            pack(archive, builder, file.parent(), file, relative);
         }
 
         /**
@@ -683,16 +751,17 @@ public final class Folder {
          * {@inheritDoc}
          */
         @Override
-        public void copyTo(Directory destination, String... patterns) {
-            directory.copyTo(destination, option.andThen(o -> o.glob(patterns)));
+        public void copyTo(Directory destination, Function<Option, Option> option) {
+            directory.copyTo(destination, this.option.andThen(option));
         }
 
         /**
          * {@inheritDoc}
          */
         @Override
-        public void packTo(ArchiveOutputStream archive, Directory relative, String... patterns) {
-            directory.walkFiles(option.andThen(o -> o.glob(patterns))).to(file -> pack(archive, directory.parent(), file, relative));
+        public void packTo(ArchiveOutputStream archive, BiFunction<String, File, ArchiveEntry> builder, Directory relative, Function<Option, Option> option) {
+            directory.walkFiles(this.option.andThen(option))
+                    .to(file -> pack(archive, builder, directory.isRoot() ? directory : directory.parent(), file, relative));
         }
 
         /**

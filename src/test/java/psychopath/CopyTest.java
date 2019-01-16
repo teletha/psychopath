@@ -222,4 +222,54 @@ class CopyTest extends LocationTestHelper {
 
         assert sameDirectory(in, out);
     }
+
+    @Test
+    public void archiveToDirectory() {
+        Folder in = locateArchive("main.zip", $ -> {
+            $.file("1", "override");
+        }).asArchive();
+
+        Directory out = locateDirectory("Out", $ -> {
+            $.file("1", "This text will be overridden.");
+        });
+
+        in.copyTo(out);
+
+        assert match(out, $ -> {
+            $.file("1", "override");
+        });
+    }
+
+    @Test
+    public void archiveToDirectoryWithPattern() {
+        Folder in = locateArchive("main.zip", $ -> {
+            $.file("1.txt", "override");
+            $.file("2.txt", "not match");
+        }).asArchive();
+
+        Directory out = locateDirectory("Out", $ -> {
+            $.file("1.txt", "This text will be overridden.");
+        });
+
+        in.copyTo(out, "1.*");
+
+        assert match(out, $ -> {
+            $.file("1.txt", "override");
+        });
+    }
+
+    @Test
+    public void archiveToAbsent() {
+        Folder in = locateArchive("main.zip", $ -> {
+            $.file("1.txt", "ok");
+        }).asArchive();
+
+        Directory out = locateAbsentDirectory("Out");
+
+        in.copyTo(out, "1.*");
+
+        assert match(out, $ -> {
+            $.file("1.txt", "ok");
+        });
+    }
 }
