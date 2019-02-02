@@ -111,7 +111,9 @@ public final class Folder {
      */
     public Folder add(Folder entries, Function<Option, Option> option) {
         if (entries != null) {
-            operations.addAll(entries.operations);
+            for (Operation operation : entries.operations) {
+                this.operations.add(new LayerOperation(operation, option));
+            }
         }
         return this;
     }
@@ -786,6 +788,81 @@ public final class Folder {
         @Override
         public Signal<Location> entry() {
             return I.signal(directory);
+        }
+    }
+
+    /**
+     * 
+     */
+    private static class LayerOperation implements Operation {
+
+        private final Operation operation;
+
+        private final Function<Option, Option> option;
+
+        /**
+         * @param operation
+         * @param option
+         */
+        private LayerOperation(Operation operation, Function<Option, Option> option) {
+            this.operation = operation;
+            this.option = option;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void delete(String... patterns) {
+            operation.delete(patterns);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void moveTo(Directory destination, String... patterns) {
+            operation.moveTo(destination, patterns);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void copyTo(Directory destination, Function<Option, Option> option) {
+            operation.copyTo(destination, this.option.andThen(option));
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void packTo(ArchiveOutputStream archive, BiFunction<String, File, ArchiveEntry> builder, Directory relative, Function<Option, Option> option) {
+            operation.packTo(archive, builder, relative, this.option.andThen(option));
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public Signal<Ⅱ<Directory, File>> walkFiles(String... patterns) {
+            return operation.walkFiles(patterns);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public Signal<Ⅱ<Directory, Directory>> walkDirectories(String... patterns) {
+            return operation.walkDirectories(patterns);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public Signal<Location> entry() {
+            return operation.entry();
         }
     }
 }

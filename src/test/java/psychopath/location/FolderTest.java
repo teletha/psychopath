@@ -16,6 +16,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import antibug.CleanRoom.FileSystemDSL;
+import antibug.powerassert.PowerAssertOff;
 import kiss.I;
 import psychopath.Directory;
 import psychopath.File;
@@ -312,6 +313,7 @@ class FolderTest extends LocationTestHelper {
     }
 
     @Test
+    @PowerAssertOff
     void addArchive() {
         File jar = locateArchive("test.zip", $ -> {
             $.file("1.txt");
