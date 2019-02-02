@@ -226,12 +226,13 @@ public class Directory extends Location<Directory> {
      * {@inheritDoc}
      */
     @Override
-    public void create() {
+    public Directory create() {
         try {
             Files.createDirectories(path);
         } catch (IOException e) {
             throw I.quiet(e);
         }
+        return this;
     }
 
     /**

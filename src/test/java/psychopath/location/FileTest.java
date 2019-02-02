@@ -175,4 +175,17 @@ class FileTest extends LocationTestHelper {
         assert file.isPresent();
         assert file.size() != 0;
     }
+
+    @Test
+    void text() {
+        File file = locateAbsent("text-write");
+        file.text("OK");
+        assert file.text().trim().equals("OK");
+    }
+
+    @Test
+    void create() {
+        assert locateAbsent("file").create().isPresent();
+        assert locateAbsent("deep/file").create().isPresent();
+    }
 }

@@ -612,7 +612,7 @@ public abstract class Location<Self extends Location> implements Comparable<Loca
         return path;
     }
 
-    public abstract void create();
+    public abstract Self create();
 
     /**
      * <p>
