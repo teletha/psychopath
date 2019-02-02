@@ -332,6 +332,24 @@ class FolderTest extends LocationTestHelper {
     }
 
     @Test
+    void directoryChildren() {
+        Directory dir = locateDirectory("test.zip", $ -> {
+            $.file("1.txt");
+            $.file("2.txt");
+            $.dir("in", () -> {
+                $.file("in1.txt");
+            });
+        });
+
+        Folder folder = Locator.folder().add(dir, o -> o.glob("*").strip());
+
+        assert matchDestination(folder, $ -> {
+            $.file("1.txt");
+            $.file("2.txt");
+        });
+    }
+
+    @Test
     void destinationPathString() {
         Folder folder = Locator.folder().addIn("lib", e -> e.add(locateFile("one.jar")).add(locateFile("other.jar")));
 

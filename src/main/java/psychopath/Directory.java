@@ -18,6 +18,7 @@ import java.nio.file.Path;
 import java.nio.file.WatchEvent;
 import java.util.Set;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import kiss.I;
 import kiss.Observer;
@@ -45,7 +46,8 @@ public class Directory extends Location<Directory> {
 
     public boolean isEmpty() {
         try {
-            return Files.list(path).count() == 0;
+            System.out.println(Files.list(path).collect(Collectors.toList()));
+            return Files.list(path).findFirst().isEmpty();
         } catch (IOException e) {
             throw I.quiet(e);
         }

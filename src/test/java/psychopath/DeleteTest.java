@@ -113,6 +113,10 @@ class DeleteTest extends LocationTestHelper {
 
         assert directory.isPresent();
         assert match(directory, $ -> {
+            $.dir("dir", () -> {
+                $.file("3.txt");
+                $.file("4.txt");
+            });
         });
     }
 
@@ -149,7 +153,7 @@ class DeleteTest extends LocationTestHelper {
             });
         });
 
-        directory.delete("dir");
+        directory.delete("dir/**");
 
         assert directory.isPresent();
         assert match(directory, $ -> {
