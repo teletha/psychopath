@@ -769,7 +769,8 @@ public final class Folder {
         @Override
         public void packTo(ArchiveOutputStream archive, BiFunction<String, File, ArchiveEntry> builder, Directory relative, Function<Option, Option> option) {
             directory.walkFiles(this.option.andThen(option))
-                    .to(file -> pack(archive, builder, directory, file, relative, this.option.andThen(option)));
+                    .to(file -> pack(archive, builder, directory.isRoot() ? directory : directory.parent(), file, relative, this.option
+                            .andThen(option)));
         }
 
         /**
