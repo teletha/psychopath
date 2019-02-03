@@ -176,8 +176,8 @@ public final class Folder {
                  * {@inheritDoc}
                  */
                 @Override
-                public void moveTo(Directory destination, String... patterns) {
-                    ops.to(op -> op.moveTo(destination, patterns));
+                public void moveTo(Directory destination, Function<Option, Option> option) {
+                    ops.to(op -> op.moveTo(destination, option));
                 }
 
                 /**
@@ -443,12 +443,6 @@ public final class Folder {
      */
     private static void pack(ArchiveOutputStream out, BiFunction<String, File, ArchiveEntry> builder, Directory directory, File file, Directory relative, Function<Option, Option> options) {
         try {
-            Option option = options.apply(new Option());
-
-            System.out
-                    .println(option.acceptRoot + "  @  " + relative + " @ " + directory + "  @" + relative + "@   " + file + "   @  " + relative
-                            .file(directory.relativize(file).toString()));
-
             ArchiveEntry entry = builder.apply(relative.file(directory.relativize(file).toString()).path(), file);
             out.putArchiveEntry(entry);
 
@@ -508,7 +502,17 @@ public final class Folder {
          * @param destination
          * @param patterns
          */
-        void moveTo(Directory destination, String... patterns);
+        default void moveTo(Directory destination, String... patterns) {
+            moveTo(destination, o -> o.glob(patterns));
+        }
+
+        /**
+         * Move reosources to the specified {@link Directory}.
+         * 
+         * @param destination
+         * @param patterns
+         */
+        void moveTo(Directory destination, Function<Option, Option> option);
 
         /**
          * Copy reosources to the specified {@link Directory}.
@@ -597,8 +601,8 @@ public final class Folder {
          * {@inheritDoc}
          */
         @Override
-        public void moveTo(Directory destination, String... patterns) {
-            delegator.moveTo(destination.directory(relative), patterns);
+        public void moveTo(Directory destination, Function<Option, Option> option) {
+            delegator.moveTo(destination.directory(relative), option);
         }
 
         /**
@@ -671,7 +675,7 @@ public final class Folder {
          * {@inheritDoc}
          */
         @Override
-        public void moveTo(Directory destination, String... patterns) {
+        public void moveTo(Directory destination, Function<Option, Option> option) {
             file.moveTo(destination);
         }
 
@@ -751,8 +755,8 @@ public final class Folder {
          * {@inheritDoc}
          */
         @Override
-        public void moveTo(Directory destination, String... patterns) {
-            directory.moveTo(destination, option.andThen(o -> o.glob(patterns)));
+        public void moveTo(Directory destination, Function<Option, Option> option) {
+            directory.moveTo(destination, this.option.andThen(option));
         }
 
         /**
@@ -768,9 +772,12 @@ public final class Folder {
          */
         @Override
         public void packTo(ArchiveOutputStream archive, BiFunction<String, File, ArchiveEntry> builder, Directory relative, Function<Option, Option> option) {
-            directory.walkFiles(this.option.andThen(option))
-                    .to(file -> pack(archive, builder, directory.isRoot() ? directory : directory.parent(), file, relative, this.option
-                            .andThen(option)));
+            Function<Option, Option> combined = this.option.andThen(option);
+            Option o = combined.apply(new Option());
+
+            directory.walkFiles(combined)
+                    .to(file -> pack(archive, builder, !directory.isRoot() && o.acceptRoot ? directory.parent()
+                            : directory, file, relative, combined));
         }
 
         /**
@@ -828,8 +835,8 @@ public final class Folder {
          * {@inheritDoc}
          */
         @Override
-        public void moveTo(Directory destination, String... patterns) {
-            operation.moveTo(destination, patterns);
+        public void moveTo(Directory destination, Function<Option, Option> option) {
+            operation.moveTo(destination, this.option.andThen(option));
         }
 
         /**

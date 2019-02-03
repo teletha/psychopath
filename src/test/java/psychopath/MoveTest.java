@@ -224,9 +224,6 @@ class MoveTest extends LocationTestHelper {
         assert match(out, $ -> {
             $.file("file");
             $.file("text");
-            $.dir("dir", () -> {
-            });
-            $.dir("empty");
         });
     }
 

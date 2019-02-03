@@ -94,7 +94,6 @@ class CymaticScan implements FileVisitor<Path>, Runnable, Disposable {
 
         // The copy and move operations need the root path.
         if (root && type < 2) from = from.parent();
-        System.out.println(root + "  " + from);
         this.from = from.path;
         this.to = to.path;
 
@@ -188,9 +187,13 @@ class CymaticScan implements FileVisitor<Path>, Runnable, Disposable {
         switch (type) {
         case 0: // copy
         case 1: // move
-            Directory directory2 = Locator.directory(to.resolve(from.relativize(path).toString()));
-            System.out.println(directory2 + "  " + directory2.isEmpty());
-            Files.setLastModifiedTime(to.resolve(from.relativize(path).toString()), Files.getLastModifiedTime(path));
+            Directory dir = Locator.directory(to.resolve(from.relativize(path).toString()));
+
+            if (dir.isEmpty()) {
+                Files.delete(dir.path);
+            } else {
+                Files.setLastModifiedTime(dir.path, Files.getLastModifiedTime(path));
+            }
             // fall-through to reduce footprint
 
         case 2: // delete

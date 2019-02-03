@@ -199,12 +199,10 @@ class CopyTest extends LocationTestHelper {
 
         in.copyTo(out, o -> o.glob("*").strip());
 
-        assert out.file("file").isPresent();
-        assert out.file("text").isPresent();
-        assert out.directory("empty").isPresent();
-        assert out.directory("dir").isPresent();
-        assert out.file("dir/file").isAbsent();
-        assert out.file("dir/text").isAbsent();
+        assert match(out, $ -> {
+            $.file("file");
+            $.file("text");
+        });
     }
 
     @Test
