@@ -9,9 +9,14 @@
  */
 package psychopath;
 
-import static java.nio.file.FileVisitResult.*;
-import static java.nio.file.StandardCopyOption.*;
-import static java.nio.file.StandardWatchEventKinds.*;
+import static java.nio.file.FileVisitResult.CONTINUE;
+import static java.nio.file.FileVisitResult.SKIP_SUBTREE;
+import static java.nio.file.FileVisitResult.TERMINATE;
+import static java.nio.file.StandardCopyOption.COPY_ATTRIBUTES;
+import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
+import static java.nio.file.StandardWatchEventKinds.ENTRY_CREATE;
+import static java.nio.file.StandardWatchEventKinds.ENTRY_DELETE;
+import static java.nio.file.StandardWatchEventKinds.ENTRY_MODIFY;
 
 import java.io.IOException;
 import java.nio.file.ClosedWatchServiceException;
@@ -187,6 +192,8 @@ class CymaticScan implements FileVisitor<Path>, Runnable, Disposable {
         switch (type) {
         case 0: // copy
         case 1: // move
+            Directory directory2 = Locator.directory(to.resolve(from.relativize(path).toString()));
+            System.out.println(directory2 + "  " + directory2.isEmpty());
             Files.setLastModifiedTime(to.resolve(from.relativize(path).toString()), Files.getLastModifiedTime(path));
             // fall-through to reduce footprint
 

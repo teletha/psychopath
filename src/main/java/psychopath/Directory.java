@@ -18,7 +18,7 @@ import java.nio.file.Path;
 import java.nio.file.WatchEvent;
 import java.util.Set;
 import java.util.function.Function;
-import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import kiss.I;
 import kiss.Observer;
@@ -44,10 +44,14 @@ public class Directory extends Location<Directory> {
         this.option = option;
     }
 
+    /**
+     * Whether this {@link Directory} has some items or not.
+     * 
+     * @return
+     */
     public boolean isEmpty() {
-        try {
-            System.out.println(Files.list(path).collect(Collectors.toList()));
-            return Files.list(path).findFirst().isEmpty();
+        try (Stream<Path> stream = Files.list(path)) {
+            return stream.findAny().isEmpty();
         } catch (IOException e) {
             throw I.quiet(e);
         }

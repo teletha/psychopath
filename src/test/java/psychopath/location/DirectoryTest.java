@@ -114,4 +114,21 @@ class DirectoryTest extends LocationTestHelper {
         assert dir.walkDirectories("**").toList().size() == 6;
         assert dir.walkDirectories("*", "*/*1").toList().size() == 4;
     }
+
+    @Test
+    void isEmpty() {
+        Directory dir = locateDirectory("empty", $ -> {
+        });
+        assert dir.isEmpty();
+
+        dir = locateDirectory("file", $ -> {
+            $.file("child");
+        });
+        assert dir.isEmpty() == false;
+
+        dir = locateDirectory("dir", $ -> {
+            $.dir("child");
+        });
+        assert dir.isEmpty() == false;
+    }
 }
