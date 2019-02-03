@@ -333,7 +333,7 @@ class FolderTest extends LocationTestHelper {
 
     @Test
     void directoryChildren() {
-        Directory dir = locateDirectory("test.zip", $ -> {
+        Directory dir = locateDirectory("dir", $ -> {
             $.file("1.txt");
             $.file("2.txt");
             $.dir("in", () -> {
@@ -346,6 +346,7 @@ class FolderTest extends LocationTestHelper {
         assert matchDestination(folder, $ -> {
             $.file("1.txt");
             $.file("2.txt");
+            $.dir("in");
         });
     }
 
@@ -456,6 +457,8 @@ class FolderTest extends LocationTestHelper {
      * @return
      */
     private boolean matchPackDestination(Folder folder, Consumer<FileSystemDSL> expected) {
+        File packTo = folder.packTo(Locator.file("pack.zip").absolutize());
+        packTo.unpackTo(Locator.directory("unpack").absolutize());
         assert match(folder.packTo(locateFile("pack.zip")).unpackToTemporary(), expected);
 
         return true;

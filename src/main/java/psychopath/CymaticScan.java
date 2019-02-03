@@ -9,14 +9,9 @@
  */
 package psychopath;
 
-import static java.nio.file.FileVisitResult.CONTINUE;
-import static java.nio.file.FileVisitResult.SKIP_SUBTREE;
-import static java.nio.file.FileVisitResult.TERMINATE;
-import static java.nio.file.StandardCopyOption.COPY_ATTRIBUTES;
-import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
-import static java.nio.file.StandardWatchEventKinds.ENTRY_CREATE;
-import static java.nio.file.StandardWatchEventKinds.ENTRY_DELETE;
-import static java.nio.file.StandardWatchEventKinds.ENTRY_MODIFY;
+import static java.nio.file.FileVisitResult.*;
+import static java.nio.file.StandardCopyOption.*;
+import static java.nio.file.StandardWatchEventKinds.*;
 
 import java.io.IOException;
 import java.nio.file.ClosedWatchServiceException;
@@ -99,6 +94,7 @@ class CymaticScan implements FileVisitor<Path>, Runnable, Disposable {
 
         // The copy and move operations need the root path.
         if (root && type < 2) from = from.parent();
+        System.out.println(root + "  " + from);
         this.from = from.path;
         this.to = to.path;
 

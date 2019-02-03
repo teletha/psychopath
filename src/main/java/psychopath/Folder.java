@@ -441,8 +441,14 @@ public final class Folder {
      * @param file
      * @param relative
      */
-    private static void pack(ArchiveOutputStream out, BiFunction<String, File, ArchiveEntry> builder, Directory directory, File file, Directory relative) {
+    private static void pack(ArchiveOutputStream out, BiFunction<String, File, ArchiveEntry> builder, Directory directory, File file, Directory relative, Function<Option, Option> options) {
         try {
+            Option option = options.apply(new Option());
+
+            System.out
+                    .println(option.acceptRoot + "  @  " + relative + " @ " + directory + "  @" + relative + "@   " + file + "   @  " + relative
+                            .file(directory.relativize(file).toString()));
+
             ArchiveEntry entry = builder.apply(relative.file(directory.relativize(file).toString()).path(), file);
             out.putArchiveEntry(entry);
 
@@ -683,7 +689,7 @@ public final class Folder {
          */
         @Override
         public void packTo(ArchiveOutputStream archive, BiFunction<String, File, ArchiveEntry> builder, Directory relative, Function<Option, Option> option) {
-            pack(archive, builder, file.parent(), file, relative);
+            pack(archive, builder, file.parent(), file, relative, this.option.andThen(option));
         }
 
         /**
@@ -763,7 +769,7 @@ public final class Folder {
         @Override
         public void packTo(ArchiveOutputStream archive, BiFunction<String, File, ArchiveEntry> builder, Directory relative, Function<Option, Option> option) {
             directory.walkFiles(this.option.andThen(option))
-                    .to(file -> pack(archive, builder, directory.isRoot() ? directory : directory.parent(), file, relative));
+                    .to(file -> pack(archive, builder, directory, file, relative, this.option.andThen(option)));
         }
 
         /**
