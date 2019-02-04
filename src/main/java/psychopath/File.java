@@ -324,6 +324,14 @@ public class File extends Location<File> {
      * {@inheritDoc}
      */
     @Override
+    public Signal<Ⅱ<Directory, Location>> walkWithBase(Function<Option, Option> option) {
+        return Signal.empty();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Signal<Ⅱ<Directory, File>> walkFilesWithBase(Function<Option, Option> option) {
         return Signal.empty();
     }

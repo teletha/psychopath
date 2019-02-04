@@ -209,6 +209,14 @@ public final class Folder implements PathOperatable {
                  * {@inheritDoc}
                  */
                 @Override
+                public Signal<Ⅱ<Directory, Location>> walkWithBase(Function<Option, Option> option) {
+                    return buildOperation(entries, option).flatMap(op -> op.walkWithBase(option));
+                }
+
+                /**
+                 * {@inheritDoc}
+                 */
+                @Override
                 public Signal<Ⅱ<Directory, File>> walkFilesWithBase(Function<Option, Option> option) {
                     return buildOperation(entries, option).flatMap(op -> op.walkFilesWithBase(option));
                 }
@@ -391,6 +399,14 @@ public final class Folder implements PathOperatable {
      * {@inheritDoc}
      */
     @Override
+    public Signal<Ⅱ<Directory, Location>> walkWithBase(Function<Option, Option> option) {
+        return I.signal(operations).flatMap(op -> op.walkWithBase(option));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Signal<Ⅱ<Directory, File>> walkFilesWithBase(Function<Option, Option> option) {
         return I.signal(operations).flatMap(op -> op.walkFilesWithBase(option));
     }
@@ -501,6 +517,14 @@ public final class Folder implements PathOperatable {
          * @param patterns
          * @return
          */
+        Signal<Ⅱ<Directory, Location>> walkWithBase(Function<Option, Option> option);
+
+        /**
+         * List up all resources.
+         * 
+         * @param patterns
+         * @return
+         */
         Signal<Ⅱ<Directory, File>> walkFilesWithBase(Function<Option, Option> option);
 
         /**
@@ -568,6 +592,14 @@ public final class Folder implements PathOperatable {
          * {@inheritDoc}
          */
         @Override
+        public Signal<Ⅱ<Directory, Location>> walkWithBase(Function<Option, Option> option) {
+            return delegator.walkWithBase(option);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
         public Signal<Ⅱ<Directory, File>> walkFilesWithBase(Function<Option, Option> option) {
             return delegator.walkFilesWithBase(option);
         }
@@ -625,6 +657,16 @@ public final class Folder implements PathOperatable {
         @Override
         public Signal<Location> observePackingTo(ArchiveOutputStream archive, BiFunction<String, File, ArchiveEntry> builder, Directory relative, Function<Option, Option> option) {
             return pack(archive, builder, file.parent(), file, relative);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public Signal<Ⅱ<Directory, Location>> walkWithBase(Function<Option, Option> option) {
+            // If this exception will be thrown, it is bug of this program. So we must rethrow the
+            // wrapped error in here.
+            throw new Error();
         }
 
         /**
@@ -708,8 +750,16 @@ public final class Folder implements PathOperatable {
          * {@inheritDoc}
          */
         @Override
+        public Signal<Ⅱ<Directory, Location>> walkWithBase(Function<Option, Option> option) {
+            return directory.walkWithBase(this.option.andThen(option));
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
         public Signal<Ⅱ<Directory, File>> walkFilesWithBase(Function<Option, Option> option) {
-            return directory.walkFiles(this.option.andThen(option)).map(file -> I.pair(directory, file));
+            return directory.walkFilesWithBase(this.option.andThen(option));
         }
 
         /**
@@ -717,7 +767,7 @@ public final class Folder implements PathOperatable {
          */
         @Override
         public Signal<Ⅱ<Directory, Directory>> walkDirectoriesWithBase(Function<Option, Option> option) {
-            return directory.walkDirectories(this.option.andThen(option)).map(dir -> I.pair(directory, dir));
+            return directory.walkDirectoriesWithBase(this.option.andThen(option));
         }
     }
 
@@ -769,6 +819,14 @@ public final class Folder implements PathOperatable {
         @Override
         public Signal<Location> observePackingTo(ArchiveOutputStream archive, BiFunction<String, File, ArchiveEntry> builder, Directory relative, Function<Option, Option> option) {
             return operation.observePackingTo(archive, builder, relative, this.option.andThen(option));
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public Signal<Ⅱ<Directory, Location>> walkWithBase(Function<Option, Option> option) {
+            return operation.walkWithBase(this.option.andThen(option));
         }
 
         /**

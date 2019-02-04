@@ -149,22 +149,11 @@ public class Directory extends Location<Directory> {
     }
 
     /**
-     * Shorthand method to {@link #walkFiles(Function)} with glob patterns.
-     * 
-     * @param patterns A glob patterns.
+     * {@inheritDoc}
      */
-    public Signal<Location> walk(String... patterns) {
-        return walk(o -> o.glob(patterns));
-    }
-
-    /**
-     * Walk file tree and collect {@link Location}s which are filtered by various {@link Option}.
-     * 
-     * @param option A {@link Option} builder.
-     * @return All matched {@link Location}s.
-     */
-    public Signal<Location> walk(Function<Option, Option> option) {
-        return walk(Location.class, this, 3, option);
+    @Override
+    public Signal<Ⅱ<Directory, Location>> walkWithBase(Function<Option, Option> option) {
+        return walk(Location.class, this, 3, option).map(loc -> I.pair(this, loc));
     }
 
     /**
