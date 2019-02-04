@@ -17,22 +17,42 @@ import kiss.Signal;
 public interface PathOperational {
 
     /**
-     * Copy resources to the destination {@link Directory}.
+     * Delete resources.
      * 
      * @param patterns A list of glob patterns to accept file by its name.
      * @return A destination {@link Directory}.
      */
     default void deleteNow(String... patterns) {
-        delete(patterns).to(I.NoOP);
+        deleteNow(o -> o.glob(patterns));
     }
 
     /**
-     * Build stream that copy resources to the destination {@link Directory}.
+     * Delete resources.
+     * 
+     * @param option A operation {@link Option}.
+     * @return A destination {@link Directory}.
+     */
+    default void deleteNow(Function<Option, Option> option) {
+        delete(option).to(I.NoOP);
+    }
+
+    /**
+     * Build stream that delete resources.
      * 
      * @param patterns A list of glob patterns to accept file by its name.
      * @return A event stream which emits operated {@link File}s.
      */
-    Signal<Location> delete(String... patterns);
+    default Signal<Location> delete(String... patterns) {
+        return delete(o -> o.glob(patterns));
+    }
+
+    /**
+     * Build stream that delete resources.
+     * 
+     * @param option A operation {@link Option}.
+     * @return A event stream which emits operated {@link File}s.
+     */
+    Signal<Location> delete(Function<Option, Option> option);
 
     /**
      * Copy resources to the destination {@link Directory}.

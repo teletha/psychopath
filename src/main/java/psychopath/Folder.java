@@ -177,8 +177,8 @@ public final class Folder implements PathOperational {
                  * {@inheritDoc}
                  */
                 @Override
-                public Signal<Location> delete(String... patterns) {
-                    return buildOperation(entries, option).flatMap(op -> op.delete(patterns));
+                public Signal<Location> delete(Function<Option, Option> option) {
+                    return buildOperation(entries, option).flatMap(op -> op.delete(option));
                 }
 
                 /**
@@ -346,8 +346,8 @@ public final class Folder implements PathOperational {
      * {@inheritDoc}
      */
     @Override
-    public Signal<Location> delete(String... patterns) {
-        return I.signal(operations).flatMap(operation -> operation.delete(patterns));
+    public Signal<Location> delete(Function<Option, Option> option) {
+        return I.signal(operations).flatMap(operation -> operation.delete(option));
     }
 
     /**
@@ -375,6 +375,7 @@ public final class Folder implements PathOperational {
      * 
      * @param archive
      */
+    @Override
     public Signal<Location> packTo(File archive, String... patterns) {
         return new Signal<>((observer, disposer) -> {
             BiFunction<String, File, ArchiveEntry> builder = detectEntryBuilder(archive.extension());
@@ -505,7 +506,7 @@ public final class Folder implements PathOperational {
          * 
          * @param patterns
          */
-        Signal<Location> delete(String... patterns);
+        Signal<Location> delete(Function<Option, Option> option);
 
         /**
          * Move reosources to the specified {@link Directory}.
@@ -574,8 +575,8 @@ public final class Folder implements PathOperational {
          * {@inheritDoc}
          */
         @Override
-        public Signal<Location> delete(String... patterns) {
-            return delegator.delete(patterns);
+        public Signal<Location> delete(Function<Option, Option> option) {
+            return delegator.delete(option);
         }
 
         /**
@@ -645,7 +646,7 @@ public final class Folder implements PathOperational {
          * {@inheritDoc}
          */
         @Override
-        public Signal<Location> delete(String... patterns) {
+        public Signal<Location> delete(Function<Option, Option> option) {
             return file.delete();
         }
 
@@ -724,8 +725,8 @@ public final class Folder implements PathOperational {
          * {@inheritDoc}
          */
         @Override
-        public Signal<Location> delete(String... patterns) {
-            return directory.delete(option.andThen(o -> o.glob(patterns)));
+        public Signal<Location> delete(Function<Option, Option> option) {
+            return directory.delete(this.option.andThen(option));
         }
 
         /**
@@ -804,8 +805,8 @@ public final class Folder implements PathOperational {
          * {@inheritDoc}
          */
         @Override
-        public Signal<Location> delete(String... patterns) {
-            return operation.delete(patterns);
+        public Signal<Location> delete(Function<Option, Option> option) {
+            return operation.delete(this.option.andThen(option));
         }
 
         /**

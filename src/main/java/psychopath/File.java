@@ -39,6 +39,7 @@ import java.nio.file.attribute.FileAttribute;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 import org.apache.commons.compress.archivers.ArchiveEntry;
 import org.apache.commons.compress.archivers.ArchiveInputStream;
@@ -102,7 +103,7 @@ public class File extends Location<File> {
      * {@inheritDoc}
      */
     @Override
-    public Signal<Location> delete() {
+    public Signal<Location> delete(Function<Option, Option> option) {
         return new Signal<>((observer, disposer) -> {
             try {
                 if (disposer.isNotDisposed()) {
@@ -121,7 +122,7 @@ public class File extends Location<File> {
      * {@inheritDoc}
      */
     @Override
-    public Signal<Location> copyTo(Directory destination) {
+    public Signal<Location> copyTo(Directory destination, Function<Option, Option> option) {
         return copyTo(destination.file(name()));
     }
 
@@ -240,7 +241,7 @@ public class File extends Location<File> {
      * {@inheritDoc}
      */
     @Override
-    public Signal<Location> moveTo(Directory destination) {
+    public Signal<Location> moveTo(Directory destination, Function<Option, Option> option) {
         return moveTo(destination.file(name()));
     }
 
@@ -310,6 +311,14 @@ public class File extends Location<File> {
      */
     public void moveToNow(File destination) {
         moveTo(destination).to(I.NoOP);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Signal<Location> packTo(File destination, String... patterns) {
+        return Locator.folder().add(this).packTo(destination);
     }
 
     /**
