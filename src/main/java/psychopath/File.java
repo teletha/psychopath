@@ -103,7 +103,7 @@ public class File extends Location<File> {
      * {@inheritDoc}
      */
     @Override
-    public Signal<Location> delete(Function<Option, Option> option) {
+    public Signal<Location> observeDeleting(Function<Option, Option> option) {
         return new Signal<>((observer, disposer) -> {
             try {
                 if (disposer.isNotDisposed()) {
@@ -122,7 +122,7 @@ public class File extends Location<File> {
      * {@inheritDoc}
      */
     @Override
-    public Signal<Location> copyTo(Directory destination, Function<Option, Option> option) {
+    public Signal<Location> observeCopyingTo(Directory destination, Function<Option, Option> option) {
         return copyTo(destination.file(name()));
     }
 
@@ -241,7 +241,7 @@ public class File extends Location<File> {
      * {@inheritDoc}
      */
     @Override
-    public Signal<Location> moveTo(Directory destination, Function<Option, Option> option) {
+    public Signal<Location> observeMovingTo(Directory destination, Function<Option, Option> option) {
         return moveTo(destination.file(name()));
     }
 
@@ -317,8 +317,8 @@ public class File extends Location<File> {
      * {@inheritDoc}
      */
     @Override
-    public Signal<Location> packTo(File destination, String... patterns) {
-        return Locator.folder().add(this).packTo(destination);
+    public Signal<Location> observePackingTo(File destination, String... patterns) {
+        return Locator.folder().add(this).observePackingTo(destination);
     }
 
     /**

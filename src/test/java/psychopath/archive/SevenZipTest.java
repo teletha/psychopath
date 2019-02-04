@@ -32,7 +32,7 @@ class SevenZipTest extends LocationTestHelper {
         });
 
         File file = locateFile("root." + ext);
-        Locator.folder().add(dir).packToNow(file);
+        Locator.folder().add(dir).packTo(file);
 
         assert match(file.unpackToTemporary(), $ -> {
             $.dir("root", () -> {
@@ -57,7 +57,7 @@ class SevenZipTest extends LocationTestHelper {
         });
 
         File file = locateFile("root." + ext);
-        Locator.folder().add(dir).packToNow(file);
+        Locator.folder().add(dir).packTo(file);
 
         assert match(file.unpackToTemporary(), $ -> {
             $.dir("root", () -> {

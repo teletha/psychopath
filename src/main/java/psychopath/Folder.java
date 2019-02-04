@@ -33,7 +33,7 @@ import kiss.Ⅱ;
 /**
  * Virtual directory to manage resources from various entries.
  */
-public final class Folder implements PathOperational {
+public final class Folder implements PathOperatable {
 
     /** The operations. */
     private final List<Operation> operations = new ArrayList();
@@ -346,7 +346,7 @@ public final class Folder implements PathOperational {
      * {@inheritDoc}
      */
     @Override
-    public Signal<Location> delete(Function<Option, Option> option) {
+    public Signal<Location> observeDeleting(Function<Option, Option> option) {
         return I.signal(operations).flatMap(operation -> operation.delete(option));
     }
 
@@ -354,7 +354,7 @@ public final class Folder implements PathOperational {
      * {@inheritDoc}
      */
     @Override
-    public Signal<Location> copyTo(Directory destination, Function<Option, Option> option) {
+    public Signal<Location> observeCopyingTo(Directory destination, Function<Option, Option> option) {
         Objects.requireNonNull(destination);
 
         return I.signal(operations).flatMap(operation -> operation.copyTo(destination, option));
@@ -364,7 +364,7 @@ public final class Folder implements PathOperational {
      * {@inheritDoc}
      */
     @Override
-    public Signal<Location> moveTo(Directory destination, Function<Option, Option> option) {
+    public Signal<Location> observeMovingTo(Directory destination, Function<Option, Option> option) {
         Objects.requireNonNull(destination);
 
         return I.signal(operations).flatMap(operation -> operation.moveTo(destination, option));
@@ -376,7 +376,7 @@ public final class Folder implements PathOperational {
      * @param archive
      */
     @Override
-    public Signal<Location> packTo(File archive, String... patterns) {
+    public Signal<Location> observePackingTo(File archive, String... patterns) {
         return new Signal<>((observer, disposer) -> {
             BiFunction<String, File, ArchiveEntry> builder = detectEntryBuilder(archive.extension());
 
@@ -647,7 +647,7 @@ public final class Folder implements PathOperational {
          */
         @Override
         public Signal<Location> delete(Function<Option, Option> option) {
-            return file.delete();
+            return file.observeDeleting();
         }
 
         /**
@@ -655,7 +655,7 @@ public final class Folder implements PathOperational {
          */
         @Override
         public Signal<Location> moveTo(Directory destination, Function<Option, Option> option) {
-            return file.moveTo(destination);
+            return file.observeMovingTo(destination);
         }
 
         /**
@@ -663,7 +663,7 @@ public final class Folder implements PathOperational {
          */
         @Override
         public Signal<Location> copyTo(Directory destination, Function<Option, Option> option) {
-            return file.copyTo(destination);
+            return file.observeCopyingTo(destination);
         }
 
         /**
@@ -726,7 +726,7 @@ public final class Folder implements PathOperational {
          */
         @Override
         public Signal<Location> delete(Function<Option, Option> option) {
-            return directory.delete(this.option.andThen(option));
+            return directory.observeDeleting(this.option.andThen(option));
         }
 
         /**
@@ -734,7 +734,7 @@ public final class Folder implements PathOperational {
          */
         @Override
         public Signal<Location> moveTo(Directory destination, Function<Option, Option> option) {
-            return directory.moveTo(destination, this.option.andThen(option));
+            return directory.observeMovingTo(destination, this.option.andThen(option));
         }
 
         /**
@@ -742,7 +742,7 @@ public final class Folder implements PathOperational {
          */
         @Override
         public Signal<Location> copyTo(Directory destination, Function<Option, Option> option) {
-            return directory.copyTo(destination, this.option.andThen(option));
+            return directory.observeCopyingTo(destination, this.option.andThen(option));
         }
 
         /**

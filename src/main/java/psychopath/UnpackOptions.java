@@ -34,8 +34,8 @@ public enum UnpackOptions implements UnpackOption {
                 remove.add(current);
             }
 
-            list.forEach(file -> file.moveToNow(root));
-            remove.forEach(Directory::deleteNow);
+            list.forEach(file -> file.moveTo(root));
+            remove.forEach(Directory::delete);
         }
     };
 }

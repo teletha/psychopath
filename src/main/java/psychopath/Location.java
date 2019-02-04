@@ -33,7 +33,7 @@ import kiss.Observer;
 import kiss.Signal;
 import kiss.WiseRunnable;
 
-public abstract class Location<Self extends Location> implements Comparable<Location>, PathOperational {
+public abstract class Location<Self extends Location> implements Comparable<Location>, PathOperatable {
 
     /** The separator flag. */
     private static final boolean useNativeSeparator = java.io.File.separatorChar == '/';
@@ -618,7 +618,7 @@ public abstract class Location<Self extends Location> implements Comparable<Loca
      * Shorthand method for <code>moveTo(parent().parent())</code>.
      */
     public final void moveUp() {
-        moveToNow(parent().parent());
+        moveTo(parent().parent());
     }
 
     /**

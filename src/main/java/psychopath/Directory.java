@@ -259,7 +259,7 @@ public class Directory extends Location<Directory> {
      *             check {@link LinkPermission}("symbolic").
      */
     @Override
-    public Signal<Location> delete(Function<Option, Option> option) {
+    public Signal<Location> observeDeleting(Function<Option, Option> option) {
         return walk(Location.class, this, 2, option);
     }
 
@@ -291,7 +291,7 @@ public class Directory extends Location<Directory> {
      *             check {@link LinkPermission}("symbolic").
      */
     @Override
-    public Signal<Location> copyTo(Directory destination, Function<Option, Option> option) {
+    public Signal<Location> observeCopyingTo(Directory destination, Function<Option, Option> option) {
         return walk(Location.class, destination, 0, option);
     }
 
@@ -321,7 +321,7 @@ public class Directory extends Location<Directory> {
      *             check {@link LinkPermission}("symbolic").
      */
     @Override
-    public Signal<Location> moveTo(Directory destination, Function<Option, Option> option) {
+    public Signal<Location> observeMovingTo(Directory destination, Function<Option, Option> option) {
         return walk(Location.class, destination, 1, option);
     }
 
@@ -329,8 +329,8 @@ public class Directory extends Location<Directory> {
      * {@inheritDoc}
      */
     @Override
-    public Signal<Location> packTo(File destination, String... patterns) {
-        return Locator.folder().add(this, patterns).packTo(destination);
+    public Signal<Location> observePackingTo(File destination, String... patterns) {
+        return Locator.folder().add(this, patterns).observePackingTo(destination);
     }
 
     /**

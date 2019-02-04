@@ -31,7 +31,7 @@ class CopyTest extends LocationTestHelper {
         File in = locateAbsent("absent");
         Directory out = locateDirectory("out");
 
-        in.copyToNow(out);
+        in.copyTo(out);
 
         assert in.isAbsent();
         assert out.file("absent").isAbsent();
@@ -105,7 +105,7 @@ class CopyTest extends LocationTestHelper {
         File in = locateFile("In", "Success");
         Directory out = locateDirectory("Out");
 
-        in.copyToNow(out);
+        in.copyTo(out);
 
         assert sameFile(in, out.file("In"));
     }
@@ -119,7 +119,7 @@ class CopyTest extends LocationTestHelper {
             $.file("1", "This text will be remaining.");
         });
 
-        in.copyToNow(out);
+        in.copyTo(out);
 
         assert sameDirectory(in, out.directory("In"));
     }
@@ -133,7 +133,7 @@ class CopyTest extends LocationTestHelper {
             $.file("1", "This text will be overwritten by input file.");
         });
 
-        in.copyToNow(out, o -> o.glob("**").strip());
+        in.copyTo(out, o -> o.glob("**").strip());
 
         assert match(out, $ -> {
             $.file("1", "One");
@@ -152,7 +152,7 @@ class CopyTest extends LocationTestHelper {
         });
         Directory out = locateDirectory("Out");
 
-        in.copyToNow(out, o -> o.take((file, attr) -> file.getFileName().startsWith("file")));
+        in.copyTo(out, o -> o.take((file, attr) -> file.getFileName().startsWith("file")));
 
         assert sameFile(in.file("file"), out.file("In/file"));
         assert sameFile(in.file("dir/file"), out.file("In/dir/file"));
@@ -167,7 +167,7 @@ class CopyTest extends LocationTestHelper {
         });
         Directory out = locateAbsentDirectory("Out");
 
-        in.copyToNow(out);
+        in.copyTo(out);
 
         assert sameDirectory(in, out.directory("In"));
     }
@@ -179,7 +179,7 @@ class CopyTest extends LocationTestHelper {
         });
         Directory out = locateAbsentDirectory("1/2/3");
 
-        in.copyToNow(out);
+        in.copyTo(out);
 
         assert sameDirectory(in, out.directory("In"));
     }
@@ -197,7 +197,7 @@ class CopyTest extends LocationTestHelper {
         });
         Directory out = locateDirectory("Out");
 
-        in.copyToNow(out, o -> o.glob("*").strip());
+        in.copyTo(out, o -> o.glob("*").strip());
 
         assert match(out, $ -> {
             $.file("file");
@@ -216,7 +216,7 @@ class CopyTest extends LocationTestHelper {
         });
         Directory out = locateDirectory("Out");
 
-        in.copyToNow(out, o -> o.glob("**").strip());
+        in.copyTo(out, o -> o.glob("**").strip());
 
         assert sameDirectory(in, out);
     }
@@ -231,7 +231,7 @@ class CopyTest extends LocationTestHelper {
             $.file("1", "This text will be overridden.");
         });
 
-        in.copyToNow(out);
+        in.copyTo(out);
 
         assert match(out, $ -> {
             $.file("1", "override");
@@ -249,7 +249,7 @@ class CopyTest extends LocationTestHelper {
             $.file("1.txt", "This text will be overridden.");
         });
 
-        in.copyToNow(out, "1.*");
+        in.copyTo(out, "1.*");
 
         assert match(out, $ -> {
             $.file("1.txt", "override");
@@ -264,7 +264,7 @@ class CopyTest extends LocationTestHelper {
 
         Directory out = locateAbsentDirectory("Out");
 
-        in.copyToNow(out, "1.*");
+        in.copyTo(out, "1.*");
 
         assert match(out, $ -> {
             $.file("1.txt", "ok");

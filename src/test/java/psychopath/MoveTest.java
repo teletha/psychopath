@@ -33,7 +33,7 @@ class MoveTest extends LocationTestHelper {
         File in = locateAbsent("absent");
         Directory out = locateDirectory("out");
 
-        in.moveToNow(out);
+        in.moveTo(out);
 
         assert in.isAbsent();
         assert out.file("absent").isAbsent();
@@ -112,7 +112,7 @@ class MoveTest extends LocationTestHelper {
         File in = locateFile("In", "Success");
         Directory out = locateDirectory("Out");
 
-        in.moveToNow(out);
+        in.moveTo(out);
 
         assert in.isAbsent();
         assert match(out.file("In"), "Success");
@@ -127,7 +127,7 @@ class MoveTest extends LocationTestHelper {
             $.file("1", "This text will be remaining.");
         });
 
-        in.moveToNow(out);
+        in.moveTo(out);
 
         assert in.isAbsent();
         assert match(out, $ -> {
@@ -147,7 +147,7 @@ class MoveTest extends LocationTestHelper {
             $.file("1", "This text will be overwritten by input file.");
         });
 
-        in.moveToNow(out, o -> o.glob("**").strip());
+        in.moveTo(out, o -> o.glob("**").strip());
 
         assert match(out, $ -> {
             $.file("1", "One");
@@ -166,7 +166,7 @@ class MoveTest extends LocationTestHelper {
         });
         Directory out = locateDirectory("Out");
 
-        in.moveToNow(out, o -> o.take((file, attr) -> file.getFileName().startsWith("file")));
+        in.moveTo(out, o -> o.take((file, attr) -> file.getFileName().startsWith("file")));
 
         assert in.isPresent();
         assert match(out.directory("In"), $ -> {
@@ -184,7 +184,7 @@ class MoveTest extends LocationTestHelper {
         });
         Directory out = locateAbsentDirectory("Out");
 
-        in.moveToNow(out);
+        in.moveTo(out);
 
         assert in.isAbsent();
         assert match(out.directory("In"), $ -> {
@@ -199,7 +199,7 @@ class MoveTest extends LocationTestHelper {
         });
         Directory out = locateAbsentDirectory("1/2/3");
 
-        in.moveToNow(out);
+        in.moveTo(out);
 
         assert in.isAbsent();
         assert match(out.directory("In"), $ -> {
@@ -220,7 +220,7 @@ class MoveTest extends LocationTestHelper {
         });
         Directory out = locateDirectory("Out");
 
-        in.moveToNow(out, o -> o.glob("*").strip());
+        in.moveTo(out, o -> o.glob("*").strip());
 
         assert in.isPresent();
         assert match(out, $ -> {
@@ -240,7 +240,7 @@ class MoveTest extends LocationTestHelper {
         });
         Directory out = locateDirectory("Out");
 
-        in.moveToNow(out, o -> o.glob("**").strip());
+        in.moveTo(out, o -> o.glob("**").strip());
 
         assert in.isPresent();
         assert match(out, $ -> {
@@ -262,7 +262,7 @@ class MoveTest extends LocationTestHelper {
             $.file("1", "This text will be overridden.");
         });
 
-        in.moveToNow(out);
+        in.moveTo(out);
 
         assert match(out, $ -> {
             $.file("1", "override");
@@ -281,7 +281,7 @@ class MoveTest extends LocationTestHelper {
             $.file("1.txt", "This text will be overridden.");
         });
 
-        in.moveToNow(out, "1.*");
+        in.moveTo(out, "1.*");
 
         assert match(out, $ -> {
             $.file("1.txt", "override");
@@ -296,7 +296,7 @@ class MoveTest extends LocationTestHelper {
 
         Directory out = locateAbsentDirectory("Out");
 
-        in.moveToNow(out, "1.*");
+        in.moveTo(out, "1.*");
 
         assert match(out, $ -> {
             $.file("1.txt", "ok");

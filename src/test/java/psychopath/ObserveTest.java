@@ -184,7 +184,7 @@ class ObserveTest extends LocationTestHelper {
         observe(file);
 
         // delete
-        file.deleteNow();
+        file.delete();
 
         // verify events
         verify(file, Deleted);
@@ -198,7 +198,7 @@ class ObserveTest extends LocationTestHelper {
         observe(file.parent().parent());
 
         // delete
-        file.deleteNow();
+        file.delete();
 
         // verify events
         verify(file, Deleted);
@@ -434,7 +434,7 @@ class ObserveTest extends LocationTestHelper {
         verifyNone();
 
         // delete
-        child.deleteNow();
+        child.delete();
 
         // verify events
         verify(child, Deleted);

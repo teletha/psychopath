@@ -23,12 +23,12 @@ public class Renamer {
     public static void main(String[] args) {
         Directory root = Locator.directory("e:\\");
 
-        root.walkFiles("*.zip").take(5).effectOnComplete(Location::deleteNow).to(archive -> {
+        root.walkFiles("*.zip").take(5).effectOnComplete(Location::delete).to(archive -> {
             archive.unpackTo(root.directory(archive.base()))
                     .children()
                     .single()
                     .as(Directory.class)
-                    .effectOnComplete(Location::deleteNow)
+                    .effectOnComplete(Location::delete)
                     .flatMap(Location::children)
                     .to(file -> file.lastModified(ZonedDateTime.now()).moveUp());
         });
