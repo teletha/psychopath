@@ -9,9 +9,14 @@
  */
 package psychopath;
 
-import static java.nio.file.FileVisitResult.*;
-import static java.nio.file.StandardCopyOption.*;
-import static java.nio.file.StandardWatchEventKinds.*;
+import static java.nio.file.FileVisitResult.CONTINUE;
+import static java.nio.file.FileVisitResult.SKIP_SUBTREE;
+import static java.nio.file.FileVisitResult.TERMINATE;
+import static java.nio.file.StandardCopyOption.COPY_ATTRIBUTES;
+import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
+import static java.nio.file.StandardWatchEventKinds.ENTRY_CREATE;
+import static java.nio.file.StandardWatchEventKinds.ENTRY_DELETE;
+import static java.nio.file.StandardWatchEventKinds.ENTRY_MODIFY;
 
 import java.io.IOException;
 import java.nio.file.ClosedWatchServiceException;
@@ -24,7 +29,6 @@ import java.nio.file.WatchEvent;
 import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.util.LinkedList;
 import java.util.function.BiPredicate;
 import java.util.function.Function;
 
@@ -63,9 +67,6 @@ class CymaticScan implements FileVisitor<Path>, Runnable, Disposable {
 
     /** The exclude directory pattern. */
     private BiPredicate<Path, BasicFileAttributes> directory;
-
-    /** Flags whether the current directory can be deleted or not. */
-    private final LinkedList deletable = new LinkedList();
 
     /**
      * <p>
@@ -159,8 +160,6 @@ class CymaticScan implements FileVisitor<Path>, Runnable, Disposable {
             // fall-through to reduce footprint
 
         case 2: // delete
-            deletable.add(0, null);
-
         case 3: // walk file
             return CONTINUE;
 
@@ -197,10 +196,9 @@ class CymaticScan implements FileVisitor<Path>, Runnable, Disposable {
             // fall-through to reduce footprint
 
         case 2: // delete
-            if (type != 0 && (root || from != path) && deletable.peek() == null) {
+            if (type != 0 && (root || from != path) && Locator.directory(path).isEmpty()) {
                 Files.delete(path);
             }
-            deletable.poll();
             // fall-through to reduce footprint
 
         default: // walk directory and walk file
@@ -239,8 +237,6 @@ class CymaticScan implements FileVisitor<Path>, Runnable, Disposable {
                     observer.accept(Locator.file(path));
                     break;
                 }
-            } else if (type < 3) {
-                deletable.set(0, this);
             }
         }
         return CONTINUE;
