@@ -347,10 +347,30 @@ public final class Folder {
      * 
      * @return
      */
-    public Folder delete(String... patterns) {
-        operations.forEach(operation -> operation.deleteNow(patterns));
+    public Signal<Location> delete(String... patterns) {
+        return I.signal(operations).flatMap(operation -> operation.delete(patterns));
+    }
+
+    /**
+     * Delete all resources.
+     * 
+     * @return
+     */
+    public Folder deleteNow(String... patterns) {
+        delete(patterns).to(I.NoOP);
 
         return this;
+    }
+
+    /**
+     * Copy all resources to the specified {@link Directory}.
+     * 
+     * @param destination A destination {@link Directory}.
+     */
+    public Signal<Location> copyTo(Directory destination, String... patterns) {
+        Objects.requireNonNull(destination);
+
+        return I.signal(operations).flatMap(operation -> operation.copyTo(destination, o -> o.glob(patterns)));
     }
 
     /**
@@ -364,17 +384,6 @@ public final class Folder {
         operations.forEach(operation -> operation.copyToNow(destination, o -> o.glob(patterns)));
 
         return destination;
-    }
-
-    /**
-     * Copy all resources to the specified {@link Directory}.
-     * 
-     * @param destination A destination {@link Directory}.
-     */
-    public Signal<Location> copyTo(Directory destination, String... patterns) {
-        Objects.requireNonNull(destination);
-
-        return I.signal(operations).flatMap(operation -> operation.copyTo(destination, o -> o.glob(patterns)));
     }
 
     /**

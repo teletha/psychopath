@@ -248,7 +248,7 @@ class FolderTest extends LocationTestHelper {
             });
         });
 
-        temporary.add(root.walkDirectories("child*")).delete("*1.txt");
+        temporary.add(root.walkDirectories("child*")).deleteNow("*1.txt");
 
         assert match(root, $ -> {
             $.dir("child1", () -> {
@@ -528,7 +528,7 @@ class FolderTest extends LocationTestHelper {
         assert dir1.isPresent();
         assert dir2.isPresent();
 
-        Locator.folder().add(dir1).add(dir2).delete();
+        Locator.folder().add(dir1).add(dir2).deleteNow();
         assert dir1.isAbsent();
         assert dir2.isAbsent();
     }
@@ -550,7 +550,7 @@ class FolderTest extends LocationTestHelper {
             });
         });
 
-        Locator.folder().add(dir1).add(dir2).delete("**.txt");
+        Locator.folder().add(dir1).add(dir2).deleteNow("**.txt");
 
         assert match(dir1, $ -> {
             $.file("2.java");
@@ -577,7 +577,7 @@ class FolderTest extends LocationTestHelper {
             });
         });
 
-        Locator.folder().add(dir1, "**.txt").add(dir2, "**.java").delete();
+        Locator.folder().add(dir1, "**.txt").add(dir2, "**.java").deleteNow();
 
         assert match(dir1, $ -> {
             $.file("2.java");
@@ -607,7 +607,7 @@ class FolderTest extends LocationTestHelper {
             });
         });
 
-        Locator.folder().add(dir1, "**.txt").add(dir2, "**.java").delete("**c.txt");
+        Locator.folder().add(dir1, "**.txt").add(dir2, "**.java").deleteNow("**c.txt");
 
         assert match(dir1, $ -> {
             $.file("2.java");
