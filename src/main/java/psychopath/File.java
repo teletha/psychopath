@@ -9,11 +9,9 @@
  */
 package psychopath;
 
-import static java.nio.file.StandardCopyOption.COPY_ATTRIBUTES;
-import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
-import static java.nio.file.StandardOpenOption.CREATE;
-import static java.nio.file.StandardOpenOption.WRITE;
-import static java.util.concurrent.TimeUnit.MILLISECONDS;
+import static java.nio.file.StandardCopyOption.*;
+import static java.nio.file.StandardOpenOption.*;
+import static java.util.concurrent.TimeUnit.*;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -48,6 +46,7 @@ import org.apache.commons.compress.archivers.ArchiveStreamFactory;
 import kiss.I;
 import kiss.Signal;
 import kiss.WiseRunnable;
+import kiss.Ⅱ;
 
 public class File extends Location<File> {
 
@@ -319,6 +318,22 @@ public class File extends Location<File> {
     @Override
     public Signal<Location> observePackingTo(File destination, String... patterns) {
         return Locator.folder().add(this).observePackingTo(destination);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Signal<Ⅱ<Directory, File>> walkFilesWithBase(Function<Option, Option> option) {
+        return Signal.empty();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Signal<Ⅱ<Directory, Directory>> walkDirectoriesWithBase(Function<Option, Option> option) {
+        return Signal.empty();
     }
 
     /**

@@ -13,6 +13,7 @@ import java.util.function.Function;
 
 import kiss.I;
 import kiss.Signal;
+import kiss.Ⅱ;
 
 public interface PathOperatable {
 
@@ -165,4 +166,32 @@ public interface PathOperatable {
      * @return A event stream which emits operated {@link File}s.
      */
     Signal<Location> observePackingTo(File destination, String... patterns);
+
+    default Signal<File> walkFiles(String... patterns) {
+        return walkFiles(o -> o.glob(patterns));
+    }
+
+    default Signal<File> walkFiles(Function<Option, Option> option) {
+        return walkFilesWithBase(option).map(Ⅱ<Directory, File>::ⅱ);
+    }
+
+    default Signal<Ⅱ<Directory, File>> walkFilesWithBase(String... patterns) {
+        return walkFilesWithBase(o -> o.glob(patterns));
+    }
+
+    Signal<Ⅱ<Directory, File>> walkFilesWithBase(Function<Option, Option> option);
+
+    default Signal<Directory> walkDirectories(String... patterns) {
+        return walkDirectories(o -> o.glob(patterns));
+    }
+
+    default Signal<Directory> walkDirectories(Function<Option, Option> option) {
+        return walkDirectoriesWithBase(option).map(Ⅱ<Directory, Directory>::ⅱ);
+    }
+
+    default Signal<Ⅱ<Directory, Directory>> walkDirectoriesWithBase(String... patterns) {
+        return walkDirectoriesWithBase(o -> o.glob(patterns));
+    }
+
+    Signal<Ⅱ<Directory, Directory>> walkDirectoriesWithBase(Function<Option, Option> option);
 }

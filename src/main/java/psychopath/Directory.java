@@ -24,6 +24,7 @@ import kiss.I;
 import kiss.Observer;
 import kiss.Signal;
 import kiss.WiseRunnable;
+import kiss.Ⅱ;
 
 public class Directory extends Location<Directory> {
 
@@ -167,41 +168,19 @@ public class Directory extends Location<Directory> {
     }
 
     /**
-     * Shorthand method to {@link #walkFiles(Function)} with glob patterns.
-     * 
-     * @param patterns A glob patterns.
+     * {@inheritDoc}
      */
-    public Signal<File> walkFiles(String... patterns) {
-        return walkFiles(o -> o.glob(patterns));
+    @Override
+    public Signal<Ⅱ<Directory, File>> walkFilesWithBase(Function<Option, Option> option) {
+        return walk(File.class, this, 3, option).map(file -> I.pair(this, file));
     }
 
     /**
-     * Walk file tree and collect {@link File}s which are filtered by various {@link Option}.
-     * 
-     * @param option A {@link Option} builder.
-     * @return All matched {@link File}s.
+     * {@inheritDoc}
      */
-    public Signal<File> walkFiles(Function<Option, Option> option) {
-        return walk(File.class, this, 3, option);
-    }
-
-    /**
-     * Shorthand method to {@link #walkDirectories(Function)} with glob patterns.
-     * 
-     * @param patterns A glob patterns.
-     */
-    public Signal<Directory> walkDirectories(String... filters) {
-        return walkDirectories(o -> o.glob(filters));
-    }
-
-    /**
-     * Walk file tree and collect {@link Directory}s which are filtered by various {@link Option}.
-     * 
-     * @param option A {@link Option} builder.
-     * @return All matched {@link Directory}s.
-     */
-    public Signal<Directory> walkDirectories(Function<Option, Option> option) {
-        return walk(Directory.class, this, 4, option).skip(this);
+    @Override
+    public Signal<Ⅱ<Directory, Directory>> walkDirectoriesWithBase(Function<Option, Option> option) {
+        return walk(Directory.class, this, 4, option).skip(this).map(dir -> I.pair(this, dir));
     }
 
     /**
