@@ -102,12 +102,19 @@ public class File extends Location<File> {
      * {@inheritDoc}
      */
     @Override
-    public void delete() {
-        try {
-            Files.deleteIfExists(path);
-        } catch (IOException e) {
-            throw I.quiet(e);
-        }
+    public Signal<Location> delete() {
+        return new Signal<>((observer, disposer) -> {
+            try {
+                if (disposer.isNotDisposed()) {
+                    Files.deleteIfExists(path);
+                    observer.accept(this);
+                }
+                observer.complete();
+            } catch (IOException e) {
+                observer.error(e);
+            }
+            return disposer;
+        });
     }
 
     /**

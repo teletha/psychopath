@@ -631,7 +631,28 @@ public abstract class Location<Self extends Location> implements Comparable<Loca
      *             the target file. If a symbolic link is copied the security manager is invoked to
      *             check {@link LinkPermission}("symbolic").
      */
-    public abstract void delete();
+    public abstract Signal<Location> delete();
+
+    /**
+     * <p>
+     * Delete this {@link Location}.
+     * </p>
+     * <p>
+     * On some operating systems it may not be possible to remove a file when it is open and in use
+     * by this Java virtual machine or other programs.
+     * </p>
+     *
+     * @throws IOException If an I/O error occurs.
+     * @throws SecurityException In the case of the default provider, and a security manager is
+     *             installed, the {@link SecurityManager#checkRead(String)} method is invoked to
+     *             check read access to the source file, the
+     *             {@link SecurityManager#checkWrite(String)} is invoked to check write access to
+     *             the target file. If a symbolic link is copied the security manager is invoked to
+     *             check {@link LinkPermission}("symbolic").
+     */
+    public final void deleteNow() {
+        delete().to(I.NoOP);
+    }
 
     /**
      * <p>

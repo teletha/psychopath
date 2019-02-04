@@ -177,8 +177,8 @@ public final class Folder {
                  * {@inheritDoc}
                  */
                 @Override
-                public void delete(String... patterns) {
-                    buildOperation(entries, option).to(op -> op.delete(patterns));
+                public Signal<Location> delete(String... patterns) {
+                    return buildOperation(entries, option).flatMap(op -> op.delete(patterns));
                 }
 
                 /**
@@ -348,7 +348,7 @@ public final class Folder {
      * @return
      */
     public Folder delete(String... patterns) {
-        operations.forEach(operation -> operation.delete(patterns));
+        operations.forEach(operation -> operation.deleteNow(patterns));
 
         return this;
     }
@@ -523,7 +523,16 @@ public final class Folder {
          * 
          * @param patterns
          */
-        void delete(String... patterns);
+        Signal<Location> delete(String... patterns);
+
+        /**
+         * Delete resources.
+         * 
+         * @param patterns
+         */
+        default void deleteNow(String... patterns) {
+            delete(patterns).to(I.NoOP);
+        }
 
         /**
          * Move reosources to the specified {@link Directory}.
@@ -612,8 +621,8 @@ public final class Folder {
          * {@inheritDoc}
          */
         @Override
-        public void delete(String... patterns) {
-            delegator.delete(patterns);
+        public Signal<Location> delete(String... patterns) {
+            return delegator.delete(patterns);
         }
 
         /**
@@ -683,8 +692,8 @@ public final class Folder {
          * {@inheritDoc}
          */
         @Override
-        public void delete(String... patterns) {
-            file.delete();
+        public Signal<Location> delete(String... patterns) {
+            return file.delete();
         }
 
         /**
@@ -762,8 +771,8 @@ public final class Folder {
          * {@inheritDoc}
          */
         @Override
-        public void delete(String... patterns) {
-            directory.delete(option.andThen(o -> o.glob(patterns)));
+        public Signal<Location> delete(String... patterns) {
+            return directory.delete(option.andThen(o -> o.glob(patterns)));
         }
 
         /**
@@ -842,8 +851,8 @@ public final class Folder {
          * {@inheritDoc}
          */
         @Override
-        public void delete(String... patterns) {
-            operation.delete(patterns);
+        public Signal<Location> delete(String... patterns) {
+            return operation.delete(patterns);
         }
 
         /**

@@ -244,17 +244,8 @@ public class Directory extends Location<Directory> {
      * {@inheritDoc}
      */
     @Override
-    public void delete() {
-        delete(new String[0]);
-    }
-
-    /**
-     * Shorthand method to {@link #delete(Function)} with glob patterns.
-     * 
-     * @param patterns A glob patterns.
-     */
-    public void delete(String... patterns) {
-        delete(o -> o.glob(patterns));
+    public Signal<Location> delete() {
+        return delete(Function.identity());
     }
 
     /**
@@ -275,8 +266,39 @@ public class Directory extends Location<Directory> {
      *             the target file. If a symbolic link is copied the security manager is invoked to
      *             check {@link LinkPermission}("symbolic").
      */
-    public void delete(Function<Option, Option> option) {
-        walk(Location.class, this, 2, option).to(I.NoOP);
+    public Signal<Location> delete(Function<Option, Option> option) {
+        return walk(Location.class, this, 2, option);
+    }
+
+    /**
+     * Shorthand method to {@link #deleteNow(Function)} with glob patterns.
+     * 
+     * @param patterns A glob patterns.
+     */
+    public void deleteNow(String... patterns) {
+        deleteNow(o -> o.glob(patterns));
+    }
+
+    /**
+     * <p>
+     * Delete this {@link Directory} by using various {@link Option}.
+     * </p>
+     * <p>
+     * On some operating systems it may not be possible to remove a file when it is open and in use
+     * by this Java virtual machine or other programs.
+     * </p>
+     *
+     * @param option A {@link Option} builder.
+     * @throws IOException If an I/O error occurs.
+     * @throws SecurityException In the case of the default provider, and a security manager is
+     *             installed, the {@link SecurityManager#checkRead(String)} method is invoked to
+     *             check read access to the source file, the
+     *             {@link SecurityManager#checkWrite(String)} is invoked to check write access to
+     *             the target file. If a symbolic link is copied the security manager is invoked to
+     *             check {@link LinkPermission}("symbolic").
+     */
+    public void deleteNow(Function<Option, Option> option) {
+        delete(option).to(I.NoOP);
     }
 
     /**

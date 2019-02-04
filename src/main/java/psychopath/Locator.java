@@ -55,7 +55,7 @@ public class Locator {
                 // exclusive lock
                 if (lock != null) {
                     try {
-                        sub.delete();
+                        sub.deleteNow();
                     } catch (Exception e) {
                         // ignore
                     }

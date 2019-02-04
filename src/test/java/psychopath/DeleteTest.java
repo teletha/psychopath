@@ -17,7 +17,7 @@ class DeleteTest extends LocationTestHelper {
     void file() {
         File file = locateFile("file");
         assert file.isPresent();
-        file.delete();
+        file.deleteNow();
         assert file.isAbsent();
     }
 
@@ -25,7 +25,7 @@ class DeleteTest extends LocationTestHelper {
     void absentFile() {
         File file = locateAbsent("file");
         assert file.isAbsent();
-        file.delete();
+        file.deleteNow();
         assert file.isAbsent();
     }
 
@@ -34,7 +34,7 @@ class DeleteTest extends LocationTestHelper {
         Directory directory = locateDirectory("dir");
 
         assert directory.isPresent();
-        directory.delete();
+        directory.deleteNow();
         assert directory.isAbsent();
     }
 
@@ -47,7 +47,7 @@ class DeleteTest extends LocationTestHelper {
         });
 
         assert directory.isPresent();
-        directory.delete();
+        directory.deleteNow();
         assert directory.isAbsent();
     }
 
@@ -64,7 +64,7 @@ class DeleteTest extends LocationTestHelper {
         });
 
         assert directory.isPresent();
-        directory.delete();
+        directory.deleteNow();
         assert directory.isAbsent();
     }
 
@@ -72,7 +72,7 @@ class DeleteTest extends LocationTestHelper {
     void absentDirectory() {
         Directory directory = locateAbsentDirectory("dir");
         assert directory.isAbsent();
-        directory.delete();
+        directory.deleteNow();
         assert directory.isAbsent();
     }
 
@@ -87,7 +87,7 @@ class DeleteTest extends LocationTestHelper {
             });
         });
 
-        directory.delete("text1");
+        directory.deleteNow("text1");
 
         assert match(directory, $ -> {
             $.file("text2");
@@ -109,7 +109,7 @@ class DeleteTest extends LocationTestHelper {
             });
         });
 
-        directory.delete("*");
+        directory.deleteNow("*");
 
         assert directory.isPresent();
         assert match(directory, $ -> {
@@ -131,7 +131,7 @@ class DeleteTest extends LocationTestHelper {
             });
         });
 
-        directory.delete("*.txt");
+        directory.deleteNow("*.txt");
 
         assert directory.isPresent();
         assert match(directory, $ -> {
@@ -153,7 +153,7 @@ class DeleteTest extends LocationTestHelper {
             });
         });
 
-        directory.delete("dir/**");
+        directory.deleteNow("dir/**");
 
         assert directory.isPresent();
         assert match(directory, $ -> {
@@ -173,7 +173,7 @@ class DeleteTest extends LocationTestHelper {
             });
         });
 
-        directory.delete(o -> o.glob("**").strip());
+        directory.deleteNow(o -> o.glob("**").strip());
 
         assert directory.isPresent();
         assert match(directory, $ -> {
@@ -191,7 +191,7 @@ class DeleteTest extends LocationTestHelper {
             });
         });
 
-        directory.delete("**.txt");
+        directory.deleteNow("**.txt");
 
         assert directory.isAbsent();
     }
@@ -215,7 +215,7 @@ class DeleteTest extends LocationTestHelper {
             });
         });
 
-        directory.delete("**/dir**");
+        directory.deleteNow("**/dir**");
 
         assert match(directory, $ -> {
             $.file("1.txt");
