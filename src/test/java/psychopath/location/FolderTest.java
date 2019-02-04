@@ -659,7 +659,7 @@ class FolderTest extends LocationTestHelper {
         });
 
         Folder folder = Locator.folder().add(root);
-        List<Location> files = folder.moveTo(Locator.directory("out")).toList();
+        List<Location> files = folder.moveTo(locateDirectory("out")).toList();
         assert files.size() == 3;
     }
 }
