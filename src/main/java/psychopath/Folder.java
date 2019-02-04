@@ -201,8 +201,8 @@ public final class Folder {
                  * {@inheritDoc}
                  */
                 @Override
-                public void packTo(ArchiveOutputStream archive, BiFunction<String, File, ArchiveEntry> builder, Directory relative, Function<Option, Option> option) {
-                    buildOperation(entries, option).to(op -> op.packTo(archive, builder, relative, option));
+                public Signal<Location> packTo(ArchiveOutputStream archive, BiFunction<String, File, ArchiveEntry> builder, Directory relative, Function<Option, Option> option) {
+                    return buildOperation(entries, option).flatMap(op -> op.packTo(archive, builder, relative, option));
                 }
 
                 /**
@@ -404,16 +404,33 @@ public final class Folder {
      * 
      * @param archive
      */
-    public File packTo(File archive, String... patterns) {
-        BiFunction<String, File, ArchiveEntry> builder = detectEntryBuilder(archive.extension());
+    public Signal<Location> packTo(File archive, String... patterns) {
+        return new Signal<>((observer, disposer) -> {
+            BiFunction<String, File, ArchiveEntry> builder = detectEntryBuilder(archive.extension());
 
-        try (ArchiveOutputStream out = new ArchiveStreamFactory()
-                .createArchiveOutputStream(archive.extension().replaceAll("7z", "7z-override"), archive.newOutputStream())) {
-            operations.forEach(operation -> operation.packTo(out, builder, Locator.directory(""), o -> o.glob(patterns)));
-            out.finish();
-        } catch (Exception e) {
-            throw I.quiet(e);
-        }
+            try (ArchiveOutputStream out = new ArchiveStreamFactory()
+                    .createArchiveOutputStream(archive.extension().replaceAll("7z", "7z-override"), archive.newOutputStream())) {
+                I.signal(operations)
+                        .flatMap(operation -> operation.packTo(out, builder, Locator.directory(""), o -> o.glob(patterns)))
+                        .to(observer);
+                out.finish();
+                observer.complete();
+            } catch (Exception e) {
+                observer.error(e);
+            }
+
+            return disposer;
+        });
+    }
+
+    /**
+     * Pack all resources.
+     * 
+     * @param archive
+     */
+    public File packToNow(File archive, String... patterns) {
+        packTo(archive, patterns).to(I.NoOP);
+
         return archive;
     }
 
@@ -470,18 +487,23 @@ public final class Folder {
      * @param file
      * @param relative
      */
-    private static void pack(ArchiveOutputStream out, BiFunction<String, File, ArchiveEntry> builder, Directory directory, File file, Directory relative) {
-        try {
-            ArchiveEntry entry = builder.apply(relative.file(directory.relativize(file).toString()).path(), file);
-            out.putArchiveEntry(entry);
+    private static Signal<Location> pack(ArchiveOutputStream out, BiFunction<String, File, ArchiveEntry> builder, Directory directory, File file, Directory relative) {
+        return new Signal<>((observer, disposer) -> {
+            try {
+                ArchiveEntry entry = builder.apply(relative.file(directory.relativize(file).toString()).path(), file);
+                out.putArchiveEntry(entry);
 
-            try (InputStream in = file.newInputStream()) {
-                in.transferTo(out);
+                try (InputStream in = file.newInputStream()) {
+                    in.transferTo(out);
+                    observer.accept(file);
+                }
+                out.closeArchiveEntry();
+                observer.complete();
+            } catch (IOException e) {
+                observer.error(e);
             }
-            out.closeArchiveEntry();
-        } catch (IOException e) {
-            throw I.quiet(e);
-        }
+            return disposer;
+        });
     }
 
     private static BiFunction<String, File, ArchiveEntry> detectEntryBuilder(String extension) {
@@ -576,7 +598,7 @@ public final class Folder {
          * @param relative
          * @param patterns
          */
-        void packTo(ArchiveOutputStream archive, BiFunction<String, File, ArchiveEntry> builder, Directory relative, Function<Option, Option> option);
+        Signal<Location> packTo(ArchiveOutputStream archive, BiFunction<String, File, ArchiveEntry> builder, Directory relative, Function<Option, Option> option);
 
         /**
          * List up all resources.
@@ -645,8 +667,8 @@ public final class Folder {
          * {@inheritDoc}
          */
         @Override
-        public void packTo(ArchiveOutputStream archive, BiFunction<String, File, ArchiveEntry> builder, Directory relative, Function<Option, Option> option) {
-            delegator.packTo(archive, builder, this.relative, option);
+        public Signal<Location> packTo(ArchiveOutputStream archive, BiFunction<String, File, ArchiveEntry> builder, Directory relative, Function<Option, Option> option) {
+            return delegator.packTo(archive, builder, this.relative, option);
         }
 
         /**
@@ -716,8 +738,8 @@ public final class Folder {
          * {@inheritDoc}
          */
         @Override
-        public void packTo(ArchiveOutputStream archive, BiFunction<String, File, ArchiveEntry> builder, Directory relative, Function<Option, Option> option) {
-            pack(archive, builder, file.parent(), file, relative);
+        public Signal<Location> packTo(ArchiveOutputStream archive, BiFunction<String, File, ArchiveEntry> builder, Directory relative, Function<Option, Option> option) {
+            return pack(archive, builder, file.parent(), file, relative);
         }
 
         /**
@@ -795,12 +817,12 @@ public final class Folder {
          * {@inheritDoc}
          */
         @Override
-        public void packTo(ArchiveOutputStream archive, BiFunction<String, File, ArchiveEntry> builder, Directory relative, Function<Option, Option> option) {
+        public Signal<Location> packTo(ArchiveOutputStream archive, BiFunction<String, File, ArchiveEntry> builder, Directory relative, Function<Option, Option> option) {
             Function<Option, Option> combined = this.option.andThen(option);
             Option o = combined.apply(new Option());
 
-            directory.walkFiles(combined)
-                    .to(file -> pack(archive, builder, !directory.isRoot() && o.acceptRoot ? directory.parent()
+            return directory.walkFiles(combined)
+                    .flatMap(file -> pack(archive, builder, !directory.isRoot() && o.acceptRoot ? directory.parent()
                             : directory, file, relative));
         }
 
@@ -875,8 +897,8 @@ public final class Folder {
          * {@inheritDoc}
          */
         @Override
-        public void packTo(ArchiveOutputStream archive, BiFunction<String, File, ArchiveEntry> builder, Directory relative, Function<Option, Option> option) {
-            operation.packTo(archive, builder, relative, this.option.andThen(option));
+        public Signal<Location> packTo(ArchiveOutputStream archive, BiFunction<String, File, ArchiveEntry> builder, Directory relative, Function<Option, Option> option) {
+            return operation.packTo(archive, builder, relative, this.option.andThen(option));
         }
 
         /**

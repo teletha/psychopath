@@ -458,7 +458,7 @@ class FolderTest extends LocationTestHelper {
      * @return
      */
     private boolean matchPackDestination(Folder folder, Consumer<FileSystemDSL> expected) {
-        assert match(folder.packTo(locateFile("pack.zip")).unpackToTemporary(), expected);
+        assert match(folder.packToNow(locateFile("pack.zip")).unpackToTemporary(), expected);
 
         return true;
     }
