@@ -33,7 +33,7 @@ import kiss.Ⅱ;
 /**
  * Virtual directory to manage resources from various entries.
  */
-public final class Folder {
+public final class Folder implements PathOperational {
 
     /** The operations. */
     private final List<Operation> operations = new ArrayList();
@@ -343,69 +343,31 @@ public final class Folder {
     }
 
     /**
-     * Delete all resources.
-     * 
-     * @return
+     * {@inheritDoc}
      */
+    @Override
     public Signal<Location> delete(String... patterns) {
         return I.signal(operations).flatMap(operation -> operation.delete(patterns));
     }
 
     /**
-     * Delete all resources.
-     * 
-     * @return
+     * {@inheritDoc}
      */
-    public Folder deleteNow(String... patterns) {
-        delete(patterns).to(I.NoOP);
-
-        return this;
-    }
-
-    /**
-     * Copy all resources to the specified {@link Directory}.
-     * 
-     * @param destination A destination {@link Directory}.
-     */
-    public Signal<Location> copyTo(Directory destination, String... patterns) {
+    @Override
+    public Signal<Location> copyTo(Directory destination, Function<Option, Option> option) {
         Objects.requireNonNull(destination);
 
-        return I.signal(operations).flatMap(operation -> operation.copyTo(destination, o -> o.glob(patterns)));
+        return I.signal(operations).flatMap(operation -> operation.copyTo(destination, option));
     }
 
     /**
-     * Copy all resources to the specified {@link Directory}.
-     * 
-     * @param destination A destination {@link Directory}.
+     * {@inheritDoc}
      */
-    public Directory copyToNow(Directory destination, String... patterns) {
+    @Override
+    public Signal<Location> moveTo(Directory destination, Function<Option, Option> option) {
         Objects.requireNonNull(destination);
 
-        operations.forEach(operation -> operation.copyToNow(destination, o -> o.glob(patterns)));
-
-        return destination;
-    }
-
-    /**
-     * Move all resources to the specified {@link Directory}.
-     * 
-     * @param destination A destination {@link Directory}.
-     */
-    public Signal<Location> moveTo(Directory destination, String... patterns) {
-        Objects.requireNonNull(destination);
-
-        return I.signal(operations).flatMap(operation -> operation.moveTo(destination, o -> o.glob(patterns)));
-    }
-
-    /**
-     * Move all resources to the specified {@link Directory}.
-     * 
-     * @param destination A destination {@link Directory}.
-     */
-    public Directory moveToNow(Directory destination, String... patterns) {
-        moveTo(destination, patterns).to(I.NoOP);
-
-        return destination;
+        return I.signal(operations).flatMap(operation -> operation.moveTo(destination, option));
     }
 
     /**
@@ -430,17 +392,6 @@ public final class Folder {
 
             return disposer;
         });
-    }
-
-    /**
-     * Pack all resources.
-     * 
-     * @param archive
-     */
-    public File packToNow(File archive, String... patterns) {
-        packTo(archive, patterns).to(I.NoOP);
-
-        return archive;
     }
 
     /**
@@ -557,15 +508,6 @@ public final class Folder {
         Signal<Location> delete(String... patterns);
 
         /**
-         * Delete resources.
-         * 
-         * @param patterns
-         */
-        default void deleteNow(String... patterns) {
-            delete(patterns).to(I.NoOP);
-        }
-
-        /**
          * Move reosources to the specified {@link Directory}.
          * 
          * @param destination
@@ -574,32 +516,12 @@ public final class Folder {
         Signal<Location> moveTo(Directory destination, Function<Option, Option> option);
 
         /**
-         * Move reosources to the specified {@link Directory}.
-         * 
-         * @param destination
-         * @param patterns
-         */
-        default void moveToNow(Directory destination, Function<Option, Option> option) {
-            moveTo(destination, option).to(I.NoOP);
-        }
-
-        /**
          * Copy reosources to the specified {@link Directory}.
          * 
          * @param destination
          * @param patterns
          */
         Signal<Location> copyTo(Directory destination, Function<Option, Option> option);
-
-        /**
-         * Copy reosources to the specified {@link Directory}.
-         * 
-         * @param destination
-         * @param patterns
-         */
-        default void copyToNow(Directory destination, Function<Option, Option> option) {
-            copyTo(destination, option).to(I.NoOP);
-        }
 
         /**
          * Pack reosources to the specified {@link File}.
