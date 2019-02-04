@@ -283,18 +283,8 @@ public class Directory extends Location<Directory> {
      * {@inheritDoc}
      */
     @Override
-    public void copyTo(Directory destination) {
-        copyTo(destination, new String[0]);
-    }
-
-    /**
-     * Shorthand method to {@link #copyTo(Directory, Function)} with glob patterns.
-     * 
-     * @param destination A destination {@link Directory}.
-     * @param patterns A glob patterns.
-     */
-    public void copyTo(Directory destination, String... patterns) {
-        copyTo(destination, o -> o.glob(patterns));
+    public Signal<Location> copyTo(Directory destination) {
+        return copyTo(destination, Function.identity());
     }
 
     /**
@@ -324,26 +314,96 @@ public class Directory extends Location<Directory> {
      *             the target file. If a symbolic link is copied the security manager is invoked to
      *             check {@link LinkPermission}("symbolic").
      */
-    public void copyTo(Directory destination, Function<Option, Option> option) {
-        walk(Location.class, destination, 0, option).to(I.NoOP);
+    public Signal<Location> copyTo(Directory destination, Function<Option, Option> option) {
+        return walk(Location.class, destination, 0, option);
+    }
+
+    /**
+     * Shorthand method to {@link #copyToNow(Directory, Function)} with glob patterns.
+     * 
+     * @param destination A destination {@link Directory}.
+     * @param patterns A glob patterns.
+     */
+    public void copyToNow(Directory destination, String... patterns) {
+        copyToNow(destination, o -> o.glob(patterns));
+    }
+
+    /**
+     * <p>
+     * Copy this {@link Directory} to the output {@link Directory} by using various {@link Option}.
+     * </p>
+     * <p>
+     * If the output file already exists, it will be replaced by input file unconditionaly. The
+     * exact file attributes that are copied is platform and file system dependent and therefore
+     * unspecified. Minimally, the last-modified-time is copied to the output file if supported by
+     * both the input and output file store. Copying of file timestamps may result in precision
+     * loss.
+     * </p>
+     * <p>
+     * Copying a file is not an atomic operation. If an {@link IOException} is thrown then it
+     * possible that the output file is incomplete or some of its file attributes have not been
+     * copied from the input file.
+     * </p>
+     *
+     * @param destination An output {@link Directory}.
+     * @param option A {@link Option} builder.
+     * @throws IOException If an I/O error occurs.
+     * @throws SecurityException In the case of the default provider, and a security manager is
+     *             installed, the {@link SecurityManager#checkRead(String)} method is invoked to
+     *             check read access to the source file, the
+     *             {@link SecurityManager#checkWrite(String)} is invoked to check write access to
+     *             the target file. If a symbolic link is copied the security manager is invoked to
+     *             check {@link LinkPermission}("symbolic").
+     */
+    public void copyToNow(Directory destination, Function<Option, Option> option) {
+        copyTo(destination, option).to(I.NoOP);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void moveTo(Directory destination) {
-        moveTo(destination, new String[0]);
+    public Signal<Location> moveTo(Directory destination) {
+        return moveTo(destination, Function.identity());
     }
 
     /**
-     * Shorthand method to {@link #moveTo(Directory, Function)} with glob patterns.
+     * <p>
+     * Move this {@link Directory} to an output {@link Directory} by using various {@link Option}s.
+     * </p>
+     * <p>
+     * If the output file already exists, it will be replaced by input file unconditionaly. The
+     * exact file attributes that are copied is platform and file system dependent and therefore
+     * unspecified. Minimally, the last-modified-time is copied to the output file if supported by
+     * both the input and output file store. Copying of file timestamps may result in precision
+     * loss.
+     * </p>
+     * <p>
+     * Moving a file is an atomic operation.
+     * </p>
+     *
+     * @param destination An output {@link Path} object which can be file or directory.
+     * @param option A {@link Option} builder.
+     * @throws IOException If an I/O error occurs.
+     * @throws SecurityException In the case of the default provider, and a security manager is
+     *             installed, the {@link SecurityManager#checkRead(String)} method is invoked to
+     *             check read access to the source file, the
+     *             {@link SecurityManager#checkWrite(String)} is invoked to check write access to
+     *             the target file. If a symbolic link is copied the security manager is invoked to
+     *             check {@link LinkPermission}("symbolic").
+     */
+    public Signal<Location> moveTo(Directory destination, Function<Option, Option> option) {
+        return walk(Location.class, destination, 1, option);
+    }
+
+    /**
+     * Shorthand method to {@link #moveToNow(Directory, Function)} with glob patterns.
      * 
      * @param destination A destination {@link Directory}.
      * @param patterns A glob patterns.
      */
-    public void moveTo(Directory destination, String... patterns) {
-        moveTo(destination, o -> o.glob(patterns));
+    public void moveToNow(Directory destination, String... patterns) {
+        moveToNow(destination, o -> o.glob(patterns));
     }
 
     /**
@@ -371,37 +431,8 @@ public class Directory extends Location<Directory> {
      *             the target file. If a symbolic link is copied the security manager is invoked to
      *             check {@link LinkPermission}("symbolic").
      */
-    public void moveTo(Directory destination, Function<Option, Option> option) {
+    public void moveToNow(Directory destination, Function<Option, Option> option) {
         walk(Location.class, destination, 1, option).to(I.NoOP);
-    }
-
-    /**
-     * <p>
-     * Move this {@link Directory} to an output {@link Directory} by using various {@link Option}s.
-     * </p>
-     * <p>
-     * If the output file already exists, it will be replaced by input file unconditionaly. The
-     * exact file attributes that are copied is platform and file system dependent and therefore
-     * unspecified. Minimally, the last-modified-time is copied to the output file if supported by
-     * both the input and output file store. Copying of file timestamps may result in precision
-     * loss.
-     * </p>
-     * <p>
-     * Moving a file is an atomic operation.
-     * </p>
-     *
-     * @param destination An output {@link Path} object which can be file or directory.
-     * @param option A {@link Option} builder.
-     * @throws IOException If an I/O error occurs.
-     * @throws SecurityException In the case of the default provider, and a security manager is
-     *             installed, the {@link SecurityManager#checkRead(String)} method is invoked to
-     *             check read access to the source file, the
-     *             {@link SecurityManager#checkWrite(String)} is invoked to check write access to
-     *             the target file. If a symbolic link is copied the security manager is invoked to
-     *             check {@link LinkPermission}("symbolic").
-     */
-    public Signal<Location> moveTo2(Directory destination, Function<Option, Option> option) {
-        return walk(Location.class, destination, 1, option);
     }
 
     /**

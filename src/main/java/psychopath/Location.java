@@ -659,7 +659,37 @@ public abstract class Location<Self extends Location> implements Comparable<Loca
      *             the target file. If a symbolic link is copied the security manager is invoked to
      *             check {@link LinkPermission}("symbolic").
      */
-    public abstract void copyTo(Directory destination);
+    public abstract Signal<Location> copyTo(Directory destination);
+
+    /**
+     * <p>
+     * Copy this {@link Location} to the output {@link Directory} with its attributes.
+     * </p>
+     * <p>
+     * If the output file already exists, it will be replaced by input file unconditionaly. The
+     * exact file attributes that are copied is platform and file system dependent and therefore
+     * unspecified. Minimally, the last-modified-time is copied to the output file if supported by
+     * both the input and output file store. Copying of file timestamps may result in precision
+     * loss.
+     * </p>
+     * <p>
+     * Copying a file is not an atomic operation. If an {@link IOException} is thrown then it
+     * possible that the output file is incomplete or some of its file attributes have not been
+     * copied from the input file.
+     * </p>
+     *
+     * @param destination An output {@link Directory}.
+     * @throws IOException If an I/O error occurs.
+     * @throws SecurityException In the case of the default provider, and a security manager is
+     *             installed, the {@link SecurityManager#checkRead(String)} method is invoked to
+     *             check read access to the source file, the
+     *             {@link SecurityManager#checkWrite(String)} is invoked to check write access to
+     *             the target file. If a symbolic link is copied the security manager is invoked to
+     *             check {@link LinkPermission}("symbolic").
+     */
+    public final void copyToNow(Directory destination) {
+        copyTo(destination).to(I.NoOP);
+    }
 
     /**
      * <p>
@@ -685,13 +715,41 @@ public abstract class Location<Self extends Location> implements Comparable<Loca
      *             the target file. If a symbolic link is copied the security manager is invoked to
      *             check {@link LinkPermission}("symbolic").
      */
-    public abstract void moveTo(Directory destination);
+    public abstract Signal<Location> moveTo(Directory destination);
+
+    /**
+     * <p>
+     * Move this {@link Location} to an output {@link Directory} with its attributes.
+     * </p>
+     * <p>
+     * If the output file already exists, it will be replaced by input file unconditionaly. The
+     * exact file attributes that are copied is platform and file system dependent and therefore
+     * unspecified. Minimally, the last-modified-time is copied to the output file if supported by
+     * both the input and output file store. Copying of file timestamps may result in precision
+     * loss.
+     * </p>
+     * <p>
+     * Moving a file is an atomic operation.
+     * </p>
+     *
+     * @param destination An output {@link Path} object which can be file or directory.
+     * @throws IOException If an I/O error occurs.
+     * @throws SecurityException In the case of the default provider, and a security manager is
+     *             installed, the {@link SecurityManager#checkRead(String)} method is invoked to
+     *             check read access to the source file, the
+     *             {@link SecurityManager#checkWrite(String)} is invoked to check write access to
+     *             the target file. If a symbolic link is copied the security manager is invoked to
+     *             check {@link LinkPermission}("symbolic").
+     */
+    public final void moveToNow(Directory destination) {
+        moveTo(destination).to(I.NoOP);
+    }
 
     /**
      * Shorthand method for <code>moveTo(parent().parent())</code>.
      */
     public final void moveUp() {
-        moveTo(parent().parent());
+        moveToNow(parent().parent());
     }
 
     /**

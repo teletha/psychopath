@@ -13,6 +13,8 @@ import java.time.Instant;
 
 import org.junit.jupiter.api.Test;
 
+import antibug.powerassert.PowerAssertOff;
+
 class MoveTest extends LocationTestHelper {
 
     @Test
@@ -20,7 +22,7 @@ class MoveTest extends LocationTestHelper {
         File in = locateAbsent("absent");
         File out = locateFile("out");
 
-        in.moveTo(out);
+        in.moveToNow(out);
 
         assert in.isAbsent();
         assert out.isPresent();
@@ -31,7 +33,7 @@ class MoveTest extends LocationTestHelper {
         File in = locateAbsent("absent");
         Directory out = locateDirectory("out");
 
-        in.moveTo(out);
+        in.moveToNow(out);
 
         assert in.isAbsent();
         assert out.file("absent").isAbsent();
@@ -42,7 +44,7 @@ class MoveTest extends LocationTestHelper {
         File in = locateAbsent("absent");
         File out = locateAbsent("out");
 
-        in.moveTo(out);
+        in.moveToNow(out);
 
         assert in.isAbsent();
         assert out.isAbsent();
@@ -53,7 +55,7 @@ class MoveTest extends LocationTestHelper {
         File in = locateFile("In", "Success");
         File out = locateFile("Out", "This text will be overwritten by input file.");
 
-        in.moveTo(out);
+        in.moveToNow(out);
 
         assert in.isAbsent();
         assert match(out, "Success");
@@ -65,7 +67,7 @@ class MoveTest extends LocationTestHelper {
         File in = locateFile("In", now, "Success");
         File out = locateFile("Out", now, "This text will be overwritten by input file.");
 
-        in.moveTo(out);
+        in.moveToNow(out);
 
         assert in.isAbsent();
         assert match(out, now, "Success");
@@ -77,7 +79,7 @@ class MoveTest extends LocationTestHelper {
         File in = locateFile("In", now, "Success");
         File out = locateFile("Out", now.plusSeconds(10), "This text will be overwritten by input file.");
 
-        in.moveTo(out);
+        in.moveToNow(out);
 
         assert in.isAbsent();
         assert match(out, now, "Success");
@@ -88,7 +90,7 @@ class MoveTest extends LocationTestHelper {
         File in = locateFile("In", "Success");
         File out = locateAbsent("Out");
 
-        in.moveTo(out);
+        in.moveToNow(out);
 
         assert in.isAbsent();
         assert match(out, "Success");
@@ -99,7 +101,7 @@ class MoveTest extends LocationTestHelper {
         File in = locateFile("In", "Success");
         File out = locateAbsent("1/2/3");
 
-        in.moveTo(out);
+        in.moveToNow(out);
 
         assert in.isAbsent();
         assert match(out, "Success");
@@ -110,7 +112,7 @@ class MoveTest extends LocationTestHelper {
         File in = locateFile("In", "Success");
         Directory out = locateDirectory("Out");
 
-        in.moveTo(out);
+        in.moveToNow(out);
 
         assert in.isAbsent();
         assert match(out.file("In"), "Success");
@@ -125,7 +127,7 @@ class MoveTest extends LocationTestHelper {
             $.file("1", "This text will be remaining.");
         });
 
-        in.moveTo(out);
+        in.moveToNow(out);
 
         assert in.isAbsent();
         assert match(out, $ -> {
@@ -145,7 +147,7 @@ class MoveTest extends LocationTestHelper {
             $.file("1", "This text will be overwritten by input file.");
         });
 
-        in.moveTo(out, o -> o.glob("**").strip());
+        in.moveToNow(out, o -> o.glob("**").strip());
 
         assert match(out, $ -> {
             $.file("1", "One");
@@ -164,7 +166,7 @@ class MoveTest extends LocationTestHelper {
         });
         Directory out = locateDirectory("Out");
 
-        in.moveTo(out, o -> o.take((file, attr) -> file.getFileName().startsWith("file")));
+        in.moveToNow(out, o -> o.take((file, attr) -> file.getFileName().startsWith("file")));
 
         assert in.isPresent();
         assert match(out.directory("In"), $ -> {
@@ -182,7 +184,7 @@ class MoveTest extends LocationTestHelper {
         });
         Directory out = locateAbsentDirectory("Out");
 
-        in.moveTo(out);
+        in.moveToNow(out);
 
         assert in.isAbsent();
         assert match(out.directory("In"), $ -> {
@@ -197,7 +199,7 @@ class MoveTest extends LocationTestHelper {
         });
         Directory out = locateAbsentDirectory("1/2/3");
 
-        in.moveTo(out);
+        in.moveToNow(out);
 
         assert in.isAbsent();
         assert match(out.directory("In"), $ -> {
@@ -218,7 +220,7 @@ class MoveTest extends LocationTestHelper {
         });
         Directory out = locateDirectory("Out");
 
-        in.moveTo(out, o -> o.glob("*").strip());
+        in.moveToNow(out, o -> o.glob("*").strip());
 
         assert in.isPresent();
         assert match(out, $ -> {
@@ -238,7 +240,7 @@ class MoveTest extends LocationTestHelper {
         });
         Directory out = locateDirectory("Out");
 
-        in.moveTo(out, o -> o.glob("**").strip());
+        in.moveToNow(out, o -> o.glob("**").strip());
 
         assert in.isPresent();
         assert match(out, $ -> {
@@ -260,7 +262,7 @@ class MoveTest extends LocationTestHelper {
             $.file("1", "This text will be overridden.");
         });
 
-        in.moveTo(out);
+        in.moveToNow(out);
 
         assert match(out, $ -> {
             $.file("1", "override");
@@ -268,6 +270,7 @@ class MoveTest extends LocationTestHelper {
     }
 
     @Test
+    @PowerAssertOff
     public void archiveToDirectoryWithPattern() {
         Folder in = locateArchive("main.zip", $ -> {
             $.file("1.txt", "override");
@@ -278,7 +281,7 @@ class MoveTest extends LocationTestHelper {
             $.file("1.txt", "This text will be overridden.");
         });
 
-        in.moveTo(out, "1.*");
+        in.moveToNow(out, "1.*");
 
         assert match(out, $ -> {
             $.file("1.txt", "override");
@@ -293,7 +296,7 @@ class MoveTest extends LocationTestHelper {
 
         Directory out = locateAbsentDirectory("Out");
 
-        in.moveTo(out, "1.*");
+        in.moveToNow(out, "1.*");
 
         assert match(out, $ -> {
             $.file("1.txt", "ok");

@@ -148,7 +148,7 @@ class FileTest extends LocationTestHelper {
         Directory dest = locateDirectory("dest");
         assert dest.isEmpty() == true;
 
-        file.copyTo(dest);
+        file.copyToNow(dest);
         assert dest.isEmpty() == false;
         File copied = dest.file("base");
         assert file.name().equals(copied.name());

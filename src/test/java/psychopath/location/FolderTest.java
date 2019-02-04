@@ -445,7 +445,7 @@ class FolderTest extends LocationTestHelper {
      * @return
      */
     private boolean matchCopyDestination(Folder folder, Consumer<FileSystemDSL> expected) {
-        assert match(folder.copyTo(locateDirectory("copy")), expected);
+        assert match(folder.copyToNow(locateDirectory("copy")), expected);
 
         return true;
     }
@@ -471,7 +471,7 @@ class FolderTest extends LocationTestHelper {
      * @return
      */
     private boolean matchMoveDestination(Folder folder, Consumer<FileSystemDSL> expected) {
-        assert match(folder.moveTo(locateDirectory("move")), expected);
+        assert match(folder.moveToNow(locateDirectory("move")), expected);
 
         return true;
     }
@@ -491,7 +491,7 @@ class FolderTest extends LocationTestHelper {
                 .add(file)
                 .add(directory)
                 .add(directory, o -> o.glob("**").strip())
-                .copyTo(locateDirectory("output"));
+                .copyToNow(locateDirectory("output"));
         assert match(output, $ -> {
             $.file("file.txt");
             $.dir("dir", () -> {
@@ -659,7 +659,7 @@ class FolderTest extends LocationTestHelper {
         });
 
         Folder folder = Locator.folder().add(root);
-        List<Location> files = folder.moveTo2(Locator.directory("out")).toList();
+        List<Location> files = folder.moveTo(Locator.directory("out")).toList();
         assert files.size() == 3;
     }
 }
