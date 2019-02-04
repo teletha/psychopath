@@ -10,6 +10,7 @@
 package psychopath.location;
 
 import java.nio.file.Path;
+import java.util.List;
 import java.util.function.Consumer;
 
 import org.junit.jupiter.api.Disabled;
@@ -21,6 +22,7 @@ import kiss.I;
 import psychopath.Directory;
 import psychopath.File;
 import psychopath.Folder;
+import psychopath.Location;
 import psychopath.LocationTestHelper;
 import psychopath.Locator;
 
@@ -644,5 +646,20 @@ class FolderTest extends LocationTestHelper {
         // combine pattern
         assert Locator.folder().add(dir1, "**.java").add(dir2, "**.txt").walkFiles().toList().size() == 3;
         assert Locator.folder().add(dir1, "!**.java").add(dir2, "!**.txt").walkFiles().toList().size() == 3;
+    }
+
+    @Test
+    void moveEvent() {
+        Directory root = locateDirectory("root", $ -> {
+            $.file("item");
+            $.dir("child", () -> {
+                $.file("child1");
+                $.file("child2");
+            });
+        });
+
+        Folder folder = Locator.folder().add(root);
+        List<Location> files = folder.moveTo2(Locator.directory("out")).toList();
+        assert files.size() == 3;
     }
 }

@@ -193,6 +193,14 @@ public final class Folder {
                  * {@inheritDoc}
                  */
                 @Override
+                public Signal<Location> moveTo2(Directory destination, Function<Option, Option> option) {
+                    return buildOperation(entries, option).flatMap(op -> op.moveTo2(destination, option));
+                }
+
+                /**
+                 * {@inheritDoc}
+                 */
+                @Override
                 public void copyTo(Directory destination, Function<Option, Option> option) {
                     buildOperation(entries, option).to(op -> op.copyTo(destination, option));
                 }
@@ -366,6 +374,10 @@ public final class Folder {
         return destination;
     }
 
+    public Signal<Location> moveTo2(Directory destination, String... patterns) {
+        return I.signal(operations).flatMap(operation -> operation.moveTo2(destination, o -> o.glob(patterns)));
+    }
+
     /**
      * Move all resources to the specified {@link Directory}.
      * 
@@ -514,6 +526,14 @@ public final class Folder {
         void moveTo(Directory destination, Function<Option, Option> option);
 
         /**
+         * Move reosources to the specified {@link Directory}.
+         * 
+         * @param destination
+         * @param patterns
+         */
+        Signal<Location> moveTo2(Directory destination, Function<Option, Option> option);
+
+        /**
          * Copy reosources to the specified {@link Directory}.
          * 
          * @param destination
@@ -588,6 +608,14 @@ public final class Folder {
          * {@inheritDoc}
          */
         @Override
+        public Signal<Location> moveTo2(Directory destination, Function<Option, Option> option) {
+            return delegator.moveTo2(destination.directory(relative), option);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
         public void copyTo(Directory destination, Function<Option, Option> option) {
             delegator.copyTo(destination.directory(relative), option);
         }
@@ -653,6 +681,14 @@ public final class Folder {
         @Override
         public void moveTo(Directory destination, Function<Option, Option> option) {
             file.moveTo(destination);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public Signal<Location> moveTo2(Directory destination, Function<Option, Option> option) {
+            return file.moveTo2(destination);
         }
 
         /**
@@ -739,6 +775,14 @@ public final class Folder {
          * {@inheritDoc}
          */
         @Override
+        public Signal<Location> moveTo2(Directory destination, Function<Option, Option> option) {
+            return directory.moveTo2(destination, this.option.andThen(option));
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
         public void copyTo(Directory destination, Function<Option, Option> option) {
             directory.copyTo(destination, this.option.andThen(option));
         }
@@ -813,6 +857,14 @@ public final class Folder {
         @Override
         public void moveTo(Directory destination, Function<Option, Option> option) {
             operation.moveTo(destination, this.option.andThen(option));
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public Signal<Location> moveTo2(Directory destination, Function<Option, Option> option) {
+            return operation.moveTo2(destination, this.option.andThen(option));
         }
 
         /**

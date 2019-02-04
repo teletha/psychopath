@@ -9,9 +9,11 @@
  */
 package psychopath;
 
-import static java.nio.file.StandardCopyOption.*;
-import static java.nio.file.StandardOpenOption.*;
-import static java.util.concurrent.TimeUnit.*;
+import static java.nio.file.StandardCopyOption.COPY_ATTRIBUTES;
+import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
+import static java.nio.file.StandardOpenOption.CREATE;
+import static java.nio.file.StandardOpenOption.WRITE;
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -194,6 +196,13 @@ public class File extends Location<File> {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    public Signal<Location> moveTo2(Directory destination) {
+        return moveTo2(destination.file(name()));
+    }
+
+    /**
      * <p>
      * Move this {@link File} to an output {@link File} with its attributes.
      * </p>
@@ -226,6 +235,46 @@ public class File extends Location<File> {
                 throw I.quiet(e);
             }
         }
+    }
+
+    /**
+     * <p>
+     * Move this {@link File} to an output {@link File} with its attributes.
+     * </p>
+     * <p>
+     * If the output file already exists, it will be replaced by input file unconditionaly. The
+     * exact file attributes that are copied is platform and file system dependent and therefore
+     * unspecified. Minimally, the last-modified-time is copied to the output file if supported by
+     * both the input and output file store. Copying of file timestamps may result in precision
+     * loss.
+     * </p>
+     * <p>
+     * Moving a file is an atomic operation.
+     * </p>
+     *
+     * @param destination An output {@link Path} object which can be file or directory.
+     * @throws IOException If an I/O error occurs.
+     * @throws SecurityException In the case of the default provider, and a security manager is
+     *             installed, the {@link SecurityManager#checkRead(String)} method is invoked to
+     *             check read access to the source file, the
+     *             {@link SecurityManager#checkWrite(String)} is invoked to check write access to
+     *             the target file. If a symbolic link is copied the security manager is invoked to
+     *             check {@link LinkPermission}("symbolic").
+     */
+    public Signal<Location> moveTo2(File destination) {
+        return new Signal<>((observer, disposer) -> {
+            try {
+                if (isPresent() && disposer.isNotDisposed()) {
+                    destination.parent().create();
+                    Files.move(path, destination.path, REPLACE_EXISTING);
+                    observer.accept(this);
+                }
+                observer.complete();
+            } catch (Exception e) {
+                observer.error(e);
+            }
+            return disposer;
+        });
     }
 
     /**

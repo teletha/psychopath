@@ -221,7 +221,6 @@ public class Directory extends Location<Directory> {
                         .of(), o.depth, new CymaticScan(this, out, type, observer, disposer, option.andThen(this.option)));
                 observer.complete();
             } catch (Throwable e) {
-                e.printStackTrace();
                 observer.error(e);
             }
             return disposer;
@@ -374,6 +373,35 @@ public class Directory extends Location<Directory> {
      */
     public void moveTo(Directory destination, Function<Option, Option> option) {
         walk(Location.class, destination, 1, option).to(I.NoOP);
+    }
+
+    /**
+     * <p>
+     * Move this {@link Directory} to an output {@link Directory} by using various {@link Option}s.
+     * </p>
+     * <p>
+     * If the output file already exists, it will be replaced by input file unconditionaly. The
+     * exact file attributes that are copied is platform and file system dependent and therefore
+     * unspecified. Minimally, the last-modified-time is copied to the output file if supported by
+     * both the input and output file store. Copying of file timestamps may result in precision
+     * loss.
+     * </p>
+     * <p>
+     * Moving a file is an atomic operation.
+     * </p>
+     *
+     * @param destination An output {@link Path} object which can be file or directory.
+     * @param option A {@link Option} builder.
+     * @throws IOException If an I/O error occurs.
+     * @throws SecurityException In the case of the default provider, and a security manager is
+     *             installed, the {@link SecurityManager#checkRead(String)} method is invoked to
+     *             check read access to the source file, the
+     *             {@link SecurityManager#checkWrite(String)} is invoked to check write access to
+     *             the target file. If a symbolic link is copied the security manager is invoked to
+     *             check {@link LinkPermission}("symbolic").
+     */
+    public Signal<Location> moveTo2(Directory destination, Function<Option, Option> option) {
+        return walk(Location.class, destination, 1, option);
     }
 
     /**

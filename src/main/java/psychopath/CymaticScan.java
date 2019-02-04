@@ -220,6 +220,8 @@ class CymaticScan implements FileVisitor<Path>, Runnable, Disposable {
             Path relative = from.relativize(path);
 
             if (accept(relative, attrs)) {
+                observer.accept(Locator.file(path));
+
                 switch (type) {
                 case 0: // copy
                     Files.copy(path, to.resolve(relative.toString()), COPY_ATTRIBUTES, REPLACE_EXISTING);
@@ -234,7 +236,6 @@ class CymaticScan implements FileVisitor<Path>, Runnable, Disposable {
                     break;
 
                 case 3: // walk file
-                    observer.accept(Locator.file(path));
                     break;
                 }
             }
