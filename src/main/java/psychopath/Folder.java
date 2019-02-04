@@ -31,7 +31,7 @@ import kiss.Signal;
 import kiss.Ⅱ;
 
 /**
- * Virtual directory to manage resource from various entries.
+ * Virtual directory to manage resources from various entries.
  */
 public final class Folder {
 
@@ -148,20 +148,29 @@ public final class Folder {
     }
 
     /**
+     * Build {@link Operation} for {@link Location}.
+     * 
+     * @param entries
+     * @param option
+     * @return
+     */
+    private Signal<Operation> buildOperation(Signal<? extends Location> entries, Function<Option, Option> option) {
+        return entries.map(entry -> {
+            if (entry.isDirectory()) {
+                return new DirectoryOperation((Directory) entry, option);
+            } else {
+                return new FileOperation((File) entry);
+            }
+        });
+    }
+
+    /**
      * Add entries.
      * 
      * @param entries
      */
     public Folder add(Signal<? extends Location> entries, Function<Option, Option> option) {
         if (entries != null) {
-            Signal<Operation> ops = entries.map(location -> {
-                if (location.isDirectory()) {
-                    return new DirectoryOperation((Directory) location, option);
-                } else {
-                    return new FileOperation((File) location, option);
-                }
-            });
-
             operations.add(new Operation() {
 
                 /**
@@ -169,7 +178,7 @@ public final class Folder {
                  */
                 @Override
                 public void delete(String... patterns) {
-                    ops.to(op -> op.delete(patterns));
+                    buildOperation(entries, option).to(op -> op.delete(patterns));
                 }
 
                 /**
@@ -177,7 +186,7 @@ public final class Folder {
                  */
                 @Override
                 public void moveTo(Directory destination, Function<Option, Option> option) {
-                    ops.to(op -> op.moveTo(destination, option));
+                    buildOperation(entries, option).to(op -> op.moveTo(destination, option));
                 }
 
                 /**
@@ -185,7 +194,7 @@ public final class Folder {
                  */
                 @Override
                 public void copyTo(Directory destination, Function<Option, Option> option) {
-                    ops.to(op -> op.copyTo(destination, option));
+                    buildOperation(entries, option).to(op -> op.copyTo(destination, option));
                 }
 
                 /**
@@ -193,7 +202,7 @@ public final class Folder {
                  */
                 @Override
                 public void packTo(ArchiveOutputStream archive, BiFunction<String, File, ArchiveEntry> builder, Directory relative, Function<Option, Option> option) {
-                    ops.to(op -> op.packTo(archive, builder, relative, option));
+                    buildOperation(entries, option).to(op -> op.packTo(archive, builder, relative, option));
                 }
 
                 /**
@@ -201,7 +210,7 @@ public final class Folder {
                  */
                 @Override
                 public Signal<Ⅱ<Directory, File>> walkFiles(String... patterns) {
-                    return ops.flatMap(op -> op.walkFiles(patterns));
+                    return buildOperation(entries, option).flatMap(op -> op.walkFiles(patterns));
                 }
 
                 /**
@@ -209,7 +218,7 @@ public final class Folder {
                  */
                 @Override
                 public Signal<Ⅱ<Directory, Directory>> walkDirectories(String... patterns) {
-                    return ops.flatMap(op -> op.walkDirectories(patterns));
+                    return buildOperation(entries, option).flatMap(op -> op.walkDirectories(patterns));
                 }
 
                 /**
@@ -352,7 +361,7 @@ public final class Folder {
     public Directory copyTo(Directory destination, String... patterns) {
         Objects.requireNonNull(destination);
 
-        operations.forEach(operation -> operation.copyTo(destination, patterns));
+        operations.forEach(operation -> operation.copyTo(destination, o -> o.glob(patterns)));
 
         return destination;
     }
@@ -365,7 +374,7 @@ public final class Folder {
     public Directory moveTo(Directory destination, String... patterns) {
         Objects.requireNonNull(destination);
 
-        operations.forEach(operation -> operation.moveTo(destination, patterns));
+        operations.forEach(operation -> operation.moveTo(destination, o -> o.glob(patterns)));
 
         return destination;
     }
@@ -380,7 +389,7 @@ public final class Folder {
 
         try (ArchiveOutputStream out = new ArchiveStreamFactory()
                 .createArchiveOutputStream(archive.extension().replaceAll("7z", "7z-override"), archive.newOutputStream())) {
-            operations.forEach(operation -> operation.packTo(out, builder, Locator.directory(""), patterns));
+            operations.forEach(operation -> operation.packTo(out, builder, Locator.directory(""), o -> o.glob(patterns)));
             out.finish();
         } catch (Exception e) {
             throw I.quiet(e);
@@ -441,7 +450,7 @@ public final class Folder {
      * @param file
      * @param relative
      */
-    private static void pack(ArchiveOutputStream out, BiFunction<String, File, ArchiveEntry> builder, Directory directory, File file, Directory relative, Function<Option, Option> options) {
+    private static void pack(ArchiveOutputStream out, BiFunction<String, File, ArchiveEntry> builder, Directory directory, File file, Directory relative) {
         try {
             ArchiveEntry entry = builder.apply(relative.file(directory.relativize(file).toString()).path(), file);
             out.putArchiveEntry(entry);
@@ -502,16 +511,6 @@ public final class Folder {
          * @param destination
          * @param patterns
          */
-        default void moveTo(Directory destination, String... patterns) {
-            moveTo(destination, o -> o.glob(patterns));
-        }
-
-        /**
-         * Move reosources to the specified {@link Directory}.
-         * 
-         * @param destination
-         * @param patterns
-         */
         void moveTo(Directory destination, Function<Option, Option> option);
 
         /**
@@ -520,27 +519,7 @@ public final class Folder {
          * @param destination
          * @param patterns
          */
-        default void copyTo(Directory destination, String... patterns) {
-            copyTo(destination, o -> o.glob(patterns));
-        }
-
-        /**
-         * Copy reosources to the specified {@link Directory}.
-         * 
-         * @param destination
-         * @param patterns
-         */
         void copyTo(Directory destination, Function<Option, Option> option);
-
-        /**
-         * Pack reosources to the specified {@link File}.
-         * 
-         * @param relative
-         * @param patterns
-         */
-        default void packTo(ArchiveOutputStream archive, BiFunction<String, File, ArchiveEntry> builder, Directory relative, String... patterns) {
-            packTo(archive, builder, relative, o -> o.glob(patterns));
-        }
 
         /**
          * Pack reosources to the specified {@link File}.
@@ -653,14 +632,11 @@ public final class Folder {
 
         private final File file;
 
-        private final Function<Option, Option> option;
-
         /**
          * @param file
          */
-        private FileOperation(File file, Function<Option, Option> option) {
+        private FileOperation(File file) {
             this.file = file;
-            this.option = option;
         }
 
         /**
@@ -693,7 +669,7 @@ public final class Folder {
          */
         @Override
         public void packTo(ArchiveOutputStream archive, BiFunction<String, File, ArchiveEntry> builder, Directory relative, Function<Option, Option> option) {
-            pack(archive, builder, file.parent(), file, relative, this.option.andThen(option));
+            pack(archive, builder, file.parent(), file, relative);
         }
 
         /**
@@ -777,7 +753,7 @@ public final class Folder {
 
             directory.walkFiles(combined)
                     .to(file -> pack(archive, builder, !directory.isRoot() && o.acceptRoot ? directory.parent()
-                            : directory, file, relative, combined));
+                            : directory, file, relative));
         }
 
         /**
