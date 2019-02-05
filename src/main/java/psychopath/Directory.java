@@ -148,14 +148,6 @@ public class Directory extends Location<Directory> {
      * {@inheritDoc}
      */
     @Override
-    public Signal<Ⅱ<Directory, Location>> walkWithBase(Function<Option, Option> option) {
-        return walk(Location.class, this, 3, option).map(loc -> I.pair(this, loc));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public Signal<Ⅱ<Directory, File>> walkFileWithBase(Function<Option, Option> option) {
         return walk(File.class, this, 3, option).map(file -> I.pair(this, file));
     }

@@ -235,14 +235,6 @@ public final class Folder implements PathOperatable {
      * {@inheritDoc}
      */
     @Override
-    public Signal<Ⅱ<Directory, Location>> walkWithBase(Function<Option, Option> option) {
-        return I.signal(operations).flatMap(op -> op.walkWithBase(option));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public Signal<Ⅱ<Directory, File>> walkFileWithBase(Function<Option, Option> option) {
         return I.signal(operations).flatMap(op -> op.walkFilesWithBase(option));
     }
@@ -346,16 +338,6 @@ public final class Folder implements PathOperatable {
                         .flatMap(file -> pack(archive, builder, !location.isRoot() && o.acceptRoot ? location.parent()
                                 : location.asDirectory(), file, o.allocator));
             }
-        }
-
-        /**
-         * List up all resources.
-         * 
-         * @param patterns
-         * @return
-         */
-        public Signal<Ⅱ<Directory, Location>> walkWithBase(Function<Option, Option> option) {
-            return location.walkWithBase(this.option.andThen(option));
         }
 
         /**

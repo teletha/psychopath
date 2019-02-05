@@ -167,20 +167,6 @@ public interface PathOperatable {
      */
     Signal<Location> observePackingTo(File destination, String... patterns);
 
-    default Signal<Location> walk(String... patterns) {
-        return walk(Option.of(patterns));
-    }
-
-    default Signal<Location> walk(Function<Option, Option> option) {
-        return walkWithBase(option).map(Ⅱ<Directory, Location>::ⅱ);
-    }
-
-    default Signal<Ⅱ<Directory, Location>> walkWithBase(String... patterns) {
-        return walkWithBase(Option.of(patterns));
-    }
-
-    Signal<Ⅱ<Directory, Location>> walkWithBase(Function<Option, Option> option);
-
     default Signal<File> walkFile(String... patterns) {
         return walkFile(Option.of(patterns));
     }
