@@ -33,7 +33,7 @@ class WalkDirectoryTest extends LocationTestHelper {
 
     @Test
     void directory() {
-        Directory test = locateDirectory("test", $ -> {
+        Directory test = locateDirectory("root", $ -> {
             $.file("file");
             $.dir("dir1");
             $.dir("dir2", () -> {
@@ -53,14 +53,14 @@ class WalkDirectoryTest extends LocationTestHelper {
     @Test
     void folder() {
         Folder test = Locator.folder() //
-                .add(locateDirectory("dir1"))
-                .add(locateDirectory("deep/dir2"))
-                .add(locateDirectory("first", $ -> {
+                .add(locateDirectory("root directory is NOT mounted"))
+                .add(locateDirectory("deep root directory/is NOT mounted too"))
+                .add(locateDirectory("root", $ -> {
                     $.file("file");
-                    $.dir("dir3");
-                    $.dir("dir4", () -> {
+                    $.dir("dir1");
+                    $.dir("dir2", () -> {
                         $.file("file");
-                        $.dir("dir5");
+                        $.dir("dir3");
                     });
                 }));
         assert test.walkDirectory().toList().size() == 3;

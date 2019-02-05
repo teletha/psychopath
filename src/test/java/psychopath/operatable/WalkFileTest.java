@@ -33,7 +33,7 @@ class WalkFileTest extends LocationTestHelper {
 
     @Test
     void directory() {
-        Directory test = locateDirectory("test", $ -> {
+        Directory test = locateDirectory("root", $ -> {
             $.file("file1");
             $.file("file2");
             $.dir("dir", () -> {
@@ -54,7 +54,7 @@ class WalkFileTest extends LocationTestHelper {
         Folder test = Locator.folder() //
                 .add(locateFile("file1"))
                 .add(locateFile("deep/file2"))
-                .add(locateDirectory("first", $ -> {
+                .add(locateDirectory("root", $ -> {
                     $.file("file3");
                     $.file("file4");
                     $.dir("dir", () -> {

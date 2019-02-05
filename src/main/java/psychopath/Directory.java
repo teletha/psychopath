@@ -65,13 +65,9 @@ public class Directory extends Location<Directory> {
     public Signal<Location<?>> children() {
         return new Signal<>((observer, disposer) -> {
             try (DirectoryStream<Path> stream = Files.newDirectoryStream(path)) {
-                stream.forEach(file -> {
-                    if (Files.isDirectory(file)) {
-                        observer.accept(Locator.directory(file));
-                    } else {
-                        observer.accept(Locator.file(file));
-                    }
-                });
+                for (Path path : stream) {
+                    observer.accept(Locator.locate(path));
+                }
                 observer.complete();
             } catch (Exception e) {
                 observer.error(e);

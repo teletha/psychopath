@@ -15,16 +15,12 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
 import org.apache.commons.compress.archivers.ArchiveEntry;
 import org.apache.commons.compress.archivers.ArchiveOutputStream;
 import org.apache.commons.compress.archivers.ArchiveStreamFactory;
-import org.apache.commons.compress.archivers.jar.JarArchiveEntry;
-import org.apache.commons.compress.archivers.sevenz.SevenZArchiveEntry;
-import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 
 import kiss.I;
 import kiss.Signal;
@@ -149,87 +145,13 @@ public final class Folder implements PathOperatable {
     }
 
     /**
-     * Build {@link Operation} for {@link Location}.
-     * 
-     * @param entries
-     * @param option
-     * @return
-     */
-    private Signal<Operation> buildOperation(Signal<? extends Location> entries, Function<Option, Option> option) {
-        return entries.map(entry -> {
-            if (entry.isDirectory()) {
-                return new DirectoryOperation((Directory) entry, option);
-            } else {
-                return new FileOperation((File) entry);
-            }
-        });
-    }
-
-    /**
      * Add entries.
      * 
      * @param entries
      */
     public Folder add(Signal<? extends Location> entries, Function<Option, Option> option) {
         if (entries != null) {
-            operations.add(new Operation() {
-
-                /**
-                 * {@inheritDoc}
-                 */
-                @Override
-                public Signal<Location> observeDeleting(Function<Option, Option> option) {
-                    return buildOperation(entries, option).flatMap(op -> op.observeDeleting(option));
-                }
-
-                /**
-                 * {@inheritDoc}
-                 */
-                @Override
-                public Signal<Location> observeMovingTo(Directory destination, Function<Option, Option> option) {
-                    return buildOperation(entries, option).flatMap(op -> op.observeMovingTo(destination, option));
-                }
-
-                /**
-                 * {@inheritDoc}
-                 */
-                @Override
-                public Signal<Location> observeCopyingTo(Directory destination, Function<Option, Option> option) {
-                    return buildOperation(entries, option).flatMap(op -> op.observeCopyingTo(destination, option));
-                }
-
-                /**
-                 * {@inheritDoc}
-                 */
-                @Override
-                public Signal<Location> observePackingTo(ArchiveOutputStream archive, Archiver builder, Directory relative, Function<Option, Option> option) {
-                    return buildOperation(entries, option).flatMap(op -> op.observePackingTo(archive, builder, relative, option));
-                }
-
-                /**
-                 * {@inheritDoc}
-                 */
-                @Override
-                public Signal<Ⅱ<Directory, Location>> walkWithBase(Function<Option, Option> option) {
-                    return buildOperation(entries, option).flatMap(op -> op.walkWithBase(option));
-                }
-
-                /**
-                 * {@inheritDoc}
-                 */
-                @Override
-                public Signal<Ⅱ<Directory, File>> walkFilesWithBase(Function<Option, Option> option) {
-                    return buildOperation(entries, option).flatMap(op -> op.walkFilesWithBase(option));
-                }
-
-                /**
-                 * {@inheritDoc}
-                 */
-                @Override
-                public Signal<Ⅱ<Directory, Directory>> walkDirectoriesWithBase(Function<Option, Option> option) {
-                    return buildOperation(entries, option).flatMap(op -> op.walkDirectoriesWithBase(option));
-                }
-            });
+            operations.addAll(entries.map(e -> new LocationOperation(e, option)).toList());
         }
         return this;
     }
@@ -252,7 +174,7 @@ public final class Folder implements PathOperatable {
      */
     public Folder add(Directory base, Function<Option, Option> option) {
         if (base != null) {
-            operations.add(new DirectoryOperation(base, option));
+            operations.add(new LocationOperation(base, option));
         }
         return this;
     }
@@ -447,35 +369,6 @@ public final class Folder implements PathOperatable {
         });
     }
 
-    private static BiFunction<String, File, ArchiveEntry> detectEntryBuilder(String extension) {
-        switch (extension) {
-        case "jar":
-            return (name, file) -> {
-                JarArchiveEntry entry = new JarArchiveEntry(name);
-
-                return entry;
-            };
-
-        case "zip":
-            return (name, file) -> {
-                ZipArchiveEntry entry = new ZipArchiveEntry(name);
-
-                return entry;
-            };
-
-        case "7z":
-            return (name, file) -> {
-                SevenZArchiveEntry entry = new SevenZArchiveEntry();
-                entry.setName(name);
-
-                return entry;
-            };
-
-        default:
-            throw new Error();
-        }
-    }
-
     /**
      * Definition of {@link Folder} operation.
      */
@@ -615,84 +508,11 @@ public final class Folder implements PathOperatable {
     }
 
     /**
-     * Operation for {@link File}.
-     */
-    private static class FileOperation implements Operation {
-
-        private final File file;
-
-        /**
-         * @param file
-         */
-        private FileOperation(File file) {
-            this.file = file;
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public Signal<Location> observeDeleting(Function<Option, Option> option) {
-            return file.observeDeleting();
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public Signal<Location> observeMovingTo(Directory destination, Function<Option, Option> option) {
-            return file.observeMovingTo(destination);
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public Signal<Location> observeCopyingTo(Directory destination, Function<Option, Option> option) {
-            return file.observeCopyingTo(destination);
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public Signal<Location> observePackingTo(ArchiveOutputStream archive, Archiver builder, Directory relative, Function<Option, Option> option) {
-            return pack(archive, builder, file.parent(), file, relative);
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public Signal<Ⅱ<Directory, Location>> walkWithBase(Function<Option, Option> option) {
-            // If this exception will be thrown, it is bug of this program. So we must rethrow the
-            // wrapped error in here.
-            throw new Error();
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public Signal<Ⅱ<Directory, File>> walkFilesWithBase(Function<Option, Option> option) {
-            return file.walkFileWithBase(option);
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public Signal<Ⅱ<Directory, Directory>> walkDirectoriesWithBase(Function<Option, Option> option) {
-            return Signal.empty();
-        }
-    }
-
-    /**
      * Operation for {@link Directory}.
      */
-    private static class DirectoryOperation implements Operation {
+    private static class LocationOperation implements Operation {
 
-        private final Directory directory;
+        private final Location location;
 
         private final Function<Option, Option> option;
 
@@ -700,8 +520,8 @@ public final class Folder implements PathOperatable {
          * @param directory
          * @param option
          */
-        private DirectoryOperation(Directory directory, Function<Option, Option> option) {
-            this.directory = directory;
+        private LocationOperation(Location directory, Function<Option, Option> option) {
+            this.location = directory;
             this.option = option;
         }
 
@@ -710,7 +530,7 @@ public final class Folder implements PathOperatable {
          */
         @Override
         public Signal<Location> observeDeleting(Function<Option, Option> option) {
-            return directory.observeDeleting(this.option.andThen(option));
+            return location.observeDeleting(this.option.andThen(option));
         }
 
         /**
@@ -718,7 +538,7 @@ public final class Folder implements PathOperatable {
          */
         @Override
         public Signal<Location> observeMovingTo(Directory destination, Function<Option, Option> option) {
-            return directory.observeMovingTo(destination, this.option.andThen(option));
+            return location.observeMovingTo(destination, this.option.andThen(option));
         }
 
         /**
@@ -726,7 +546,7 @@ public final class Folder implements PathOperatable {
          */
         @Override
         public Signal<Location> observeCopyingTo(Directory destination, Function<Option, Option> option) {
-            return directory.observeCopyingTo(destination, this.option.andThen(option));
+            return location.observeCopyingTo(destination, this.option.andThen(option));
         }
 
         /**
@@ -734,12 +554,16 @@ public final class Folder implements PathOperatable {
          */
         @Override
         public Signal<Location> observePackingTo(ArchiveOutputStream archive, Archiver builder, Directory relative, Function<Option, Option> option) {
-            Function<Option, Option> combined = this.option.andThen(option);
-            Option o = combined.apply(new Option());
+            if (location.isFile()) {
+                return pack(archive, builder, location.parent(), location.asFile(), relative);
+            } else {
+                Function<Option, Option> combined = this.option.andThen(option);
+                Option o = combined.apply(new Option());
 
-            return directory.walkFile(combined)
-                    .flatMap(file -> pack(archive, builder, !directory.isRoot() && o.acceptRoot ? directory.parent()
-                            : directory, file, relative));
+                return location.walkFile(combined)
+                        .flatMap(file -> pack(archive, builder, !location.isRoot() && o.acceptRoot ? location.parent()
+                                : location.asDirectory(), file, relative));
+            }
         }
 
         /**
@@ -747,7 +571,7 @@ public final class Folder implements PathOperatable {
          */
         @Override
         public Signal<Ⅱ<Directory, Location>> walkWithBase(Function<Option, Option> option) {
-            return directory.walkWithBase(this.option.andThen(option));
+            return location.walkWithBase(this.option.andThen(option));
         }
 
         /**
@@ -755,7 +579,7 @@ public final class Folder implements PathOperatable {
          */
         @Override
         public Signal<Ⅱ<Directory, File>> walkFilesWithBase(Function<Option, Option> option) {
-            return directory.walkFileWithBase(this.option.andThen(option));
+            return location.walkFileWithBase(this.option.andThen(option));
         }
 
         /**
@@ -763,7 +587,7 @@ public final class Folder implements PathOperatable {
          */
         @Override
         public Signal<Ⅱ<Directory, Directory>> walkDirectoriesWithBase(Function<Option, Option> option) {
-            return directory.walkDirectoryWithBase(this.option.andThen(option));
+            return location.walkDirectoryWithBase(this.option.andThen(option));
         }
     }
 
