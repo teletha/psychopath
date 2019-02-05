@@ -108,7 +108,7 @@ public final class Folder implements PathOperatable {
     public Folder add(Folder entries, Function<Option, Option> option) {
         if (entries != null) {
             for (Operation operation : entries.operations) {
-                this.operations.add(new LayerOperation(operation, option));
+                this.operations.add(new Operation(operation.location, operation.option.andThen(option)));
             }
         }
         return this;
@@ -150,7 +150,7 @@ public final class Folder implements PathOperatable {
      */
     public Folder add(Signal<? extends Location> entries, Function<Option, Option> option) {
         if (entries != null) {
-            operations.addAll(entries.map(e -> new LocationOperation(e, option)).toList());
+            operations.addAll(entries.map(e -> new Operation(e, option)).toList());
         }
         return this;
     }
@@ -173,7 +173,7 @@ public final class Folder implements PathOperatable {
      */
     public Folder add(Directory base, Function<Option, Option> option) {
         if (base != null) {
-            operations.add(new LocationOperation(base, option));
+            operations.add(new Operation(base, option));
         }
         return this;
     }
@@ -283,70 +283,9 @@ public final class Folder implements PathOperatable {
     }
 
     /**
-     * Definition of {@link Folder} operation.
-     */
-    private interface Operation {
-
-        /**
-         * Delete resources.
-         * 
-         * @param patterns
-         */
-        Signal<Location> observeDeleting(Function<Option, Option> option);
-
-        /**
-         * Move reosources to the specified {@link Directory}.
-         * 
-         * @param destination
-         * @param patterns
-         */
-        Signal<Location> observeMovingTo(Directory destination, Function<Option, Option> option);
-
-        /**
-         * Copy reosources to the specified {@link Directory}.
-         * 
-         * @param destination
-         * @param patterns
-         */
-        Signal<Location> observeCopyingTo(Directory destination, Function<Option, Option> option);
-
-        /**
-         * Pack reosources to the specified {@link File}.
-         * 
-         * @param relative
-         * @param patterns
-         */
-        Signal<Location> observePackingTo(ArchiveOutputStream archive, Archiver archiver, Directory relative, Function<Option, Option> option);
-
-        /**
-         * List up all resources.
-         * 
-         * @param patterns
-         * @return
-         */
-        Signal<Ⅱ<Directory, Location>> walkWithBase(Function<Option, Option> option);
-
-        /**
-         * List up all resources.
-         * 
-         * @param patterns
-         * @return
-         */
-        Signal<Ⅱ<Directory, File>> walkFilesWithBase(Function<Option, Option> option);
-
-        /**
-         * List up all resources.
-         * 
-         * @param patterns
-         * @return
-         */
-        Signal<Ⅱ<Directory, Directory>> walkDirectoriesWithBase(Function<Option, Option> option);
-    }
-
-    /**
      * Operation for {@link Directory}.
      */
-    private static class LocationOperation implements Operation {
+    private static class Operation {
 
         private final Location location;
 
@@ -356,39 +295,46 @@ public final class Folder implements PathOperatable {
          * @param directory
          * @param option
          */
-        private LocationOperation(Location directory, Function<Option, Option> option) {
+        private Operation(Location directory, Function<Option, Option> option) {
             this.location = directory;
             this.option = option;
         }
 
         /**
-         * {@inheritDoc}
+         * Delete resources.
+         * 
+         * @param patterns
          */
-        @Override
         public Signal<Location> observeDeleting(Function<Option, Option> option) {
             return location.observeDeleting(this.option.andThen(option));
         }
 
         /**
-         * {@inheritDoc}
+         * Move reosources to the specified {@link Directory}.
+         * 
+         * @param destination
+         * @param patterns
          */
-        @Override
         public Signal<Location> observeMovingTo(Directory destination, Function<Option, Option> option) {
             return location.observeMovingTo(destination, this.option.andThen(option));
         }
 
         /**
-         * {@inheritDoc}
+         * Copy reosources to the specified {@link Directory}.
+         * 
+         * @param destination
+         * @param patterns
          */
-        @Override
         public Signal<Location> observeCopyingTo(Directory destination, Function<Option, Option> option) {
             return location.observeCopyingTo(destination, this.option.andThen(option));
         }
 
         /**
-         * {@inheritDoc}
+         * Pack reosources to the specified {@link File}.
+         * 
+         * @param relative
+         * @param patterns
          */
-        @Override
         public Signal<Location> observePackingTo(ArchiveOutputStream archive, Archiver builder, Directory relative, Function<Option, Option> option) {
             Function<Option, Option> combined = this.option.andThen(option);
             Option o = combined.apply(new Option());
@@ -403,102 +349,33 @@ public final class Folder implements PathOperatable {
         }
 
         /**
-         * {@inheritDoc}
+         * List up all resources.
+         * 
+         * @param patterns
+         * @return
          */
-        @Override
         public Signal<Ⅱ<Directory, Location>> walkWithBase(Function<Option, Option> option) {
             return location.walkWithBase(this.option.andThen(option));
         }
 
         /**
-         * {@inheritDoc}
+         * List up all resources.
+         * 
+         * @param patterns
+         * @return
          */
-        @Override
         public Signal<Ⅱ<Directory, File>> walkFilesWithBase(Function<Option, Option> option) {
             return location.walkFileWithBase(this.option.andThen(option));
         }
 
         /**
-         * {@inheritDoc}
+         * List up all resources.
+         * 
+         * @param patterns
+         * @return
          */
-        @Override
         public Signal<Ⅱ<Directory, Directory>> walkDirectoriesWithBase(Function<Option, Option> option) {
             return location.walkDirectoryWithBase(this.option.andThen(option));
-        }
-    }
-
-    /**
-     * 
-     */
-    private static class LayerOperation implements Operation {
-
-        private final Operation operation;
-
-        private final Function<Option, Option> option;
-
-        /**
-         * @param operation
-         * @param option
-         */
-        private LayerOperation(Operation operation, Function<Option, Option> option) {
-            this.operation = operation;
-            this.option = option;
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public Signal<Location> observeDeleting(Function<Option, Option> option) {
-            return operation.observeDeleting(this.option.andThen(option));
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public Signal<Location> observeMovingTo(Directory destination, Function<Option, Option> option) {
-            return operation.observeMovingTo(destination, this.option.andThen(option));
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public Signal<Location> observeCopyingTo(Directory destination, Function<Option, Option> option) {
-            return operation.observeCopyingTo(destination, this.option.andThen(option));
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public Signal<Location> observePackingTo(ArchiveOutputStream archive, Archiver builder, Directory relative, Function<Option, Option> option) {
-            return operation.observePackingTo(archive, builder, relative, this.option.andThen(option));
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public Signal<Ⅱ<Directory, Location>> walkWithBase(Function<Option, Option> option) {
-            return operation.walkWithBase(this.option.andThen(option));
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public Signal<Ⅱ<Directory, File>> walkFilesWithBase(Function<Option, Option> option) {
-            return operation.walkFilesWithBase(this.option.andThen(option));
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public Signal<Ⅱ<Directory, Directory>> walkDirectoriesWithBase(Function<Option, Option> option) {
-            return operation.walkDirectoriesWithBase(this.option.andThen(option));
         }
     }
 }
