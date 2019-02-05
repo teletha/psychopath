@@ -24,7 +24,7 @@ public interface PathOperatable {
      * @return A destination {@link Directory}.
      */
     default void delete(String... patterns) {
-        delete(o -> o.glob(patterns));
+        delete(Option.of(patterns));
     }
 
     /**
@@ -44,7 +44,7 @@ public interface PathOperatable {
      * @return A event stream which emits operated {@link File}s.
      */
     default Signal<Location> observeDeleting(String... patterns) {
-        return observeDeleting(o -> o.glob(patterns));
+        return observeDeleting(Option.of(patterns));
     }
 
     /**
@@ -63,7 +63,7 @@ public interface PathOperatable {
      * @return A destination {@link Directory}.
      */
     default Directory copyTo(Directory destination, String... patterns) {
-        return copyTo(destination, o -> o.glob(patterns));
+        return copyTo(destination, Option.of(patterns));
     }
 
     /**
@@ -87,7 +87,7 @@ public interface PathOperatable {
      * @return A event stream which emits operated {@link File}s.
      */
     default Signal<Location> observeCopyingTo(Directory destination, String... patterns) {
-        return observeCopyingTo(destination, o -> o.glob(patterns));
+        return observeCopyingTo(destination, Option.of(patterns));
     }
 
     /**
@@ -108,7 +108,7 @@ public interface PathOperatable {
      * @return A destination {@link Directory}.
      */
     default Directory moveTo(Directory destination, String... patterns) {
-        return moveTo(destination, o -> o.glob(patterns));
+        return moveTo(destination, Option.of(patterns));
     }
 
     /**
@@ -132,7 +132,7 @@ public interface PathOperatable {
      * @return A event stream which emits operated {@link File}s.
      */
     default Signal<Location> observeMovingTo(Directory destination, String... patterns) {
-        return observeMovingTo(destination, o -> o.glob(patterns));
+        return observeMovingTo(destination, Option.of(patterns));
     }
 
     /**
@@ -168,7 +168,7 @@ public interface PathOperatable {
     Signal<Location> observePackingTo(File destination, String... patterns);
 
     default Signal<Location> walk(String... patterns) {
-        return walk(o -> o.glob(patterns));
+        return walk(Option.of(patterns));
     }
 
     default Signal<Location> walk(Function<Option, Option> option) {
@@ -176,13 +176,13 @@ public interface PathOperatable {
     }
 
     default Signal<Ⅱ<Directory, Location>> walkWithBase(String... patterns) {
-        return walkWithBase(o -> o.glob(patterns));
+        return walkWithBase(Option.of(patterns));
     }
 
     Signal<Ⅱ<Directory, Location>> walkWithBase(Function<Option, Option> option);
 
     default Signal<File> walkFile(String... patterns) {
-        return walkFile(o -> o.glob(patterns));
+        return walkFile(Option.of(patterns));
     }
 
     default Signal<File> walkFile(Function<Option, Option> option) {
@@ -190,13 +190,13 @@ public interface PathOperatable {
     }
 
     default Signal<Ⅱ<Directory, File>> walkFileWithBase(String... patterns) {
-        return walkFileWithBase(o -> o.glob(patterns));
+        return walkFileWithBase(Option.of(patterns));
     }
 
     Signal<Ⅱ<Directory, File>> walkFileWithBase(Function<Option, Option> option);
 
     default Signal<Directory> walkDirectory(String... patterns) {
-        return walkDirectory(o -> o.glob(patterns));
+        return walkDirectory(Option.of(patterns));
     }
 
     default Signal<Directory> walkDirectory(Function<Option, Option> option) {
@@ -204,7 +204,7 @@ public interface PathOperatable {
     }
 
     default Signal<Ⅱ<Directory, Directory>> walkDirectoryWithBase(String... patterns) {
-        return walkDirectoryWithBase(o -> o.glob(patterns));
+        return walkDirectoryWithBase(Option.of(patterns));
     }
 
     Signal<Ⅱ<Directory, Directory>> walkDirectoryWithBase(Function<Option, Option> option);

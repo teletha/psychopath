@@ -14,6 +14,7 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiPredicate;
+import java.util.function.Function;
 
 public class Option {
 
@@ -117,5 +118,15 @@ public class Option {
             this.allocator = relative;
         }
         return this;
+    }
+
+    /**
+     * Help to build option builder from glob patterns.
+     * 
+     * @param patterns A list of glob patterns.
+     * @return A {@link Option} builder.
+     */
+    static Function<Option, Option> of(String... patterns) {
+        return o -> o.glob(patterns);
     }
 }

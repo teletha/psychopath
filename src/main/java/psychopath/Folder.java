@@ -15,7 +15,6 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.function.Consumer;
 import java.util.function.Function;
 
 import org.apache.commons.compress.archivers.ArchiveEntry;
@@ -163,7 +162,7 @@ public final class Folder implements PathOperatable {
      * @param patterns "glob" include/exclude patterns.
      */
     public Folder add(Directory base, String... patterns) {
-        return add(base, o -> o.glob(patterns));
+        return add(base, Option.of(patterns));
     }
 
     /**
@@ -220,7 +219,7 @@ public final class Folder implements PathOperatable {
             try (ArchiveOutputStream out = new ArchiveStreamFactory()
                     .createArchiveOutputStream(archive.extension().replaceAll("7z", "7z-override"), archive.newOutputStream())) {
                 I.signal(operations)
-                        .flatMap(operation -> operation.observePackingTo(out, archiver, Locator.directory(""), o -> o.glob(patterns)))
+                        .flatMap(operation -> operation.observePackingTo(out, archiver, Locator.directory(""), Option.of(patterns)))
                         .to(observer);
                 out.finish();
                 observer.complete();
