@@ -295,7 +295,7 @@ class CymaticScan implements FileVisitor<Path>, Runnable, Disposable {
                 directory.path.register(service, ENTRY_CREATE, ENTRY_DELETE, ENTRY_MODIFY);
             } else {
                 if (directory.isPresent()) {
-                    for (Directory dir : directory.walkDirectories().startWith(directory).toList()) {
+                    for (Directory dir : directory.walkDirectory().startWith(directory).toList()) {
                         dir.path.register(service, ENTRY_CREATE, ENTRY_DELETE, ENTRY_MODIFY);
                     }
                 }
@@ -326,7 +326,7 @@ class CymaticScan implements FileVisitor<Path>, Runnable, Disposable {
                             if (Files.isDirectory(path) && preVisitDirectory(path, null) == CONTINUE) {
                                 Directory directory = Locator.directory(path);
 
-                                for (Directory dir : directory.walkDirectories().startWith(directory).toList()) {
+                                for (Directory dir : directory.walkDirectory().startWith(directory).toList()) {
                                     dir.path.register(service, ENTRY_CREATE, ENTRY_DELETE, ENTRY_MODIFY);
                                 }
                             }

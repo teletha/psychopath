@@ -227,7 +227,7 @@ class PathPatternMatchingTest extends LocationTestHelper {
     private void assertCount(int expected, Consumer<FileSystemDSL> pattern, String... patterns) {
         room.with(pattern);
 
-        assert expected == Locator.directory(room.root).walkFiles(patterns).toList().size();
+        assert expected == Locator.directory(room.root).walkFile(patterns).toList().size();
     }
 
     /**
@@ -236,6 +236,6 @@ class PathPatternMatchingTest extends LocationTestHelper {
     private void assertDirectoryCount(int expected, Consumer<FileSystemDSL> pattern, String... patterns) {
         room.with(pattern);
 
-        assert expected == Locator.directory(room.root).walkDirectories(patterns).toList().size();
+        assert expected == Locator.directory(room.root).walkDirectory(patterns).toList().size();
     }
 }

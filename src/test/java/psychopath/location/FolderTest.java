@@ -136,7 +136,7 @@ class FolderTest extends LocationTestHelper {
             });
         });
 
-        temporary.add(root.walkDirectories("child*")).delete("*1.txt");
+        temporary.add(root.walkDirectory("child*")).delete("*1.txt");
 
         assert match(root, $ -> {
             $.dir("child1", () -> {
@@ -524,16 +524,16 @@ class FolderTest extends LocationTestHelper {
             });
         });
 
-        assert Locator.folder().add(file1).add(file2).add(dir1).add(dir2).walkFiles().toList().size() == 8;
+        assert Locator.folder().add(file1).add(file2).add(dir1).add(dir2).walkFile().toList().size() == 8;
         // pattern
-        assert Locator.folder().add(file1).add(file2).add(dir1).add(dir2).walkFiles("**.java").toList().size() == 2;
-        assert Locator.folder().add(file1).add(file2).add(dir1).add(dir2).walkFiles("**.txt", "!c/**").toList().size() == 5;
+        assert Locator.folder().add(file1).add(file2).add(dir1).add(dir2).walkFile("**.java").toList().size() == 2;
+        assert Locator.folder().add(file1).add(file2).add(dir1).add(dir2).walkFile("**.txt", "!c/**").toList().size() == 5;
         // add pattern
-        assert Locator.folder().add(dir1, "**.java").add(dir2, "**.txt").walkFiles().toList().size() == 3;
-        assert Locator.folder().add(dir1, "!**.java").add(dir2, "!**.txt").walkFiles().toList().size() == 3;
+        assert Locator.folder().add(dir1, "**.java").add(dir2, "**.txt").walkFile().toList().size() == 3;
+        assert Locator.folder().add(dir1, "!**.java").add(dir2, "!**.txt").walkFile().toList().size() == 3;
         // combine pattern
-        assert Locator.folder().add(dir1, "**.java").add(dir2, "**.txt").walkFiles().toList().size() == 3;
-        assert Locator.folder().add(dir1, "!**.java").add(dir2, "!**.txt").walkFiles().toList().size() == 3;
+        assert Locator.folder().add(dir1, "**.java").add(dir2, "**.txt").walkFile().toList().size() == 3;
+        assert Locator.folder().add(dir1, "!**.java").add(dir2, "!**.txt").walkFile().toList().size() == 3;
     }
 
     @Test

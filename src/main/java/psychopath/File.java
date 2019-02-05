@@ -9,9 +9,11 @@
  */
 package psychopath;
 
-import static java.nio.file.StandardCopyOption.*;
-import static java.nio.file.StandardOpenOption.*;
-import static java.util.concurrent.TimeUnit.*;
+import static java.nio.file.StandardCopyOption.COPY_ATTRIBUTES;
+import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
+import static java.nio.file.StandardOpenOption.CREATE;
+import static java.nio.file.StandardOpenOption.WRITE;
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -332,15 +334,21 @@ public class File extends Location<File> {
      * {@inheritDoc}
      */
     @Override
-    public Signal<Ⅱ<Directory, File>> walkFilesWithBase(Function<Option, Option> option) {
-        return Signal.empty();
+    public Signal<Ⅱ<Directory, File>> walkFileWithBase(Function<Option, Option> option) {
+        Option o = option.apply(new Option());
+
+        if (o.patterns.isEmpty() || Locator.file(path.getFileName()).match(o.patterns)) {
+            return I.signal(I.pair(parent(), this));
+        } else {
+            return Signal.empty();
+        }
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Signal<Ⅱ<Directory, Directory>> walkDirectoriesWithBase(Function<Option, Option> option) {
+    public Signal<Ⅱ<Directory, Directory>> walkDirectoryWithBase(Function<Option, Option> option) {
         return Signal.empty();
     }
 

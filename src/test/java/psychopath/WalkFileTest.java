@@ -24,9 +24,9 @@ class WalkFileTest extends LocationTestHelper {
             });
         });
 
-        assert root.walkFiles("*").toList().size() == 2;
-        assert root.walkFiles("*/text").toList().size() == 1;
-        assert root.walkFiles("*", "*/text").toList().size() == 3;
+        assert root.walkFile("*").toList().size() == 2;
+        assert root.walkFile("*/text").toList().size() == 1;
+        assert root.walkFile("*", "*/text").toList().size() == 3;
     }
 
     @Test
@@ -45,9 +45,9 @@ class WalkFileTest extends LocationTestHelper {
             });
         });
 
-        assert root.walkFiles("*/*").toList().size() == 6;
-        assert root.walkFiles("*/file*").toList().size() == 4;
-        assert root.walkFiles("*/*1").toList().size() == 4;
+        assert root.walkFile("*/*").toList().size() == 6;
+        assert root.walkFile("*/file*").toList().size() == 4;
+        assert root.walkFile("*/*1").toList().size() == 4;
     }
 
     @Test
@@ -65,8 +65,8 @@ class WalkFileTest extends LocationTestHelper {
             });
         });
 
-        assert directory.walkFiles("**").toList().size() == 6;
-        assert directory.walkFiles("dir2/**").toList().size() == 2;
+        assert directory.walkFile("**").toList().size() == 6;
+        assert directory.walkFile("dir2/**").toList().size() == 2;
     }
 
     @Test
@@ -80,9 +80,9 @@ class WalkFileTest extends LocationTestHelper {
             });
         });
 
-        assert root.walkFiles("text?").toList().size() == 2;
-        assert root.walkFiles("????1").toList().size() == 1;
-        assert root.walkFiles("**text?").toList().size() == 4;
+        assert root.walkFile("text?").toList().size() == 2;
+        assert root.walkFile("????1").toList().size() == 1;
+        assert root.walkFile("**text?").toList().size() == 4;
     }
 
     @Test
@@ -94,8 +94,8 @@ class WalkFileTest extends LocationTestHelper {
             $.file("text4");
         });
 
-        assert root.walkFiles("text[1-2]").toList().size() == 2;
-        assert root.walkFiles("text[2-5]").toList().size() == 3;
+        assert root.walkFile("text[1-2]").toList().size() == 2;
+        assert root.walkFile("text[2-5]").toList().size() == 3;
     }
 
     @Test
@@ -107,8 +107,8 @@ class WalkFileTest extends LocationTestHelper {
             $.file("text4");
         });
 
-        assert root.walkFiles("text[!3]").toList().size() == 3;
-        assert root.walkFiles("text[!34]").toList().size() == 2;
+        assert root.walkFile("text[!3]").toList().size() == 3;
+        assert root.walkFile("text[!34]").toList().size() == 2;
     }
 
     @Test
@@ -119,7 +119,7 @@ class WalkFileTest extends LocationTestHelper {
             $.file("text3");
             $.file("text4");
         });
-        assert root.walkFiles("**", "!text1").toList().size() == 3;
+        assert root.walkFile("**", "!text1").toList().size() == 3;
     }
 
     @Test
@@ -137,7 +137,7 @@ class WalkFileTest extends LocationTestHelper {
                 $.file("text4");
             });
         });
-        assert root.walkFiles("**", "!ignore/**").toList().size() == 4;
+        assert root.walkFile("**", "!ignore/**").toList().size() == 4;
     }
 
     @Test
@@ -148,6 +148,6 @@ class WalkFileTest extends LocationTestHelper {
             $.file("text3");
             $.file("text4");
         });
-        assert root.walkFiles("**", "!**1", "!**3").toList().size() == 2;
+        assert root.walkFile("**", "!**1", "!**3").toList().size() == 2;
     }
 }

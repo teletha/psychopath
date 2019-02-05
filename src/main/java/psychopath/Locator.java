@@ -41,7 +41,7 @@ public class Locator {
 
             // Clean up any old temporary directories by listing all of the files, using a prefix
             // filter and that don't have a lock file.
-            for (Directory sub : temporaries.walkDirectories("temporary*").toList()) {
+            for (Directory sub : temporaries.walkDirectory("temporary*").toList()) {
                 // create a file to represent the lock
                 RandomAccessFile file = new RandomAccessFile(sub.file("lock").asJavaFile(), "rw");
 

@@ -23,7 +23,7 @@ public class Renamer {
     public static void main(String[] args) {
         Directory root = Locator.directory("e:\\");
 
-        root.walkFiles("*.zip").take(5).effectOnComplete(Location::delete).to(archive -> {
+        root.walkFile("*.zip").take(5).effectOnComplete(Location::delete).to(archive -> {
             archive.unpackTo(root.directory(archive.base()))
                     .children()
                     .single()

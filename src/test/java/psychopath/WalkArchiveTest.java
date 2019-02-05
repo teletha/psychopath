@@ -28,9 +28,9 @@ class WalkArchiveTest extends LocationTestHelper {
             });
         });
 
-        assert zip.asArchive().walkFiles().toList().size() == 6;
-        assert zip.asArchive().walkFiles("*").toList().size() == 2;
-        assert zip.asArchive().walkFiles("!dir1/**").toList().size() == 4;
-        assert zip.asArchive().walkDirectories().toList().size() == 2;
+        assert zip.asArchive().walkFile().toList().size() == 6;
+        assert zip.asArchive().walkFile("*").toList().size() == 2;
+        assert zip.asArchive().walkFile("!dir1/**").toList().size() == 4;
+        assert zip.asArchive().walkDirectory().toList().size() == 2;
     }
 }

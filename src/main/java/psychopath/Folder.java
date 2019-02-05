@@ -408,7 +408,7 @@ public final class Folder implements PathOperatable {
      * {@inheritDoc}
      */
     @Override
-    public Signal<Ⅱ<Directory, File>> walkFilesWithBase(Function<Option, Option> option) {
+    public Signal<Ⅱ<Directory, File>> walkFileWithBase(Function<Option, Option> option) {
         return I.signal(operations).flatMap(op -> op.walkFilesWithBase(option));
     }
 
@@ -416,7 +416,7 @@ public final class Folder implements PathOperatable {
      * {@inheritDoc}
      */
     @Override
-    public Signal<Ⅱ<Directory, Directory>> walkDirectoriesWithBase(Function<Option, Option> option) {
+    public Signal<Ⅱ<Directory, Directory>> walkDirectoryWithBase(Function<Option, Option> option) {
         return I.signal(operations).flatMap(op -> op.walkDirectoriesWithBase(option));
     }
 
@@ -675,12 +675,7 @@ public final class Folder implements PathOperatable {
          */
         @Override
         public Signal<Ⅱ<Directory, File>> walkFilesWithBase(Function<Option, Option> option) {
-            Option o = option.apply(new Option());
-            if (o.patterns.isEmpty() || o.patterns.stream().filter(p -> file.match(p)).findAny().isPresent()) {
-                return I.signal(I.pair(file.parent(), file));
-            } else {
-                return Signal.empty();
-            }
+            return file.walkFileWithBase(option);
         }
 
         /**
@@ -742,7 +737,7 @@ public final class Folder implements PathOperatable {
             Function<Option, Option> combined = this.option.andThen(option);
             Option o = combined.apply(new Option());
 
-            return directory.walkFiles(combined)
+            return directory.walkFile(combined)
                     .flatMap(file -> pack(archive, builder, !directory.isRoot() && o.acceptRoot ? directory.parent()
                             : directory, file, relative));
         }
@@ -760,7 +755,7 @@ public final class Folder implements PathOperatable {
          */
         @Override
         public Signal<Ⅱ<Directory, File>> walkFilesWithBase(Function<Option, Option> option) {
-            return directory.walkFilesWithBase(this.option.andThen(option));
+            return directory.walkFileWithBase(this.option.andThen(option));
         }
 
         /**
@@ -768,7 +763,7 @@ public final class Folder implements PathOperatable {
          */
         @Override
         public Signal<Ⅱ<Directory, Directory>> walkDirectoriesWithBase(Function<Option, Option> option) {
-            return directory.walkDirectoriesWithBase(this.option.andThen(option));
+            return directory.walkDirectoryWithBase(this.option.andThen(option));
         }
     }
 

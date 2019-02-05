@@ -13,7 +13,6 @@ import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.function.BiPredicate;
 
 public class Option {
@@ -55,7 +54,11 @@ public class Option {
      */
     public Option glob(String... patterns) {
         if (patterns != null) {
-            this.patterns.addAll(Set.of(patterns));
+            for (String pattern : patterns) {
+                if (pattern != null) {
+                    this.patterns.add(pattern);
+                }
+            }
         }
         return this;
     }

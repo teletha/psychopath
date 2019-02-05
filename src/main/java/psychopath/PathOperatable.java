@@ -181,31 +181,31 @@ public interface PathOperatable {
 
     Signal<Ⅱ<Directory, Location>> walkWithBase(Function<Option, Option> option);
 
-    default Signal<File> walkFiles(String... patterns) {
-        return walkFiles(o -> o.glob(patterns));
+    default Signal<File> walkFile(String... patterns) {
+        return walkFile(o -> o.glob(patterns));
     }
 
-    default Signal<File> walkFiles(Function<Option, Option> option) {
-        return walkFilesWithBase(option).map(Ⅱ<Directory, File>::ⅱ);
+    default Signal<File> walkFile(Function<Option, Option> option) {
+        return walkFileWithBase(option).map(Ⅱ<Directory, File>::ⅱ);
     }
 
-    default Signal<Ⅱ<Directory, File>> walkFilesWithBase(String... patterns) {
-        return walkFilesWithBase(o -> o.glob(patterns));
+    default Signal<Ⅱ<Directory, File>> walkFileWithBase(String... patterns) {
+        return walkFileWithBase(o -> o.glob(patterns));
     }
 
-    Signal<Ⅱ<Directory, File>> walkFilesWithBase(Function<Option, Option> option);
+    Signal<Ⅱ<Directory, File>> walkFileWithBase(Function<Option, Option> option);
 
-    default Signal<Directory> walkDirectories(String... patterns) {
-        return walkDirectories(o -> o.glob(patterns));
+    default Signal<Directory> walkDirectory(String... patterns) {
+        return walkDirectory(o -> o.glob(patterns));
     }
 
-    default Signal<Directory> walkDirectories(Function<Option, Option> option) {
-        return walkDirectoriesWithBase(option).map(Ⅱ<Directory, Directory>::ⅱ);
+    default Signal<Directory> walkDirectory(Function<Option, Option> option) {
+        return walkDirectoryWithBase(option).map(Ⅱ<Directory, Directory>::ⅱ);
     }
 
-    default Signal<Ⅱ<Directory, Directory>> walkDirectoriesWithBase(String... patterns) {
-        return walkDirectoriesWithBase(o -> o.glob(patterns));
+    default Signal<Ⅱ<Directory, Directory>> walkDirectoryWithBase(String... patterns) {
+        return walkDirectoryWithBase(o -> o.glob(patterns));
     }
 
-    Signal<Ⅱ<Directory, Directory>> walkDirectoriesWithBase(Function<Option, Option> option);
+    Signal<Ⅱ<Directory, Directory>> walkDirectoryWithBase(Function<Option, Option> option);
 }

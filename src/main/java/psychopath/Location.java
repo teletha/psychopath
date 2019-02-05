@@ -26,6 +26,7 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.chrono.ChronoLocalDateTime;
 import java.time.chrono.ChronoZonedDateTime;
+import java.util.List;
 import java.util.Objects;
 
 import kiss.I;
@@ -698,6 +699,16 @@ public abstract class Location<Self extends Location> implements Comparable<Loca
      * @return A result.
      */
     public final boolean match(String... patterns) {
+        return match(List.of(patterns));
+    }
+
+    /**
+     * Test matching the specified pattern to this {@link Location}.
+     * 
+     * @param pattern A glob pattern.
+     * @return A result.
+     */
+    public final boolean match(List<String> patterns) {
         for (String pattern : patterns) {
             if (match(pattern)) {
                 return true;

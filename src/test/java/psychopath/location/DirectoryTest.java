@@ -75,7 +75,7 @@ class DirectoryTest extends LocationTestHelper {
             $.dir("dir1");
         });
 
-        assert directory.walkDirectories().toList().size() == 1;
+        assert directory.walkDirectory().toList().size() == 1;
     }
 
     @Test
@@ -86,7 +86,7 @@ class DirectoryTest extends LocationTestHelper {
             $.dir("dir3");
         });
 
-        assert directory.walkDirectories().toList().size() == 3;
+        assert directory.walkDirectory().toList().size() == 3;
     }
 
     @Test
@@ -108,11 +108,11 @@ class DirectoryTest extends LocationTestHelper {
             $.file("fileC");
         });
 
-        assert dir.walkDirectories().toList().size() == 6;
-        assert dir.walkDirectories("*").toList().size() == 2;
-        assert dir.walkDirectories("*/*").toList().size() == 4;
-        assert dir.walkDirectories("**").toList().size() == 6;
-        assert dir.walkDirectories("*", "*/*1").toList().size() == 4;
+        assert dir.walkDirectory().toList().size() == 6;
+        assert dir.walkDirectory("*").toList().size() == 2;
+        assert dir.walkDirectory("*/*").toList().size() == 4;
+        assert dir.walkDirectory("**").toList().size() == 6;
+        assert dir.walkDirectory("*", "*/*1").toList().size() == 4;
     }
 
     @Test

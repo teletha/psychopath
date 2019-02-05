@@ -24,9 +24,9 @@ class WalkDirectoryTest extends LocationTestHelper {
             });
         });
 
-        assert root.walkDirectories("*").toList().size() == 3;
-        assert root.walkDirectories("*/text").toList().size() == 1;
-        assert root.walkDirectories("*", "*/text").toList().size() == 4;
+        assert root.walkDirectory("*").toList().size() == 3;
+        assert root.walkDirectory("*/text").toList().size() == 1;
+        assert root.walkDirectory("*", "*/text").toList().size() == 4;
     }
 
     @Test
@@ -45,9 +45,9 @@ class WalkDirectoryTest extends LocationTestHelper {
             });
         });
 
-        assert root.walkDirectories("*/*").toList().size() == 6;
-        assert root.walkDirectories("*/file*").toList().size() == 4;
-        assert root.walkDirectories("*/*1").toList().size() == 4;
+        assert root.walkDirectory("*/*").toList().size() == 6;
+        assert root.walkDirectory("*/file*").toList().size() == 4;
+        assert root.walkDirectory("*/*1").toList().size() == 4;
     }
 
     @Test
@@ -65,8 +65,8 @@ class WalkDirectoryTest extends LocationTestHelper {
             });
         });
 
-        assert directory.walkDirectories("**").toList().size() == 8;
-        assert directory.walkDirectories("dir2/**").toList().size() == 2;
+        assert directory.walkDirectory("**").toList().size() == 8;
+        assert directory.walkDirectory("dir2/**").toList().size() == 2;
     }
 
     @Test
@@ -80,9 +80,9 @@ class WalkDirectoryTest extends LocationTestHelper {
             });
         });
 
-        assert root.walkDirectories("text?").toList().size() == 2;
-        assert root.walkDirectories("????1").toList().size() == 1;
-        assert root.walkDirectories("**text?").toList().size() == 4;
+        assert root.walkDirectory("text?").toList().size() == 2;
+        assert root.walkDirectory("????1").toList().size() == 1;
+        assert root.walkDirectory("**text?").toList().size() == 4;
     }
 
     @Test
@@ -94,8 +94,8 @@ class WalkDirectoryTest extends LocationTestHelper {
             $.dir("text4");
         });
 
-        assert root.walkDirectories("text[1-2]").toList().size() == 2;
-        assert root.walkDirectories("text[2-5]").toList().size() == 3;
+        assert root.walkDirectory("text[1-2]").toList().size() == 2;
+        assert root.walkDirectory("text[2-5]").toList().size() == 3;
     }
 
     @Test
@@ -107,8 +107,8 @@ class WalkDirectoryTest extends LocationTestHelper {
             $.dir("text4");
         });
 
-        assert root.walkDirectories("text[!3]").toList().size() == 3;
-        assert root.walkDirectories("text[!34]").toList().size() == 2;
+        assert root.walkDirectory("text[!3]").toList().size() == 3;
+        assert root.walkDirectory("text[!34]").toList().size() == 2;
     }
 
     @Test
@@ -119,7 +119,7 @@ class WalkDirectoryTest extends LocationTestHelper {
             $.dir("text3");
             $.dir("text4");
         });
-        assert root.walkDirectories("**", "!text1").toList().size() == 3;
+        assert root.walkDirectory("**", "!text1").toList().size() == 3;
     }
 
     @Test
@@ -137,7 +137,7 @@ class WalkDirectoryTest extends LocationTestHelper {
                 $.dir("text4");
             });
         });
-        assert root.walkDirectories("**", "!ignore/**").toList().size() == 4;
+        assert root.walkDirectory("**", "!ignore/**").toList().size() == 4;
     }
 
     @Test
@@ -148,6 +148,6 @@ class WalkDirectoryTest extends LocationTestHelper {
             $.dir("text3");
             $.dir("text4");
         });
-        assert root.walkDirectories("**", "!**1", "!**3").toList().size() == 2;
+        assert root.walkDirectory("**", "!**1", "!**3").toList().size() == 2;
     }
 }
