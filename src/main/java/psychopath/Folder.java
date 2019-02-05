@@ -180,92 +180,6 @@ public final class Folder implements PathOperatable {
     }
 
     /**
-     * <p>
-     * Use destination relative path for entries.
-     * </p>
-     * <pre>
-     * folder.add("main.jar").add("lib", entry -> entry.add("one.jar").add("other.jar"));
-     * folder.copyTo("output");
-     * </pre>
-     * <p>
-     * {@link Folder} will deploy jars into "lib" directory.
-     * </p>
-     * <pre>
-     * output
-     * - main.jar
-     * - lib
-     * - one.jar
-     * - other.jar
-     * </pre>
-     *
-     * @param relative A destination relative path.
-     * @param entries Your entries.
-     * @return
-     */
-    public Folder addIn(String relative, Consumer<Folder> entries) {
-        return addIn(Locator.directory(relative), entries);
-    }
-
-    /**
-     * <p>
-     * Use destination relative path for entries.
-     * </p>
-     * <pre>
-     * folder.add("main.jar").add("lib", entry -> entry.add("one.jar").add("other.jar"));
-     * folder.copyTo("output");
-     * </pre>
-     * <p>
-     * {@link Folder} will deploy jars into "lib" directory.
-     * </p>
-     * <pre>
-     * output
-     * - main.jar
-     * - lib
-     * - one.jar
-     * - other.jar
-     * </pre>
-     *
-     * @param relative A destination relative path.
-     * @param entries Your entries.
-     * @return
-     */
-    public Folder addIn(Path relative, Consumer<Folder> entries) {
-        return addIn(Locator.directory(relative), entries);
-    }
-
-    /**
-     * <p>
-     * Use destination relative path for entries.
-     * </p>
-     * <pre>
-     * folder.add("main.jar").add("lib", entry -> entry.add("one.jar").add("other.jar"));
-     * folder.copyTo("output");
-     * </pre>
-     * <p>
-     * {@link Folder} will deploy jars into "lib" directory.
-     * </p>
-     * <pre>
-     * output
-     * - main.jar
-     * - lib
-     * - one.jar
-     * - other.jar
-     * </pre>
-     *
-     * @param relative A destination relative path.
-     * @param entries Your entries.
-     * @return
-     */
-    public Folder addIn(Directory relative, Consumer<Folder> entries) {
-        if (entries != null) {
-            Folder folder = Locator.folder();
-            entries.accept(folder);
-            operations.addAll(I.signal(folder.operations).map(o -> new Allocator(o, relative)).toList());
-        }
-        return this;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
@@ -431,83 +345,6 @@ public final class Folder implements PathOperatable {
     }
 
     /**
-     * Allocator for destination path.
-     */
-    private static class Allocator implements Operation {
-
-        /** The delegation. */
-        private final Operation delegator;
-
-        /** The destination relative path. */
-        private final Directory relative;
-
-        /**
-         * @param delegator
-         * @param relative
-         */
-        private Allocator(Operation delegator, Directory relative) {
-            this.delegator = delegator;
-            this.relative = relative;
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public Signal<Location> observeDeleting(Function<Option, Option> option) {
-            return delegator.observeDeleting(option);
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public Signal<Location> observeMovingTo(Directory destination, Function<Option, Option> option) {
-            return delegator.observeMovingTo(destination.directory(relative), option);
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public Signal<Location> observeCopyingTo(Directory destination, Function<Option, Option> option) {
-            return delegator.observeCopyingTo(destination.directory(relative), option);
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public Signal<Location> observePackingTo(ArchiveOutputStream archive, Archiver builder, Directory relative, Function<Option, Option> option) {
-            return delegator.observePackingTo(archive, builder, this.relative, option);
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public Signal<Ⅱ<Directory, Location>> walkWithBase(Function<Option, Option> option) {
-            return delegator.walkWithBase(option);
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public Signal<Ⅱ<Directory, File>> walkFilesWithBase(Function<Option, Option> option) {
-            return delegator.walkFilesWithBase(option);
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public Signal<Ⅱ<Directory, Directory>> walkDirectoriesWithBase(Function<Option, Option> option) {
-            return delegator.walkDirectoriesWithBase(option);
-        }
-    }
-
-    /**
      * Operation for {@link Directory}.
      */
     private static class LocationOperation implements Operation {
@@ -554,15 +391,15 @@ public final class Folder implements PathOperatable {
          */
         @Override
         public Signal<Location> observePackingTo(ArchiveOutputStream archive, Archiver builder, Directory relative, Function<Option, Option> option) {
-            if (location.isFile()) {
-                return pack(archive, builder, location.parent(), location.asFile(), relative);
-            } else {
-                Function<Option, Option> combined = this.option.andThen(option);
-                Option o = combined.apply(new Option());
+            Function<Option, Option> combined = this.option.andThen(option);
+            Option o = combined.apply(new Option());
 
+            if (location.isFile()) {
+                return pack(archive, builder, location.parent(), location.asFile(), o.allocator);
+            } else {
                 return location.walkFile(combined)
                         .flatMap(file -> pack(archive, builder, !location.isRoot() && o.acceptRoot ? location.parent()
-                                : location.asDirectory(), file, relative));
+                                : location.asDirectory(), file, o.allocator));
             }
         }
 

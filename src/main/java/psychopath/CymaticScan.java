@@ -96,7 +96,7 @@ class CymaticScan implements FileVisitor<Path>, Runnable, Disposable {
         // The copy and move operations need the root path.
         if (root && type < 2) from = from.parent();
         this.from = from.path;
-        this.to = to.path;
+        this.to = to.directory(o.allocator.toString()).path;
 
         // Parse and create path matchers.
         for (String pattern : o.patterns) {

@@ -124,7 +124,7 @@ public class File extends Location<File> {
      */
     @Override
     public Signal<Location> observeCopyingTo(Directory destination, Function<Option, Option> option) {
-        return copyTo(destination.file(name()));
+        return copyTo(destination.directory(option.apply(new Option()).allocator).file(name()));
     }
 
     /**
@@ -243,7 +243,7 @@ public class File extends Location<File> {
      */
     @Override
     public Signal<Location> observeMovingTo(Directory destination, Function<Option, Option> option) {
-        return moveTo(destination.file(name()));
+        return moveTo(destination.directory(option.apply(new Option()).allocator).file(name()));
     }
 
     /**

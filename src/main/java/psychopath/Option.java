@@ -29,6 +29,9 @@ public class Option {
     /** The depth of directory digging. */
     int depth = Integer.MAX_VALUE;
 
+    /** The relative path in the destination. */
+    Directory allocator = Locator.directory("");
+
     /**
      * Hide.
      */
@@ -93,4 +96,26 @@ public class Option {
         return this;
     }
 
+    /**
+     * Specify the relative path in the destination.
+     * 
+     * @param relative
+     * @return
+     */
+    public Option allocateIn(String relative) {
+        return allocateIn(Locator.directory(relative));
+    }
+
+    /**
+     * Specify the relative path in the destination.
+     * 
+     * @param relative
+     * @return
+     */
+    public Option allocateIn(Directory relative) {
+        if (relative != null && relative.isRelative()) {
+            this.allocator = relative;
+        }
+        return this;
+    }
 }
