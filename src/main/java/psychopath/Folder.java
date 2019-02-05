@@ -29,6 +29,7 @@ import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import kiss.I;
 import kiss.Signal;
 import kiss.Ⅱ;
+import psychopath.archiver.Archiver;
 
 /**
  * Virtual directory to manage resources from various entries.
@@ -201,7 +202,7 @@ public final class Folder implements PathOperatable {
                  * {@inheritDoc}
                  */
                 @Override
-                public Signal<Location> observePackingTo(ArchiveOutputStream archive, BiFunction<String, File, ArchiveEntry> builder, Directory relative, Function<Option, Option> option) {
+                public Signal<Location> observePackingTo(ArchiveOutputStream archive, Archiver builder, Directory relative, Function<Option, Option> option) {
                     return buildOperation(entries, option).flatMap(op -> op.observePackingTo(archive, builder, relative, option));
                 }
 
@@ -378,12 +379,12 @@ public final class Folder implements PathOperatable {
     @Override
     public Signal<Location> observePackingTo(File archive, String... patterns) {
         return new Signal<>((observer, disposer) -> {
-            BiFunction<String, File, ArchiveEntry> builder = detectEntryBuilder(archive.extension());
+            Archiver archiver = Archiver.byExtension(archive.extension());
 
             try (ArchiveOutputStream out = new ArchiveStreamFactory()
                     .createArchiveOutputStream(archive.extension().replaceAll("7z", "7z-override"), archive.newOutputStream())) {
                 I.signal(operations)
-                        .flatMap(operation -> operation.observePackingTo(out, builder, Locator.directory(""), o -> o.glob(patterns)))
+                        .flatMap(operation -> operation.observePackingTo(out, archiver, Locator.directory(""), o -> o.glob(patterns)))
                         .to(observer);
                 out.finish();
                 observer.complete();
@@ -427,10 +428,10 @@ public final class Folder implements PathOperatable {
      * @param file
      * @param relative
      */
-    private static Signal<Location> pack(ArchiveOutputStream out, BiFunction<String, File, ArchiveEntry> builder, Directory directory, File file, Directory relative) {
+    private static Signal<Location> pack(ArchiveOutputStream out, Archiver archiver, Directory directory, File file, Directory relative) {
         return new Signal<>((observer, disposer) -> {
             try {
-                ArchiveEntry entry = builder.apply(relative.file(directory.relativize(file).toString()).path(), file);
+                ArchiveEntry entry = archiver.create(relative.file(directory.relativize(file).toString()).path(), file);
                 out.putArchiveEntry(entry);
 
                 try (InputStream in = file.newInputStream()) {
@@ -509,7 +510,7 @@ public final class Folder implements PathOperatable {
          * @param relative
          * @param patterns
          */
-        Signal<Location> observePackingTo(ArchiveOutputStream archive, BiFunction<String, File, ArchiveEntry> builder, Directory relative, Function<Option, Option> option);
+        Signal<Location> observePackingTo(ArchiveOutputStream archive, Archiver archiver, Directory relative, Function<Option, Option> option);
 
         /**
          * List up all resources.
@@ -584,7 +585,7 @@ public final class Folder implements PathOperatable {
          * {@inheritDoc}
          */
         @Override
-        public Signal<Location> observePackingTo(ArchiveOutputStream archive, BiFunction<String, File, ArchiveEntry> builder, Directory relative, Function<Option, Option> option) {
+        public Signal<Location> observePackingTo(ArchiveOutputStream archive, Archiver builder, Directory relative, Function<Option, Option> option) {
             return delegator.observePackingTo(archive, builder, this.relative, option);
         }
 
@@ -655,7 +656,7 @@ public final class Folder implements PathOperatable {
          * {@inheritDoc}
          */
         @Override
-        public Signal<Location> observePackingTo(ArchiveOutputStream archive, BiFunction<String, File, ArchiveEntry> builder, Directory relative, Function<Option, Option> option) {
+        public Signal<Location> observePackingTo(ArchiveOutputStream archive, Archiver builder, Directory relative, Function<Option, Option> option) {
             return pack(archive, builder, file.parent(), file, relative);
         }
 
@@ -737,7 +738,7 @@ public final class Folder implements PathOperatable {
          * {@inheritDoc}
          */
         @Override
-        public Signal<Location> observePackingTo(ArchiveOutputStream archive, BiFunction<String, File, ArchiveEntry> builder, Directory relative, Function<Option, Option> option) {
+        public Signal<Location> observePackingTo(ArchiveOutputStream archive, Archiver builder, Directory relative, Function<Option, Option> option) {
             Function<Option, Option> combined = this.option.andThen(option);
             Option o = combined.apply(new Option());
 
@@ -817,7 +818,7 @@ public final class Folder implements PathOperatable {
          * {@inheritDoc}
          */
         @Override
-        public Signal<Location> observePackingTo(ArchiveOutputStream archive, BiFunction<String, File, ArchiveEntry> builder, Directory relative, Function<Option, Option> option) {
+        public Signal<Location> observePackingTo(ArchiveOutputStream archive, Archiver builder, Directory relative, Function<Option, Option> option) {
             return operation.observePackingTo(archive, builder, relative, this.option.andThen(option));
         }
 
