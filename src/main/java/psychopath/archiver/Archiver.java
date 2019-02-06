@@ -45,6 +45,9 @@ public enum Archiver {
         }
     };
 
+    /** The default extension. */
+    public final String extension;
+
     /** The basic extension. */
     public final List<String> extensions;
 
@@ -52,6 +55,7 @@ public enum Archiver {
      * @param extensions
      */
     private Archiver(String... extensions) {
+        this.extension = extensions[0];
         this.extensions = List.of(extensions);
     }
 
@@ -86,11 +90,22 @@ public enum Archiver {
      * @return
      */
     public static Archiver byExtension(String extension) {
+        return byExtension(extension, Zip);
+    }
+
+    /**
+     * Find the suitable {@link ArchiveEntry} by extension.
+     * 
+     * @param extension
+     * @param defaultType A default {@link Archiver}.
+     * @return
+     */
+    public static Archiver byExtension(String extension, Archiver defaultType) {
         for (Archiver archiver : values()) {
             if (archiver.match(extension)) {
                 return archiver;
             }
         }
-        throw new Error("There is no suitable archiver for [" + extension + "].");
+        return defaultType;
     }
 }

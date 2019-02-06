@@ -175,7 +175,7 @@ public interface PathOperatable {
      * @param patterns A list of glob patterns to accept file by its name.
      * @return An archived {@link File}.
      */
-    default File packToTemporary(File destination, String... patterns) {
+    default File packToTemporary(String... patterns) {
         return packTo(Locator.temporaryFile(), patterns);
     }
 

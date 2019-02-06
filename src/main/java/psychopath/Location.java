@@ -27,7 +27,6 @@ import java.time.ZonedDateTime;
 import java.time.chrono.ChronoLocalDateTime;
 import java.time.chrono.ChronoZonedDateTime;
 import java.util.List;
-import java.util.Objects;
 
 import kiss.I;
 import kiss.Observer;
@@ -46,7 +45,7 @@ public abstract class Location<Self extends Location> implements Comparable<Loca
      * @param path
      */
     protected Location(Path path) {
-        this.path = Objects.requireNonNull(path);
+        this.path = path == null ? Path.of("") : path;
     }
 
     /**

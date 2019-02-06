@@ -9,7 +9,7 @@
  */
 package psychopath;
 
-import static org.junit.jupiter.api.Assertions.assertIterableEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.nio.file.Path;
 import java.time.Instant;
@@ -194,6 +194,17 @@ public class LocationTestHelper {
         assert actual.lastModifiedTime().truncatedTo(ChronoUnit.MILLIS).equals(expectedLastModified.truncatedTo(ChronoUnit.MILLIS));
 
         return true;
+    }
+
+    /**
+     * Test matching file tree structure.
+     * 
+     * @param actual An actual directory.
+     * @param expected An expected directory structure.
+     * @return
+     */
+    public final boolean matchZip(File actual, Consumer<FileSystemDSL> expected) {
+        return match(actual.unpackToTemporary(), expected);
     }
 
     /**

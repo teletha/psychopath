@@ -16,6 +16,8 @@ import java.util.List;
 import java.util.function.BiPredicate;
 import java.util.function.Function;
 
+import psychopath.archiver.Archiver;
+
 public class Option {
 
     /** The glob patterns. */
@@ -32,6 +34,9 @@ public class Option {
 
     /** The relative path in the destination. */
     Directory allocator = Locator.directory("");
+
+    /** The archive type. */
+    Archiver archiver = Archiver.Zip;
 
     /**
      * Hide.
@@ -117,6 +122,26 @@ public class Option {
         if (relative != null && relative.isRelative()) {
             this.allocator = relative;
         }
+        return this;
+    }
+
+    /**
+     * Specify archive type.
+     * 
+     * @return
+     */
+    public Option archiveJar() {
+        archiver = Archiver.Jar;
+        return this;
+    }
+
+    /**
+     * Specify archive type.
+     * 
+     * @return
+     */
+    public Option archive7z() {
+        archiver = Archiver.SevenZ;
         return this;
     }
 

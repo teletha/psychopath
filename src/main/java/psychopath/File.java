@@ -411,6 +411,39 @@ public class File extends Location<File> {
         return destination;
     }
 
+    public Signal<File> observeUnpackingTo(Directory destination, Function<UnpackOption, UnpackOption> option) {
+        return new Signal<>((observer, disposer) -> {
+            try (ArchiveInputStream in = new ArchiveStreamFactory()
+                    .createArchiveInputStream(extension().replaceAll("7z", "7z-override"), newInputStream())) {
+                destination.create();
+
+                ArchiveEntry entry = null;
+                while ((entry = in.getNextEntry()) != null) {
+                    if (in.canReadEntryData(entry)) {
+                        if (entry.isDirectory()) {
+                            destination.directory(entry.getName()).create();
+                        } else {
+                            File file = destination.file(entry.getName());
+
+                            try (OutputStream out = file.newOutputStream()) {
+                                observer.accept(file);
+                                I.copy(in, out, false);
+                            }
+                        }
+                    }
+                }
+                observer.complete();
+            } catch (Throwable e) {
+                observer.error(e);
+            }
+
+            for (UnpackOption option : options) {
+                option.process(destination);
+            }
+            return disposer;
+        });
+    }
+
     /**
      * Unpack archive file to the same directory that this {@link File} exists.
      * 

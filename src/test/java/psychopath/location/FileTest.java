@@ -19,6 +19,7 @@ import psychopath.Directory;
 import psychopath.File;
 import psychopath.Location;
 import psychopath.LocationTestHelper;
+import psychopath.Locator;
 
 class FileTest extends LocationTestHelper {
 
@@ -127,6 +128,9 @@ class FileTest extends LocationTestHelper {
         // absolute
         assert locateAbsoluteAbsent("a/b").parent().equals(locateAbsoluteAbsentDirectory("a"));
         assert locateAbsoluteAbsent("a/b/c").parent().equals(locateAbsoluteAbsentDirectory("a/b"));
+
+        // relative
+        assert Locator.file("file").parent().equals(Locator.directory(""));
     }
 
     @Test

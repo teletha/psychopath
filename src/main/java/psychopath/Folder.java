@@ -212,19 +212,20 @@ public final class Folder implements PathOperatable {
     @Override
     public Signal<Location> observePackingTo(File archive, Function<Option, Option> option) {
         return new Signal<>((observer, disposer) -> {
-            Archiver archiver = Archiver.byExtension(archive.extension());
+            Option o = option.apply(new Option());
+            Archiver archiver = Archiver.byExtension(archive.extension(), o.archiver);
 
             try (ArchiveOutputStream out = new ArchiveStreamFactory()
-                    .createArchiveOutputStream(archive.extension().replaceAll("7z", "7z-override"), archive.newOutputStream())) {
+                    .createArchiveOutputStream(archiver.extension.replaceAll("7z", "7z-override"), archive.newOutputStream())) {
                 I.signal(operations)
                         .flatMap(operation -> operation.observePackingTo(out, archiver, Locator.directory(""), option))
                         .to(observer);
                 out.finish();
                 observer.complete();
-            } catch (Exception e) {
+            } catch (Throwable e) {
+                e.printStackTrace();
                 observer.error(e);
             }
-
             return disposer;
         });
     }
