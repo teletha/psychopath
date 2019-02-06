@@ -20,7 +20,7 @@ class CopyTest extends LocationTestHelper {
         File in = locateAbsent("absent");
         File out = locateFile("out");
 
-        in.copyToNow(out);
+        in.copyTo(out);
 
         assert in.isAbsent();
         assert out.isPresent();
@@ -42,7 +42,7 @@ class CopyTest extends LocationTestHelper {
         File in = locateAbsent("absent");
         File out = locateAbsent("out");
 
-        in.copyToNow(out);
+        in.copyTo(out);
 
         assert in.isAbsent();
         assert out.isAbsent();
@@ -53,7 +53,7 @@ class CopyTest extends LocationTestHelper {
         File in = locateFile("In", "Success");
         File out = locateFile("Out", "This text will be overwritten by input file.");
 
-        in.copyToNow(out);
+        in.copyTo(out);
 
         assert sameFile(in, out);
     }
@@ -64,7 +64,7 @@ class CopyTest extends LocationTestHelper {
         File in = locateFile("In", now, "Success");
         File out = locateFile("Out", now, "This text will be overwritten by input file.");
 
-        in.copyToNow(out);
+        in.copyTo(out);
 
         assert sameFile(in, out);
     }
@@ -75,7 +75,7 @@ class CopyTest extends LocationTestHelper {
         File in = locateFile("In", now, "Success");
         File out = locateFile("Out", now.plusSeconds(10), "This text will be overwritten by input file.");
 
-        in.copyToNow(out);
+        in.copyTo(out);
 
         assert sameFile(in, out);
     }
@@ -85,7 +85,7 @@ class CopyTest extends LocationTestHelper {
         File in = locateFile("In", "Success");
         File out = locateAbsent("Out");
 
-        in.copyToNow(out);
+        in.copyTo(out);
 
         assert sameFile(in, out);
     }
@@ -95,7 +95,7 @@ class CopyTest extends LocationTestHelper {
         File in = locateFile("In", "Success");
         File out = locateAbsent("1/2/3");
 
-        in.copyToNow(out);
+        in.copyTo(out);
 
         assert sameFile(in, out);
     }

@@ -22,7 +22,7 @@ class MoveTest extends LocationTestHelper {
         File in = locateAbsent("absent");
         File out = locateFile("out");
 
-        in.moveToNow(out);
+        in.moveTo(out);
 
         assert in.isAbsent();
         assert out.isPresent();
@@ -44,7 +44,7 @@ class MoveTest extends LocationTestHelper {
         File in = locateAbsent("absent");
         File out = locateAbsent("out");
 
-        in.moveToNow(out);
+        in.moveTo(out);
 
         assert in.isAbsent();
         assert out.isAbsent();
@@ -55,7 +55,7 @@ class MoveTest extends LocationTestHelper {
         File in = locateFile("In", "Success");
         File out = locateFile("Out", "This text will be overwritten by input file.");
 
-        in.moveToNow(out);
+        in.moveTo(out);
 
         assert in.isAbsent();
         assert match(out, "Success");
@@ -67,7 +67,7 @@ class MoveTest extends LocationTestHelper {
         File in = locateFile("In", now, "Success");
         File out = locateFile("Out", now, "This text will be overwritten by input file.");
 
-        in.moveToNow(out);
+        in.moveTo(out);
 
         assert in.isAbsent();
         assert match(out, now, "Success");
@@ -79,7 +79,7 @@ class MoveTest extends LocationTestHelper {
         File in = locateFile("In", now, "Success");
         File out = locateFile("Out", now.plusSeconds(10), "This text will be overwritten by input file.");
 
-        in.moveToNow(out);
+        in.moveTo(out);
 
         assert in.isAbsent();
         assert match(out, now, "Success");
@@ -90,7 +90,7 @@ class MoveTest extends LocationTestHelper {
         File in = locateFile("In", "Success");
         File out = locateAbsent("Out");
 
-        in.moveToNow(out);
+        in.moveTo(out);
 
         assert in.isAbsent();
         assert match(out, "Success");
@@ -101,7 +101,7 @@ class MoveTest extends LocationTestHelper {
         File in = locateFile("In", "Success");
         File out = locateAbsent("1/2/3");
 
-        in.moveToNow(out);
+        in.moveTo(out);
 
         assert in.isAbsent();
         assert match(out, "Success");

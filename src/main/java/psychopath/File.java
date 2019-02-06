@@ -122,7 +122,7 @@ public class File extends Location<File> {
      */
     @Override
     public Signal<Location> observeCopyingTo(Directory destination, Function<Option, Option> option) {
-        return copyTo(destination.directory(option.apply(new Option()).allocator).file(name()));
+        return observeCopyingTo(destination.directory(option.apply(new Option()).allocator).file(name()));
     }
 
     /**
@@ -151,7 +151,7 @@ public class File extends Location<File> {
      *             the target file. If a symbolic link is copied the security manager is invoked to
      *             check {@link LinkPermission}("symbolic").
      */
-    public Signal<Location> copyTo(File destination) {
+    public Signal<Location> observeCopyingTo(File destination) {
         return new Signal<>((observer, disposer) -> {
             try {
                 if (isPresent() && disposer.isNotDisposed()) {
@@ -193,7 +193,7 @@ public class File extends Location<File> {
      *             the target file. If a symbolic link is copied the security manager is invoked to
      *             check {@link LinkPermission}("symbolic").
      */
-    public void copyToNow(File destination) {
+    public void copyTo(File destination) {
         if (isPresent()) {
             try {
                 destination.parent().create();
@@ -241,7 +241,7 @@ public class File extends Location<File> {
      */
     @Override
     public Signal<Location> observeMovingTo(Directory destination, Function<Option, Option> option) {
-        return moveTo(destination.directory(option.apply(new Option()).allocator).file(name()));
+        return observeMovingTo(destination.directory(option.apply(new Option()).allocator).file(name()));
     }
 
     /**
@@ -268,13 +268,14 @@ public class File extends Location<File> {
      *             the target file. If a symbolic link is copied the security manager is invoked to
      *             check {@link LinkPermission}("symbolic").
      */
-    public Signal<Location> moveTo(File destination) {
+    public Signal<Location> observeMovingTo(File destination) {
         return new Signal<>((observer, disposer) -> {
             try {
                 if (isPresent() && disposer.isNotDisposed()) {
+                    observer.accept(this);
+
                     destination.parent().create();
                     Files.move(path, destination.path, REPLACE_EXISTING);
-                    observer.accept(this);
                 }
                 observer.complete();
             } catch (Exception e) {
@@ -308,8 +309,8 @@ public class File extends Location<File> {
      *             the target file. If a symbolic link is copied the security manager is invoked to
      *             check {@link LinkPermission}("symbolic").
      */
-    public void moveToNow(File destination) {
-        moveTo(destination).to(I.NoOP);
+    public void moveTo(File destination) {
+        observeMovingTo(destination).to(I.NoOP);
     }
 
     /**
