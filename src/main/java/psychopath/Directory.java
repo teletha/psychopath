@@ -172,9 +172,8 @@ public class Directory extends Location<Directory> {
     private <L extends Location> Signal<L> walk(Class<L> clazz, Directory out, int type, Function<Option, Option> option) {
         return new Signal<L>((observer, disposer) -> {
             try {
-                Option o = option.apply(new Option());
-                Files.walkFileTree(path, Set
-                        .of(), o.depth, new CymaticScan(this, out, type, observer, disposer, option.andThen(this.option)));
+                Option o = this.option.andThen(option).apply(new Option());
+                Files.walkFileTree(path, Set.of(), o.depth, new CymaticScan(this, out, type, observer, disposer, o));
                 observer.complete();
             } catch (Throwable e) {
                 observer.error(e);
@@ -285,8 +284,8 @@ public class Directory extends Location<Directory> {
      * {@inheritDoc}
      */
     @Override
-    public Signal<Location> observePackingTo(File destination, String... patterns) {
-        return Locator.folder().add(this, patterns).observePackingTo(destination);
+    public Signal<Location> observePackingTo(File destination, Function<Option, Option> option) {
+        return Locator.folder().add(this, option).observePackingTo(destination);
     }
 
     /**

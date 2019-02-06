@@ -9,14 +9,9 @@
  */
 package psychopath;
 
-import static java.nio.file.FileVisitResult.CONTINUE;
-import static java.nio.file.FileVisitResult.SKIP_SUBTREE;
-import static java.nio.file.FileVisitResult.TERMINATE;
-import static java.nio.file.StandardCopyOption.COPY_ATTRIBUTES;
-import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
-import static java.nio.file.StandardWatchEventKinds.ENTRY_CREATE;
-import static java.nio.file.StandardWatchEventKinds.ENTRY_DELETE;
-import static java.nio.file.StandardWatchEventKinds.ENTRY_MODIFY;
+import static java.nio.file.FileVisitResult.*;
+import static java.nio.file.StandardCopyOption.*;
+import static java.nio.file.StandardWatchEventKinds.*;
 
 import java.io.IOException;
 import java.nio.file.ClosedWatchServiceException;
@@ -30,7 +25,6 @@ import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.function.BiPredicate;
-import java.util.function.Function;
 
 import kiss.Disposable;
 import kiss.I;
@@ -84,9 +78,7 @@ class CymaticScan implements FileVisitor<Path>, Runnable, Disposable {
      * <li>5 - observe</li>
      * </ol>
      */
-    CymaticScan(Directory from, Directory to, int type, Observer observer, Disposable disposer, Function<Option, Option> option) {
-        Option o = option.apply(new Option());
-
+    CymaticScan(Directory from, Directory to, int type, Observer observer, Disposable disposer, Option o) {
         this.type = type;
         this.observer = observer;
         this.disposer = disposer;
@@ -285,7 +277,7 @@ class CymaticScan implements FileVisitor<Path>, Runnable, Disposable {
      * @param patterns Name matching patterns.
      */
     CymaticScan(Directory directory, Observer observer, Disposable disposer, String... patterns) {
-        this(directory, directory, 5, observer, disposer, o -> o.glob(patterns));
+        this(directory, directory, 5, observer, disposer, new Option().glob(patterns));
 
         try {
             this.service = directory.path.getFileSystem().newWatchService();

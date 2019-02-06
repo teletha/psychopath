@@ -153,7 +153,18 @@ public interface PathOperatable {
      * @return A destination {@link File}.
      */
     default File packTo(File destination, String... patterns) {
-        observePackingTo(destination, patterns).to(I.NoOP);
+        return packTo(destination, Option.of(patterns));
+    }
+
+    /**
+     * Pack resources to the destination {@link File}.
+     * 
+     * @param destination A destination {@link File}.
+     * @param option A operation {@link Option}.
+     * @return A destination {@link File}.
+     */
+    default File packTo(File destination, Function<Option, Option> option) {
+        observePackingTo(destination, option).to(I.NoOP);
 
         return destination;
     }
@@ -165,7 +176,18 @@ public interface PathOperatable {
      * @param patterns A list of glob patterns to accept file by its name.
      * @return A event stream which emits operated {@link File}s.
      */
-    Signal<Location> observePackingTo(File destination, String... patterns);
+    default Signal<Location> observePackingTo(File destination, String... patterns) {
+        return observePackingTo(destination, Option.of(patterns));
+    }
+
+    /**
+     * Build stream that pack resources to the destination {@link File}.
+     * 
+     * @param destination A destination {@link File}.
+     * @param option A operation {@link Option}.
+     * @return A event stream which emits operated {@link File}s.
+     */
+    Signal<Location> observePackingTo(File destination, Function<Option, Option> option);
 
     default Signal<File> walkFile(String... patterns) {
         return walkFile(Option.of(patterns));
