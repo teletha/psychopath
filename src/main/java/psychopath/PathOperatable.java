@@ -170,6 +170,26 @@ public interface PathOperatable {
     }
 
     /**
+     * Pack resources to the temporary {@link File}.
+     * 
+     * @param patterns A list of glob patterns to accept file by its name.
+     * @return An archived {@link File}.
+     */
+    default File packToTemporary(File destination, String... patterns) {
+        return packTo(Locator.temporaryFile(), patterns);
+    }
+
+    /**
+     * Pack resources to the temporary {@link File}.
+     * 
+     * @param option A operation {@link Option}.
+     * @return An archived {@link File}.
+     */
+    default File packToTemporary(Function<Option, Option> option) {
+        return packTo(Locator.temporaryFile(), option);
+    }
+
+    /**
      * Build stream that pack resources to the destination {@link File}.
      * 
      * @param destination A destination {@link File}.
