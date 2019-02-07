@@ -57,6 +57,62 @@ class DirectoryTest extends LocationTestHelper {
     }
 
     @Test
+    void children() {
+        // absent
+        assert locateAbsent("a/b").children().toList().isEmpty();
+        assert locateAbsoluteAbsent("a/b").children().toList().isEmpty();
+
+        // present
+        assert locateDirectory("a/b").children().toList().isEmpty();
+        assert locateDirectory("a/b").absolutize().children().toList().isEmpty();
+
+        assert locateDirectory("structure", $ -> {
+            $.file("child1");
+            $.file("child2");
+            $.dir("dir", () -> {
+                $.file("item");
+                $.dir("nest", () -> {
+                    $.file("nest item");
+                });
+            });
+        }).children().toList().size() == 3;
+    }
+
+    @Test
+    void descendant() {
+        // absent
+        assert locateAbsent("a/b").descendant().toList().isEmpty();
+        assert locateAbsoluteAbsent("a/b").descendant().toList().isEmpty();
+
+        // present
+        assert locateDirectory("a/b").descendant().toList().isEmpty();
+        assert locateDirectory("a/b").absolutize().descendant().toList().isEmpty();
+
+        assert locateDirectory("structure", $ -> {
+            $.file("child1");
+            $.file("child2");
+            $.dir("dir", () -> {
+                $.file("item");
+                $.dir("nest", () -> {
+                    $.file("nest item");
+                });
+            });
+        }).descendant().toList().size() == 6;
+    }
+
+    @Test
+    void create() {
+        // locateAbsentDirectory
+        assert locateAbsentDirectory("a").create().isPresent();
+        assert locateAbsentDirectory("a/b").create().isPresent();
+        assert locateAbsentDirectory("a/b/c").create().isPresent();
+
+        // absolute
+        assert locateAbsoluteAbsentDirectory("b/c").create().isPresent();
+        assert locateAbsoluteAbsentDirectory("b/c/d").create().isPresent();
+    }
+
+    @Test
     void equal() {
         // locateAbsentDirectory
         assert locateAbsentDirectory("a").equals(locateAbsentDirectory("a"));

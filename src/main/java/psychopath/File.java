@@ -434,7 +434,7 @@ public class File extends Location<File> {
      * @param option A operation {@link Option}.
      * @return A event stream which emits operated {@link File}s.
      */
-    public final Signal<File> observeUnpackingTo(Directory destination, Function<Option, Option> option) {
+    public Signal<File> observeUnpackingTo(Directory destination, Function<Option, Option> option) {
         return new Signal<>((observer, disposer) -> {
             try (ArchiveInputStream in = new ArchiveStreamFactory()
                     .createArchiveInputStream(extension().replaceAll("7z", "7z-override"), newInputStream())) {

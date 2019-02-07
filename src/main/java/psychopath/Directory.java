@@ -46,19 +46,6 @@ public class Directory extends Location<Directory> {
     }
 
     /**
-     * Whether this {@link Directory} has some items or not.
-     * 
-     * @return
-     */
-    public boolean isEmpty() {
-        try (Stream<Path> stream = Files.list(path)) {
-            return stream.findAny().isEmpty();
-        } catch (IOException e) {
-            throw I.quiet(e);
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
@@ -69,7 +56,7 @@ public class Directory extends Location<Directory> {
                     observer.accept(Locator.locate(path));
                 }
                 observer.complete();
-            } catch (Exception e) {
+            } catch (Throwable e) {
                 observer.error(e);
             }
             return disposer;
@@ -142,6 +129,19 @@ public class Directory extends Location<Directory> {
      */
     public Directory directory(Directory path) {
         return directory(path.path);
+    }
+
+    /**
+     * Whether this {@link Directory} has some items or not.
+     * 
+     * @return
+     */
+    public boolean isEmpty() {
+        try (Stream<Path> stream = Files.list(path)) {
+            return stream.findAny().isEmpty();
+        } catch (IOException e) {
+            throw I.quiet(e);
+        }
     }
 
     /**

@@ -12,6 +12,7 @@ package psychopath.location;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
@@ -134,6 +135,28 @@ class FileTest extends LocationTestHelper {
     }
 
     @Test
+    void children() {
+        // absent
+        assert locateAbsent("a/b").children().toList().isEmpty();
+        assert locateAbsoluteAbsent("a/b").children().toList().isEmpty();
+
+        // present
+        assert locateFile("a/b").children().toList().isEmpty();
+        assert locateFile("a/b").absolutize().children().toList().isEmpty();
+    }
+
+    @Test
+    void descendant() {
+        // absent
+        assert locateAbsent("a/b").descendant().toList().isEmpty();
+        assert locateAbsoluteAbsent("a/b").descendant().toList().isEmpty();
+
+        // present
+        assert locateFile("a/b").descendant().toList().isEmpty();
+        assert locateFile("a/b").absolutize().descendant().toList().isEmpty();
+    }
+
+    @Test
     void equal() {
         // absent
         assert locateAbsent("a").equals(locateAbsent("a"));
@@ -191,5 +214,36 @@ class FileTest extends LocationTestHelper {
     void create() {
         assert locateAbsent("file").create().isPresent();
         assert locateAbsent("deep/file").create().isPresent();
+    }
+
+    @Test
+    void unpack() {
+        File archive = locateArchive("test.zip", $ -> {
+            $.file("file");
+            $.dir("dir", () -> {
+                $.file("child");
+            });
+        });
+
+        assert match(archive.unpack(), $ -> {
+            $.file("file");
+            $.dir("dir", () -> {
+                $.file("child");
+            });
+        });
+    }
+
+    @Test
+    void observeUnpackingTo() {
+        File archive = locateArchive("test.zip", $ -> {
+            $.file("file");
+            $.dir("dir", () -> {
+                $.file("child1");
+                $.file("child2");
+            });
+        });
+
+        List<File> files = archive.observeUnpackingTo(Locator.temporaryDirectory()).toList();
+        assert files.size() == 3;
     }
 }
