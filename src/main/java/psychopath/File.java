@@ -9,9 +9,11 @@
  */
 package psychopath;
 
-import static java.nio.file.StandardCopyOption.*;
-import static java.nio.file.StandardOpenOption.*;
-import static java.util.concurrent.TimeUnit.*;
+import static java.nio.file.StandardCopyOption.COPY_ATTRIBUTES;
+import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
+import static java.nio.file.StandardOpenOption.CREATE;
+import static java.nio.file.StandardOpenOption.WRITE;
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -36,7 +38,6 @@ import java.nio.file.WatchEvent;
 import java.nio.file.attribute.FileAttribute;
 import java.util.List;
 import java.util.Set;
-import java.util.function.Consumer;
 import java.util.function.Function;
 
 import org.apache.commons.compress.archivers.ArchiveEntry;
@@ -354,64 +355,86 @@ public class File extends Location<File> {
     /**
      * Unpack archive file to the same directory that this {@link File} exists.
      * 
-     * @param options A list of options.
+     * @param patterns A list of glob patterns to accept file by its name.
      * @return An unpacked directory.
      */
-    public Directory unpack(UnpackOption... options) {
-        return unpackTo(absolutize().parent().directory(base()), options);
+    public final Directory unpack(String... patterns) {
+        return unpackTo(absolutize().parent().directory(base()), patterns);
     }
 
     /**
-     * Unpack archive file to the specified directory.
+     * Unpack archive file to the same directory that this {@link File} exists.
      * 
-     * @param destination A destination directory to unpack.
      * @param options A list of options.
      * @return An unpacked directory.
      */
-    public Directory unpackTo(Directory destination, UnpackOption... options) {
-        return unpackTo(destination, e -> {
-        }, options);
+    public final Directory unpack(Function<Option, Option> option) {
+        return unpackTo(absolutize().parent().directory(base()), option);
     }
 
     /**
-     * Unpack archive file to the specified directory.
+     * Unpack archive file to the destination {@link Directory}.
      * 
-     * @param destination A destination directory to unpack.
-     * @param listener An unpack event listener.
-     * @param options A list of options.
-     * @return An unpacked directory.
+     * @param destination A destination {@link Directory}.
+     * @param patterns A list of glob patterns to accept file by its name.
+     * @return A destination {@link Directory}.
      */
-    public Directory unpackTo(Directory destination, Consumer<File> listener, UnpackOption... options) {
-        try (ArchiveInputStream in = new ArchiveStreamFactory()
-                .createArchiveInputStream(extension().replaceAll("7z", "7z-override"), newInputStream())) {
-            destination.create();
+    public final Directory unpackTo(Directory destination, String... patterns) {
+        return unpackTo(destination, Option.of(patterns));
+    }
 
-            ArchiveEntry entry = null;
-            while ((entry = in.getNextEntry()) != null) {
-                if (in.canReadEntryData(entry)) {
-                    if (entry.isDirectory()) {
-                        destination.directory(entry.getName()).create();
-                    } else {
-                        File file = destination.file(entry.getName());
+    /**
+     * Unpack archive file to the destination {@link Directory}.
+     * 
+     * @param destination A destination {@link Directory}.
+     * @param option A operation {@link Option}.
+     * @return A destination {@link Directory}.
+     */
+    public final Directory unpackTo(Directory destination, Function<Option, Option> option) {
+        observeUnpackingTo(destination, option).to(I.NoOP);
 
-                        try (OutputStream out = file.newOutputStream()) {
-                            I.copy(in, out, false);
-                            listener.accept(file);
-                        }
-                    }
-                }
-            }
-        } catch (Throwable e) {
-            throw I.quiet(e);
-        }
-
-        for (UnpackOption option : options) {
-            option.process(destination);
-        }
         return destination;
     }
 
-    public Signal<File> observeUnpackingTo(Directory destination, Function<UnpackOption, UnpackOption> option) {
+    /**
+     * Unpack archive file to the same directory that this {@link File} exists.
+     * 
+     * @param patterns A list of glob patterns to accept file by its name.
+     * @return An unpacked directory.
+     */
+    public final Directory unpackToTemporary(String... patterns) {
+        return unpackTo(Locator.temporaryDirectory(), patterns);
+    }
+
+    /**
+     * Unpack archive file to the same directory that this {@link File} exists.
+     * 
+     * @param options A list of options.
+     * @return An unpacked directory.
+     */
+    public final Directory unpackToTemporary(Function<Option, Option> option) {
+        return unpackTo(Locator.temporaryDirectory(), option);
+    }
+
+    /**
+     * Build stream that unpack archive file to the destination {@link Directory}.
+     * 
+     * @param destination A destination {@link Directory}.
+     * @param patterns A list of glob patterns to accept file by its name.
+     * @return A event stream which emits operated {@link File}s.
+     */
+    public final Signal<File> observeUnpackingTo(Directory destination, String... patterns) {
+        return observeUnpackingTo(destination, Option.of(patterns));
+    }
+
+    /**
+     * Build stream that unpack archive file to the destination {@link Directory}.
+     * 
+     * @param destination A destination {@link Directory}.
+     * @param option A operation {@link Option}.
+     * @return A event stream which emits operated {@link File}s.
+     */
+    public final Signal<File> observeUnpackingTo(Directory destination, Function<Option, Option> option) {
         return new Signal<>((observer, disposer) -> {
             try (ArchiveInputStream in = new ArchiveStreamFactory()
                     .createArchiveInputStream(extension().replaceAll("7z", "7z-override"), newInputStream())) {
@@ -436,22 +459,8 @@ public class File extends Location<File> {
             } catch (Throwable e) {
                 observer.error(e);
             }
-
-            for (UnpackOption option : options) {
-                option.process(destination);
-            }
             return disposer;
         });
-    }
-
-    /**
-     * Unpack archive file to the same directory that this {@link File} exists.
-     * 
-     * @param options A list of options.
-     * @return An unpacked directory.
-     */
-    public Directory unpackToTemporary(UnpackOption... options) {
-        return unpackTo(Locator.temporaryDirectory(), options);
     }
 
     /**
