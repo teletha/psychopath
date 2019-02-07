@@ -310,6 +310,54 @@ public abstract class Location<Self extends Location> implements Comparable<Loca
     }
 
     /**
+     * Returns a file's last modified time.
+     * <p>
+     * The {@code options} array may be used to indicate how symbolic links are handled for the case
+     * that the file is a symbolic link. By default, symbolic links are followed and the file
+     * attribute of the final target of the link is read. If the option
+     * {@link LinkOption#NOFOLLOW_LINKS NOFOLLOW_LINKS} is present then symbolic links are not
+     * followed.
+     *
+     * @param options options indicating how symbolic links are handled
+     * @return a {@code FileTime} representing the time the file was last modified, or an
+     *         implementation specific default when a time stamp to indicate the time of last
+     *         modification is not supported by the file system
+     * @throws IOException if an I/O error occurs
+     * @throws SecurityException In the case of the default provider, and a security manager is
+     *             installed, its {@link SecurityManager#checkRead(String) checkRead} method denies
+     *             read access to the file.
+     * @see BasicFileAttributes#lastModifiedTime
+     */
+    public final ZonedDateTime lastModifiedDateTime(LinkOption... options) {
+        return ZonedDateTime.from(lastModifiedTime(options));
+    }
+
+    /**
+     * Updates a file's last modified time attribute. The file time is converted to the epoch and
+     * precision supported by the file system. Converting from finer to coarser granularities result
+     * in precision loss. The behavior of this method when attempting to set the last modified time
+     * when it is not supported by the file system or is outside the range supported by the
+     * underlying file store is not defined. It may or not fail by throwing an {@code IOException}.
+     *
+     * @param time the new last modified time
+     * @return Chainable API
+     * @throws IOException if an I/O error occurs
+     * @throws SecurityException In the case of the default provider, and a security manager is
+     *             installed, its {@link SecurityManager#checkWrite(String) checkWrite} method
+     *             denies write access to the file.
+     */
+    public final Self lastModified(FileTime time) {
+        if (time != null) {
+            try {
+                Files.setLastModifiedTime(path, time);
+            } catch (IOException e) {
+                throw I.quiet(e);
+            }
+        }
+        return (Self) this;
+    }
+
+    /**
      * Updates a file's last modified time attribute. The file time is converted to the epoch and
      * precision supported by the file system. Converting from finer to coarser granularities result
      * in precision loss. The behavior of this method when attempting to set the last modified time
@@ -367,11 +415,7 @@ public abstract class Location<Self extends Location> implements Comparable<Loca
      */
     public final Self lastModified(Instant time) {
         if (time != null) {
-            try {
-                Files.setLastModifiedTime(path, FileTime.from(time));
-            } catch (IOException e) {
-                throw I.quiet(e);
-            }
+            lastModified(FileTime.from(time));
         }
         return (Self) this;
     }

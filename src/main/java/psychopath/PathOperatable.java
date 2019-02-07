@@ -15,7 +15,10 @@ import kiss.I;
 import kiss.Signal;
 import kiss.Ⅱ;
 
-public interface PathOperatable {
+/**
+ * Internal API to define default methods.
+ */
+interface PathOperatable {
 
     /**
      * Delete resources.
