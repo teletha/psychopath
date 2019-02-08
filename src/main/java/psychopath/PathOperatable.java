@@ -18,7 +18,7 @@ import kiss.Ⅱ;
 /**
  * Internal API to define default methods.
  */
-interface PathOperatable {
+public interface PathOperatable {
 
     /**
      * Delete resources.

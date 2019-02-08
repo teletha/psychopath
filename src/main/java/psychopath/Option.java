@@ -17,6 +17,7 @@ import java.util.function.BiPredicate;
 import java.util.function.Function;
 
 import psychopath.archiver.Archiver;
+import psychopath.archiver.JarOption;
 
 public class Option {
 
@@ -131,6 +132,15 @@ public class Option {
      * @return
      */
     public Option archiveJar() {
+        return archiveJar(Function.identity());
+    }
+
+    /**
+     * Specify archive type.
+     * 
+     * @return
+     */
+    public Option archiveJar(Function<JarOption, JarOption> option) {
         archiver = Archiver.Jar;
         return this;
     }

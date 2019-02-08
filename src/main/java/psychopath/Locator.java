@@ -303,6 +303,16 @@ public class Locator {
     }
 
     /**
+     * Creates a new abstract file somewhere beneath the system's temporary directory (as defined by
+     * the <code>java.io.tmpdir</code> system property).
+     * 
+     * @return
+     */
+    public static File temporaryFile(String name) {
+        return temporaryDirectory().file(name);
+    }
+
+    /**
      * Locate the system temporary {@link Directory}.
      * 
      * @return
