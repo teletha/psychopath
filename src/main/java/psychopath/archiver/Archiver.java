@@ -9,13 +9,17 @@
  */
 package psychopath.archiver;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.apache.commons.compress.archivers.ArchiveEntry;
 import org.apache.commons.compress.archivers.jar.JarArchiveEntry;
 import org.apache.commons.compress.archivers.sevenz.SevenZArchiveEntry;
+import org.apache.commons.compress.archivers.sevenz.SevenZOutputFile;
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 
+import kiss.I;
+import kiss.Signal;
 import psychopath.File;
 
 public enum Archiver {
@@ -26,6 +30,13 @@ public enum Archiver {
             JarArchiveEntry entry = new JarArchiveEntry(name);
             return entry;
         }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public Signal<File> pack(Signal<File> entries, File destination) {
+        }
     },
 
     Zip("zip") {
@@ -33,6 +44,13 @@ public enum Archiver {
         public ArchiveEntry create(String name, File file) {
             ZipArchiveEntry entry = new ZipArchiveEntry(name);
             return entry;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public Signal<File> pack(Signal<File> entries, File destination) {
         }
     },
 
@@ -42,6 +60,22 @@ public enum Archiver {
             SevenZArchiveEntry entry = new SevenZArchiveEntry();
             entry.setName(name);
             return entry;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public Signal<File> pack(Signal<File> entries, File destination) {
+            try {
+                SevenZOutputFile archive = new SevenZOutputFile(destination.asJavaFile());
+
+                return entries.effect(file -> {
+                    archive.createArchiveEntry(file.asJavaFile());
+                });
+            } catch (IOException e) {
+                throw I.quiet(e);
+            }
         }
     };
 
@@ -82,6 +116,8 @@ public enum Archiver {
      * @return
      */
     public abstract ArchiveEntry create(String name, File file);
+
+    public abstract Signal<File> pack(Signal<File> entries, File destination);
 
     /**
      * Find the suitable {@link ArchiveEntry} by extension.
