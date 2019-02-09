@@ -86,4 +86,17 @@ class ZipTest extends LocationTestHelper {
             });
         });
     }
+
+    @Test
+    void unpackPattern() {
+        File archive = Locator.file("src/test/resources/root." + ext);
+        assert archive.isPresent();
+        assert match(archive.unpackToTemporary("root/*.txt"), $ -> {
+            $.dir("root", () -> {
+                $.file("1.txt", "1");
+                $.file("2.txt", "2");
+                $.file("3.txt", "3");
+            });
+        });
+    }
 }

@@ -42,10 +42,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.Function;
 
-import org.apache.commons.compress.archivers.ArchiveEntry;
-import org.apache.commons.compress.archivers.ArchiveInputStream;
-import org.apache.commons.compress.archivers.ArchiveStreamFactory;
-
 import kiss.I;
 import kiss.Signal;
 import kiss.WiseRunnable;
@@ -393,7 +389,11 @@ public class File extends Location<File> {
      * @return A destination {@link Directory}.
      */
     public final Directory unpackTo(Directory destination, Function<Option, Option> option) {
-        observeUnpackingTo(destination, option).to(I.NoOP);
+        observeUnpackingTo(destination, option).to(I.NoOP, e -> {
+            e.printStackTrace();
+        }, () -> {
+
+        });
 
         return destination;
     }
@@ -437,32 +437,35 @@ public class File extends Location<File> {
      * @return A event stream which emits operated {@link File}s.
      */
     public Signal<File> observeUnpackingTo(Directory destination, Function<Option, Option> option) {
-        return new Signal<>((observer, disposer) -> {
-            try (ArchiveInputStream in = new ArchiveStreamFactory()
-                    .createArchiveInputStream(extension().replaceAll("7z", "7z-override"), newInputStream())) {
-                destination.create();
+        return asArchive().observeCopyingTo(destination, option).as(File.class);
 
-                ArchiveEntry entry = null;
-                while ((entry = in.getNextEntry()) != null) {
-                    if (in.canReadEntryData(entry)) {
-                        if (entry.isDirectory()) {
-                            destination.directory(entry.getName()).create();
-                        } else {
-                            File file = destination.file(entry.getName());
-
-                            try (OutputStream out = file.newOutputStream()) {
-                                observer.accept(file);
-                                I.copy(in, out, false);
-                            }
-                        }
-                    }
-                }
-                observer.complete();
-            } catch (Throwable e) {
-                observer.error(e);
-            }
-            return disposer;
-        });
+        // return new Signal<>((observer, disposer) -> {
+        // try (ArchiveInputStream in = new ArchiveStreamFactory()
+        // .createArchiveInputStream(extension().replaceAll("7z", "7z-override"), newInputStream()))
+        // {
+        // destination.create();
+        //
+        // ArchiveEntry entry = null;
+        // while ((entry = in.getNextEntry()) != null) {
+        // if (in.canReadEntryData(entry)) {
+        // if (entry.isDirectory()) {
+        // destination.directory(entry.getName()).create();
+        // } else {
+        // File file = destination.file(entry.getName());
+        //
+        // try (OutputStream out = file.newOutputStream()) {
+        // observer.accept(file);
+        // I.copy(in, out, false);
+        // }
+        // }
+        // }
+        // }
+        // observer.complete();
+        // } catch (Throwable e) {
+        // observer.error(e);
+        // }
+        // return disposer;
+        // });
     }
 
     /**
@@ -1022,6 +1025,10 @@ public class File extends Location<File> {
     private static Path detectFileSystetm(File file) {
         try {
             switch (file.extension()) {
+            case "7z":
+            case "rar":
+                return Archiver7.unpack(file).path;
+
             case "zip":
             default:
                 return FileSystems.newFileSystem(file.path, null).getPath("/");
