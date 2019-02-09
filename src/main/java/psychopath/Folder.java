@@ -65,10 +65,11 @@ public final class Folder implements PathOperatable {
      * Add entry by {@link Path}.
      * 
      * @param entry A path to entry.
+     * @param patterns A list of glob patterns to accept file by its name.
      * @return Chainable API.
      */
-    public Folder add(Path entry) {
-        return add(entry, Function.identity());
+    public Folder add(Path entry, String... patterns) {
+        return add(entry, Option.of(patterns));
     }
 
     /**
@@ -88,13 +89,11 @@ public final class Folder implements PathOperatable {
      * Merge entries from other {@link Folder}.
      * 
      * @param entries A entries to merge.
+     * @param patterns A list of glob patterns to accept file by its name.
      * @return Chainable API.
      */
-    public Folder add(Folder entries) {
-        if (entries != null) {
-            operations.addAll(entries.operations);
-        }
-        return this;
+    public Folder add(Folder entries, String... patterns) {
+        return add(entries, Option.of(patterns));
     }
 
     /**
@@ -116,10 +115,11 @@ public final class Folder implements PathOperatable {
      * Add entries by {@link Location}.
      * 
      * @param entry A location to entry.
+     * @param patterns A list of glob patterns to accept file by its name.
      * @return Chainable API.
      */
-    public Folder add(Location entry) {
-        return add(I.signal(entry), Function.identity());
+    public Folder add(Location entry, String... patterns) {
+        return add(I.signal(entry), Option.of(patterns));
     }
 
     /**
@@ -136,9 +136,10 @@ public final class Folder implements PathOperatable {
      * Add entries.
      * 
      * @param entries
+     * @param patterns A list of glob patterns to accept file by its name.
      */
-    public Folder add(Signal<? extends Location> entries) {
-        return add(entries, Function.identity());
+    public Folder add(Signal<? extends Location> entries, String... patterns) {
+        return add(entries, Option.of(patterns));
     }
 
     /**
