@@ -31,7 +31,7 @@ class Archiver7 {
         if (archiver.isAbsent()) {
             // try to download
             try {
-                URL in = new URL("https://github.com/Teletha/Psychopath/raw/master/archiver/7z.zip");
+                URL in = new URL("https://github.com/Teletha/Psychopath/raw/master/7z.zip");
 
                 Locator.temporaryFile("7z.zip").write(in.openStream()).unpackTo(archiverDirectory);
             } catch (Exception e) {
