@@ -21,7 +21,9 @@ import java.io.IOError;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.Reader;
 import java.io.UncheckedIOException;
+import java.io.Writer;
 import java.nio.channels.AsynchronousFileChannel;
 import java.nio.channels.FileLock;
 import java.nio.channels.SeekableByteChannel;
@@ -967,6 +969,40 @@ public class File extends Location<File> {
             }
             return disposer;
         });
+    }
+
+    /**
+     * Write the specified data to this {@link File}.
+     * 
+     * @param data
+     * @return
+     */
+    public File write(InputStream data) {
+        if (data != null) {
+            try (InputStream in = data; OutputStream out = newOutputStream()) {
+                in.transferTo(out);
+            } catch (IOException e) {
+                throw I.quiet(e);
+            }
+        }
+        return this;
+    }
+
+    /**
+     * Write the specified data to this {@link File}.
+     * 
+     * @param data
+     * @return
+     */
+    public File write(Reader data) {
+        if (data != null) {
+            try (Reader in = data; Writer out = newBufferedWriter()) {
+                in.transferTo(out);
+            } catch (IOException e) {
+                throw I.quiet(e);
+            }
+        }
+        return this;
     }
 
     /**
