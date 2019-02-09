@@ -233,6 +233,51 @@ public abstract class Location<Self extends Location> implements Comparable<Loca
     public abstract Signal<Location<?>> descendant();
 
     /**
+     * Reads a file's attributes as a bulk operation.
+     * <p>
+     * The {@code type} parameter is the type of the attributes required and this method returns an
+     * instance of that type if supported. All implementations support a basic set of file
+     * attributes and so invoking this method with a {@code type} parameter of {@code
+     * BasicFileAttributes.class} will not throw {@code
+     * UnsupportedOperationException}.
+     * <p>
+     * The {@code options} array may be used to indicate how symbolic links are handled for the case
+     * that the file is a symbolic link. By default, symbolic links are followed and the file
+     * attribute of the final target of the link is read. If the option
+     * {@link LinkOption#NOFOLLOW_LINKS NOFOLLOW_LINKS} is present then symbolic links are not
+     * followed.
+     * <p>
+     * It is implementation specific if all file attributes are read as an atomic operation with
+     * respect to other file system operations.
+     * <p>
+     * <b>Usage Example:</b> Suppose we want to read a file's attributes in bulk: <pre>
+     *    Path path = ...
+     *    BasicFileAttributes attrs = Files.readAttributes(path, BasicFileAttributes.class);
+     * </pre> Alternatively, suppose we want to read file's POSIX attributes without following
+     * symbolic links: <pre>
+     *    PosixFileAttributes attrs =
+     *        Files.readAttributes(path, PosixFileAttributes.class, NOFOLLOW_LINKS);
+     * </pre>
+     *
+     * @param path the path to the file
+     * @return the file attributes
+     * @throws UnsupportedOperationException if an attributes of the given type are not supported
+     * @throws IOException if an I/O error occurs
+     * @throws SecurityException In the case of the default provider, a security manager is
+     *             installed, its {@link SecurityManager#checkRead(String) checkRead} method is
+     *             invoked to check read access to the file. If this method is invoked to read
+     *             security sensitive attributes then the security manager may be invoke to check
+     *             for additional permissions.
+     */
+    public final BasicFileAttributes attr() {
+        try {
+            return Files.readAttributes(path, BasicFileAttributes.class);
+        } catch (IOException e) {
+            throw I.quiet(e);
+        }
+    }
+
+    /**
      * Returns the size of a file (in bytes). The size may differ from the actual size on the file
      * system due to compression, support for sparse files, or other reasons. The size of files that
      * are not {@link #isRegularFile regular} files is implementation specific and therefore

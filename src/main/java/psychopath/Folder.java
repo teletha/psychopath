@@ -9,11 +9,10 @@
  */
 package psychopath;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.nio.file.Path;
-import java.nio.file.attribute.FileTime;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -249,19 +248,21 @@ public final class Folder implements PathOperatable {
     private static Signal<Location> pack(ZipOutputStream out, Directory directory, File file, Directory relative) {
         return new Signal<>((observer, disposer) -> {
             try {
+                BasicFileAttributes attr = file.attr();
                 ZipEntry entry = new ZipEntry(relative.file(directory.relativize(file).toString()).path());
-                entry.setLastModifiedTime(FileTime.from(file.lastModifiedTime()));
-                entry.setSize(file.size());
+                entry.setSize(attr.size());
+                entry.setMethod(ZipEntry.DEFLATED);
+                entry.setLastModifiedTime(attr.lastModifiedTime());
 
+                observer.accept(file);
                 out.putNextEntry(entry);
                 try (InputStream in = file.newInputStream()) {
-                    observer.accept(file);
                     in.transferTo(out);
                 }
                 out.closeEntry();
                 observer.complete();
-            } catch (IOException e) {
-                observer.error(e);
+            } catch (Throwable e) {
+                // ignore
             }
             return disposer;
         });
