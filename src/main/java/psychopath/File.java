@@ -1029,7 +1029,6 @@ public class File extends Location<File> {
             case "rar":
                 return Archiver7.unpack(file).path;
 
-            case "zip":
             default:
                 return FileSystems.newFileSystem(file.path, null).getPath("/");
             }

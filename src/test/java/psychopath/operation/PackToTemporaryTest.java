@@ -24,7 +24,7 @@ class PackToTemporaryTest extends LocationTestHelper {
         File archive = locateFile("file", "value").packToTemporary();
 
         assert matchZip(archive, $ -> {
-
+            $.file("file", "value");
         });
     }
 }

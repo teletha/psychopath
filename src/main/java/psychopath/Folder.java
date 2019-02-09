@@ -11,20 +11,19 @@ package psychopath;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.Charset;
 import java.nio.file.Path;
+import java.nio.file.attribute.FileTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
-
-import org.apache.commons.compress.archivers.ArchiveEntry;
-import org.apache.commons.compress.archivers.ArchiveOutputStream;
-import org.apache.commons.compress.archivers.ArchiveStreamFactory;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 import kiss.I;
 import kiss.Signal;
 import kiss.Ⅱ;
-import psychopath.archiver.Archiver;
 
 /**
  * Virtual directory to manage resources from various entries.
@@ -212,22 +211,15 @@ public final class Folder implements PathOperatable {
     @Override
     public Signal<Location> observePackingTo(File archive, Function<Option, Option> option) {
         return new Signal<>((observer, disposer) -> {
-            Option o = option.apply(new Option());
-            Archiver archiver = Archiver.byExtension(archive.extension(), o.archiver);
-
-            try (ArchiveOutputStream out = new ArchiveStreamFactory()
-                    .createArchiveOutputStream(archiver.extension.replaceAll("7z", "7z-override"), archive.newOutputStream())) {
-                I.signal(operations)
-                        .flatMap(operation -> operation.observePackingTo(out, archiver, Locator.directory(""), option))
-                        .to(observer);
-                out.finish();
+            try (ZipOutputStream out = new ZipOutputStream(archive.newOutputStream(), Charset.defaultCharset())) {
+                I.signal(operations).flatMap(operation -> operation.observePackingTo(out, Locator.directory(""), option)).to(observer);
                 observer.complete();
             } catch (Throwable e) {
-                e.printStackTrace();
                 observer.error(e);
             }
             return disposer;
         });
+
     }
 
     /**
@@ -247,24 +239,26 @@ public final class Folder implements PathOperatable {
     }
 
     /**
-     * Build {@link ArchiveEntry} for each resources.
+     * Build {@link ZipEntry} for each resources.
      * 
      * @param out
      * @param directory
      * @param file
      * @param relative
      */
-    private static Signal<Location> pack(ArchiveOutputStream out, Archiver archiver, Directory directory, File file, Directory relative) {
+    private static Signal<Location> pack(ZipOutputStream out, Directory directory, File file, Directory relative) {
         return new Signal<>((observer, disposer) -> {
             try {
-                ArchiveEntry entry = archiver.create(relative.file(directory.relativize(file).toString()).path(), file);
-                out.putArchiveEntry(entry);
+                ZipEntry entry = new ZipEntry(relative.file(directory.relativize(file).toString()).path());
+                entry.setLastModifiedTime(FileTime.from(file.lastModifiedTime()));
+                entry.setSize(file.size());
 
+                out.putNextEntry(entry);
                 try (InputStream in = file.newInputStream()) {
-                    in.transferTo(out);
                     observer.accept(file);
+                    in.transferTo(out);
                 }
-                out.closeArchiveEntry();
+                out.closeEntry();
                 observer.complete();
             } catch (IOException e) {
                 observer.error(e);
@@ -326,15 +320,15 @@ public final class Folder implements PathOperatable {
          * @param relative
          * @param patterns
          */
-        public Signal<Location> observePackingTo(ArchiveOutputStream archive, Archiver builder, Directory relative, Function<Option, Option> option) {
+        public Signal<Location> observePackingTo(ZipOutputStream archive, Directory relative, Function<Option, Option> option) {
             Function<Option, Option> combined = this.option.andThen(option);
             Option o = combined.apply(new Option());
 
             if (location.isFile()) {
-                return pack(archive, builder, location.parent(), location.asFile(), o.allocator);
+                return pack(archive, location.parent(), location.asFile(), o.allocator);
             } else {
                 return location.walkFile(combined)
-                        .flatMap(file -> pack(archive, builder, !location.isRoot() && o.acceptRoot ? location.parent()
+                        .flatMap(file -> pack(archive, !location.isRoot() && o.acceptRoot ? location.parent()
                                 : location.asDirectory(), file, o.allocator));
             }
         }
