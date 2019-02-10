@@ -10,7 +10,6 @@
 package psychopath;
 
 import java.io.InputStream;
-import java.nio.charset.Charset;
 import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
@@ -211,7 +210,57 @@ public final class Folder implements PathOperatable {
     @Override
     public Signal<Location> observePackingTo(File archive, Function<Option, Option> option) {
         return new Signal<>((observer, disposer) -> {
-            try (ZipOutputStream out = new ZipOutputStream(archive.newOutputStream(), Charset.defaultCharset())) {
+            // see https://commons.apache.org/proper/commons-compress/zip.html
+            //
+            // Traditionally the ZIP archive format uses CodePage 437 as encoding for file name,
+            // which is not sufficient for many international character sets.
+            //
+            // Over time different archivers have chosen different ways to work around the
+            // limitation - the java.util.zip packages simply uses UTF-8 as its encoding for
+            // example.
+            //
+            // The optimal setting of flags depends on the archivers you expect as
+            // consumers/producers of the ZIP archives. Below are some test results which may be
+            // superseded with later versions of each tool.
+            //
+            // The java.util.zip package used by the jar executable or to read jars from your
+            // CLASSPATH reads and writes UTF-8 names, it doesn't set or recognize any flags or
+            // Unicode extra fields.
+            //
+            // Starting with Java7 java.util.zip writes UTF-8 by default and uses the language
+            // encoding flag. It is possible to specify a different encoding when reading/writing
+            // ZIPs via new constructors. The package now recognizes the language encoding flag when
+            // reading and ignores the Unicode extra fields.
+            //
+            // 7Zip writes CodePage 437 by default but uses UTF-8 and the language encoding flag
+            // when writing entries that cannot be encoded as CodePage 437 (similar to the zip task
+            // with fallbacktoUTF8 set to true). It recognizes the language encoding flag when
+            // reading and ignores the Unicode extra fields.
+            //
+            // WinZIP writes CodePage 437 and uses Unicode extra fields by default. It recognizes
+            // the Unicode extra field and the language encoding flag when reading.
+            // Windows' "compressed folder" feature doesn't recognize any flag or extra field and
+            // creates archives using the platforms default encoding - and expects archives to be in
+            // that encoding when reading them.
+            //
+            // InfoZIP based tools can recognize and write both, it is a compile time option and
+            // depends on the platform so your mileage may vary.
+            //
+            // PKWARE zip tools recognize both and prefer the language encoding flag. They create
+            // archives using CodePage 437 if possible and UTF-8 plus the language encoding flag for
+            // file names that cannot be encoded as CodePage 437.
+            //
+            // If you are creating jars, then java.util.zip is your main consumer. We recommend you
+            // set the encoding to UTF-8 and keep the language encoding flag enabled. The flag won't
+            // help or hurt java.util.zip prior to Java7 but archivers that support it will show the
+            // correct file names.
+            //
+            // For maximum interop it is probably best to set the encoding to UTF-8, enable the
+            // language encoding flag and create Unicode extra fields when writing ZIPs. Such
+            // archives should be extracted correctly by java.util.zip, 7Zip, WinZIP, PKWARE tools
+            // and most likely InfoZIP tools. They will be unusable with Windows' "compressed
+            // folders" feature and bigger than archives without the Unicode extra fields, though.
+            try (ZipOutputStream out = new ZipOutputStream(archive.newOutputStream() /* Use UTF-8 */)) {
                 I.signal(operations).flatMap(operation -> operation.observePackingTo(out, Locator.directory(""), option)).to(observer);
                 observer.complete();
             } catch (Throwable e) {

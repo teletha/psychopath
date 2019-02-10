@@ -187,10 +187,12 @@ public class Directory extends Location<Directory> {
      */
     @Override
     public Directory create() {
-        try {
-            Files.createDirectories(path);
-        } catch (IOException e) {
-            throw I.quiet(e);
+        if (Files.notExists(path)) {
+            try {
+                Files.createDirectories(path);
+            } catch (IOException e) {
+                throw I.quiet(e);
+            }
         }
         return this;
     }

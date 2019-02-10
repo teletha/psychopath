@@ -11,9 +11,12 @@ package psychopath;
 
 import org.junit.jupiter.api.Test;
 
+import antibug.powerassert.PowerAssertOff;
+
 class WalkArchiveTest extends LocationTestHelper {
 
     @Test
+    @PowerAssertOff
     public void zip() {
         File zip = locateArchive("test.zip", $ -> {
             $.file("text1");
