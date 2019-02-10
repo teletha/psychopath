@@ -192,15 +192,9 @@ public class File extends Location<File> {
      *             the target file. If a symbolic link is copied the security manager is invoked to
      *             check {@link LinkPermission}("symbolic").
      */
-    public void copyTo(File destination) {
-        if (isPresent()) {
-            try {
-                destination.parent().create();
-                Files.copy(path, destination.path, REPLACE_EXISTING, COPY_ATTRIBUTES);
-            } catch (Exception e) {
-                throw I.quiet(e);
-            }
-        }
+    public File copyTo(File destination) {
+        observeCopyingTo(destination).to(I.NoOP);
+        return destination;
     }
 
     /**
@@ -308,8 +302,10 @@ public class File extends Location<File> {
      *             the target file. If a symbolic link is copied the security manager is invoked to
      *             check {@link LinkPermission}("symbolic").
      */
-    public void moveTo(File destination) {
+    public File moveTo(File destination) {
         observeMovingTo(destination).to(I.NoOP);
+
+        return destination;
     }
 
     /**
