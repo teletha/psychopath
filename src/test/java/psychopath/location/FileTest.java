@@ -211,6 +211,12 @@ class FileTest extends LocationTestHelper {
     }
 
     @Test
+    void lines() {
+        File file = locateAbsent("absent");
+        assert file.lines().toList().isEmpty();
+    }
+
+    @Test
     void create() {
         assert locateAbsent("file").create().isPresent();
         assert locateAbsent("deep/file").create().isPresent();

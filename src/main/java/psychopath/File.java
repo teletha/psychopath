@@ -958,6 +958,11 @@ public class File extends Location<File> {
      */
     public Signal<String> lines(Charset charset) {
         return new Signal<>((observer, disposer) -> {
+            if (isAbsent()) {
+                observer.complete();
+                return disposer;
+            }
+
             try (BufferedReader reader = Files.newBufferedReader(path, charset)) {
                 String line = null;
                 while (disposer.isNotDisposed() && (line = reader.readLine()) != null) {
