@@ -12,7 +12,7 @@ public class Project extends bee.api.Project {
     {
         product("com.github.teletha", "psychopath", "0.9");
 
-        require("com.github.teletha", "sinobu", "1.0");
+        require("com.github.teletha", "sinobu", "[1.2,)");
         require("com.github.teletha", "antibug", "0.6").atTest();
         // unrequire("commons-logging", "commons-logging");
     }
