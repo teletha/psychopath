@@ -374,7 +374,7 @@ public abstract class Location<Self extends Location> implements Comparable<Loca
      * @see BasicFileAttributes#lastModifiedTime
      */
     public final ZonedDateTime lastModifiedDateTime(LinkOption... options) {
-        return ZonedDateTime.from(lastModifiedTime(options));
+        return lastModifiedTime(options).atZone(ZoneId.systemDefault());
     }
 
     /**
