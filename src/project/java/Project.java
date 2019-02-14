@@ -14,6 +14,7 @@ public class Project extends bee.api.Project {
 
         require("com.github.teletha", "sinobu", "[1.2,)");
         require("com.github.teletha", "antibug", "0.6").atTest();
-        // unrequire("commons-logging", "commons-logging");
+
+        versionControlSystem("https://github.com/teletha/Psychopath");
     }
 }
