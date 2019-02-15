@@ -91,9 +91,6 @@ public class Locator {
      * @return The specified {@link File}.
      */
     public static File file(String path) {
-        if (path == null || path.isEmpty()) {
-            throw new IllegalArgumentException("Empty file name is invalid.");
-        }
         return file(Paths.get(path));
     }
 

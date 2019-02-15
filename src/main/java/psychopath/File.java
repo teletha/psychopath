@@ -39,6 +39,7 @@ import java.nio.file.StandardOpenOption;
 import java.nio.file.WatchEvent;
 import java.nio.file.attribute.FileAttribute;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.function.Function;
 
@@ -53,7 +54,7 @@ public class File extends Location<File> {
      * @param path
      */
     File(Path path) {
-        super(path);
+        super(Objects.requireNonNull(path));
     }
 
     /**

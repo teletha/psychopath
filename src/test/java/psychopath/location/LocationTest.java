@@ -9,14 +9,13 @@
  */
 package psychopath.location;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import org.junit.jupiter.api.Test;
 
-import antibug.Code;
 import psychopath.Directory;
 import psychopath.File;
 import psychopath.LocationTestHelper;
@@ -52,7 +51,7 @@ class LocationTest extends LocationTestHelper {
         assert Locator.file(base + "/inDirectory/file").isAbsent();
 
         // abnormal
-        assert Code.rejectEmptyArgs(Locator::file);
+        assertThrows(NullPointerException.class, () -> Locator.file((String) null));
     }
 
     @Test
@@ -69,7 +68,7 @@ class LocationTest extends LocationTestHelper {
         assert Locator.file(base.resolve("inDirectory/file")).isAbsent();
 
         // abnormal
-        assert Code.rejectEmptyArgs(Locator::file);
+        assertThrows(NullPointerException.class, () -> Locator.file((Path) null));
     }
 
     @Test
