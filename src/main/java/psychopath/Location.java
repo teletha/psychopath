@@ -711,6 +711,20 @@ public abstract class Location<Self extends Location> implements Comparable<Loca
     }
 
     /**
+     * Rename to the specified name.
+     * 
+     * @param name A new name.
+     */
+    public final Self renameTo(String name) {
+        try {
+            Files.move(path, path.resolveSibling(name));
+        } catch (IOException e) {
+            throw I.quiet(e);
+        }
+        return (Self) this;
+    }
+
+    /**
      * <p>
      * Observe the file system change and raises events when a file, directory, or file in a
      * directory, changes.
