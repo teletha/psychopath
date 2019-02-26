@@ -9,26 +9,24 @@
  */
 package psychopath;
 
-import static java.nio.file.FileVisitResult.CONTINUE;
-import static java.nio.file.FileVisitResult.SKIP_SUBTREE;
-import static java.nio.file.FileVisitResult.TERMINATE;
-import static java.nio.file.StandardCopyOption.COPY_ATTRIBUTES;
-import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
-import static java.nio.file.StandardWatchEventKinds.ENTRY_CREATE;
-import static java.nio.file.StandardWatchEventKinds.ENTRY_DELETE;
-import static java.nio.file.StandardWatchEventKinds.ENTRY_MODIFY;
+import static java.nio.file.FileVisitResult.*;
+import static java.nio.file.StandardWatchEventKinds.*;
 
 import java.io.IOException;
 import java.nio.file.ClosedWatchServiceException;
+import java.nio.file.CopyOption;
 import java.nio.file.FileVisitResult;
 import java.nio.file.FileVisitor;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.PathMatcher;
+import java.nio.file.StandardCopyOption;
 import java.nio.file.WatchEvent;
 import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.function.BiPredicate;
 
 import kiss.Disposable;
@@ -67,6 +65,9 @@ class CymaticScan implements FileVisitor<Path>, Runnable, Disposable {
     /** The exclude directory pattern. */
     private BiPredicate<Path, BasicFileAttributes> directory;
 
+    /** The copy options */
+    private final CopyOption[] copies;
+
     /**
      * <p>
      * Utility for file tree traversal.
@@ -89,6 +90,11 @@ class CymaticScan implements FileVisitor<Path>, Runnable, Disposable {
         this.disposer = disposer;
         this.include = o.filter;
         this.root = o.acceptRoot;
+
+        Set<CopyOption> copies = new HashSet();
+        if (type == 0) copies.add(StandardCopyOption.COPY_ATTRIBUTES);
+        if (o.existingMode == 0) copies.add(StandardCopyOption.REPLACE_EXISTING);
+        this.copies = copies.toArray(new CopyOption[copies.size()]);
 
         // The copy and move operations need the root path.
         if (root && type < 2) from = from.parent();
@@ -221,11 +227,11 @@ class CymaticScan implements FileVisitor<Path>, Runnable, Disposable {
 
                 switch (type) {
                 case 0: // copy
-                    Files.copy(path, to.resolve(relative.toString()), COPY_ATTRIBUTES, REPLACE_EXISTING);
+                    Files.copy(path, to.resolve(relative.toString()), copies);
                     break;
 
                 case 1: // move
-                    Files.move(path, to.resolve(relative.toString()), REPLACE_EXISTING);
+                    Files.move(path, to.resolve(relative.toString()), copies);
                     break;
 
                 case 2: // delete

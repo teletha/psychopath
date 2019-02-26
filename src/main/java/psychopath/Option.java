@@ -34,6 +34,15 @@ public class Option {
     Directory allocator = Locator.directory("");
 
     /**
+     * <ul>
+     * <li>0 - replace</li>
+     * <li>1 - skip</li>
+     * <li>2 - stop with error</li>
+     * </ul>
+     */
+    int existingMode;
+
+    /**
      * Hide.
      */
     Option() {
@@ -117,6 +126,36 @@ public class Option {
         if (relative != null && relative.isRelative()) {
             this.allocator = relative;
         }
+        return this;
+    }
+
+    /**
+     * Specify override mode.
+     * 
+     * @return
+     */
+    public Option replaceExisting() {
+        existingMode = 0;
+        return this;
+    }
+
+    /**
+     * Specify override mode.
+     * 
+     * @return
+     */
+    public Option skipExisting() {
+        existingMode = 1;
+        return this;
+    }
+
+    /**
+     * Specify override mode.
+     * 
+     * @return
+     */
+    public Option stopExisting() {
+        existingMode = 2;
         return this;
     }
 

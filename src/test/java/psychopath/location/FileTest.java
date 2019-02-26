@@ -9,9 +9,12 @@
  */
 package psychopath.location;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.file.FileAlreadyExistsException;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
@@ -251,5 +254,102 @@ class FileTest extends LocationTestHelper {
 
         List<File> files = archive.observeUnpackingTo(Locator.temporaryDirectory()).toList();
         assert files.size() == 3;
+    }
+
+    @Test
+    void moveUp() {
+        Directory dir = locateDirectory("root", $ -> {
+            $.dir("in", () -> {
+                $.file("file");
+            });
+        });
+
+        File file = dir.file("in/file");
+        File up = dir.file("file");
+        assert file.isPresent();
+        assert up.isAbsent();
+
+        File uped = file.moveUp();
+        assert file.isAbsent();
+        assert up.isPresent();
+        assert uped.equals(up);
+    }
+
+    @Test
+    void moveUpToExistingSameType() {
+        Directory dir = locateDirectory("root", $ -> {
+            $.dir("in", () -> {
+                $.file("file", "original");
+            });
+            $.file("file", "dest");
+        });
+
+        File file = dir.file("in/file");
+        File up = dir.file("file");
+        assert file.isPresent();
+
+        File uped = file.moveUp();
+        assert file.isAbsent();
+        assert up.isPresent();
+        assert uped.equals(up);
+    }
+
+    @Test
+    void moveUpToExistingDifferentType() {
+        Directory dir = locateDirectory("root", $ -> {
+            $.dir("in", () -> {
+                $.file("file", "original");
+            });
+            $.dir("file");
+        });
+
+        dir.file("in/file").moveUp();
+
+        assert match(dir, $ -> {
+            $.dir("in", () -> {
+            });
+            $.dir("file");
+        });
+    }
+
+    @Test
+    void renameTo() {
+        Directory dir = locateDirectory("root", $ -> {
+            $.file("src");
+        });
+
+        File source = dir.file("src");
+        File destination = dir.file("dest");
+        assert source.isPresent();
+        assert destination.isAbsent();
+
+        File renamed = source.renameTo("dest");
+        assert source.isAbsent();
+        assert destination.isPresent();
+        assert destination.equals(renamed);
+        assert destination != renamed;
+    }
+
+    @Test
+    void renameToSameName() {
+        File source = locateFile("src");
+        File renamed = source.renameTo("src");
+        assert source == renamed;
+    }
+
+    @Test
+    void renameToNull() {
+        assertThrows(NullPointerException.class, () -> locateFile("src").renameTo(null));
+    }
+
+    @Test
+    void renameToExistingType() {
+        Directory dir = locateDirectory("root", $ -> {
+            $.file("src");
+            $.file("dest-file");
+            $.dir("dest-dir");
+        });
+        assertThrows(FileAlreadyExistsException.class, () -> dir.file("src").renameTo("dest-file"));
+        assertThrows(FileAlreadyExistsException.class, () -> dir.file("src").renameTo("dest-dir"));
     }
 }

@@ -704,24 +704,36 @@ public abstract class Location<Self extends Location> implements Comparable<Loca
     public abstract Self create();
 
     /**
-     * Shorthand method for <code>moveTo(parent().parent())</code>.
+     * Move to the parent {@link Directory}.
+     * 
+     * @return A new moved location in the parent {@link Directory} (NOT parent directory).
      */
-    public final void moveUp() {
-        moveTo(parent().parent());
+    public final Self moveUp() {
+        return convert(moveTo(parent().parent()).path.resolve(name()));
     }
 
     /**
      * Rename to the specified name.
      * 
      * @param name A new name.
+     * @return A new renamed location in same {@link Directory}.
      */
     public final Self renameTo(String name) {
-        try {
-            Files.move(path, path.resolveSibling(name));
-        } catch (IOException e) {
-            throw I.quiet(e);
+        if (name().equals(name)) {
+            return (Self) this;
+        } else {
+            Path dest = path.resolveSibling(name);
+            try {
+                Files.move(path, dest);
+            } catch (IOException e) {
+                throw I.quiet(e);
+            }
+            return convert(dest);
         }
-        return (Self) this;
+    }
+
+    public final File pack() {
+        return packTo(absolutize().parent().file(base() + ".zip"));
     }
 
     /**

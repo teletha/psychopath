@@ -9,9 +9,15 @@
  */
 package psychopath.location;
 
+import static org.junit.jupiter.api.Assertions.*;
+
+import java.nio.file.FileAlreadyExistsException;
+
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import psychopath.Directory;
+import psychopath.File;
 import psychopath.Location;
 import psychopath.LocationTestHelper;
 
@@ -186,5 +192,65 @@ class DirectoryTest extends LocationTestHelper {
             $.dir("child");
         });
         assert dir.isEmpty() == false;
+    }
+
+    @Test
+    void moveUp() {
+        Directory root = locateDirectory("root", $ -> {
+            $.dir("in", () -> {
+                $.dir("dir");
+            });
+        });
+
+        File dir = root.file("in/dir");
+        File up = root.file("dir");
+        assert dir.isPresent();
+        assert up.isAbsent();
+
+        File uped = dir.moveUp();
+        assert dir.isAbsent();
+        assert up.isPresent();
+        assert uped.equals(up);
+    }
+
+    @Test
+    void renameTo() {
+        Directory root = locateDirectory("root", $ -> {
+            $.dir("src");
+        });
+
+        Directory source = root.directory("src");
+        Directory destination = root.directory("dest");
+        assert source.isPresent();
+        assert destination.isAbsent();
+
+        Directory renamed = source.renameTo("dest");
+        assert source.isAbsent();
+        assert destination.isPresent();
+        assert destination.equals(renamed);
+        assert destination != renamed;
+    }
+
+    @Test
+    void renameToSameName() {
+        Directory source = locateDirectory("src");
+        Directory renamed = source.renameTo("src");
+        assert source == renamed;
+    }
+
+    @Test
+    void renameToNull() {
+        Assertions.assertThrows(NullPointerException.class, () -> locateDirectory("src").renameTo(null));
+    }
+
+    @Test
+    void renameToExistingType() {
+        Directory dir = locateDirectory("root", $ -> {
+            $.dir("src");
+            $.file("dest-file");
+            $.dir("dest-dir");
+        });
+        assertThrows(FileAlreadyExistsException.class, () -> dir.directory("src").renameTo("dest-file"));
+        assertThrows(FileAlreadyExistsException.class, () -> dir.directory("src").renameTo("dest-dir"));
     }
 }
