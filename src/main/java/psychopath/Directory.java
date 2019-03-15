@@ -68,7 +68,7 @@ public class Directory extends Location<Directory> {
      */
     @Override
     public Signal<Location<?>> descendant() {
-        return I.signal(true, (Location) this, dir -> dir.flatMap(Location<?>::children)).skip(this);
+        return I.signal(Runnable::run, I.signal(this), dir -> dir.flatMap(Location<?>::children)).skip(this);
     }
 
     /**
