@@ -231,8 +231,8 @@ public class LocationTestHelper {
         assert other.isDirectory();
         assert one.lastModified() == other.lastModified();
 
-        List<Location<?>> oneChildren = one.children().toList();
-        List<Location<?>> otherChildren = other.children().toList();
+        List<Location> oneChildren = one.children().toList();
+        List<Location> otherChildren = other.children().toList();
 
         assert oneChildren.size() == otherChildren.size();
 

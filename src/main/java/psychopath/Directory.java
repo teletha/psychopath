@@ -49,7 +49,7 @@ public class Directory extends Location<Directory> {
      * {@inheritDoc}
      */
     @Override
-    public Signal<Location<?>> children() {
+    public Signal<Location> children() {
         return new Signal<>((observer, disposer) -> {
             try (DirectoryStream<Path> stream = Files.newDirectoryStream(path)) {
                 for (Path path : stream) {
@@ -67,8 +67,8 @@ public class Directory extends Location<Directory> {
      * {@inheritDoc}
      */
     @Override
-    public Signal<Location<?>> descendant() {
-        return I.signal(Runnable::run, I.signal(this), dir -> dir.flatMap(Location<?>::children)).skip(this);
+    public Signal<Location> descendant() {
+        return I.signal((Location) this).recurseMap(s -> s.flatMap(Location::children)).skip(this);
     }
 
     /**

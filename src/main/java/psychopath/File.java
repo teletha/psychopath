@@ -9,11 +9,9 @@
  */
 package psychopath;
 
-import static java.nio.file.StandardCopyOption.COPY_ATTRIBUTES;
-import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
-import static java.nio.file.StandardOpenOption.CREATE;
-import static java.nio.file.StandardOpenOption.WRITE;
-import static java.util.concurrent.TimeUnit.MILLISECONDS;
+import static java.nio.file.StandardCopyOption.*;
+import static java.nio.file.StandardOpenOption.*;
+import static java.util.concurrent.TimeUnit.*;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -70,7 +68,7 @@ public class File extends Location<File> {
      * {@inheritDoc}
      */
     @Override
-    public Signal<Location<?>> children() {
+    public Signal<Location> children() {
         return Signal.empty();
     }
 
@@ -78,7 +76,7 @@ public class File extends Location<File> {
      * {@inheritDoc}
      */
     @Override
-    public Signal<Location<?>> descendant() {
+    public Signal<Location> descendant() {
         return Signal.empty();
     }
 

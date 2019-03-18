@@ -212,7 +212,7 @@ public abstract class Location<Self extends Location> implements Comparable<Loca
      *             installed, the {@link SecurityManager#checkRead(String) checkRead} method is
      *             invoked to check read access to the directory.
      */
-    public abstract Signal<Location<?>> children();
+    public abstract Signal<Location> children();
 
     /**
      * Return a {@link Signal} to iterate over all entries in this {@link Location}. The entry
@@ -230,7 +230,7 @@ public abstract class Location<Self extends Location> implements Comparable<Loca
      *             installed, the {@link SecurityManager#checkRead(String) checkRead} method is
      *             invoked to check read access to the directory.
      */
-    public abstract Signal<Location<?>> descendant();
+    public abstract Signal<Location> descendant();
 
     /**
      * Reads a file's attributes as a bulk operation.
