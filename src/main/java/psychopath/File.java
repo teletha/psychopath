@@ -69,7 +69,7 @@ public class File extends Location<File> {
      */
     @Override
     public Signal<Location> children() {
-        return Signal.empty();
+        return I.signal();
     }
 
     /**
@@ -77,7 +77,7 @@ public class File extends Location<File> {
      */
     @Override
     public Signal<Location> descendant() {
-        return Signal.empty();
+        return I.signal();
     }
 
     /**
@@ -325,7 +325,7 @@ public class File extends Location<File> {
         if (o.patterns.isEmpty() || Locator.file(path.getFileName()).match(o.patterns)) {
             return I.signal(I.pair(parent(), this));
         } else {
-            return Signal.empty();
+            return I.signal();
         }
     }
 
@@ -334,7 +334,7 @@ public class File extends Location<File> {
      */
     @Override
     public Signal<Ⅱ<Directory, Directory>> walkDirectoryWithBase(Function<Option, Option> option) {
-        return Signal.empty();
+        return I.signal();
     }
 
     /**
