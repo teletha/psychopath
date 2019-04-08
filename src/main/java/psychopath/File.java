@@ -504,6 +504,10 @@ public class File extends Location<File> {
      *             invoked to check read access to the file.
      */
     public InputStream newInputStream(OpenOption... options) {
+        if (isAbsent()) {
+            return InputStream.nullInputStream();
+        }
+
         try {
             return Files.newInputStream(path, options);
         } catch (IOException e) {
@@ -567,6 +571,10 @@ public class File extends Location<File> {
      *             invoked to check read access to the file.
      */
     public BufferedReader newBufferedReader() {
+        if (isAbsent()) {
+            return new BufferedReader(Reader.nullReader());
+        }
+
         try {
             return Files.newBufferedReader(path);
         } catch (IOException e) {
