@@ -11,8 +11,6 @@ package psychopath.archive;
 
 import org.junit.jupiter.api.Test;
 
-import antibug.powerassert.PowerAssertOff;
-import psychopath.Directory;
 import psychopath.File;
 import psychopath.LocationTestHelper;
 import psychopath.Locator;
