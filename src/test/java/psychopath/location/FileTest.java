@@ -11,6 +11,8 @@ package psychopath.location;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -195,13 +197,47 @@ class FileTest extends LocationTestHelper {
     }
 
     @Test
-    void newOutputStream() throws Exception {
+    void newInputStreamOnAbsent() throws IOException {
+        InputStream stream = locateAbsent("not exist").newInputStream();
+        assert new String(stream.readAllBytes()).trim().equals("");
+    }
+
+    @Test
+    void newOutputStreamOnAbsent() throws Exception {
         File file = locateAbsent("test");
         assert file.isAbsent();
 
         OutputStream stream = file.newOutputStream();
         stream.write("test".getBytes());
         stream.close();
+        assert file.isPresent();
+        assert file.size() != 0;
+    }
+
+    @Test
+    void newBufferedReader() throws IOException {
+        File file = locateFile("test", "contents");
+        assert file.isPresent();
+        assert file.size() != 0;
+
+        BufferedReader reader = file.newBufferedReader();
+        assert reader.readLine().equals("contents");
+    }
+
+    @Test
+    void newBufferedReaderOnAbsent() throws IOException {
+        BufferedReader reader = locateAbsent("not exist").newBufferedReader();
+        assert reader.readLine() == null;
+    }
+
+    @Test
+    void newBufferedWriterOnAbsent() throws Exception {
+        File file = locateAbsent("test");
+        assert file.isAbsent();
+
+        BufferedWriter writer = file.newBufferedWriter();
+        writer.write("test");
+        writer.close();
         assert file.isPresent();
         assert file.size() != 0;
     }
