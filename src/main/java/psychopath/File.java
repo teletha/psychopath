@@ -11,7 +11,7 @@ package psychopath;
 
 import static java.nio.file.StandardCopyOption.*;
 import static java.nio.file.StandardOpenOption.*;
-import static java.util.concurrent.TimeUnit.*;
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -1038,7 +1038,7 @@ public class File extends Location<File> {
                 return Archiver7.unpack(file).path;
 
             default:
-                return FileSystems.newFileSystem(file.path, null).getPath("/");
+                return FileSystems.newFileSystem(file.path, (ClassLoader) null).getPath("/");
             }
         } catch (Throwable e) {
             throw I.quiet(e);

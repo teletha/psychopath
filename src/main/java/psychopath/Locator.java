@@ -227,7 +227,7 @@ public class Locator {
             Location root = locate(clazz);
 
             if (!root.isDirectory()) {
-                root = directory(FileSystems.newFileSystem(root.path, null).getPath("/"));
+                root = directory(FileSystems.newFileSystem(root.path, (ClassLoader) null).getPath("/"));
             }
 
             Directory dir = (Directory) root;
