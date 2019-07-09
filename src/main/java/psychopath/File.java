@@ -28,7 +28,7 @@ import java.nio.channels.SeekableByteChannel;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.FileAlreadyExistsException;
-import java.nio.file.FileSystems;
+import java.nio.file.FileSystemNotFoundException;
 import java.nio.file.Files;
 import java.nio.file.LinkPermission;
 import java.nio.file.OpenOption;
@@ -36,7 +36,9 @@ import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.nio.file.WatchEvent;
 import java.nio.file.attribute.FileAttribute;
+import java.nio.file.spi.FileSystemProvider;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.function.Function;
@@ -1031,17 +1033,42 @@ public class File extends Location<File> {
      * @return An archive.
      */
     private static Path detectFileSystetm(File file) {
-        try {
-            switch (file.extension()) {
-            case "7z":
-            case "rar":
-                return Archiver7.unpack(file).path;
+        switch (file.extension()) {
+        case "7z":
+        case "rar":
+            return Archiver7.unpack(file).path;
 
-            default:
-                return FileSystems.newFileSystem(file.path, (ClassLoader) null).getPath("/");
+        default:
+            Path root = detectFileSystem(file, "MS932");
+
+            if (root != null) {
+                return root;
             }
-        } catch (Throwable e) {
-            throw I.quiet(e);
+
+            root = detectFileSystem(file, "UTF-8");
+
+            if (root != null) {
+                return root;
+            }
+            throw new FileSystemNotFoundException(file.path());
         }
+    }
+
+    private static Path detectFileSystem(File file, String encoding) {
+        for (FileSystemProvider provider : FileSystemProvider.installedProviders()) {
+            try {
+                Path root = provider.newFileSystem(file.path, Map.of("encoding", encoding)).getPath("/");
+
+                // check file names
+                Files.walk(root).forEach(p -> {
+                    p.toString();
+                });
+
+                return root;
+            } catch (Throwable e) {
+                // skip
+            }
+        }
+        return null;
     }
 }
