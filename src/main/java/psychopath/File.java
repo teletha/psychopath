@@ -1039,36 +1039,25 @@ public class File extends Location<File> {
             return Archiver7.unpack(file).path;
 
         default:
-            Path root = detectFileSystem(file, "MS932");
+            for (FileSystemProvider provider : FileSystemProvider.installedProviders()) {
+                try {
+                    Path root = provider.newFileSystem(file.path, Map.of()).getPath("/");
 
-            if (root != null) {
-                return root;
-            }
+                    // check file names
+                    Files.walk(root).forEach(Path::toString);
 
-            root = detectFileSystem(file, "UTF-8");
-
-            if (root != null) {
-                return root;
+                    return root;
+                } catch (UnsupportedOperationException e) {
+                    // skip
+                } catch (Throwable e) {
+                    try {
+                        return provider.newFileSystem(file.path, Map.of("encoding", "ISO_8859_1")).getPath("/");
+                    } catch (IOException io) {
+                        throw I.quiet(io);
+                    }
+                }
             }
             throw new FileSystemNotFoundException(file.path());
         }
-    }
-
-    private static Path detectFileSystem(File file, String encoding) {
-        for (FileSystemProvider provider : FileSystemProvider.installedProviders()) {
-            try {
-                Path root = provider.newFileSystem(file.path, Map.of("encoding", encoding)).getPath("/");
-
-                // check file names
-                Files.walk(root).forEach(p -> {
-                    p.toString();
-                });
-
-                return root;
-            } catch (Throwable e) {
-                // skip
-            }
-        }
-        return null;
     }
 }
