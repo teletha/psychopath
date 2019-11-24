@@ -9,7 +9,7 @@
  */
 package psychopath.location;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;

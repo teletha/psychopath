@@ -491,7 +491,7 @@ public class File extends Location<File> {
         try (AsynchronousFileChannel channel = AsynchronousFileChannel.open(path, CREATE, WRITE)) {
             FileLock lock = channel.tryLock();
 
-            if (lock == null || !lock.isValid()) {
+            if (lock == null) {
                 failed.run();
             } else {
                 success.run();
@@ -735,7 +735,7 @@ public class File extends Location<File> {
         try {
             return Files.readString(path, charset);
         } catch (IOException e) {
-            throw new IOError(e);
+            return "";
         }
     }
 
