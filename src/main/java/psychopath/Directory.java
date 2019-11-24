@@ -356,6 +356,14 @@ public class Directory extends Location<Directory> {
      * {@inheritDoc}
      */
     @Override
+    public void tryLock(WiseRunnable success, WiseRunnable failed) {
+        file(".lock").tryLock(success, failed);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     protected Directory convert(Path path) {
         return Locator.directory(path);
     }

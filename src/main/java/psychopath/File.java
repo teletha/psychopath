@@ -484,6 +484,27 @@ public class File extends Location<File> {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void tryLock(WiseRunnable success, WiseRunnable failed) {
+        try (AsynchronousFileChannel channel = AsynchronousFileChannel.open(path, CREATE, WRITE)) {
+            FileLock lock = channel.tryLock();
+
+            if (lock == null || !lock.isValid()) {
+                failed.run();
+            } else {
+                success.run();
+                lock.release();
+            }
+        } catch (IOException e) {
+            failed.run();
+        } finally {
+
+        }
+    }
+
+    /**
      * Opens a file, returning an input stream to read from the file. The stream will not be
      * buffered, and is not required to support the {@link InputStream#mark mark} or
      * {@link InputStream#reset reset} methods. The stream will be safe for access by multiple

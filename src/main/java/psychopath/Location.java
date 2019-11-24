@@ -791,6 +791,14 @@ public abstract class Location<Self extends Location> implements Comparable<Loca
     public abstract FileLock lock(WiseRunnable failed);
 
     /**
+     * Try to acquire exclusive lock for this {@link Location}.
+     * 
+     * @param success A success process.
+     * @param failed A failed process.
+     */
+    public abstract void tryLock(WiseRunnable success, WiseRunnable failed);
+
+    /**
      * Test matching the specified pattern to this {@link Location}.
      * 
      * @param pattern A glob pattern.
