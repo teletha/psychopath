@@ -11,6 +11,7 @@ package psychopath;
 
 import java.io.IOException;
 import java.nio.channels.FileLock;
+import java.nio.channels.OverlappingFileLockException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
@@ -28,12 +29,9 @@ import java.time.chrono.ChronoLocalDateTime;
 import java.time.chrono.ChronoZonedDateTime;
 import java.util.List;
 
-import kiss.Disposable;
 import kiss.I;
 import kiss.Observer;
 import kiss.Signal;
-import kiss.WiseConsumer;
-import kiss.WiseRunnable;
 
 public abstract class Location<Self extends Location> implements Comparable<Location>, PathOperatable {
 
@@ -786,19 +784,12 @@ public abstract class Location<Self extends Location> implements Comparable<Loca
     }
 
     /**
-     * Try to acquire exclusive lock for this {@link Location}.
+     * Try to acquire exclusive lock on this {@link Location}. If a lock cannot be obtained,
+     * {@link NullPointerException} or {@link OverlappingFileLockException} will be thrown.
      * 
      * @return
      */
-    public abstract FileLock lock(WiseRunnable failed);
-
-    /**
-     * Try to acquire exclusive lock for this {@link Location}.
-     * 
-     * @param success A success process.
-     * @param failed A failed process.
-     */
-    public abstract void tryLock(WiseConsumer<Disposable> success, WiseRunnable failed);
+    public abstract Signal<FileLock> lock();
 
     /**
      * Test matching the specified pattern to this {@link Location}.

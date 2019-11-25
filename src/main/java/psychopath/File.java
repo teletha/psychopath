@@ -11,7 +11,6 @@ package psychopath;
 
 import static java.nio.file.StandardCopyOption.*;
 import static java.nio.file.StandardOpenOption.*;
-import static java.util.concurrent.TimeUnit.*;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -24,7 +23,6 @@ import java.io.UncheckedIOException;
 import java.io.Writer;
 import java.nio.channels.AsynchronousFileChannel;
 import java.nio.channels.FileLock;
-import java.nio.channels.OverlappingFileLockException;
 import java.nio.channels.SeekableByteChannel;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -45,11 +43,8 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.function.Function;
 
-import kiss.Disposable;
 import kiss.I;
 import kiss.Signal;
-import kiss.WiseConsumer;
-import kiss.WiseRunnable;
 import kiss.Ⅱ;
 
 public class File extends Location<File> {
@@ -473,41 +468,30 @@ public class File extends Location<File> {
      * {@inheritDoc}
      */
     @Override
-    public FileLock lock(WiseRunnable failed) {
-        try {
-            AsynchronousFileChannel channel = AsynchronousFileChannel.open(path, CREATE, WRITE);
-
-            return I.signal(channel)
-                    .map(c -> c.tryLock())
-                    .take(lock -> lock.isValid())
-                    .retryWhen(NullPointerException.class, e -> e.effect(failed).wait(300, MILLISECONDS).take(10))
-                    .to().v;
-        } catch (IOException e) {
-            throw I.quiet(e);
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void tryLock(WiseConsumer<Disposable> success, WiseRunnable failed) {
-        try {
-            AsynchronousFileChannel channel = AsynchronousFileChannel.open(path, CREATE, WRITE);
+    public Signal<FileLock> lock() {
+        return new Signal<>((observer, disposer) -> {
             try {
+                AsynchronousFileChannel channel = AsynchronousFileChannel.open(path, CREATE, WRITE);
                 FileLock lock = channel.tryLock();
 
                 if (lock == null) {
-                    failed.run();
+                    observer.error(new NullPointerException());
                 } else {
-                    success.accept(() -> I.quiet(channel));
+                    observer.accept(lock);
+                    observer.complete();
+                    disposer.add(() -> {
+                        try {
+                            channel.close();
+                        } catch (IOException e) {
+                            throw I.quiet(e);
+                        }
+                    });
                 }
-            } catch (OverlappingFileLockException e) {
-                success.accept(() -> I.quiet(channel));
+            } catch (IOException e) {
+                observer.error(e);
             }
-        } catch (IOException e) {
-            failed.run();
-        }
+            return disposer;
+        });
     }
 
     /**
