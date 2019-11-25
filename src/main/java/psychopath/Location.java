@@ -28,9 +28,11 @@ import java.time.chrono.ChronoLocalDateTime;
 import java.time.chrono.ChronoZonedDateTime;
 import java.util.List;
 
+import kiss.Disposable;
 import kiss.I;
 import kiss.Observer;
 import kiss.Signal;
+import kiss.WiseConsumer;
 import kiss.WiseRunnable;
 
 public abstract class Location<Self extends Location> implements Comparable<Location>, PathOperatable {
@@ -796,7 +798,7 @@ public abstract class Location<Self extends Location> implements Comparable<Loca
      * @param success A success process.
      * @param failed A failed process.
      */
-    public abstract void tryLock(WiseRunnable success, WiseRunnable failed);
+    public abstract void tryLock(WiseConsumer<Disposable> success, WiseRunnable failed);
 
     /**
      * Test matching the specified pattern to this {@link Location}.

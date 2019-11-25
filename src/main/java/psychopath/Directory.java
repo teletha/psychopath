@@ -20,9 +20,11 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
+import kiss.Disposable;
 import kiss.I;
 import kiss.Observer;
 import kiss.Signal;
+import kiss.WiseConsumer;
 import kiss.WiseRunnable;
 import kiss.Ⅱ;
 
@@ -356,7 +358,7 @@ public class Directory extends Location<Directory> {
      * {@inheritDoc}
      */
     @Override
-    public void tryLock(WiseRunnable success, WiseRunnable failed) {
+    public void tryLock(WiseConsumer<Disposable> success, WiseRunnable failed) {
         file(".lock").tryLock(success, failed);
     }
 

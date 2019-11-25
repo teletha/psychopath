@@ -43,8 +43,10 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.function.Function;
 
+import kiss.Disposable;
 import kiss.I;
 import kiss.Signal;
+import kiss.WiseConsumer;
 import kiss.WiseRunnable;
 import kiss.Ⅱ;
 
@@ -487,20 +489,18 @@ public class File extends Location<File> {
      * {@inheritDoc}
      */
     @Override
-    public void tryLock(WiseRunnable success, WiseRunnable failed) {
-        try (AsynchronousFileChannel channel = AsynchronousFileChannel.open(path, CREATE, WRITE)) {
+    public void tryLock(WiseConsumer<Disposable> success, WiseRunnable failed) {
+        try {
+            AsynchronousFileChannel channel = AsynchronousFileChannel.open(path, CREATE, WRITE);
             FileLock lock = channel.tryLock();
 
             if (lock == null) {
                 failed.run();
             } else {
-                success.run();
-                lock.release();
+                success.accept(() -> I.quiet(channel));
             }
         } catch (IOException e) {
             failed.run();
-        } finally {
-
         }
     }
 
