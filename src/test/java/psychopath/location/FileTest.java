@@ -9,7 +9,7 @@
  */
 package psychopath.location;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -243,10 +243,30 @@ class FileTest extends LocationTestHelper {
     }
 
     @Test
-    void text() {
-        File file = locateAbsent("text-write");
+    void readFromAbsentFile() {
+        File file = locateAbsent("read-from-absent");
+        assert file.text().equals("");
+        assert file.isAbsent();
+    }
+
+    @Test
+    void readFromPresentFile() {
+        File file = locateFile("read-from-present", "content");
+        assert file.text().equals("content");
+    }
+
+    @Test
+    void writeToAbsentFile() {
+        File file = locateAbsent("write-to-absent");
         file.text("OK");
-        assert file.text().trim().equals("OK");
+        assert file.text().equals("OK");
+    }
+
+    @Test
+    void writeToPresentFile() {
+        File file = locateFile("write-to-present", "contents");
+        file.text("override");
+        assert file.text().equals("override");
     }
 
     @Test

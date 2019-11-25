@@ -11,7 +11,7 @@ package psychopath;
 
 import static java.nio.file.StandardCopyOption.*;
 import static java.nio.file.StandardOpenOption.*;
-import static java.util.concurrent.TimeUnit.MILLISECONDS;
+import static java.util.concurrent.TimeUnit.*;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -38,6 +38,7 @@ import java.nio.file.StandardOpenOption;
 import java.nio.file.WatchEvent;
 import java.nio.file.attribute.FileAttribute;
 import java.nio.file.spi.FileSystemProvider;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -880,8 +881,18 @@ public class File extends Location<File> {
      */
     public File text(Charset charset, Iterable<String> lines) {
         try {
-            create();
-            Files.write(path, lines, charset);
+            try (BufferedWriter writer = Files.newBufferedWriter(path, charset)) {
+                Iterator<String> iterator = lines.iterator();
+                boolean hasNext = iterator.hasNext();
+                while (hasNext) {
+                    writer.append(iterator.next());
+
+                    hasNext = iterator.hasNext();
+                    if (hasNext) {
+                        writer.newLine();
+                    }
+                }
+            }
         } catch (IOException e) {
             throw new IOError(e);
         }
