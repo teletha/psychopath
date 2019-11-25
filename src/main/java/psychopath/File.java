@@ -24,6 +24,7 @@ import java.io.UncheckedIOException;
 import java.io.Writer;
 import java.nio.channels.AsynchronousFileChannel;
 import java.nio.channels.FileLock;
+import java.nio.channels.OverlappingFileLockException;
 import java.nio.channels.SeekableByteChannel;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -492,11 +493,15 @@ public class File extends Location<File> {
     public void tryLock(WiseConsumer<Disposable> success, WiseRunnable failed) {
         try {
             AsynchronousFileChannel channel = AsynchronousFileChannel.open(path, CREATE, WRITE);
-            FileLock lock = channel.tryLock();
+            try {
+                FileLock lock = channel.tryLock();
 
-            if (lock == null) {
-                failed.run();
-            } else {
+                if (lock == null) {
+                    failed.run();
+                } else {
+                    success.accept(() -> I.quiet(channel));
+                }
+            } catch (OverlappingFileLockException e) {
                 success.accept(() -> I.quiet(channel));
             }
         } catch (IOException e) {
