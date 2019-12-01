@@ -865,6 +865,10 @@ public class File extends Location<File> {
      */
     public File text(Charset charset, Iterable<String> lines) {
         try {
+            if (isAbsent()) {
+                create();
+            }
+
             try (BufferedWriter writer = Files.newBufferedWriter(path, charset)) {
                 Iterator<String> iterator = lines.iterator();
                 boolean hasNext = iterator.hasNext();
