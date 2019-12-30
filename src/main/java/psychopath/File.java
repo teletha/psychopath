@@ -45,6 +45,7 @@ import java.util.function.Function;
 
 import kiss.I;
 import kiss.Signal;
+import kiss.WiseConsumer;
 import kiss.Ⅱ;
 
 public class File extends Location<File> {
@@ -1036,6 +1037,23 @@ public class File extends Location<File> {
         if (data != null) {
             try (Reader in = data; Writer out = newBufferedWriter()) {
                 in.transferTo(out);
+            } catch (IOException e) {
+                throw I.quiet(e);
+            }
+        }
+        return this;
+    }
+
+    /**
+     * Write your data to the passing buffered writer.
+     * 
+     * @param writer
+     * @return
+     */
+    public File write(WiseConsumer<Writer> writer) {
+        if (writer != null) {
+            try (BufferedWriter out = newBufferedWriter()) {
+                writer.accept(out);
             } catch (IOException e) {
                 throw I.quiet(e);
             }

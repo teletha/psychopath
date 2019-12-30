@@ -9,13 +9,15 @@
  */
 package psychopath.location;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.StringReader;
 import java.nio.channels.OverlappingFileLockException;
 import java.nio.file.FileAlreadyExistsException;
 import java.util.List;
@@ -267,6 +269,27 @@ class FileTest extends LocationTestHelper {
     void writeToPresentFile() {
         File file = locateFile("write-to-present", "contents");
         file.text("override");
+        assert file.text().equals("override");
+    }
+
+    @Test
+    void writeByInputStream() {
+        File file = locateFile("write-to-present", "contents");
+        file.write(new ByteArrayInputStream("override".getBytes()));
+        assert file.text().equals("override");
+    }
+
+    @Test
+    void writeByReader() {
+        File file = locateFile("write-to-present", "contents");
+        file.write(new StringReader("override"));
+        assert file.text().equals("override");
+    }
+
+    @Test
+    void writeByWriter() {
+        File file = locateFile("write-to-present", "contents");
+        file.write(b -> b.append("override"));
         assert file.text().equals("override");
     }
 
