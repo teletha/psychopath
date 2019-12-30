@@ -620,6 +620,7 @@ public class File extends Location<File> {
      */
     public BufferedWriter newBufferedWriter(OpenOption... options) {
         try {
+            parent().create();
             return Files.newBufferedWriter(path, options);
         } catch (IOException e) {
             throw I.quiet(e);

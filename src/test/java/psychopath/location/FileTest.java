@@ -266,6 +266,13 @@ class FileTest extends LocationTestHelper {
     }
 
     @Test
+    void writeToDeepAbsentFile() {
+        File file = locateAbsent("deep/write-to-absent");
+        file.text("OK");
+        assert file.text().equals("OK");
+    }
+
+    @Test
     void writeToPresentFile() {
         File file = locateFile("write-to-present", "contents");
         file.text("override");
@@ -280,6 +287,13 @@ class FileTest extends LocationTestHelper {
     }
 
     @Test
+    void writeDeeplyByInputStream() {
+        File file = locateAbsent("deep/write-to-present");
+        file.write(new ByteArrayInputStream("override".getBytes()));
+        assert file.text().equals("override");
+    }
+
+    @Test
     void writeByReader() {
         File file = locateFile("write-to-present", "contents");
         file.write(new StringReader("override"));
@@ -287,8 +301,22 @@ class FileTest extends LocationTestHelper {
     }
 
     @Test
+    void writeDeeplyByReader() {
+        File file = locateAbsent("deep/write-to-present");
+        file.write(new StringReader("override"));
+        assert file.text().equals("override");
+    }
+
+    @Test
     void writeByWriter() {
         File file = locateFile("write-to-present", "contents");
+        file.write(b -> b.append("override"));
+        assert file.text().equals("override");
+    }
+
+    @Test
+    void writeDeeplyByWriter() {
+        File file = locateAbsent("deep/write-to-present");
         file.write(b -> b.append("override"));
         assert file.text().equals("override");
     }
