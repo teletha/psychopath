@@ -10,6 +10,7 @@
 package psychopath;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.nio.channels.FileLock;
 import java.nio.channels.OverlappingFileLockException;
 import java.nio.file.DirectoryStream;
@@ -112,6 +113,19 @@ public abstract class Location<Self extends Location> implements Comparable<Loca
             return path.toString();
         } else {
             return path.toString().replace(java.io.File.separatorChar, '/');
+        }
+    }
+
+    /**
+     * Returns the external form of this {@link Location}.
+     * 
+     * @return An external form to this {@link Location}.
+     */
+    public final String externalForm() {
+        try {
+            return asJavaFile().toURI().toURL().toExternalForm();
+        } catch (MalformedURLException e) {
+            throw I.quiet(e);
         }
     }
 
