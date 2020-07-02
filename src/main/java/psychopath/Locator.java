@@ -13,11 +13,13 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.security.CodeSource;
 
 import kiss.Decoder;
@@ -68,7 +70,7 @@ public class Locator {
 
             // Create a lock after creating the temporary directory so there is no race condition
             // with another application trying to clean our temporary directory.
-            new RandomAccessFile(temporary.resolve("lock").toFile(), "rw").getChannel().tryLock();
+            FileChannel.open(temporary.resolve("lock"), StandardOpenOption.CREATE, StandardOpenOption.WRITE).tryLock();
         } catch (Exception e) {
             throw I.quiet(e);
         }
