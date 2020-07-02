@@ -24,7 +24,6 @@ import kiss.Decoder;
 import kiss.Encoder;
 import kiss.I;
 
-@SuppressWarnings("resource")
 public class Locator {
 
     /** The root temporary directory for psychopath. */
