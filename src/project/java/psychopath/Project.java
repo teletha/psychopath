@@ -7,6 +7,8 @@
  *
  *          https://opensource.org/licenses/MIT
  */
+package psychopath;
+
 public class Project extends bee.api.Project {
 
     {
