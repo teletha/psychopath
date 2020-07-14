@@ -100,7 +100,11 @@ public abstract class Location<Self extends Location> implements Comparable<Loca
      * @return New located {@link Location}.
      */
     public final Self extension(String newExtension) {
-        return convert(path.resolveSibling(base() + "." + newExtension));
+        if (newExtension == null || newExtension.isEmpty()) {
+            return convert(path.resolveSibling(base()));
+        } else {
+            return convert(path.resolveSibling(base() + "." + newExtension));
+        }
     }
 
     /**

@@ -114,6 +114,36 @@ class FileTest extends LocationTestHelper {
     }
 
     @Test
+    void locateByNullExtension() {
+        // absent
+        assert locateAbsent("test").extension(null).name().equals("test");
+        assert locateAbsent("test.txt").extension(null).name().equals("test");
+        assert locateAbsent("test.dummy.log").extension(null).name().equals("test.dummy");
+        assert locateAbsent("text.").extension(null).name().equals("text");
+
+        // absolute
+        assert locateAbsoluteAbsent("test").extension(null).name().equals("test");
+        assert locateAbsoluteAbsent("test.txt").extension(null).name().equals("test");
+        assert locateAbsoluteAbsent("test.dummy.log").extension(null).name().equals("test.dummy");
+        assert locateAbsoluteAbsent("text.").extension(null).name().equals("text");
+    }
+
+    @Test
+    void locateByEmptyExtension() {
+        // absent
+        assert locateAbsent("test").extension("").name().equals("test");
+        assert locateAbsent("test.txt").extension("").name().equals("test");
+        assert locateAbsent("test.dummy.log").extension("").name().equals("test.dummy");
+        assert locateAbsent("text.").extension("").name().equals("text");
+
+        // absolute
+        assert locateAbsoluteAbsent("test").extension("").name().equals("test");
+        assert locateAbsoluteAbsent("test.txt").extension("").name().equals("test");
+        assert locateAbsoluteAbsent("test.dummy.log").extension("").name().equals("test.dummy");
+        assert locateAbsoluteAbsent("text.").extension("").name().equals("text");
+    }
+
+    @Test
     void absolutize() {
         // absent
         Location locateAbsent = locateAbsent("name");
