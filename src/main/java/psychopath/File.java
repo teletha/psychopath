@@ -105,7 +105,7 @@ public class File extends Location<File> {
     public Signal<Location> observeDeleting(Function<Option, Option> option) {
         return new Signal<>((observer, disposer) -> {
             try {
-                if (disposer.isNotDisposed()) {
+                if (!disposer.isDisposed()) {
                     Files.deleteIfExists(path);
                     observer.accept(this);
                 }
@@ -154,7 +154,7 @@ public class File extends Location<File> {
     public Signal<Location> observeCopyingTo(File destination) {
         return new Signal<>((observer, disposer) -> {
             try {
-                if (isPresent() && disposer.isNotDisposed()) {
+                if (isPresent() && !disposer.isDisposed()) {
                     destination.parent().create();
                     Files.copy(path, destination.path, REPLACE_EXISTING, COPY_ATTRIBUTES);
                     observer.accept(this);
@@ -265,7 +265,7 @@ public class File extends Location<File> {
     public Signal<Location> observeMovingTo(File destination) {
         return new Signal<>((observer, disposer) -> {
             try {
-                if (isPresent() && disposer.isNotDisposed()) {
+                if (isPresent() && !disposer.isDisposed()) {
                     observer.accept(this);
 
                     destination.parent().create();
@@ -1001,7 +1001,7 @@ public class File extends Location<File> {
 
             try (BufferedReader reader = Files.newBufferedReader(path, charset)) {
                 String line = null;
-                while (disposer.isNotDisposed() && (line = reader.readLine()) != null) {
+                while (!disposer.isDisposed() && (line = reader.readLine()) != null) {
                     observer.accept(line);
                 }
             } catch (IOException e) {
