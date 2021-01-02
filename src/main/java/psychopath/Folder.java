@@ -210,6 +210,10 @@ public final class Folder implements PathOperatable {
     @Override
     public Signal<Location> observePackingTo(File archive, Function<Option, Option> option) {
         return new Signal<>((observer, disposer) -> {
+            // IMPORTANT : ZipOutputStream simply overwrites the data, so if you write less data
+            // than the original file, the original data will remain at the end.
+            archive.delete();
+
             // see https://commons.apache.org/proper/commons-compress/zip.html
             //
             // Traditionally the ZIP archive format uses CodePage 437 as encoding for file name,
