@@ -563,9 +563,6 @@ public class File extends Location<File> {
     public OutputStream newOutputStream(OpenOption... options) {
         try {
             parent().create();
-            if (options == null || options.length == 0) {
-                options = new OpenOption[] {CREATE, WRITE};
-            }
             return Files.newOutputStream(path, options);
         } catch (IOException e) {
             throw I.quiet(e);
@@ -624,9 +621,6 @@ public class File extends Location<File> {
     public BufferedWriter newBufferedWriter(OpenOption... options) {
         try {
             parent().create();
-            if (options == null || options.length == 0) {
-                options = new OpenOption[] {CREATE, WRITE};
-            }
             return Files.newBufferedWriter(path, options);
         } catch (IOException e) {
             throw I.quiet(e);
@@ -659,9 +653,6 @@ public class File extends Location<File> {
      */
     public SeekableByteChannel newByteChannel(OpenOption... options) {
         try {
-            if (options == null || options.length == 0) {
-                options = new OpenOption[] {CREATE, WRITE};
-            }
             return Files.newByteChannel(path, options);
         } catch (IOException e) {
             throw I.quiet(e);
