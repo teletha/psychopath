@@ -20,6 +20,7 @@ import java.io.IOError;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.UncheckedIOException;
 import java.io.Writer;
@@ -565,7 +566,7 @@ public class File extends Location<File> {
     public OutputStream newOutputStream(OpenOption... options) {
         try {
             parent().create();
-            return Files.newOutputStream(path, options);
+            return isAtomicWriting(options) ? new AtomicFileOutputStream(this) : Files.newOutputStream(path, options);
         } catch (IOException e) {
             throw I.quiet(e);
         }
@@ -623,10 +624,27 @@ public class File extends Location<File> {
     public BufferedWriter newBufferedWriter(OpenOption... options) {
         try {
             parent().create();
-            return Files.newBufferedWriter(path, options);
+            return isAtomicWriting(options)
+                    ? new BufferedWriter(new OutputStreamWriter(new AtomicFileOutputStream(this), StandardCharsets.UTF_8))
+                    : Files.newBufferedWriter(path, options);
         } catch (IOException e) {
             throw I.quiet(e);
         }
+    }
+
+    /**
+     * Check the atomic writing option.
+     * 
+     * @param options
+     * @return
+     */
+    private boolean isAtomicWriting(OpenOption[] options) {
+        for (int i = 0; i < options.length; i++) {
+            if (options[i] == PsychopathOpenOption.ATOMIC_WRITE) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

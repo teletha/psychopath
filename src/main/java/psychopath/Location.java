@@ -722,6 +722,16 @@ public abstract class Location<Self extends Location> implements Comparable<Loca
     public abstract Self create();
 
     /**
+     * Delete this {@link Location} when JVM is shutdowned.
+     * 
+     * @return
+     */
+    public Self deleteOnExit() {
+        asJavaFile().deleteOnExit();
+        return (Self) this;
+    }
+
+    /**
      * Move to the parent {@link Directory}.
      * 
      * @return A new moved location in the parent {@link Directory} (NOT parent directory).
