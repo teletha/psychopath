@@ -564,12 +564,8 @@ public class File extends Location<File> {
      *             option.
      */
     public OutputStream newOutputStream(OpenOption... options) {
-        try {
-            parent().create();
-            return isAtomicWriting(options) ? new AtomicFileOutputStream(this) : Files.newOutputStream(path, options);
-        } catch (IOException e) {
-            throw I.quiet(e);
-        }
+        parent().create();
+        return new AtomicFileOutputStream(this, options);
     }
 
     /**
@@ -622,29 +618,34 @@ public class File extends Location<File> {
      *             option.
      */
     public BufferedWriter newBufferedWriter(OpenOption... options) {
-        try {
-            parent().create();
-            return isAtomicWriting(options)
-                    ? new BufferedWriter(new OutputStreamWriter(new AtomicFileOutputStream(this), StandardCharsets.UTF_8))
-                    : Files.newBufferedWriter(path, options);
-        } catch (IOException e) {
-            throw I.quiet(e);
-        }
+        return newBufferedWriter(StandardCharsets.UTF_8, options);
     }
 
     /**
-     * Check the atomic writing option.
-     * 
-     * @param options
-     * @return
+     * Opens or creates a file for writing, returning a {@code BufferedWriter} to write text to the
+     * file in an efficient manner. The text is encoded into bytes for writing using the
+     * {@link StandardCharsets#UTF_8 UTF-8} {@link Charset charset}.
+     * <p>
+     * This method works as if invoking it were equivalent to evaluating the expression: <pre>{@code
+     * Files.newBufferedWriter(path, StandardCharsets.UTF_8, options)
+     * }</pre>
+     *
+     * @param options options specifying how the file is opened
+     * @return a new buffered writer, with default buffer size, to write text to the file
+     * @throws IllegalArgumentException if {@code options} contains an invalid combination of
+     *             options
+     * @throws IOException if an I/O error occurs opening or creating the file
+     * @throws UnsupportedOperationException if an unsupported option is specified
+     * @throws SecurityException In the case of the default provider, and a security manager is
+     *             installed, the {@link SecurityManager#checkWrite(String) checkWrite} method is
+     *             invoked to check write access to the file. The
+     *             {@link SecurityManager#checkDelete(String) checkDelete} method is invoked to
+     *             check delete access if the file is opened with the {@code DELETE_ON_CLOSE}
+     *             option.
      */
-    private boolean isAtomicWriting(OpenOption[] options) {
-        for (int i = 0; i < options.length; i++) {
-            if (options[i] == PsychopathOpenOption.ATOMIC_WRITE) {
-                return true;
-            }
-        }
-        return false;
+    public BufferedWriter newBufferedWriter(Charset charset, OpenOption... options) {
+        parent().create();
+        return new BufferedWriter(new OutputStreamWriter(new AtomicFileOutputStream(this, options), charset));
     }
 
     /**
@@ -891,7 +892,7 @@ public class File extends Location<File> {
                 create();
             }
 
-            try (BufferedWriter writer = Files.newBufferedWriter(path, charset, options)) {
+            try (BufferedWriter writer = newBufferedWriter(charset, options)) {
                 Iterator<String> iterator = lines.iterator();
                 boolean hasNext = iterator.hasNext();
                 while (hasNext) {

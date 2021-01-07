@@ -9,8 +9,6 @@
  */
 package psychopath;
 
-import static psychopath.PsychopathOpenOption.ATOMIC_WRITE;
-
 import java.io.BufferedWriter;
 import java.io.IOException;
 
@@ -30,18 +28,6 @@ class AtomicWriteTest extends LocationTestHelper {
         writer = file.newBufferedWriter();
         writer.write("failed");
         writer.flush(); // no close
-        assert file.text().equals("failed");
-
-        // atomic writing
-        writer = file.newBufferedWriter(ATOMIC_WRITE);
-        writer.write("atomic");
-        writer.close();
-        assert file.text().equals("atomic");
-
-        // failed writing
-        writer = file.newBufferedWriter(ATOMIC_WRITE);
-        writer.write("failed");
-        writer.flush(); // no close
-        assert file.text().equals("atomic");
+        assert file.text().equals("ok");
     }
 }
