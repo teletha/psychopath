@@ -541,4 +541,19 @@ class FileTest extends LocationTestHelper {
         });
         assert result[0].equals("can't lock by one again " + OverlappingFileLockException.class.getSimpleName());
     }
+
+    @Test
+    void atomicWrite() throws IOException {
+        File file = locateFile("test");
+        BufferedWriter writer = file.newBufferedWriter();
+        writer.write("ok");
+        writer.close();
+        assert file.text().equals("ok");
+
+        // failed writing
+        writer = file.newBufferedWriter();
+        writer.write("failed");
+        writer.flush(); // no close
+        assert file.text().equals("ok");
+    }
 }
