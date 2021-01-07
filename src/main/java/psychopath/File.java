@@ -9,8 +9,10 @@
  */
 package psychopath;
 
-import static java.nio.file.StandardCopyOption.*;
-import static java.nio.file.StandardOpenOption.*;
+import static java.nio.file.StandardCopyOption.COPY_ATTRIBUTES;
+import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
+import static java.nio.file.StandardOpenOption.CREATE;
+import static java.nio.file.StandardOpenOption.WRITE;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -795,8 +797,8 @@ public class File extends Location<File> {
      *             check delete access if the file is opened with the {@code DELETE_ON_CLOSE}
      *             option.
      */
-    public File text(Iterable<String> lines) {
-        return text(StandardCharsets.UTF_8, lines);
+    public File text(Iterable<String> lines, OpenOption... options) {
+        return text(StandardCharsets.UTF_8, lines, options);
     }
 
     /**
@@ -865,13 +867,13 @@ public class File extends Location<File> {
      *             check delete access if the file is opened with the {@code DELETE_ON_CLOSE}
      *             option.
      */
-    public File text(Charset charset, Iterable<String> lines) {
+    public File text(Charset charset, Iterable<String> lines, OpenOption... options) {
         try {
             if (isAbsent()) {
                 create();
             }
 
-            try (BufferedWriter writer = Files.newBufferedWriter(path, charset)) {
+            try (BufferedWriter writer = Files.newBufferedWriter(path, charset, options)) {
                 Iterator<String> iterator = lines.iterator();
                 boolean hasNext = iterator.hasNext();
                 while (hasNext) {
@@ -887,6 +889,144 @@ public class File extends Location<File> {
             throw new IOError(e);
         }
         return this;
+    }
+
+    /**
+     * Write lines of text to a file. Each line is a char sequence and is written to the file in
+     * sequence with each line terminated by the platform's line separator, as defined by the system
+     * property {@code
+     * line.separator}. Characters are encoded into bytes using the specified charset.
+     * <p>
+     * The {@code options} parameter specifies how the file is created or opened. If no options are
+     * present then this method works as if the {@link StandardOpenOption#CREATE CREATE},
+     * {@link StandardOpenOption#TRUNCATE_EXISTING TRUNCATE_EXISTING}, and
+     * {@link StandardOpenOption#WRITE WRITE} options are present. In other words, it opens the file
+     * for writing, creating the file if it doesn't exist, or initially truncating an existing
+     * {@link #isRegularFile regular-file} to a size of {@code 0}. The method ensures that the file
+     * is closed when all lines have been written (or an I/O error or other runtime exception is
+     * thrown). If an I/O error occurs then it may do so after the file has been created or
+     * truncated, or after some bytes have been written to the file.
+     * 
+     * @param lines an object to iterate over the char sequences
+     * @return the path
+     * @throws IllegalArgumentException if {@code options} contains an invalid combination of
+     *             options
+     * @throws IOException if an I/O error occurs writing to or creating the file, or the text
+     *             cannot be encoded using the specified charset
+     * @throws UnsupportedOperationException if an unsupported option is specified
+     * @throws SecurityException In the case of the default provider, and a security manager is
+     *             installed, the {@link SecurityManager#checkWrite(String) checkWrite} method is
+     *             invoked to check write access to the file. The
+     *             {@link SecurityManager#checkDelete(String) checkDelete} method is invoked to
+     *             check delete access if the file is opened with the {@code DELETE_ON_CLOSE}
+     *             option.
+     */
+    public File textAtTail(String... lines) {
+        return textAtTail(StandardCharsets.UTF_8, lines);
+    }
+
+    /**
+     * Write lines of text to a file. Each line is a char sequence and is written to the file in
+     * sequence with each line terminated by the platform's line separator, as defined by the system
+     * property {@code
+     * line.separator}. Characters are encoded into bytes using the specified charset.
+     * <p>
+     * The {@code options} parameter specifies how the file is created or opened. If no options are
+     * present then this method works as if the {@link StandardOpenOption#CREATE CREATE},
+     * {@link StandardOpenOption#TRUNCATE_EXISTING TRUNCATE_EXISTING}, and
+     * {@link StandardOpenOption#WRITE WRITE} options are present. In other words, it opens the file
+     * for writing, creating the file if it doesn't exist, or initially truncating an existing
+     * {@link #isRegularFile regular-file} to a size of {@code 0}. The method ensures that the file
+     * is closed when all lines have been written (or an I/O error or other runtime exception is
+     * thrown). If an I/O error occurs then it may do so after the file has been created or
+     * truncated, or after some bytes have been written to the file.
+     * 
+     * @param lines an object to iterate over the char sequences
+     * @return the path
+     * @throws IllegalArgumentException if {@code options} contains an invalid combination of
+     *             options
+     * @throws IOException if an I/O error occurs writing to or creating the file, or the text
+     *             cannot be encoded using the specified charset
+     * @throws UnsupportedOperationException if an unsupported option is specified
+     * @throws SecurityException In the case of the default provider, and a security manager is
+     *             installed, the {@link SecurityManager#checkWrite(String) checkWrite} method is
+     *             invoked to check write access to the file. The
+     *             {@link SecurityManager#checkDelete(String) checkDelete} method is invoked to
+     *             check delete access if the file is opened with the {@code DELETE_ON_CLOSE}
+     *             option.
+     */
+    public File textAtTail(Iterable<String> lines) {
+        return textAtTail(StandardCharsets.UTF_8, lines);
+    }
+
+    /**
+     * Write lines of text to a file. Each line is a char sequence and is written to the file in
+     * sequence with each line terminated by the platform's line separator, as defined by the system
+     * property {@code
+     * line.separator}. Characters are encoded into bytes using the specified charset.
+     * <p>
+     * The {@code options} parameter specifies how the file is created or opened. If no options are
+     * present then this method works as if the {@link StandardOpenOption#CREATE CREATE},
+     * {@link StandardOpenOption#TRUNCATE_EXISTING TRUNCATE_EXISTING}, and
+     * {@link StandardOpenOption#WRITE WRITE} options are present. In other words, it opens the file
+     * for writing, creating the file if it doesn't exist, or initially truncating an existing
+     * {@link #isRegularFile regular-file} to a size of {@code 0}. The method ensures that the file
+     * is closed when all lines have been written (or an I/O error or other runtime exception is
+     * thrown). If an I/O error occurs then it may do so after the file has been created or
+     * truncated, or after some bytes have been written to the file.
+     * 
+     * @param charset the charset to use for encoding
+     * @param lines an object to iterate over the char sequences
+     * @return the path
+     * @throws IllegalArgumentException if {@code options} contains an invalid combination of
+     *             options
+     * @throws IOException if an I/O error occurs writing to or creating the file, or the text
+     *             cannot be encoded using the specified charset
+     * @throws UnsupportedOperationException if an unsupported option is specified
+     * @throws SecurityException In the case of the default provider, and a security manager is
+     *             installed, the {@link SecurityManager#checkWrite(String) checkWrite} method is
+     *             invoked to check write access to the file. The
+     *             {@link SecurityManager#checkDelete(String) checkDelete} method is invoked to
+     *             check delete access if the file is opened with the {@code DELETE_ON_CLOSE}
+     *             option.
+     */
+    public File textAtTail(Charset charset, String... lines) {
+        return textAtTail(charset, List.of(lines));
+    }
+
+    /**
+     * Write lines of text to a file. Each line is a char sequence and is written to the file in
+     * sequence with each line terminated by the platform's line separator, as defined by the system
+     * property {@code
+     * line.separator}. Characters are encoded into bytes using the specified charset.
+     * <p>
+     * The {@code options} parameter specifies how the file is created or opened. If no options are
+     * present then this method works as if the {@link StandardOpenOption#CREATE CREATE},
+     * {@link StandardOpenOption#TRUNCATE_EXISTING TRUNCATE_EXISTING}, and
+     * {@link StandardOpenOption#WRITE WRITE} options are present. In other words, it opens the file
+     * for writing, creating the file if it doesn't exist, or initially truncating an existing
+     * {@link #isRegularFile regular-file} to a size of {@code 0}. The method ensures that the file
+     * is closed when all lines have been written (or an I/O error or other runtime exception is
+     * thrown). If an I/O error occurs then it may do so after the file has been created or
+     * truncated, or after some bytes have been written to the file.
+     * 
+     * @param charset the charset to use for encoding
+     * @param lines an object to iterate over the char sequences
+     * @return the path
+     * @throws IllegalArgumentException if {@code options} contains an invalid combination of
+     *             options
+     * @throws IOException if an I/O error occurs writing to or creating the file, or the text
+     *             cannot be encoded using the specified charset
+     * @throws UnsupportedOperationException if an unsupported option is specified
+     * @throws SecurityException In the case of the default provider, and a security manager is
+     *             installed, the {@link SecurityManager#checkWrite(String) checkWrite} method is
+     *             invoked to check write access to the file. The
+     *             {@link SecurityManager#checkDelete(String) checkDelete} method is invoked to
+     *             check delete access if the file is opened with the {@code DELETE_ON_CLOSE}
+     *             option.
+     */
+    public File textAtTail(Charset charset, Iterable<String> lines) {
+        return text(charset, lines, StandardOpenOption.CREATE, StandardOpenOption.APPEND);
     }
 
     /**

@@ -358,6 +358,26 @@ class FileTest extends LocationTestHelper {
     }
 
     @Test
+    void readText() {
+        File file = locateFile("test", "content");
+        assert file.text().equals("content");
+    }
+
+    @Test
+    void writeText() {
+        File file = locateFile("test", "content");
+        file.text("update");
+        assert file.text().equals("update");
+    }
+
+    @Test
+    void appendText() {
+        File file = locateFile("test", "content");
+        file.textAtTail(" is appended");
+        assert file.text().equals("content is appended");
+    }
+
+    @Test
     void create() {
         assert locateAbsent("file").create().isPresent();
         assert locateAbsent("deep/file").create().isPresent();
