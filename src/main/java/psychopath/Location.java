@@ -21,6 +21,7 @@ import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.SecureDirectoryStream;
 import java.nio.file.WatchEvent;
+import java.nio.file.attribute.BasicFileAttributeView;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.attribute.FileTime;
 import java.time.Instant;
@@ -319,6 +320,124 @@ public abstract class Location<Self extends Location> implements Comparable<Loca
     }
 
     /**
+     * Returns the creation time. The creation time is the time that the file was created.
+     *
+     * @return The creation time.
+     */
+    public final long creation(LinkOption... options) {
+        if (Files.notExists(path)) {
+            return -1;
+        }
+        return attribute().creationTime().toMillis();
+    }
+
+    /**
+     * Returns the creation time. The creation time is the time that the file was created.
+     *
+     * @return The creation time.
+     */
+    public final Instant creationTime(LinkOption... options) {
+        return Instant.ofEpochMilli(creation(options));
+    }
+
+    /**
+     * Returns the creation time. The creation time is the time that the file was created.
+     *
+     * @return The creation time.
+     */
+    public final ZonedDateTime creationDateTime(LinkOption... options) {
+        return creationTime(options).atZone(ZoneId.systemDefault());
+    }
+
+    /**
+     * Updates a file's last modified time attribute. The file time is converted to the epoch and
+     * precision supported by the file system. Converting from finer to coarser granularities result
+     * in precision loss. The behavior of this method when attempting to set the last modified time
+     * when it is not supported by the file system or is outside the range supported by the
+     * underlying file store is not defined. It may or not fail by throwing an {@code IOException}.
+     *
+     * @param time the new last modified time
+     * @return Chainable API
+     * @throws IOException if an I/O error occurs
+     * @throws SecurityException In the case of the default provider, and a security manager is
+     *             installed, its {@link SecurityManager#checkWrite(String) checkWrite} method
+     *             denies write access to the file.
+     */
+    public final Self creationTime(FileTime time) {
+        if (time != null) {
+            try {
+                Files.setAttribute(path, "creationTime", time);
+            } catch (IOException e) {
+                throw I.quiet(e);
+            }
+        }
+        return (Self) this;
+    }
+
+    /**
+     * Updates a file's last modified time attribute. The file time is converted to the epoch and
+     * precision supported by the file system. Converting from finer to coarser granularities result
+     * in precision loss. The behavior of this method when attempting to set the last modified time
+     * when it is not supported by the file system or is outside the range supported by the
+     * underlying file store is not defined. It may or not fail by throwing an {@code IOException}.
+     *
+     * @param time the new last modified time
+     * @return Chainable API
+     * @throws IOException if an I/O error occurs
+     * @throws SecurityException In the case of the default provider, and a security manager is
+     *             installed, its {@link SecurityManager#checkWrite(String) checkWrite} method
+     *             denies write access to the file.
+     */
+    public final Self creationTime(ChronoLocalDateTime time) {
+        if (time != null) {
+            creationTime(time.atZone(ZoneId.systemDefault()));
+        }
+        return (Self) this;
+    }
+
+    /**
+     * Updates a file's last modified time attribute. The file time is converted to the epoch and
+     * precision supported by the file system. Converting from finer to coarser granularities result
+     * in precision loss. The behavior of this method when attempting to set the last modified time
+     * when it is not supported by the file system or is outside the range supported by the
+     * underlying file store is not defined. It may or not fail by throwing an {@code IOException}.
+     *
+     * @param time the new last modified time
+     * @return Chainable API
+     * @throws IOException if an I/O error occurs
+     * @throws SecurityException In the case of the default provider, and a security manager is
+     *             installed, its {@link SecurityManager#checkWrite(String) checkWrite} method
+     *             denies write access to the file.
+     */
+    public final Self creationTime(ChronoZonedDateTime time) {
+        if (time != null) {
+            creationTime(time.toInstant());
+        }
+        return (Self) this;
+    }
+
+    /**
+     * Updates a file's last modified time attribute. The file time is converted to the epoch and
+     * precision supported by the file system. Converting from finer to coarser granularities result
+     * in precision loss. The behavior of this method when attempting to set the last modified time
+     * when it is not supported by the file system or is outside the range supported by the
+     * underlying file store is not defined. It may or not fail by throwing an {@code IOException}.
+     *
+     * @param time the new last modified time
+     * @return Chainable API
+     * @throws IOException if an I/O error occurs
+     * @throws SecurityException In the case of the default provider, and a security manager is
+     *             installed, its {@link SecurityManager#checkWrite(String) checkWrite} method
+     *             denies write access to the file.
+     */
+    public final Self creationTime(Instant time) {
+        if (time != null) {
+            creationTime(FileTime.from(time));
+        }
+        return (Self) this;
+    }
+
+    /**
      * Returns a file's last modified time.
      * <p>
      * The {@code options} array may be used to indicate how symbolic links are handled for the case
@@ -341,12 +460,7 @@ public abstract class Location<Self extends Location> implements Comparable<Loca
         if (Files.notExists(path)) {
             return -1;
         }
-
-        try {
-            return Files.getLastModifiedTime(path).toMillis();
-        } catch (IOException e) {
-            throw I.quiet(e);
-        }
+        return attribute().lastModifiedTime().toMillis();
     }
 
     /**
@@ -494,6 +608,15 @@ public abstract class Location<Self extends Location> implements Comparable<Loca
         } catch (IOException e) {
             throw I.quiet(e);
         }
+    }
+
+    /**
+     * Retrieve the {@link BasicFileAttributeView} of this {@link Location}.
+     * 
+     * @return A {@link BasicFileAttributeView}.
+     */
+    public final BasicFileAttributeView attributeView(LinkOption... options) {
+        return Files.getFileAttributeView(path, BasicFileAttributeView.class, options);
     }
 
     /**

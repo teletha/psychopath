@@ -9,10 +9,13 @@
  */
 package psychopath.location;
 
+import static java.time.temporal.ChronoUnit.SECONDS;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 
 import org.junit.jupiter.api.Test;
 
@@ -99,5 +102,15 @@ class LocationTest extends LocationTestHelper {
         assert Locator.file("file").match("!not") == true;
         assert Locator.file("dir/file").match("not/**") == false;
         assert Locator.file("dir/file").match("!not/**") == true;
+    }
+
+    @Test
+    void creationTime() {
+        File file = locateFile("test");
+        assert file.creationDateTime().truncatedTo(SECONDS).isEqual(ZonedDateTime.now().truncatedTo(SECONDS));
+
+        ZonedDateTime now = ZonedDateTime.of(2021, 1, 1, 2, 3, 4, 0, ZoneId.systemDefault());
+        file.creationTime(now);
+        assert file.creationDateTime().isEqual(now);
     }
 }
