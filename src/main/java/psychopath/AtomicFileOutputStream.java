@@ -11,14 +11,8 @@ package psychopath;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.nio.file.AtomicMoveNotSupportedException;
 import java.nio.file.Files;
-import java.nio.file.OpenOption;
 import java.nio.file.StandardCopyOption;
-import java.nio.file.StandardOpenOption;
-import java.util.List;
-
-import kiss.I;
 
 class AtomicFileOutputStream extends OutputStream {
 
@@ -34,19 +28,10 @@ class AtomicFileOutputStream extends OutputStream {
     /**
      * @param dest
      */
-    AtomicFileOutputStream(File dest, OpenOption... options) {
+    AtomicFileOutputStream(File dest) {
         this.dest = dest;
-        this.temp = dest.extension(dest.extension() + ".tmp").deleteOnExit();
-
-        try {
-            if (List.of(options).contains(StandardOpenOption.APPEND)) {
-                Files.copy(dest.path, temp.path);
-            }
-
-            this.out = Files.newOutputStream(temp.path, options);
-        } catch (IOException e) {
-            throw I.quiet(e);
-        }
+        this.temp = dest.extension(dest.extension() + ".atomic").deleteOnExit();
+        this.out = temp.newOutputStream();
     }
 
     /**
@@ -74,7 +59,7 @@ class AtomicFileOutputStream extends OutputStream {
 
         try {
             Files.move(temp.path, dest.path, StandardCopyOption.ATOMIC_MOVE);
-        } catch (AtomicMoveNotSupportedException moveFailed) {
+        } catch (IOException moveFailed) {
             try {
                 Files.move(temp.path, dest.path, StandardCopyOption.REPLACE_EXISTING);
             } catch (IOException replaceFailed) {

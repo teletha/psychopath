@@ -312,28 +312,28 @@ class FileTest extends LocationTestHelper {
     @Test
     void writeByInputStream() {
         File file = locateFile("write-to-present", "contents");
-        file.write(new ByteArrayInputStream("override".getBytes()));
+        file.writeFrom(new ByteArrayInputStream("override".getBytes()));
         assert file.text().equals("override");
     }
 
     @Test
     void writeDeeplyByInputStream() {
         File file = locateAbsent("deep/write-to-present");
-        file.write(new ByteArrayInputStream("override".getBytes()));
+        file.writeFrom(new ByteArrayInputStream("override".getBytes()));
         assert file.text().equals("override");
     }
 
     @Test
     void writeByReader() {
         File file = locateFile("write-to-present", "contents");
-        file.write(new StringReader("override"));
+        file.writeFrom(new StringReader("override"));
         assert file.text().equals("override");
     }
 
     @Test
     void writeDeeplyByReader() {
         File file = locateAbsent("deep/write-to-present");
-        file.write(new StringReader("override"));
+        file.writeFrom(new StringReader("override"));
         assert file.text().equals("override");
     }
 
@@ -540,20 +540,5 @@ class FileTest extends LocationTestHelper {
             result[0] = "can't lock by one again " + e.getClass().getSimpleName();
         });
         assert result[0].equals("can't lock by one again " + OverlappingFileLockException.class.getSimpleName());
-    }
-
-    @Test
-    void atomicWrite() throws IOException {
-        File file = locateFile("test");
-        BufferedWriter writer = file.newBufferedWriter();
-        writer.write("ok");
-        writer.close();
-        assert file.text().equals("ok");
-
-        // failed writing
-        writer = file.newBufferedWriter();
-        writer.write("failed");
-        writer.flush(); // no close
-        assert file.text().equals("ok");
     }
 }

@@ -33,7 +33,7 @@ class Archiver7 {
             try {
                 URL in = new URL("https://github.com/Teletha/Psychopath/raw/master/7z.zip");
 
-                Locator.temporaryFile("7z.zip").write(in.openStream()).unpackTo(archiverDirectory);
+                Locator.temporaryFile("7z.zip").writeFrom(in.openStream()).unpackTo(archiverDirectory);
             } catch (Exception e) {
                 throw I.quiet(e);
             }

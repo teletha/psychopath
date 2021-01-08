@@ -564,8 +564,14 @@ public class File extends Location<File> {
      *             option.
      */
     public OutputStream newOutputStream(OpenOption... options) {
-        parent().create();
-        return new AtomicFileOutputStream(this, options);
+        try {
+            if (isAbsent()) {
+                parent().create();
+            }
+            return isAtomicWriting(options) ? new AtomicFileOutputStream(this) : Files.newOutputStream(path, options);
+        } catch (IOException e) {
+            throw I.quiet(e);
+        }
     }
 
     /**
@@ -644,8 +650,26 @@ public class File extends Location<File> {
      *             option.
      */
     public BufferedWriter newBufferedWriter(Charset charset, OpenOption... options) {
-        parent().create();
-        return new BufferedWriter(new OutputStreamWriter(new AtomicFileOutputStream(this, options), charset));
+        try {
+            if (isAbsent()) {
+                parent().create();
+            }
+            return isAtomicWriting(options) ? new BufferedWriter(new OutputStreamWriter(new AtomicFileOutputStream(this), charset))
+                    : Files.newBufferedWriter(path, options);
+        } catch (IOException e) {
+            throw I.quiet(e);
+        }
+    }
+
+    /**
+     * Check the atomic writing option.
+     * 
+     * @param options
+     * @return
+     */
+    private boolean isAtomicWriting(OpenOption[] options) {
+        Set<OpenOption> set = Set.of(options);
+        return set.contains(PsychopathOpenOption.ATOMIC_WRITE) && !set.contains(StandardOpenOption.APPEND);
     }
 
     /**
@@ -888,10 +912,6 @@ public class File extends Location<File> {
      */
     public File text(Charset charset, Iterable<String> lines, OpenOption... options) {
         try {
-            if (isAbsent()) {
-                create();
-            }
-
             try (BufferedWriter writer = newBufferedWriter(charset, options)) {
                 Iterator<String> iterator = lines.iterator();
                 boolean hasNext = iterator.hasNext();
@@ -1171,49 +1191,49 @@ public class File extends Location<File> {
     }
 
     /**
-     * Write the specified data to this {@link File}.
-     * 
-     * @param data
-     * @return
-     */
-    public File write(InputStream data) {
-        if (data != null) {
-            try (InputStream in = data; OutputStream out = newOutputStream()) {
-                in.transferTo(out);
-            } catch (IOException e) {
-                throw I.quiet(e);
-            }
-        }
-        return this;
-    }
-
-    /**
-     * Write the specified data to this {@link File}.
-     * 
-     * @param data
-     * @return
-     */
-    public File write(Reader data) {
-        if (data != null) {
-            try (Reader in = data; Writer out = newBufferedWriter()) {
-                in.transferTo(out);
-            } catch (IOException e) {
-                throw I.quiet(e);
-            }
-        }
-        return this;
-    }
-
-    /**
      * Write your data to the passing buffered writer.
      * 
      * @param writer
      * @return
      */
-    public File write(WiseConsumer<Writer> writer) {
+    public File write(WiseConsumer<Writer> writer, OpenOption... options) {
         if (writer != null) {
-            try (BufferedWriter out = newBufferedWriter()) {
+            try (BufferedWriter out = newBufferedWriter(options)) {
                 writer.accept(out);
+            } catch (IOException e) {
+                throw I.quiet(e);
+            }
+        }
+        return this;
+    }
+
+    /**
+     * Write the specified data to this {@link File}.
+     * 
+     * @param data
+     * @return
+     */
+    public File writeFrom(InputStream data, OpenOption... options) {
+        if (data != null) {
+            try (InputStream in = data; OutputStream out = newOutputStream(options)) {
+                in.transferTo(out);
+            } catch (IOException e) {
+                throw I.quiet(e);
+            }
+        }
+        return this;
+    }
+
+    /**
+     * Write the specified data to this {@link File}.
+     * 
+     * @param data
+     * @return
+     */
+    public File writeFrom(Reader data, OpenOption... options) {
+        if (data != null) {
+            try (Reader in = data; Writer out = newBufferedWriter(options)) {
+                in.transferTo(out);
             } catch (IOException e) {
                 throw I.quiet(e);
             }
