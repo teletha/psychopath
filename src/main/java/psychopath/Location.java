@@ -363,6 +363,25 @@ public abstract class Location<Self extends Location> implements Comparable<Loca
      *             installed, its {@link SecurityManager#checkWrite(String) checkWrite} method
      *             denies write access to the file.
      */
+    public final Self creationTime(long millisecond) {
+        creationTime(FileTime.fromMillis(millisecond));
+        return (Self) this;
+    }
+
+    /**
+     * Updates a file's last modified time attribute. The file time is converted to the epoch and
+     * precision supported by the file system. Converting from finer to coarser granularities result
+     * in precision loss. The behavior of this method when attempting to set the last modified time
+     * when it is not supported by the file system or is outside the range supported by the
+     * underlying file store is not defined. It may or not fail by throwing an {@code IOException}.
+     *
+     * @param time the new last modified time
+     * @return Chainable API
+     * @throws IOException if an I/O error occurs
+     * @throws SecurityException In the case of the default provider, and a security manager is
+     *             installed, its {@link SecurityManager#checkWrite(String) checkWrite} method
+     *             denies write access to the file.
+     */
     public final Self creationTime(FileTime time) {
         if (time != null) {
             try {
@@ -507,6 +526,25 @@ public abstract class Location<Self extends Location> implements Comparable<Loca
      */
     public final ZonedDateTime lastModifiedDateTime(LinkOption... options) {
         return lastModifiedTime(options).atZone(ZoneId.systemDefault());
+    }
+
+    /**
+     * Updates a file's last modified time attribute. The file time is converted to the epoch and
+     * precision supported by the file system. Converting from finer to coarser granularities result
+     * in precision loss. The behavior of this method when attempting to set the last modified time
+     * when it is not supported by the file system or is outside the range supported by the
+     * underlying file store is not defined. It may or not fail by throwing an {@code IOException}.
+     *
+     * @param time the new last modified time
+     * @return Chainable API
+     * @throws IOException if an I/O error occurs
+     * @throws SecurityException In the case of the default provider, and a security manager is
+     *             installed, its {@link SecurityManager#checkWrite(String) checkWrite} method
+     *             denies write access to the file.
+     */
+    public final Self lastModified(long millisecond) {
+        lastModified(FileTime.fromMillis(millisecond));
+        return (Self) this;
     }
 
     /**
