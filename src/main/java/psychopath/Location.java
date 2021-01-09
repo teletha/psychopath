@@ -27,8 +27,7 @@ import java.nio.file.attribute.FileTime;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.time.chrono.ChronoLocalDateTime;
-import java.time.chrono.ChronoZonedDateTime;
+import java.time.temporal.TemporalAccessor;
 import java.util.List;
 
 import kiss.I;
@@ -320,11 +319,11 @@ public abstract class Location<Self extends Location> implements Comparable<Loca
     }
 
     /**
-     * Returns the creation time. The creation time is the time that the file was created.
+     * Returns the creation time that this location was created.
      *
      * @return The creation time.
      */
-    public final long creation(LinkOption... options) {
+    public final long creationMilli(LinkOption... options) {
         if (Files.notExists(path)) {
             return -1;
         }
@@ -332,16 +331,16 @@ public abstract class Location<Self extends Location> implements Comparable<Loca
     }
 
     /**
-     * Returns the creation time. The creation time is the time that the file was created.
+     * Returns the creation time that this location was created.
      *
      * @return The creation time.
      */
     public final Instant creationTime(LinkOption... options) {
-        return Instant.ofEpochMilli(creation(options));
+        return Instant.ofEpochMilli(creationMilli(options));
     }
 
     /**
-     * Returns the creation time. The creation time is the time that the file was created.
+     * Returns the creation time that this location was created.
      *
      * @return The creation time.
      */
@@ -350,18 +349,10 @@ public abstract class Location<Self extends Location> implements Comparable<Loca
     }
 
     /**
-     * Updates a file's last modified time attribute. The file time is converted to the epoch and
-     * precision supported by the file system. Converting from finer to coarser granularities result
-     * in precision loss. The behavior of this method when attempting to set the last modified time
-     * when it is not supported by the file system or is outside the range supported by the
-     * underlying file store is not defined. It may or not fail by throwing an {@code IOException}.
+     * Updates this location's creation time attribute.
      *
-     * @param time the new last modified time
+     * @param millisecond A epoch time. (millisecond)
      * @return Chainable API
-     * @throws IOException if an I/O error occurs
-     * @throws SecurityException In the case of the default provider, and a security manager is
-     *             installed, its {@link SecurityManager#checkWrite(String) checkWrite} method
-     *             denies write access to the file.
      */
     public final Self creationTime(long millisecond) {
         creationTime(FileTime.fromMillis(millisecond));
@@ -369,18 +360,10 @@ public abstract class Location<Self extends Location> implements Comparable<Loca
     }
 
     /**
-     * Updates a file's last modified time attribute. The file time is converted to the epoch and
-     * precision supported by the file system. Converting from finer to coarser granularities result
-     * in precision loss. The behavior of this method when attempting to set the last modified time
-     * when it is not supported by the file system or is outside the range supported by the
-     * underlying file store is not defined. It may or not fail by throwing an {@code IOException}.
+     * Updates this location's creation time attribute.
      *
-     * @param time the new last modified time
+     * @param time A epoch time. (millisecond)
      * @return Chainable API
-     * @throws IOException if an I/O error occurs
-     * @throws SecurityException In the case of the default provider, and a security manager is
-     *             installed, its {@link SecurityManager#checkWrite(String) checkWrite} method
-     *             denies write access to the file.
      */
     public final Self creationTime(FileTime time) {
         if (time != null) {
@@ -394,177 +377,69 @@ public abstract class Location<Self extends Location> implements Comparable<Loca
     }
 
     /**
-     * Updates a file's last modified time attribute. The file time is converted to the epoch and
-     * precision supported by the file system. Converting from finer to coarser granularities result
-     * in precision loss. The behavior of this method when attempting to set the last modified time
-     * when it is not supported by the file system or is outside the range supported by the
-     * underlying file store is not defined. It may or not fail by throwing an {@code IOException}.
+     * Updates this location's creation time attribute.
      *
-     * @param time the new last modified time
+     * @param time A epoch time.
      * @return Chainable API
-     * @throws IOException if an I/O error occurs
-     * @throws SecurityException In the case of the default provider, and a security manager is
-     *             installed, its {@link SecurityManager#checkWrite(String) checkWrite} method
-     *             denies write access to the file.
      */
-    public final Self creationTime(ChronoLocalDateTime time) {
+    public final Self creationTime(TemporalAccessor time) {
         if (time != null) {
-            creationTime(time.atZone(ZoneId.systemDefault()));
+            creationTime(FileTime.from(Instant.from(time)));
         }
         return (Self) this;
     }
 
     /**
-     * Updates a file's last modified time attribute. The file time is converted to the epoch and
-     * precision supported by the file system. Converting from finer to coarser granularities result
-     * in precision loss. The behavior of this method when attempting to set the last modified time
-     * when it is not supported by the file system or is outside the range supported by the
-     * underlying file store is not defined. It may or not fail by throwing an {@code IOException}.
+     * Returns the last access time that this location was accessed.
      *
-     * @param time the new last modified time
-     * @return Chainable API
-     * @throws IOException if an I/O error occurs
-     * @throws SecurityException In the case of the default provider, and a security manager is
-     *             installed, its {@link SecurityManager#checkWrite(String) checkWrite} method
-     *             denies write access to the file.
+     * @return The last access time.
      */
-    public final Self creationTime(ChronoZonedDateTime time) {
-        if (time != null) {
-            creationTime(time.toInstant());
-        }
-        return (Self) this;
-    }
-
-    /**
-     * Updates a file's last modified time attribute. The file time is converted to the epoch and
-     * precision supported by the file system. Converting from finer to coarser granularities result
-     * in precision loss. The behavior of this method when attempting to set the last modified time
-     * when it is not supported by the file system or is outside the range supported by the
-     * underlying file store is not defined. It may or not fail by throwing an {@code IOException}.
-     *
-     * @param time the new last modified time
-     * @return Chainable API
-     * @throws IOException if an I/O error occurs
-     * @throws SecurityException In the case of the default provider, and a security manager is
-     *             installed, its {@link SecurityManager#checkWrite(String) checkWrite} method
-     *             denies write access to the file.
-     */
-    public final Self creationTime(Instant time) {
-        if (time != null) {
-            creationTime(FileTime.from(time));
-        }
-        return (Self) this;
-    }
-
-    /**
-     * Returns a file's last modified time.
-     * <p>
-     * The {@code options} array may be used to indicate how symbolic links are handled for the case
-     * that the file is a symbolic link. By default, symbolic links are followed and the file
-     * attribute of the final target of the link is read. If the option
-     * {@link LinkOption#NOFOLLOW_LINKS NOFOLLOW_LINKS} is present then symbolic links are not
-     * followed.
-     *
-     * @param options options indicating how symbolic links are handled
-     * @return a {@code FileTime} representing the time the file was last modified, or an
-     *         implementation specific default when a time stamp to indicate the time of last
-     *         modification is not supported by the file system
-     * @throws IOException if an I/O error occurs
-     * @throws SecurityException In the case of the default provider, and a security manager is
-     *             installed, its {@link SecurityManager#checkRead(String) checkRead} method denies
-     *             read access to the file.
-     * @see BasicFileAttributes#lastModifiedTime
-     */
-    public final long lastModified(LinkOption... options) {
+    public final long lastAccessMilli(LinkOption... options) {
         if (Files.notExists(path)) {
             return -1;
         }
-        return attribute().lastModifiedTime().toMillis();
+        return attribute().lastAccessTime().toMillis();
     }
 
     /**
-     * Returns a file's last modified time.
-     * <p>
-     * The {@code options} array may be used to indicate how symbolic links are handled for the case
-     * that the file is a symbolic link. By default, symbolic links are followed and the file
-     * attribute of the final target of the link is read. If the option
-     * {@link LinkOption#NOFOLLOW_LINKS NOFOLLOW_LINKS} is present then symbolic links are not
-     * followed.
+     * Returns the last access time that this location was accessed.
      *
-     * @param options options indicating how symbolic links are handled
-     * @return a {@code FileTime} representing the time the file was last modified, or an
-     *         implementation specific default when a time stamp to indicate the time of last
-     *         modification is not supported by the file system
-     * @throws IOException if an I/O error occurs
-     * @throws SecurityException In the case of the default provider, and a security manager is
-     *             installed, its {@link SecurityManager#checkRead(String) checkRead} method denies
-     *             read access to the file.
-     * @see BasicFileAttributes#lastModifiedTime
+     * @return The last access time.
      */
-    public final Instant lastModifiedTime(LinkOption... options) {
-        return Instant.ofEpochMilli(lastModified(options));
+    public final Instant lastAccessTime(LinkOption... options) {
+        return Instant.ofEpochMilli(lastAccessMilli(options));
     }
 
     /**
-     * Returns a file's last modified time.
-     * <p>
-     * The {@code options} array may be used to indicate how symbolic links are handled for the case
-     * that the file is a symbolic link. By default, symbolic links are followed and the file
-     * attribute of the final target of the link is read. If the option
-     * {@link LinkOption#NOFOLLOW_LINKS NOFOLLOW_LINKS} is present then symbolic links are not
-     * followed.
+     * Returns the last access time that this location was accessed.
      *
-     * @param options options indicating how symbolic links are handled
-     * @return a {@code FileTime} representing the time the file was last modified, or an
-     *         implementation specific default when a time stamp to indicate the time of last
-     *         modification is not supported by the file system
-     * @throws IOException if an I/O error occurs
-     * @throws SecurityException In the case of the default provider, and a security manager is
-     *             installed, its {@link SecurityManager#checkRead(String) checkRead} method denies
-     *             read access to the file.
-     * @see BasicFileAttributes#lastModifiedTime
+     * @return The last access time.
      */
-    public final ZonedDateTime lastModifiedDateTime(LinkOption... options) {
-        return lastModifiedTime(options).atZone(ZoneId.systemDefault());
+    public final ZonedDateTime lastAccessDateTime(LinkOption... options) {
+        return lastAccessTime(options).atZone(ZoneId.systemDefault());
     }
 
     /**
-     * Updates a file's last modified time attribute. The file time is converted to the epoch and
-     * precision supported by the file system. Converting from finer to coarser granularities result
-     * in precision loss. The behavior of this method when attempting to set the last modified time
-     * when it is not supported by the file system or is outside the range supported by the
-     * underlying file store is not defined. It may or not fail by throwing an {@code IOException}.
+     * Updates this location's last access time attribute.
      *
-     * @param time the new last modified time
+     * @param time A epoch time.
      * @return Chainable API
-     * @throws IOException if an I/O error occurs
-     * @throws SecurityException In the case of the default provider, and a security manager is
-     *             installed, its {@link SecurityManager#checkWrite(String) checkWrite} method
-     *             denies write access to the file.
      */
-    public final Self lastModified(long millisecond) {
-        lastModified(FileTime.fromMillis(millisecond));
+    public final Self lastAccessTime(long millisecond) {
+        lastAccessTime(FileTime.fromMillis(millisecond));
         return (Self) this;
     }
 
     /**
-     * Updates a file's last modified time attribute. The file time is converted to the epoch and
-     * precision supported by the file system. Converting from finer to coarser granularities result
-     * in precision loss. The behavior of this method when attempting to set the last modified time
-     * when it is not supported by the file system or is outside the range supported by the
-     * underlying file store is not defined. It may or not fail by throwing an {@code IOException}.
+     * Updates this location's last access time attribute.
      *
-     * @param time the new last modified time
+     * @param time A epoch time.
      * @return Chainable API
-     * @throws IOException if an I/O error occurs
-     * @throws SecurityException In the case of the default provider, and a security manager is
-     *             installed, its {@link SecurityManager#checkWrite(String) checkWrite} method
-     *             denies write access to the file.
      */
-    public final Self lastModified(FileTime time) {
+    public final Self lastAccessTime(FileTime time) {
         if (time != null) {
             try {
-                Files.setLastModifiedTime(path, time);
+                Files.setAttribute(path, "lastAccessTime", time);
             } catch (IOException e) {
                 throw I.quiet(e);
             }
@@ -573,64 +448,85 @@ public abstract class Location<Self extends Location> implements Comparable<Loca
     }
 
     /**
-     * Updates a file's last modified time attribute. The file time is converted to the epoch and
-     * precision supported by the file system. Converting from finer to coarser granularities result
-     * in precision loss. The behavior of this method when attempting to set the last modified time
-     * when it is not supported by the file system or is outside the range supported by the
-     * underlying file store is not defined. It may or not fail by throwing an {@code IOException}.
+     * Updates this location's last access time attribute.
      *
-     * @param time the new last modified time
+     * @param time A epoch time.
      * @return Chainable API
-     * @throws IOException if an I/O error occurs
-     * @throws SecurityException In the case of the default provider, and a security manager is
-     *             installed, its {@link SecurityManager#checkWrite(String) checkWrite} method
-     *             denies write access to the file.
      */
-    public final Self lastModified(ChronoLocalDateTime time) {
+    public final Self lastAccessTime(TemporalAccessor time) {
         if (time != null) {
-            lastModified(time.atZone(ZoneId.systemDefault()));
+            lastAccessTime(FileTime.from(Instant.from(time)));
         }
         return (Self) this;
     }
 
     /**
-     * Updates a file's last modified time attribute. The file time is converted to the epoch and
-     * precision supported by the file system. Converting from finer to coarser granularities result
-     * in precision loss. The behavior of this method when attempting to set the last modified time
-     * when it is not supported by the file system or is outside the range supported by the
-     * underlying file store is not defined. It may or not fail by throwing an {@code IOException}.
+     * Returns the last modified time that this location was changed.
      *
-     * @param time the new last modified time
-     * @return Chainable API
-     * @throws IOException if an I/O error occurs
-     * @throws SecurityException In the case of the default provider, and a security manager is
-     *             installed, its {@link SecurityManager#checkWrite(String) checkWrite} method
-     *             denies write access to the file.
+     * @return The last modified time.
      */
-    public final Self lastModified(ChronoZonedDateTime time) {
+    public final long lastModifiedMilli(LinkOption... options) {
+        if (Files.notExists(path)) {
+            return -1;
+        }
+        return attribute().lastModifiedTime().toMillis();
+    }
+
+    /**
+     * Returns the last modified time that this location was changed.
+     *
+     * @return The last modified time.
+     */
+    public final Instant lastModifiedTime(LinkOption... options) {
+        return Instant.ofEpochMilli(lastModifiedMilli(options));
+    }
+
+    /**
+     * Returns the last modified time that this location was changed.
+     *
+     * @return The last modified time.
+     */
+    public final ZonedDateTime lastModifiedDateTime(LinkOption... options) {
+        return lastModifiedTime(options).atZone(ZoneId.systemDefault());
+    }
+
+    /**
+     * Updates this location's last modified time attribute.
+     *
+     * @param time A epoch time.
+     * @return Chainable API
+     */
+    public final Self lastModifiedTime(long millisecond) {
+        lastModifiedTime(FileTime.fromMillis(millisecond));
+        return (Self) this;
+    }
+
+    /**
+     * Updates this location's last modified time attribute.
+     *
+     * @param time A epoch time.
+     * @return Chainable API
+     */
+    public final Self lastModifiedTime(FileTime time) {
         if (time != null) {
-            lastModified(time.toInstant());
+            try {
+                Files.setAttribute(path, "lastModifiedTime", time);
+            } catch (IOException e) {
+                throw I.quiet(e);
+            }
         }
         return (Self) this;
     }
 
     /**
-     * Updates a file's last modified time attribute. The file time is converted to the epoch and
-     * precision supported by the file system. Converting from finer to coarser granularities result
-     * in precision loss. The behavior of this method when attempting to set the last modified time
-     * when it is not supported by the file system or is outside the range supported by the
-     * underlying file store is not defined. It may or not fail by throwing an {@code IOException}.
+     * Updates this location's last modified time attribute.
      *
-     * @param time the new last modified time
+     * @param time A epoch time.
      * @return Chainable API
-     * @throws IOException if an I/O error occurs
-     * @throws SecurityException In the case of the default provider, and a security manager is
-     *             installed, its {@link SecurityManager#checkWrite(String) checkWrite} method
-     *             denies write access to the file.
      */
-    public final Self lastModified(Instant time) {
+    public final Self lastModifiedTime(TemporalAccessor time) {
         if (time != null) {
-            lastModified(FileTime.from(time));
+            lastModifiedTime(FileTime.from(Instant.from(time)));
         }
         return (Self) this;
     }
@@ -967,7 +863,7 @@ public abstract class Location<Self extends Location> implements Comparable<Loca
         if (isAbsent()) {
             create();
         } else {
-            lastModified(ZonedDateTime.now());
+            lastModifiedTime(ZonedDateTime.now());
         }
         return (Self) this;
     }

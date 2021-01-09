@@ -9,7 +9,7 @@
  */
 package psychopath;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 
 import java.nio.file.Path;
 import java.time.Instant;
@@ -214,7 +214,7 @@ public class LocationTestHelper {
         assert one.isPresent() == other.isPresent();
         assert one.isFile();
         assert other.isFile();
-        assert one.lastModified() == other.lastModified();
+        assert one.lastModifiedMilli() == other.lastModifiedMilli();
         assert one.size() == other.size();
         assert checksum(one) == checksum(other);
         return true;
@@ -229,7 +229,7 @@ public class LocationTestHelper {
         assert one.isPresent() == other.isPresent();
         assert one.isDirectory();
         assert other.isDirectory();
-        assert one.lastModified() == other.lastModified();
+        assert one.lastModifiedMilli() == other.lastModifiedMilli();
 
         List<Location> oneChildren = one.children().toList();
         List<Location> otherChildren = other.children().toList();

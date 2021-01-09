@@ -113,4 +113,24 @@ class LocationTest extends LocationTestHelper {
         file.creationTime(now);
         assert file.creationDateTime().isEqual(now);
     }
+
+    @Test
+    void lastAccessTime() {
+        File file = locateFile("test");
+        assert file.lastAccessDateTime().truncatedTo(SECONDS).isEqual(ZonedDateTime.now().truncatedTo(SECONDS));
+
+        ZonedDateTime now = ZonedDateTime.of(2021, 1, 1, 2, 3, 4, 0, ZoneId.systemDefault());
+        file.lastAccessTime(now);
+        assert file.lastAccessDateTime().isEqual(now);
+    }
+
+    @Test
+    void lastModifiedTime() {
+        File file = locateFile("test");
+        assert file.lastModifiedMilli() == file.asJavaFile().lastModified();
+
+        ZonedDateTime now = ZonedDateTime.of(2021, 1, 1, 2, 3, 4, 0, ZoneId.systemDefault());
+        file.lastModifiedTime(now);
+        assert file.lastModifiedDateTime().isEqual(now);
+    }
 }

@@ -47,7 +47,7 @@ class Archiver7 {
      * @param out
      */
     static Directory unpack(File in) {
-        Directory temp = temporaryRoot.directory("" + in.absolutize().path().hashCode() + in.lastModified()).absolutize();
+        Directory temp = temporaryRoot.directory("" + in.absolutize().path().hashCode() + in.lastModifiedMilli()).absolutize();
 
         if (temp.isAbsent()) {
             try {
