@@ -696,6 +696,9 @@ public class File extends Location<File> {
      */
     public FileChannel newFileChannel(OpenOption... options) {
         try {
+            if (isAbsent()) {
+                parent().create();
+            }
             return FileChannel.open(path, options);
         } catch (IOException e) {
             throw I.quiet(e);
