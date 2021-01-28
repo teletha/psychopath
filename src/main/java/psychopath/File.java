@@ -9,10 +9,8 @@
  */
 package psychopath;
 
-import static java.nio.file.StandardCopyOption.COPY_ATTRIBUTES;
-import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
-import static java.nio.file.StandardOpenOption.CREATE;
-import static java.nio.file.StandardOpenOption.WRITE;
+import static java.nio.file.StandardCopyOption.*;
+import static java.nio.file.StandardOpenOption.*;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -25,8 +23,8 @@ import java.io.Reader;
 import java.io.UncheckedIOException;
 import java.io.Writer;
 import java.nio.channels.AsynchronousFileChannel;
+import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
-import java.nio.channels.SeekableByteChannel;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.FileAlreadyExistsException;
@@ -676,7 +674,7 @@ public class File extends Location<File> {
      * Opens or creates a file, returning a seekable byte channel to access the file.
      * <p>
      * This method opens or creates a file in exactly the manner specified by the
-     * {@link #newByteChannel(Path,Set,FileAttribute[]) newByteChannel} method.
+     * {@link FileChannel#open(Path,Set,FileAttribute[])} method.
      *
      * @param options options specifying how the file is opened
      * @return a new seekable byte channel
@@ -696,9 +694,9 @@ public class File extends Location<File> {
      *             option.
      * @see java.nio.channels.FileChannel#open(Path,OpenOption[])
      */
-    public SeekableByteChannel newByteChannel(OpenOption... options) {
+    public FileChannel newFileChannel(OpenOption... options) {
         try {
-            return Files.newByteChannel(path, options);
+            return FileChannel.open(path, options);
         } catch (IOException e) {
             throw I.quiet(e);
         }
