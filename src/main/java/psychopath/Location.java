@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.channels.FileLock;
 import java.nio.channels.OverlappingFileLockException;
+import java.nio.file.CopyOption;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
@@ -801,15 +802,16 @@ public abstract class Location<Self extends Location> implements Comparable<Loca
      * Rename to the specified name.
      * 
      * @param name A new name.
+     * @param options A set of copy options.
      * @return A new renamed location in same {@link Directory}.
      */
-    public final Self renameTo(String name) {
+    public final Self renameTo(String name, CopyOption... options) {
         if (name().equals(name)) {
             return (Self) this;
         } else {
             Path dest = path.resolveSibling(name);
             try {
-                Files.move(path, dest);
+                Files.move(path, dest, options);
             } catch (IOException e) {
                 throw I.quiet(e);
             }
