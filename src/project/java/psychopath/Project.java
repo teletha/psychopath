@@ -12,7 +12,7 @@ package psychopath;
 public class Project extends bee.api.Project {
 
     {
-        product("com.github.teletha", "psychopath", "1.1.0");
+        product("com.github.teletha", "psychopath", ref("version.txt"));
 
         require("com.github.teletha", "sinobu");
         require("com.github.teletha", "antibug").atTest();
