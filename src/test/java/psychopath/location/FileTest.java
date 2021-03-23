@@ -24,6 +24,7 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
+import kiss.I;
 import psychopath.Directory;
 import psychopath.File;
 import psychopath.Location;
@@ -367,6 +368,41 @@ class FileTest extends LocationTestHelper {
     void writeText() {
         File file = locateFile("test", "content");
         file.text("update");
+        assert file.text().equals("update");
+    }
+
+    @Test
+    void writeTextOnAbsentFile() {
+        File file = locateAbsent("test");
+        file.text("update");
+        assert file.text().equals("update");
+    }
+
+    @Test
+    void writeTextOnDeeplyAbsentFile() {
+        File file = locateAbsent("test/in/directory");
+        file.text("update");
+        assert file.text().equals("update");
+    }
+
+    @Test
+    void writeIterable() {
+        File file = locateFile("test", "content");
+        file.text(I.list("update"));
+        assert file.text().equals("update");
+    }
+
+    @Test
+    void writeIterableOnAbsentFile() {
+        File file = locateAbsent("test");
+        file.text(I.list("update"));
+        assert file.text().equals("update");
+    }
+
+    @Test
+    void writeIterableOnDeeplyAbsentFile() {
+        File file = locateAbsent("test/in/directory");
+        file.text(I.list("update"));
         assert file.text().equals("update");
     }
 
