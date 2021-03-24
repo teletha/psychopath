@@ -667,7 +667,7 @@ public class File extends Location<File> {
      */
     private boolean isAtomicWriting(OpenOption[] options) {
         Set<OpenOption> set = Set.of(options);
-        return set.contains(PsychopathOpenOption.ATOMIC_WRITE) && !set.contains(StandardOpenOption.APPEND);
+        return set.contains(Option.ATOMIC_WRITE) && !set.contains(StandardOpenOption.APPEND);
     }
 
     /**

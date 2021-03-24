@@ -9,7 +9,7 @@
  */
 package psychopath;
 
-import static psychopath.PsychopathOpenOption.ATOMIC_WRITE;
+import static psychopath.Option.ATOMIC_WRITE;
 
 import java.io.BufferedWriter;
 import java.io.IOException;

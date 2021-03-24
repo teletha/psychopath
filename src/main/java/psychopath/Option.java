@@ -9,6 +9,7 @@
  */
 package psychopath;
 
+import java.nio.file.OpenOption;
 import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
@@ -17,6 +18,10 @@ import java.util.function.BiPredicate;
 import java.util.function.Function;
 
 public class Option {
+
+    /** The atomic writing. */
+    public static final OpenOption ATOMIC_WRITE = new OpenOption() {
+    };
 
     /** The glob patterns. */
     List<String> patterns = new ArrayList();
