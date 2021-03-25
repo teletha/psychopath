@@ -1,5 +1,13 @@
 # Changelog
 
+### [1.2.1](https://www.github.com/Teletha/psychopath/compare/v1.2.0...v1.2.1) (2021-03-25)
+
+
+### Bug Fixes
+
+* Ext file system doesn't support creation time. ([307d515](https://www.github.com/Teletha/psychopath/commit/307d515a4cce2cc7dfbd4235c4516df74e9bf658))
+* Some archiver depends on the specifiec platform. ([e0a0a01](https://www.github.com/Teletha/psychopath/commit/e0a0a0162064ed12e6f9d9fd40ef28d1109167f1))
+
 ## [1.2.0](https://www.github.com/Teletha/psychopath/compare/v1.1.0...v1.2.0) (2021-03-24)
 
 
