@@ -10,11 +10,14 @@
 package psychopath.archive;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledOnOs;
+import org.junit.jupiter.api.condition.OS;
 
 import psychopath.File;
 import psychopath.LocationTestHelper;
 import psychopath.Locator;
 
+@EnabledOnOs(OS.WINDOWS)
 class RarTest extends LocationTestHelper {
 
     @Test
