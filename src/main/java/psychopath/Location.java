@@ -369,7 +369,7 @@ public abstract class Location<Self extends Location> implements Comparable<Loca
     public final Self creationTime(FileTime time) {
         if (time != null) {
             try {
-                Files.setAttribute(path, "creationTime", time);
+                Files.getFileAttributeView(path, BasicFileAttributeView.class).setTimes(null, null, time);
             } catch (IOException e) {
                 throw I.quiet(e);
             }
