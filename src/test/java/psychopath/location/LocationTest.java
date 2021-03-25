@@ -18,6 +18,8 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledOnOs;
+import org.junit.jupiter.api.condition.OS;
 
 import psychopath.Directory;
 import psychopath.File;
@@ -105,6 +107,7 @@ class LocationTest extends LocationTestHelper {
     }
 
     @Test
+    @EnabledOnOs(OS.WINDOWS)
     void creationTime() {
         File file = locateFile("test");
         assert file.creationDateTime().truncatedTo(SECONDS).isEqual(ZonedDateTime.now().truncatedTo(SECONDS));
