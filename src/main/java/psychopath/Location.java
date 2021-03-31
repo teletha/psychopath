@@ -160,19 +160,19 @@ public abstract class Location<Self extends Location> implements Comparable<Loca
     /**
      * Constructs a relative path between this path and a given path.
      * <p>
-     * Relativization is the inverse of {@link #resolve(Path) resolution}. This method attempts to
-     * construct a {@link #isAbsolute relative} path that when {@link #resolve(Path) resolved}
-     * against this path, yields a path that locates the same file as the given path. For example,
-     * on UNIX, if this path is {@code "/a/b"} and the given path is {@code "/a/b/c/d"} then the
-     * resulting relative path would be {@code "c/d"}. Where this path and the given path do not
-     * have a {@link #getRoot root} component, then a relative path can be constructed. A relative
-     * path cannot be constructed if only one of the paths have a root component. Where both paths
-     * have a root component then it is implementation dependent if a relative path can be
-     * constructed. If this path and the given path are {@link #equals equal} then an <i>empty
+     * Relativization is the inverse of {@link Path#resolve(Path) resolution}. This method attempts
+     * to construct a {@link #isAbsolute relative} path that when {@link Path#resolve(Path)
+     * resolved} against this path, yields a path that locates the same file as the given path. For
+     * example, on UNIX, if this path is {@code "/a/b"} and the given path is {@code "/a/b/c/d"}
+     * then the resulting relative path would be {@code "c/d"}. Where this path and the given path
+     * do not have a {@link Path#getRoot root} component, then a relative path can be constructed. A
+     * relative path cannot be constructed if only one of the paths have a root component. Where
+     * both paths have a root component then it is implementation dependent if a relative path can
+     * be constructed. If this path and the given path are {@link #equals equal} then an <i>empty
      * path</i> is returned.
      * <p>
-     * For any two {@link #normalize normalized} paths <i>p</i> and <i>q</i>, where <i>q</i> does
-     * not have a root component, <blockquote> <i>p</i>{@code .relativize(}<i>p</i>
+     * For any two {@link Path#normalize normalized} paths <i>p</i> and <i>q</i>, where <i>q</i>
+     * does not have a root component, <blockquote> <i>p</i>{@code .relativize(}<i>p</i>
      * {@code .resolve(}<i>q</i>{@code )).equals(}<i>q</i>{@code )} </blockquote>
      * <p>
      * When symbolic links are supported, then whether the resulting path, when resolved against
@@ -200,8 +200,8 @@ public abstract class Location<Self extends Location> implements Comparable<Loca
      * Furthermore, this method does not eliminate special names such as "." and ".." that may be
      * used in some implementations. On UNIX for example, the parent of "{@code /a/b/c}" is
      * "{@code /a/b}", and the parent of {@code "x/y/.}" is "{@code x/y}". This method may be used
-     * with the {@link #normalize normalize} method, to eliminate redundant names, for cases where
-     * <em>shell-like</em> navigation is required.
+     * with the {@link Path#normalize normalize} method, to eliminate redundant names, for cases
+     * where <em>shell-like</em> navigation is required.
      * <p>
      * If this path has more than one element, and no root component, then this method is equivalent
      * to evaluating the expression: <blockquote><pre>
@@ -226,7 +226,6 @@ public abstract class Location<Self extends Location> implements Comparable<Loca
      * race-free manner then the returned directory stream is a {@link SecureDirectoryStream}.
      *
      * @return A {@link Signal} which iterate over all entries in this {@link Location}.
-     * @throws IOException if an I/O error occurs
      * @throws SecurityException In the case of the default provider, and a security manager is
      *             installed, the {@link SecurityManager#checkRead(String) checkRead} method is
      *             invoked to check read access to the directory.
@@ -278,10 +277,8 @@ public abstract class Location<Self extends Location> implements Comparable<Loca
      *        Files.readAttributes(path, PosixFileAttributes.class, NOFOLLOW_LINKS);
      * </pre>
      *
-     * @param path the path to the file
      * @return the file attributes
      * @throws UnsupportedOperationException if an attributes of the given type are not supported
-     * @throws IOException if an I/O error occurs
      * @throws SecurityException In the case of the default provider, a security manager is
      *             installed, its {@link SecurityManager#checkRead(String) checkRead} method is
      *             invoked to check read access to the file. If this method is invoked to read
@@ -299,11 +296,10 @@ public abstract class Location<Self extends Location> implements Comparable<Loca
     /**
      * Returns the size of a file (in bytes). The size may differ from the actual size on the file
      * system due to compression, support for sparse files, or other reasons. The size of files that
-     * are not {@link #isRegularFile regular} files is implementation specific and therefore
+     * are not {@link Files#isRegularFile regular} files is implementation specific and therefore
      * unspecified.
      *
      * @return the file size, in bytes
-     * @throws IOException if an I/O error occurs
      * @throws SecurityException In the case of the default provider, and a security manager is
      *             installed, its {@link SecurityManager#checkRead(String) checkRead} method denies
      *             read access to the file.
@@ -423,7 +419,7 @@ public abstract class Location<Self extends Location> implements Comparable<Loca
     /**
      * Updates this location's last access time attribute.
      *
-     * @param time A epoch time.
+     * @param millisecond A epoch time.
      * @return Chainable API
      */
     public final Self lastAccessTime(long millisecond) {
@@ -494,7 +490,7 @@ public abstract class Location<Self extends Location> implements Comparable<Loca
     /**
      * Updates this location's last modified time attribute.
      *
-     * @param time A epoch time.
+     * @param millisecond A epoch time.
      * @return Chainable API
      */
     public final Self lastModifiedTime(long millisecond) {
@@ -635,7 +631,7 @@ public abstract class Location<Self extends Location> implements Comparable<Loca
      * <p>
      * Where it is required to distinguish an I/O exception from the case that the file is not a
      * regular file then the file attributes can be read with the
-     * {@link #readAttributes(Path,Class,LinkOption[]) readAttributes} method and the file type
+     * {@link Files#readAttributes(Path,Class,LinkOption[]) readAttributes} method and the file type
      * tested with the {@link BasicFileAttributes#isRegularFile} method.
      *
      * @param options options indicating how symbolic links are handled
@@ -661,7 +657,7 @@ public abstract class Location<Self extends Location> implements Comparable<Loca
      * <p>
      * Where it is required to distinguish an I/O exception from the case that the file is not a
      * directory then the file attributes can be read with the
-     * {@link #readAttributes(Path,Class,LinkOption[]) readAttributes} method and the file type
+     * {@link Files#readAttributes(Path,Class,LinkOption[]) readAttributes} method and the file type
      * tested with the {@link BasicFileAttributes#isDirectory} method.
      *
      * @param options options indicating how symbolic links are handled
@@ -680,7 +676,7 @@ public abstract class Location<Self extends Location> implements Comparable<Loca
      * <p>
      * Where it is required to distinguish an I/O exception from the case that the file is not a
      * symbolic link then the file attributes can be read with the
-     * {@link #readAttributes(Path,Class,LinkOption[]) readAttributes} method and the file type
+     * {@link Files#readAttributes(Path,Class,LinkOption[]) readAttributes} method and the file type
      * tested with the {@link BasicFileAttributes#isSymbolicLink} method.
      *
      * @return {@code true} if the file is a symbolic link; {@code false} if the file does not
@@ -737,15 +733,7 @@ public abstract class Location<Self extends Location> implements Comparable<Loca
      * Returns a {@link File} object representing this path. Where this {@code
      * Path} is associated with the default provider, then this method is equivalent to returning a
      * {@code File} object constructed with the {@code String} representation of this path.
-     * <p>
-     * If this path was created by invoking the {@code File} {@link File#toPath toPath} method then
-     * there is no guarantee that the {@code
-     * File} object returned by this method is {@link #equals equal} to the original {@code File}.
      *
-     * @implSpec The default implementation is equivalent for this path to: <pre>{@code
-     *     new File(toString());
-     * }</pre> if the {@code FileSystem} which created this {@code Path} is the default file
-     *           system; otherwise an {@code UnsupportedOperationException} is thrown.
      * @return a {@code File} object representing this path
      * @throws UnsupportedOperationException if this {@code Path} is not associated with the default
      *             provider
@@ -758,12 +746,6 @@ public abstract class Location<Self extends Location> implements Comparable<Loca
      * Returns a {@link Path java.nio.file.Path} object constructed from the this abstract path. The
      * resulting {@code Path} is associated with the {@link java.nio.file.FileSystems#getDefault
      * default-filesystem}.
-     * <p>
-     * The first invocation of this method works as if invoking it were equivalent to evaluating the
-     * expression: <blockquote><pre>
-     * {@link java.nio.file.FileSystems#getDefault FileSystems.getDefault}().{@link
-     * java.nio.file.FileSystem#getPath getPath}(this.{@link #getPath getPath}());
-     * </pre></blockquote> Subsequent invocations of this method return the same {@code Path}.
      * <p>
      * If this abstract pathname is the empty abstract pathname then this method returns a
      * {@code Path} that may be used to access the current user directory.
@@ -897,7 +879,7 @@ public abstract class Location<Self extends Location> implements Comparable<Loca
     /**
      * Test matching the specified pattern to this {@link Location}.
      * 
-     * @param pattern A glob pattern.
+     * @param patterns A set of glob patterns.
      * @return A result.
      */
     public final boolean match(String... patterns) {
@@ -907,7 +889,7 @@ public abstract class Location<Self extends Location> implements Comparable<Loca
     /**
      * Test matching the specified pattern to this {@link Location}.
      * 
-     * @param pattern A glob pattern.
+     * @param patterns A set of glob patterns.
      * @return A result.
      */
     public final boolean match(List<String> patterns) {

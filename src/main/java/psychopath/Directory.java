@@ -207,7 +207,6 @@ public class Directory extends Location<Directory> {
      * </p>
      *
      * @param option A {@link Option} builder.
-     * @throws IOException If an I/O error occurs.
      * @throws SecurityException In the case of the default provider, and a security manager is
      *             installed, the {@link SecurityManager#checkRead(String)} method is invoked to
      *             check read access to the source file, the
@@ -239,7 +238,6 @@ public class Directory extends Location<Directory> {
      *
      * @param destination An output {@link Directory}.
      * @param option A {@link Option} builder.
-     * @throws IOException If an I/O error occurs.
      * @throws SecurityException In the case of the default provider, and a security manager is
      *             installed, the {@link SecurityManager#checkRead(String)} method is invoked to
      *             check read access to the source file, the
@@ -269,7 +267,6 @@ public class Directory extends Location<Directory> {
      *
      * @param destination An output {@link Path} object which can be file or directory.
      * @param option A {@link Option} builder.
-     * @throws IOException If an I/O error occurs.
      * @throws SecurityException In the case of the default provider, and a security manager is
      *             installed, the {@link SecurityManager#checkRead(String)} method is invoked to
      *             check read access to the source file, the

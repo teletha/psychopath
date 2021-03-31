@@ -25,7 +25,6 @@ interface PathOperatable {
      * Delete resources.
      * 
      * @param patterns A list of glob patterns to accept file by its name.
-     * @return A destination {@link Directory}.
      */
     default void delete(String... patterns) {
         delete(Option.of(patterns));
@@ -35,7 +34,6 @@ interface PathOperatable {
      * Delete resources.
      * 
      * @param patterns A list of glob patterns to accept file by its name.
-     * @return A destination {@link Directory}.
      */
     default void delete(Collection<String> patterns) {
         delete(array(patterns));
@@ -45,7 +43,6 @@ interface PathOperatable {
      * Delete resources.
      * 
      * @param option A operation {@link Option}.
-     * @return A destination {@link Directory}.
      */
     default void delete(Function<Option, Option> option) {
         observeDeleting(option).to(I.NoOP);

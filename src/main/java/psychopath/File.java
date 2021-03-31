@@ -27,7 +27,6 @@ import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.FileSystemNotFoundException;
 import java.nio.file.Files;
 import java.nio.file.LinkPermission;
@@ -144,7 +143,6 @@ public class File extends Location<File> {
      * </p>
      *
      * @param destination An output {@link Directory}.
-     * @throws IOException If an I/O error occurs.
      * @throws SecurityException In the case of the default provider, and a security manager is
      *             installed, the {@link SecurityManager#checkRead(String)} method is invoked to
      *             check read access to the source file, the
@@ -186,7 +184,6 @@ public class File extends Location<File> {
      * </p>
      *
      * @param destination An output {@link Directory}.
-     * @throws IOException If an I/O error occurs.
      * @throws SecurityException In the case of the default provider, and a security manager is
      *             installed, the {@link SecurityManager#checkRead(String)} method is invoked to
      *             check read access to the source file, the
@@ -218,7 +215,6 @@ public class File extends Location<File> {
      *
      * @param destination the output stream to write to.
      * @return the number of bytes read or written
-     * @throws IOException if an I/O error occurs when reading or writing
      * @throws SecurityException In the case of the default provider, and a security manager is
      *             installed, the {@link SecurityManager#checkRead(String) checkRead} method is
      *             invoked to check read access to the file.
@@ -255,7 +251,6 @@ public class File extends Location<File> {
      * </p>
      *
      * @param destination An output {@link Path} object which can be file or directory.
-     * @throws IOException If an I/O error occurs.
      * @throws SecurityException In the case of the default provider, and a security manager is
      *             installed, the {@link SecurityManager#checkRead(String)} method is invoked to
      *             check read access to the source file, the
@@ -296,7 +291,6 @@ public class File extends Location<File> {
      * </p>
      *
      * @param destination An output {@link Path} object which can be file or directory.
-     * @throws IOException If an I/O error occurs.
      * @throws SecurityException In the case of the default provider, and a security manager is
      *             installed, the {@link SecurityManager#checkRead(String)} method is invoked to
      *             check read access to the source file, the
@@ -361,7 +355,7 @@ public class File extends Location<File> {
     /**
      * Unpack archive file to the same directory that this {@link File} exists.
      * 
-     * @param options A list of options.
+     * @param option A list of options.
      * @return An unpacked directory.
      */
     public final Directory unpack(Function<Option, Option> option) {
@@ -409,7 +403,7 @@ public class File extends Location<File> {
     /**
      * Unpack archive file to the same directory that this {@link File} exists.
      * 
-     * @param options A list of options.
+     * @param option A list of options.
      * @return An unpacked directory.
      */
     public final Directory unpackToTemporary(Function<Option, Option> option) {
@@ -513,7 +507,6 @@ public class File extends Location<File> {
      * @return a new input stream
      * @throws IllegalArgumentException if an invalid combination of options is specified
      * @throws UnsupportedOperationException if an unsupported option is specified
-     * @throws IOException if an I/O error occurs
      * @throws SecurityException In the case of the default provider, and a security manager is
      *             installed, the {@link SecurityManager#checkRead(String) checkRead} method is
      *             invoked to check read access to the file.
@@ -538,13 +531,13 @@ public class File extends Location<File> {
      * specified.
      * <p>
      * This method opens or creates a file in exactly the manner specified by the
-     * {@link #newByteChannel(Path,Set,FileAttribute[]) newByteChannel} method with the exception
-     * that the {@link StandardOpenOption#READ READ} option may not be present in the array of
-     * options. If no options are present then this method works as if the
+     * {@link Files#newByteChannel(Path,Set,FileAttribute[]) newByteChannel} method with the
+     * exception that the {@link StandardOpenOption#READ READ} option may not be present in the
+     * array of options. If no options are present then this method works as if the
      * {@link StandardOpenOption#CREATE CREATE}, {@link StandardOpenOption#TRUNCATE_EXISTING
      * TRUNCATE_EXISTING}, and {@link StandardOpenOption#WRITE WRITE} options are present. In other
      * words, it opens the file for writing, creating the file if it doesn't exist, or initially
-     * truncating an existing {@link #isRegularFile regular-file} to a size of {@code 0} if it
+     * truncating an existing {@link Files#isRegularFile regular-file} to a size of {@code 0} if it
      * exists.
      * <p>
      *
@@ -553,7 +546,6 @@ public class File extends Location<File> {
      * @throws IllegalArgumentException if {@code options} contains an invalid combination of
      *             options
      * @throws UnsupportedOperationException if an unsupported option is specified
-     * @throws IOException if an I/O error occurs
      * @throws SecurityException In the case of the default provider, and a security manager is
      *             installed, the {@link SecurityManager#checkWrite(String) checkWrite} method is
      *             invoked to check write access to the file. The
@@ -582,7 +574,6 @@ public class File extends Location<File> {
      * }</pre>
      *
      * @return a new buffered reader, with default buffer size, to read text from the file
-     * @throws IOException if an I/O error occurs opening the file
      * @throws SecurityException In the case of the default provider, and a security manager is
      *             installed, the {@link SecurityManager#checkRead(String) checkRead} method is
      *             invoked to check read access to the file.
@@ -612,7 +603,6 @@ public class File extends Location<File> {
      * @return a new buffered writer, with default buffer size, to write text to the file
      * @throws IllegalArgumentException if {@code options} contains an invalid combination of
      *             options
-     * @throws IOException if an I/O error occurs opening or creating the file
      * @throws UnsupportedOperationException if an unsupported option is specified
      * @throws SecurityException In the case of the default provider, and a security manager is
      *             installed, the {@link SecurityManager#checkWrite(String) checkWrite} method is
@@ -638,7 +628,6 @@ public class File extends Location<File> {
      * @return a new buffered writer, with default buffer size, to write text to the file
      * @throws IllegalArgumentException if {@code options} contains an invalid combination of
      *             options
-     * @throws IOException if an I/O error occurs opening or creating the file
      * @throws UnsupportedOperationException if an unsupported option is specified
      * @throws SecurityException In the case of the default provider, and a security manager is
      *             installed, the {@link SecurityManager#checkWrite(String) checkWrite} method is
@@ -680,10 +669,6 @@ public class File extends Location<File> {
      * @return a new seekable byte channel
      * @throws IllegalArgumentException if the set contains an invalid combination of options
      * @throws UnsupportedOperationException if an unsupported open option is specified
-     * @throws FileAlreadyExistsException if a file of that name already exists and the
-     *             {@link StandardOpenOption#CREATE_NEW CREATE_NEW} option is specified <i>(optional
-     *             specific exception)</i>
-     * @throws IOException if an I/O error occurs
      * @throws SecurityException In the case of the default provider, and a security manager is
      *             installed, the {@link SecurityManager#checkRead(String) checkRead} method is
      *             invoked to check read access to the path if the file is opened for reading. The
@@ -712,9 +697,7 @@ public class File extends Location<File> {
      * Note that this method is intended for simple cases where it is convenient to read all bytes
      * into a byte array. It is not intended for reading in large files.
      *
-     * @param path the path to the file
      * @return a byte array containing the bytes read from the file
-     * @throws IOException if an I/O error occurs reading from the stream
      * @throws OutOfMemoryError if an array of the required size cannot be allocated, for example
      *             the file is larger that {@code 2GB}
      * @throws SecurityException In the case of the default provider, and a security manager is
@@ -738,8 +721,6 @@ public class File extends Location<File> {
      * This method is equivalent to: {@code readString(path, StandardCharsets.UTF_8) }
      *
      * @return a String containing the content read from the file
-     * @throws IOException if an I/O error occurs reading from the file or a malformed or unmappable
-     *             byte sequence is read
      * @throws OutOfMemoryError if the file is extremely large, for example larger than {@code 2GB}
      * @throws SecurityException In the case of the default provider, and a security manager is
      *             installed, the {@link SecurityManager#checkRead(String) checkRead} method is
@@ -760,10 +741,8 @@ public class File extends Location<File> {
      * @apiNote This method is intended for simple cases where it is appropriate and convenient to
      *          read the content of a file into a String. It is not intended for reading very large
      *          files.
-     * @param cs the charset to use for decoding
+     * @param charset the charset to use for decoding
      * @return a String containing the content read from the file
-     * @throws IOException if an I/O error occurs reading from the file or a malformed or unmappable
-     *             byte sequence is read
      * @throws OutOfMemoryError if the file is extremely large, for example larger than {@code 2GB}
      * @throws SecurityException In the case of the default provider, and a security manager is
      *             installed, the {@link SecurityManager#checkRead(String) checkRead} method is
@@ -788,17 +767,15 @@ public class File extends Location<File> {
      * {@link StandardOpenOption#TRUNCATE_EXISTING TRUNCATE_EXISTING}, and
      * {@link StandardOpenOption#WRITE WRITE} options are present. In other words, it opens the file
      * for writing, creating the file if it doesn't exist, or initially truncating an existing
-     * {@link #isRegularFile regular-file} to a size of {@code 0}. The method ensures that the file
-     * is closed when all lines have been written (or an I/O error or other runtime exception is
-     * thrown). If an I/O error occurs then it may do so after the file has been created or
+     * {@link Files#isRegularFile regular-file} to a size of {@code 0}. The method ensures that the
+     * file is closed when all lines have been written (or an I/O error or other runtime exception
+     * is thrown). If an I/O error occurs then it may do so after the file has been created or
      * truncated, or after some bytes have been written to the file.
      * 
      * @param lines an object to iterate over the char sequences
      * @return the path
      * @throws IllegalArgumentException if {@code options} contains an invalid combination of
      *             options
-     * @throws IOException if an I/O error occurs writing to or creating the file, or the text
-     *             cannot be encoded using the specified charset
      * @throws UnsupportedOperationException if an unsupported option is specified
      * @throws SecurityException In the case of the default provider, and a security manager is
      *             installed, the {@link SecurityManager#checkWrite(String) checkWrite} method is
@@ -822,17 +799,15 @@ public class File extends Location<File> {
      * {@link StandardOpenOption#TRUNCATE_EXISTING TRUNCATE_EXISTING}, and
      * {@link StandardOpenOption#WRITE WRITE} options are present. In other words, it opens the file
      * for writing, creating the file if it doesn't exist, or initially truncating an existing
-     * {@link #isRegularFile regular-file} to a size of {@code 0}. The method ensures that the file
-     * is closed when all lines have been written (or an I/O error or other runtime exception is
-     * thrown). If an I/O error occurs then it may do so after the file has been created or
+     * {@link Files#isRegularFile regular-file} to a size of {@code 0}. The method ensures that the
+     * file is closed when all lines have been written (or an I/O error or other runtime exception
+     * is thrown). If an I/O error occurs then it may do so after the file has been created or
      * truncated, or after some bytes have been written to the file.
      * 
      * @param lines an object to iterate over the char sequences
      * @return the path
      * @throws IllegalArgumentException if {@code options} contains an invalid combination of
      *             options
-     * @throws IOException if an I/O error occurs writing to or creating the file, or the text
-     *             cannot be encoded using the specified charset
      * @throws UnsupportedOperationException if an unsupported option is specified
      * @throws SecurityException In the case of the default provider, and a security manager is
      *             installed, the {@link SecurityManager#checkWrite(String) checkWrite} method is
@@ -856,9 +831,9 @@ public class File extends Location<File> {
      * {@link StandardOpenOption#TRUNCATE_EXISTING TRUNCATE_EXISTING}, and
      * {@link StandardOpenOption#WRITE WRITE} options are present. In other words, it opens the file
      * for writing, creating the file if it doesn't exist, or initially truncating an existing
-     * {@link #isRegularFile regular-file} to a size of {@code 0}. The method ensures that the file
-     * is closed when all lines have been written (or an I/O error or other runtime exception is
-     * thrown). If an I/O error occurs then it may do so after the file has been created or
+     * {@link Files#isRegularFile regular-file} to a size of {@code 0}. The method ensures that the
+     * file is closed when all lines have been written (or an I/O error or other runtime exception
+     * is thrown). If an I/O error occurs then it may do so after the file has been created or
      * truncated, or after some bytes have been written to the file.
      * 
      * @param charset the charset to use for encoding
@@ -866,8 +841,6 @@ public class File extends Location<File> {
      * @return the path
      * @throws IllegalArgumentException if {@code options} contains an invalid combination of
      *             options
-     * @throws IOException if an I/O error occurs writing to or creating the file, or the text
-     *             cannot be encoded using the specified charset
      * @throws UnsupportedOperationException if an unsupported option is specified
      * @throws SecurityException In the case of the default provider, and a security manager is
      *             installed, the {@link SecurityManager#checkWrite(String) checkWrite} method is
@@ -891,9 +864,9 @@ public class File extends Location<File> {
      * {@link StandardOpenOption#TRUNCATE_EXISTING TRUNCATE_EXISTING}, and
      * {@link StandardOpenOption#WRITE WRITE} options are present. In other words, it opens the file
      * for writing, creating the file if it doesn't exist, or initially truncating an existing
-     * {@link #isRegularFile regular-file} to a size of {@code 0}. The method ensures that the file
-     * is closed when all lines have been written (or an I/O error or other runtime exception is
-     * thrown). If an I/O error occurs then it may do so after the file has been created or
+     * {@link Files#isRegularFile regular-file} to a size of {@code 0}. The method ensures that the
+     * file is closed when all lines have been written (or an I/O error or other runtime exception
+     * is thrown). If an I/O error occurs then it may do so after the file has been created or
      * truncated, or after some bytes have been written to the file.
      * 
      * @param charset the charset to use for encoding
@@ -901,8 +874,6 @@ public class File extends Location<File> {
      * @return the path
      * @throws IllegalArgumentException if {@code options} contains an invalid combination of
      *             options
-     * @throws IOException if an I/O error occurs writing to or creating the file, or the text
-     *             cannot be encoded using the specified charset
      * @throws UnsupportedOperationException if an unsupported option is specified
      * @throws SecurityException In the case of the default provider, and a security manager is
      *             installed, the {@link SecurityManager#checkWrite(String) checkWrite} method is
@@ -942,17 +913,15 @@ public class File extends Location<File> {
      * {@link StandardOpenOption#TRUNCATE_EXISTING TRUNCATE_EXISTING}, and
      * {@link StandardOpenOption#WRITE WRITE} options are present. In other words, it opens the file
      * for writing, creating the file if it doesn't exist, or initially truncating an existing
-     * {@link #isRegularFile regular-file} to a size of {@code 0}. The method ensures that the file
-     * is closed when all lines have been written (or an I/O error or other runtime exception is
-     * thrown). If an I/O error occurs then it may do so after the file has been created or
+     * {@link Files#isRegularFile regular-file} to a size of {@code 0}. The method ensures that the
+     * file is closed when all lines have been written (or an I/O error or other runtime exception
+     * is thrown). If an I/O error occurs then it may do so after the file has been created or
      * truncated, or after some bytes have been written to the file.
      * 
      * @param lines an object to iterate over the char sequences
      * @return the path
      * @throws IllegalArgumentException if {@code options} contains an invalid combination of
      *             options
-     * @throws IOException if an I/O error occurs writing to or creating the file, or the text
-     *             cannot be encoded using the specified charset
      * @throws UnsupportedOperationException if an unsupported option is specified
      * @throws SecurityException In the case of the default provider, and a security manager is
      *             installed, the {@link SecurityManager#checkWrite(String) checkWrite} method is
@@ -976,17 +945,15 @@ public class File extends Location<File> {
      * {@link StandardOpenOption#TRUNCATE_EXISTING TRUNCATE_EXISTING}, and
      * {@link StandardOpenOption#WRITE WRITE} options are present. In other words, it opens the file
      * for writing, creating the file if it doesn't exist, or initially truncating an existing
-     * {@link #isRegularFile regular-file} to a size of {@code 0}. The method ensures that the file
-     * is closed when all lines have been written (or an I/O error or other runtime exception is
-     * thrown). If an I/O error occurs then it may do so after the file has been created or
+     * {@link Files#isRegularFile regular-file} to a size of {@code 0}. The method ensures that the
+     * file is closed when all lines have been written (or an I/O error or other runtime exception
+     * is thrown). If an I/O error occurs then it may do so after the file has been created or
      * truncated, or after some bytes have been written to the file.
      * 
      * @param lines an object to iterate over the char sequences
      * @return the path
      * @throws IllegalArgumentException if {@code options} contains an invalid combination of
      *             options
-     * @throws IOException if an I/O error occurs writing to or creating the file, or the text
-     *             cannot be encoded using the specified charset
      * @throws UnsupportedOperationException if an unsupported option is specified
      * @throws SecurityException In the case of the default provider, and a security manager is
      *             installed, the {@link SecurityManager#checkWrite(String) checkWrite} method is
@@ -1010,9 +977,9 @@ public class File extends Location<File> {
      * {@link StandardOpenOption#TRUNCATE_EXISTING TRUNCATE_EXISTING}, and
      * {@link StandardOpenOption#WRITE WRITE} options are present. In other words, it opens the file
      * for writing, creating the file if it doesn't exist, or initially truncating an existing
-     * {@link #isRegularFile regular-file} to a size of {@code 0}. The method ensures that the file
-     * is closed when all lines have been written (or an I/O error or other runtime exception is
-     * thrown). If an I/O error occurs then it may do so after the file has been created or
+     * {@link Files#isRegularFile regular-file} to a size of {@code 0}. The method ensures that the
+     * file is closed when all lines have been written (or an I/O error or other runtime exception
+     * is thrown). If an I/O error occurs then it may do so after the file has been created or
      * truncated, or after some bytes have been written to the file.
      * 
      * @param charset the charset to use for encoding
@@ -1020,8 +987,6 @@ public class File extends Location<File> {
      * @return the path
      * @throws IllegalArgumentException if {@code options} contains an invalid combination of
      *             options
-     * @throws IOException if an I/O error occurs writing to or creating the file, or the text
-     *             cannot be encoded using the specified charset
      * @throws UnsupportedOperationException if an unsupported option is specified
      * @throws SecurityException In the case of the default provider, and a security manager is
      *             installed, the {@link SecurityManager#checkWrite(String) checkWrite} method is
@@ -1045,9 +1010,9 @@ public class File extends Location<File> {
      * {@link StandardOpenOption#TRUNCATE_EXISTING TRUNCATE_EXISTING}, and
      * {@link StandardOpenOption#WRITE WRITE} options are present. In other words, it opens the file
      * for writing, creating the file if it doesn't exist, or initially truncating an existing
-     * {@link #isRegularFile regular-file} to a size of {@code 0}. The method ensures that the file
-     * is closed when all lines have been written (or an I/O error or other runtime exception is
-     * thrown). If an I/O error occurs then it may do so after the file has been created or
+     * {@link Files#isRegularFile regular-file} to a size of {@code 0}. The method ensures that the
+     * file is closed when all lines have been written (or an I/O error or other runtime exception
+     * is thrown). If an I/O error occurs then it may do so after the file has been created or
      * truncated, or after some bytes have been written to the file.
      * 
      * @param charset the charset to use for encoding
@@ -1055,8 +1020,6 @@ public class File extends Location<File> {
      * @return the path
      * @throws IllegalArgumentException if {@code options} contains an invalid combination of
      *             options
-     * @throws IOException if an I/O error occurs writing to or creating the file, or the text
-     *             cannot be encoded using the specified charset
      * @throws UnsupportedOperationException if an unsupported option is specified
      * @throws SecurityException In the case of the default provider, and a security manager is
      *             installed, the {@link SecurityManager#checkWrite(String) checkWrite} method is
@@ -1070,9 +1033,9 @@ public class File extends Location<File> {
     }
 
     /**
-     * Read all lines from a file as a {@code Stream}. Unlike {@link #readAllLines(Path, Charset)
-     * readAllLines}, this method does not read all lines into a {@code List}, but instead populates
-     * lazily as the stream is consumed.
+     * Read all lines from a file as a {@code Stream}. Unlike
+     * {@link Files#readAllLines(Path, Charset) readAllLines}, this method does not read all lines
+     * into a {@code List}, but instead populates lazily as the stream is consumed.
      * <p>
      * Bytes from the file are decoded into characters using the specified charset and the same line
      * terminators as specified by {@code
@@ -1113,7 +1076,6 @@ public class File extends Location<File> {
      *           that when splitting it can approximately divide the number of covered lines in
      *           half.
      * @return the lines from the file as a {@code Stream}
-     * @throws IOException if an I/O error occurs opening the file
      * @throws SecurityException In the case of the default provider, and a security manager is
      *             installed, the {@link SecurityManager#checkRead(String) checkRead} method is
      *             invoked to check read access to the file.
@@ -1123,9 +1085,9 @@ public class File extends Location<File> {
     }
 
     /**
-     * Read all lines from a file as a {@code Stream}. Unlike {@link #readAllLines(Path, Charset)
-     * readAllLines}, this method does not read all lines into a {@code List}, but instead populates
-     * lazily as the stream is consumed.
+     * Read all lines from a file as a {@code Stream}. Unlike
+     * {@link Files#readAllLines(Path, Charset) readAllLines}, this method does not read all lines
+     * into a {@code List}, but instead populates lazily as the stream is consumed.
      * <p>
      * Bytes from the file are decoded into characters using the specified charset and the same line
      * terminators as specified by {@code
@@ -1165,9 +1127,8 @@ public class File extends Location<File> {
      *           properties (a line feed or a carriage return being efficient identifiable) such
      *           that when splitting it can approximately divide the number of covered lines in
      *           half.
-     * @param cs the charset to use for decoding
+     * @param charset the charset to use for decoding
      * @return the lines from the file as a {@code Stream}
-     * @throws IOException if an I/O error occurs opening the file
      * @throws SecurityException In the case of the default provider, and a security manager is
      *             installed, the {@link SecurityManager#checkRead(String) checkRead} method is
      *             invoked to check read access to the file.

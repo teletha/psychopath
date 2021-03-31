@@ -79,7 +79,6 @@ public class Locator {
     /**
      * Locate {@link Folder}.
      * 
-     * @param file A path to the archive file.
      * @return The specified archive.
      */
     public static Folder folder() {

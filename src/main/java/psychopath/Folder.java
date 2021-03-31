@@ -167,7 +167,7 @@ public final class Folder implements PathOperatable {
      * Add pattern matching path.
      * 
      * @param base A base path.
-     * @param patterns "glob" include/exclude patterns.
+     * @param option A option.
      */
     public Folder add(Directory base, Function<Option, Option> option) {
         if (base != null) {
@@ -339,7 +339,7 @@ public final class Folder implements PathOperatable {
         /**
          * Delete resources.
          * 
-         * @param patterns
+         * @param option
          */
         public Signal<Location> observeDeleting(Function<Option, Option> option) {
             return location.observeDeleting(this.option.andThen(option));
@@ -349,7 +349,7 @@ public final class Folder implements PathOperatable {
          * Move reosources to the specified {@link Directory}.
          * 
          * @param destination
-         * @param patterns
+         * @param option
          */
         public Signal<Location> observeMovingTo(Directory destination, Function<Option, Option> option) {
             return location.observeMovingTo(destination, this.option.andThen(option));
@@ -359,7 +359,7 @@ public final class Folder implements PathOperatable {
          * Copy reosources to the specified {@link Directory}.
          * 
          * @param destination
-         * @param patterns
+         * @param option
          */
         public Signal<Location> observeCopyingTo(Directory destination, Function<Option, Option> option) {
             return location.observeCopyingTo(destination, this.option.andThen(option));
@@ -369,7 +369,7 @@ public final class Folder implements PathOperatable {
          * Pack reosources to the specified {@link File}.
          * 
          * @param relative
-         * @param patterns
+         * @param option
          */
         public Signal<Location> observePackingTo(ZipOutputStream archive, Directory relative, Function<Option, Option> option) {
             Function<Option, Option> combined = this.option.andThen(option);
@@ -387,7 +387,7 @@ public final class Folder implements PathOperatable {
         /**
          * List up all resources.
          * 
-         * @param patterns
+         * @param option
          * @return
          */
         public Signal<Ⅱ<Directory, File>> walkFilesWithBase(Function<Option, Option> option) {
@@ -397,7 +397,7 @@ public final class Folder implements PathOperatable {
         /**
          * List up all resources.
          * 
-         * @param patterns
+         * @param option
          * @return
          */
         public Signal<Ⅱ<Directory, Directory>> walkDirectoriesWithBase(Function<Option, Option> option) {
