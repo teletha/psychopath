@@ -106,8 +106,8 @@ public class File extends Location<File> {
         return new Signal<>((observer, disposer) -> {
             try {
                 if (!disposer.isDisposed()) {
-                    Files.deleteIfExists(path);
                     observer.accept(this);
+                    Files.deleteIfExists(path);
                 }
                 observer.complete();
             } catch (IOException e) {
@@ -154,9 +154,10 @@ public class File extends Location<File> {
         return new Signal<>((observer, disposer) -> {
             try {
                 if (isPresent() && !disposer.isDisposed()) {
+                    observer.accept(this);
+
                     destination.parent().create();
                     Files.copy(path, destination.path, REPLACE_EXISTING, COPY_ATTRIBUTES);
-                    observer.accept(this);
                 }
                 observer.complete();
             } catch (Exception e) {
