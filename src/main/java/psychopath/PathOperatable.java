@@ -77,6 +77,36 @@ interface PathOperatable {
     Signal<Location> observeDeleting(Function<Option, Option> option);
 
     /**
+     * Build stream that delete resources.
+     * 
+     * @param patterns A list of glob patterns to accept file by its name.
+     * @return A event stream which emits operated {@link File}s.
+     */
+    default Signal<Progress> trackDeleting(String... patterns) {
+        return trackDeleting(Option.of(patterns));
+    }
+
+    /**
+     * Build stream that delete resources.
+     * 
+     * @param patterns A list of glob patterns to accept file by its name.
+     * @return A event stream which emits operated {@link File}s.
+     */
+    default Signal<Progress> trackDeleting(Collection<String> patterns) {
+        return trackDeleting(array(patterns));
+    }
+
+    /**
+     * Build stream that delete resources.
+     * 
+     * @param option A operation {@link Option}.
+     * @return A event stream which emits operated {@link File}s.
+     */
+    default Signal<Progress> trackDeleting(Function<Option, Option> option) {
+        return observeDeleting(option).map(() -> initProgress(option), Progress::update);
+    }
+
+    /**
      * Copy resources to the destination {@link Directory}.
      * 
      * @param destination A destination {@link Directory}.
@@ -144,6 +174,40 @@ interface PathOperatable {
     Signal<Location> observeCopyingTo(Directory destination, Function<Option, Option> option);
 
     /**
+     * Build stream that copy resources to the destination {@link Directory}.
+     * 
+     * @param destination A destination {@link Directory}.
+     * @param patterns A list of glob patterns to accept file by its name.
+     * @return A event stream which emits operated {@link File}s.
+     */
+    default Signal<Progress> trackCopyingTo(Directory destination, String... patterns) {
+        return trackCopyingTo(destination, Option.of(patterns));
+    }
+
+    /**
+     * Build stream that copy resources to the destination {@link Directory}.
+     * 
+     * @param destination A destination {@link Directory}.
+     * @param patterns A list of glob patterns to accept file by its name.
+     * @return A event stream which emits operated {@link File}s.
+     */
+    default Signal<Progress> trackCopyingTo(Directory destination, Collection<String> patterns) {
+        return trackCopyingTo(destination, array(patterns));
+    }
+
+    /**
+     * Build stream that copy resources to the destination {@link Directory} with some
+     * {@link Option}.
+     * 
+     * @param destination A destination {@link Directory}.
+     * @param option A operation {@link Option}.
+     * @return A event stream which emits operated {@link File}s.
+     */
+    default Signal<Progress> trackCopyingTo(Directory destination, Function<Option, Option> option) {
+        return observeCopyingTo(destination, option).map(() -> initProgress(option), Progress::update);
+    }
+
+    /**
      * Move resources to the destination {@link Directory}.
      * 
      * @param destination A destination {@link Directory}.
@@ -209,6 +273,40 @@ interface PathOperatable {
      * @return A event stream which emits operated {@link File}s.
      */
     Signal<Location> observeMovingTo(Directory destination, Function<Option, Option> option);
+
+    /**
+     * Build stream that move resources to the destination {@link Directory}.
+     * 
+     * @param destination A destination {@link Directory}.
+     * @param patterns A list of glob patterns to accept file by its name.
+     * @return A event stream which emits operated {@link File}s.
+     */
+    default Signal<Progress> trackMovingTo(Directory destination, String... patterns) {
+        return trackMovingTo(destination, Option.of(patterns));
+    }
+
+    /**
+     * Build stream that move resources to the destination {@link Directory}.
+     * 
+     * @param destination A destination {@link Directory}.
+     * @param patterns A list of glob patterns to accept file by its name.
+     * @return A event stream which emits operated {@link File}s.
+     */
+    default Signal<Progress> trackMovingTo(Directory destination, Collection<String> patterns) {
+        return trackMovingTo(destination, array(patterns));
+    }
+
+    /**
+     * Build stream that move resources to the destination {@link Directory} with some
+     * {@link Option}.
+     * 
+     * @param destination A destination {@link Directory}.
+     * @param option A operation {@link Option}.
+     * @return A event stream which emits operated {@link File}s.
+     */
+    default Signal<Progress> trackMovingTo(Directory destination, Function<Option, Option> option) {
+        return observeMovingTo(destination, option).map(() -> initProgress(option), Progress::update);
+    }
 
     /**
      * Pack resources to the destination {@link File}.
@@ -306,6 +404,39 @@ interface PathOperatable {
      */
     Signal<Location> observePackingTo(File destination, Function<Option, Option> option);
 
+    /**
+     * Build stream that pack resources to the destination {@link File}.
+     * 
+     * @param destination A destination {@link File}.
+     * @param patterns A list of glob patterns to accept file by its name.
+     * @return A event stream which emits operated {@link File}s.
+     */
+    default Signal<Progress> trackPackingTo(File destination, String... patterns) {
+        return trackPackingTo(destination, Option.of(patterns));
+    }
+
+    /**
+     * Build stream that pack resources to the destination {@link File}.
+     * 
+     * @param destination A destination {@link File}.
+     * @param patterns A list of glob patterns to accept file by its name.
+     * @return A event stream which emits operated {@link File}s.
+     */
+    default Signal<Progress> trackPackingTo(File destination, Collection<String> patterns) {
+        return trackPackingTo(destination, array(patterns));
+    }
+
+    /**
+     * Build stream that pack resources to the destination {@link File}.
+     * 
+     * @param destination A destination {@link File}.
+     * @param option A operation {@link Option}.
+     * @return A event stream which emits operated {@link File}s.
+     */
+    default Signal<Progress> trackPackingTo(File destination, Function<Option, Option> option) {
+        return observePackingTo(destination, option).map(() -> initProgress(option), Progress::update);
+    }
+
     default Signal<File> walkFile(String... patterns) {
         return walkFile(Option.of(patterns));
     }
@@ -349,6 +480,23 @@ interface PathOperatable {
     }
 
     Signal<Ⅱ<Directory, Directory>> walkDirectoryWithBase(Function<Option, Option> option);
+
+    /**
+     * Initialize the tracking model.
+     * 
+     * @param option
+     * @return
+     */
+    private Progress initProgress(Function<Option, Option> option) {
+        long[] values = new long[2];
+
+        walkFile(option).to(file -> {
+            values[0]++;
+            values[1] += file.size();
+        });
+
+        return new Progress((int) values[0], values[1]);
+    }
 
     private String[] array(Collection<String> values) {
         return values.toArray(new String[values.size()]);
