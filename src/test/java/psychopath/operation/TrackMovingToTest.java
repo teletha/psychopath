@@ -53,9 +53,9 @@ class TrackMovingToTest extends LocationTestHelper {
     @Test
     void directory() {
         Directory dir = locateDirectory("dir", root -> {
-            root.file("file1", "text1");
-            root.file("file2", "text2");
-            root.file("file3", "text3");
+            root.file("file1", "a");
+            root.file("file2", "b");
+            root.file("file3", "c");
         });
 
         Directory dest = locateDirectory("destination");
@@ -63,31 +63,31 @@ class TrackMovingToTest extends LocationTestHelper {
         // operation
         dir.trackMovingTo(dest).to(progress -> {
             assert progress.totalFiles == 3;
-            assert progress.totalSize == 21;
+            assert progress.totalSize == 9;
 
             if (progress.location.name().equals("file1")) {
                 assert progress.completedFiles() == 0;
                 assert progress.completedSize() == 0;
                 assert progress.remainingFiles() == 3;
-                assert progress.remainingSize() == 21;
+                assert progress.remainingSize() == 9;
                 assert progress.rateByFiles() == 0;
                 assert progress.rateBySize() == 0;
             }
 
             if (progress.location.name().equals("file2")) {
                 assert progress.completedFiles() == 1;
-                assert progress.completedSize() == 7;
+                assert progress.completedSize() == 3;
                 assert progress.remainingFiles() == 2;
-                assert progress.remainingSize() == 14;
+                assert progress.remainingSize() == 6;
                 assert progress.rateByFiles() == 33;
                 assert progress.rateBySize() == 33;
             }
 
             if (progress.location.name().equals("file3")) {
                 assert progress.completedFiles() == 2;
-                assert progress.completedSize() == 14;
+                assert progress.completedSize() == 6;
                 assert progress.remainingFiles() == 1;
-                assert progress.remainingSize() == 7;
+                assert progress.remainingSize() == 3;
                 assert progress.rateByFiles() == 66;
                 assert progress.rateBySize() == 66;
             }
@@ -97,9 +97,9 @@ class TrackMovingToTest extends LocationTestHelper {
     @Test
     void folder() {
         Directory dir = locateDirectory("dir", root -> {
-            root.file("file1", "text1");
-            root.file("file2", "text2");
-            root.file("file3", "text3");
+            root.file("file1", "a");
+            root.file("file2", "b");
+            root.file("file3", "c");
         });
 
         Folder folder = Locator.folder().add(dir);
@@ -109,31 +109,31 @@ class TrackMovingToTest extends LocationTestHelper {
         // operation
         folder.trackMovingTo(dest).to(progress -> {
             assert progress.totalFiles == 3;
-            assert progress.totalSize == 21;
+            assert progress.totalSize == 9;
 
             if (progress.location.name().equals("file1")) {
                 assert progress.completedFiles() == 0;
                 assert progress.completedSize() == 0;
                 assert progress.remainingFiles() == 3;
-                assert progress.remainingSize() == 21;
+                assert progress.remainingSize() == 9;
                 assert progress.rateByFiles() == 0;
                 assert progress.rateBySize() == 0;
             }
 
             if (progress.location.name().equals("file2")) {
                 assert progress.completedFiles() == 1;
-                assert progress.completedSize() == 7;
+                assert progress.completedSize() == 3;
                 assert progress.remainingFiles() == 2;
-                assert progress.remainingSize() == 14;
+                assert progress.remainingSize() == 6;
                 assert progress.rateByFiles() == 33;
                 assert progress.rateBySize() == 33;
             }
 
             if (progress.location.name().equals("file3")) {
                 assert progress.completedFiles() == 2;
-                assert progress.completedSize() == 14;
+                assert progress.completedSize() == 6;
                 assert progress.remainingFiles() == 1;
-                assert progress.remainingSize() == 7;
+                assert progress.remainingSize() == 3;
                 assert progress.rateByFiles() == 66;
                 assert progress.rateBySize() == 66;
             }
