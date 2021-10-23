@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.2.2](https://www.github.com/Teletha/psychopath/compare/v1.2.1...v1.2.2) (2021-10-23)
+
+
+### Bug Fixes
+
+* All file operations should send the own event before its execution. ([87e11b1](https://www.github.com/Teletha/psychopath/commit/87e11b184a3e809bbaaa39b50c39979e9a597ee2))
+
 ### [1.2.1](https://www.github.com/Teletha/psychopath/compare/v1.2.0...v1.2.1) (2021-03-25)
 
 
