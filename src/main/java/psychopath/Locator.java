@@ -39,7 +39,7 @@ public class Locator {
 
         try {
             // Create the root temporary directory for psychopath.
-            temporaries = directory(Path.of(System.getProperty("java.io.tmpdir"), "psychopath"));
+            temporaries = directory(Path.of(System.getProperty("java.io.tmpdir"), "psychopath")).create();
 
             // Clean up any old temporary directories by listing all of the files, using a prefix
             // filter and that don't have a lock file.
