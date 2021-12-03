@@ -67,6 +67,7 @@ public class Locator {
             // Create the temporary directory for the current processing JVM.
             Files.createDirectories(temporaries.path);
             temporary = Files.createTempDirectory(temporaries.path, "temporary");
+            Files.createDirectories(temporary);
 
             // Create a lock after creating the temporary directory so there is no race condition
             // with another application trying to clean our temporary directory.
