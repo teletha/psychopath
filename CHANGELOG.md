@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.3.1](https://www.github.com/teletha/psychopath/compare/v1.3.0...v1.3.1) (2021-12-03)
+
+
+### Bug Fixes
+
+* Ensure the existence of temporary root directory. ([91ac14c](https://www.github.com/teletha/psychopath/commit/91ac14c0248ca81adc68c9529732de59f140f959))
+
 ## [1.3.0](https://www.github.com/Teletha/psychopath/compare/v1.2.1...v1.3.0) (2021-10-23)
 
 
