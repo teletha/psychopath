@@ -26,7 +26,9 @@ jobs:
         if [ -e "bee" ]; then
           source bee install doc:site
         else
+          echo Not found bee file
           version=$(curl -SsL https://git.io/stable-bee)
+          echo ${version}
           curl -SsL -o bee-${version}.jar https://jitpack.io/com/github/teletha/bee/${version}/bee-${version}.jar
           java -javaagent:bee-${version}.jar -cp bee-${version}.jar bee.Bee install doc:site
         fi
