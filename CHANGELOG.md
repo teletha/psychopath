@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.3.2](https://www.github.com/teletha/psychopath/compare/v1.3.1...v1.3.2) (2021-12-03)
+
+
+### Bug Fixes
+
+* temporary root ([c144992](https://www.github.com/teletha/psychopath/commit/c144992ead5b020066135eff5183180116703d00))
+
 ### [1.3.1](https://www.github.com/teletha/psychopath/compare/v1.3.0...v1.3.1) (2021-12-03)
 
 
