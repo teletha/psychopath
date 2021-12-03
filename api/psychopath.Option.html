@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8"/>
+		<title>Psychopath API</title>
+		<base href="../"/>
+		<link href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release/build/styles/zenburn.min.css" media="print" onload="this.media=&#39;all&#39;" rel="stylesheet"/>
+		<script async="true" src="highlight.js"></script>
+		<script src="mimic.js" type="module"></script>
+		<link href="main.css" rel="stylesheet"/>
+	</head>
+	<body class="X">
+		<header class="J">
+			<h1 class="k" date="2021-12-03" ver="1.3.0"><code>Psychopath</code></h1>
+			<nav class="I"><a href="api/"><svg class="A svg" viewBox="0 0 24 24">
+						<use href="main.svg#package"/>
+					</svg><code>API</code></a><a href="https://github.com//Teletha/Psychopath/discussions" target="_blank"><svg class="A svg" viewBox="0 0 24 24">
+						<use href="main.svg#user"/>
+					</svg>Community</a><a href="doc/changelog.html"><svg class="A svg" viewBox="0 0 24 24">
+						<use href="main.svg#activity"/>
+					</svg>Activity</a><a href="https://github.com//Teletha/Psychopath" target="_blank"><svg class="A svg" viewBox="0 0 24 24">
+						<use href="main.svg#github"/>
+					</svg>Repository</a></nav>
+			<div class="T" id="ViewMode"><a id="light" title="Change to a brighter color scheme"><svg class="A svg" viewBox="0 0 24 24">
+						<use href="main.svg#sun"/>
+					</svg>
+				</a><a id="dark" title="Change to a darker color scheme"><svg class="A svg" viewBox="0 0 24 24">
+						<use href="main.svg#moon"/>
+					</svg>
+				</a></div>
+		</header>
+		<main class="i">
+			<nav class="Q">
+				<div></div>
+			</nav>
+			<article class="Z" id="Article">
+				<section class="d"><code class="M">psychopath</code>
+					<h2 class="Class N"><code class="c">Option</code></h2>
+				</section>
+				<section class="d" id="ATOMIC_WRITE">
+					<h2 class="V"><i class="FINAL"><i class="PUBLIC STATIC"></i></i><code class="c">ATOMIC_WRITE</code><i class="H"><code class="return"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/nio/file/OpenOption.html">OpenOption</a></code></i></h2><span class="B">The atomic writing.</span></section>
+				<section class="d" id="depth(int)">
+					<h2 class="V"><i class="PUBLIC"></i><code class="c">depth</code><code class="e">(<code>int</code> <code class="parameterName">depthToSearch</code>)</code><i class="H"><code><a href="api/psychopath.Option.html">Option</a></code></i></h2>
+					<table class="g">
+						<tr class="b">
+							<td><code>int</code> <code>depthToSearch</code></td>
+							<td></td>
+						</tr>
+						<tr class="O">
+							<td><code><a href="api/psychopath.Option.html">Option</a></code></td>
+							<td></td>
+						</tr>
+					</table><span class="B">Sepcify the depth of directory traversing.</span></section>
+				<section class="d" id="glob(java.lang.String...)">
+					<h2 class="V"><i class="PUBLIC"></i><code class="c">glob</code><code class="e">(<code array="var"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html">String</a></code> <code class="parameterName">patterns</code>)</code><i class="H"><code><a href="api/psychopath.Option.html">Option</a></code></i></h2>
+					<table class="g">
+						<tr class="b">
+							<td><code array="var"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html">String</a></code> <code>patterns</code></td>
+							<td></td>
+						</tr>
+						<tr class="O">
+							<td><code><a href="api/psychopath.Option.html">Option</a></code></td>
+							<td></td>
+						</tr>
+					</table><span class="B">Specify glob pattern to specify location.</span></section>
+				<section class="d" id="take(java.util.function.BiPredicate)">
+					<h2 class="V"><i class="PUBLIC"></i><code class="c">take</code><code class="e">(<code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/BiPredicate.html">BiPredicate</a><code class="parameters"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/nio/file/Path.html">Path</a></code>, <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/nio/file/attribute/BasicFileAttributes.html">BasicFileAttributes</a></code></code></code> <code class="parameterName">filter</code>)</code><i class="H"><code><a href="api/psychopath.Option.html">Option</a></code></i></h2>
+					<table class="g">
+						<tr class="b">
+							<td><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/BiPredicate.html">BiPredicate</a><code class="parameters"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/nio/file/Path.html">Path</a></code>, <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/nio/file/attribute/BasicFileAttributes.html">BasicFileAttributes</a></code></code></code> <code>filter</code></td>
+							<td></td>
+						</tr>
+						<tr class="O">
+							<td><code><a href="api/psychopath.Option.html">Option</a></code></td>
+							<td></td>
+						</tr>
+					</table><span class="B">Specify generic filter to specify location.</span></section>
+				<section class="d" id="strip()">
+					<h2 class="V"><i class="PUBLIC"></i><code class="c">strip</code><code class="e">()</code><i class="H"><code><a href="api/psychopath.Option.html">Option</a></code></i></h2>
+					<table class="g">
+						<tr class="O">
+							<td><code><a href="api/psychopath.Option.html">Option</a></code></td>
+							<td></td>
+						</tr>
+					</table><span class="B"><p>
+ Strip the departure&#39;s root directory path.
+ </p>
+ <p>
+ Normally, files in the directory &#39;departure-root&#39; will be allocated in
+ &#39;destination-root/departure-root/*&#39;. But this option will allocate them in
+ &#39;destination-root/*&#39;.
+ </p>
+					</span></section>
+				<section class="d" id="allocateIn(java.lang.String)">
+					<h2 class="V"><i class="PUBLIC"></i><code class="c">allocateIn</code><code class="e">(<code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html">String</a></code> <code class="parameterName">relative</code>)</code><i class="H"><code><a href="api/psychopath.Option.html">Option</a></code></i></h2>
+					<table class="g">
+						<tr class="b">
+							<td><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html">String</a></code> <code>relative</code></td>
+							<td></td>
+						</tr>
+						<tr class="O">
+							<td><code><a href="api/psychopath.Option.html">Option</a></code></td>
+							<td></td>
+						</tr>
+					</table><span class="B">Specify the relative path in the destination.</span></section>
+				<section class="d" id="allocateIn(psychopath.Directory)">
+					<h2 class="V"><i class="PUBLIC"></i><code class="c">allocateIn</code><code class="e">(<code><a href="api/psychopath.Directory.html">Directory</a></code> <code class="parameterName">relative</code>)</code><i class="H"><code><a href="api/psychopath.Option.html">Option</a></code></i></h2>
+					<table class="g">
+						<tr class="b">
+							<td><code><a href="api/psychopath.Directory.html">Directory</a></code> <code>relative</code></td>
+							<td></td>
+						</tr>
+						<tr class="O">
+							<td><code><a href="api/psychopath.Option.html">Option</a></code></td>
+							<td></td>
+						</tr>
+					</table><span class="B">Specify the relative path in the destination.</span></section>
+				<section class="d" id="replaceExisting()">
+					<h2 class="V"><i class="PUBLIC"></i><code class="c">replaceExisting</code><code class="e">()</code><i class="H"><code><a href="api/psychopath.Option.html">Option</a></code></i></h2>
+					<table class="g">
+						<tr class="O">
+							<td><code><a href="api/psychopath.Option.html">Option</a></code></td>
+							<td></td>
+						</tr>
+					</table><span class="B">Specify override mode.</span></section>
+				<section class="d" id="skipExisting()">
+					<h2 class="V"><i class="PUBLIC"></i><code class="c">skipExisting</code><code class="e">()</code><i class="H"><code><a href="api/psychopath.Option.html">Option</a></code></i></h2>
+					<table class="g">
+						<tr class="O">
+							<td><code><a href="api/psychopath.Option.html">Option</a></code></td>
+							<td></td>
+						</tr>
+					</table><span class="B">Specify override mode.</span></section>
+				<section class="d" id="stopExisting()">
+					<h2 class="V"><i class="PUBLIC"></i><code class="c">stopExisting</code><code class="e">()</code><i class="H"><code><a href="api/psychopath.Option.html">Option</a></code></i></h2>
+					<table class="g">
+						<tr class="O">
+							<td><code><a href="api/psychopath.Option.html">Option</a></code></td>
+							<td></td>
+						</tr>
+					</table><span class="B">Specify override mode.</span></section>
+			</article>
+			<aside class="W" id="SubNavi">
+				<div class="Y">
+					<h5 class="K">Static Fields</h5>
+					<ul>
+						<li><i class="FINAL"><i class="PUBLIC STATIC"></i></i><code><a href="api/psychopath.Option.html#ATOMIC_WRITE">ATOMIC_WRITE</a></code><i class="R"><code class="return"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/nio/file/OpenOption.html">OpenOption</a></code></i></li>
+					</ul>
+					<h5 class="K">Methods</h5>
+					<ul>
+						<li><i class="PUBLIC"></i><code><a href="api/psychopath.Option.html#depth(int)">depth</a></code><code class="e">(<code>int</code> <code class="parameterName">depthToSearch</code>)</code><i class="R"><code><a href="api/psychopath.Option.html">Option</a></code></i></li>
+						<li><i class="PUBLIC"></i><code><a href="api/psychopath.Option.html#glob(java.lang.String...)">glob</a></code><code class="e">(<code array="var"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html">String</a></code> <code class="parameterName">patterns</code>)</code><i class="R"><code><a href="api/psychopath.Option.html">Option</a></code></i></li>
+						<li><i class="PUBLIC"></i><code><a href="api/psychopath.Option.html#take(java.util.function.BiPredicate)">take</a></code><code class="e">(<code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/BiPredicate.html">BiPredicate</a><code class="parameters"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/nio/file/Path.html">Path</a></code>, <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/nio/file/attribute/BasicFileAttributes.html">BasicFileAttributes</a></code></code></code> <code class="parameterName">filter</code>)</code><i class="R"><code><a href="api/psychopath.Option.html">Option</a></code></i></li>
+						<li><i class="PUBLIC"></i><code><a href="api/psychopath.Option.html#strip()">strip</a></code><code class="e">()</code><i class="R"><code><a href="api/psychopath.Option.html">Option</a></code></i></li>
+						<li><i class="PUBLIC"></i><code><a href="api/psychopath.Option.html#allocateIn(java.lang.String)">allocateIn</a></code><code class="e">(<code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html">String</a></code> <code class="parameterName">relative</code>)</code><i class="R"><code><a href="api/psychopath.Option.html">Option</a></code></i></li>
+						<li><i class="PUBLIC"></i><code><a href="api/psychopath.Option.html#allocateIn(psychopath.Directory)">allocateIn</a></code><code class="e">(<code><a href="api/psychopath.Directory.html">Directory</a></code> <code class="parameterName">relative</code>)</code><i class="R"><code><a href="api/psychopath.Option.html">Option</a></code></i></li>
+						<li><i class="PUBLIC"></i><code><a href="api/psychopath.Option.html#replaceExisting()">replaceExisting</a></code><code class="e">()</code><i class="R"><code><a href="api/psychopath.Option.html">Option</a></code></i></li>
+						<li><i class="PUBLIC"></i><code><a href="api/psychopath.Option.html#skipExisting()">skipExisting</a></code><code class="e">()</code><i class="R"><code><a href="api/psychopath.Option.html">Option</a></code></i></li>
+						<li><i class="PUBLIC"></i><code><a href="api/psychopath.Option.html#stopExisting()">stopExisting</a></code><code class="e">()</code><i class="R"><code><a href="api/psychopath.Option.html">Option</a></code></i></li>
+					</ul>
+				</div>
+			</aside>
+		</main>
+		<script src="root.js"></script>
+		<script src="main.js" type="module"></script>
+	</body>
+</html>
