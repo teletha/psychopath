@@ -9,7 +9,8 @@
  */
 package psychopath;
 
-import java.io.IOException;
+import static java.nio.file.attribute.PosixFilePermission.*;
+
 import java.io.RandomAccessFile;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -20,7 +21,13 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.nio.file.attribute.FileAttribute;
+import java.nio.file.attribute.PosixFilePermission;
+import java.nio.file.attribute.PosixFilePermissions;
 import java.security.CodeSource;
+import java.util.EnumSet;
+import java.util.Random;
+import java.util.Set;
 
 import kiss.Decoder;
 import kiss.Encoder;
@@ -32,14 +39,22 @@ public class Locator {
     private static final Directory temporaries;
 
     /** The temporary directory for the current processing JVM. */
-    private static final Path temporary;
+    private static final Directory temporary;
+
+    private static final Random random = new Random();
+
+    private static final FileAttribute<Set<PosixFilePermission>> filePermissions = PosixFilePermissions
+            .asFileAttribute(EnumSet.of(OWNER_READ, OWNER_WRITE));
+
+    private static final FileAttribute<Set<PosixFilePermission>> dirPermissions = PosixFilePermissions
+            .asFileAttribute(EnumSet.of(OWNER_READ, OWNER_WRITE, OWNER_EXECUTE));
 
     static {
         I.load(DirectoryCodec.class);
 
         try {
             // Create the root temporary directory for psychopath.
-            temporaries = directory(Path.of(System.getProperty("java.io.tmpdir"), "psychopath")).create();
+            temporaries = directory(Path.of(System.getProperty("java.io.tmpdir"), "psychopath"));
 
             // Clean up any old temporary directories by listing all of the files, using a prefix
             // filter and that don't have a lock file.
@@ -65,12 +80,11 @@ public class Locator {
             }
 
             // Create the temporary directory for the current processing JVM.
-            temporary = Files.createTempDirectory(temporaries.path, "temporary");
-            Files.createDirectories(temporary);
+            temporary = create(Directory.class, temporaries);
 
             // Create a lock after creating the temporary directory so there is no race condition
             // with another application trying to clean our temporary directory.
-            FileChannel.open(temporary.resolve("lock"), StandardOpenOption.CREATE, StandardOpenOption.WRITE).tryLock();
+            FileChannel.open(temporary.file("lock").asJavaPath(), StandardOpenOption.CREATE, StandardOpenOption.WRITE).tryLock();
         } catch (Exception e) {
             throw I.quiet(e);
         }
@@ -293,11 +307,7 @@ public class Locator {
      * @return
      */
     public static File temporaryFile() {
-        try {
-            return file(Files.createTempFile(temporary, "temporary", ".tmp"));
-        } catch (IOException e) {
-            throw I.quiet(e);
-        }
+        return create(File.class, temporary);
     }
 
     /**
@@ -307,7 +317,7 @@ public class Locator {
      * @return
      */
     public static File temporaryFile(String name) {
-        return temporaryDirectory().create().file(name);
+        return temporaryDirectory().file(name);
     }
 
     /**
@@ -316,11 +326,17 @@ public class Locator {
      * @return
      */
     public static Directory temporaryDirectory() {
-        try {
-            return directory(Files.createTempDirectory(temporary, "temporary"));
-        } catch (IOException e) {
-            throw I.quiet(e);
-        }
+        return create(Directory.class, temporary);
+    }
+
+    private static <T extends Location> T create(Class<T> type, Directory dir) {
+        Location temp;
+        do {
+            String name = "temporary" + Integer.toUnsignedString(random.nextInt());
+            temp = type == File.class ? dir.file(name) : dir.directory(name);
+        } while (temp.isPresent());
+
+        return (T) temp.create();
     }
 
     /**
