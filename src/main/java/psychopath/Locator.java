@@ -65,7 +65,6 @@ public class Locator {
             }
 
             // Create the temporary directory for the current processing JVM.
-            Files.createDirectories(temporaries.path);
             temporary = Files.createTempDirectory(temporaries.path, "temporary");
             Files.createDirectories(temporary);
 
@@ -308,7 +307,7 @@ public class Locator {
      * @return
      */
     public static File temporaryFile(String name) {
-        return temporaryDirectory().file(name);
+        return temporaryDirectory().create().file(name);
     }
 
     /**
