@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.github.teletha</groupId>
 	<artifactId>psychopath</artifactId>
-	<version>1.3.1</version>
+	<version>1.4.1</version>
 	<packaging>jar</packaging>
 	<name>psychopath</name>
 	<description/>
@@ -47,21 +47,10 @@
 		<developerConnection>scm:git:https://github.com/Teletha/Psychopath.git</developerConnection>
 	</scm>
 	<issueManagement>
-		<system>github</system>
+		<system>GitHub</system>
 		<url>https://github.com/Teletha/Psychopath/issues</url>
 	</issueManagement>
-	<developers>
-		<developer>
-			<name/>
-			<email/>
-			<url>https://github.com/apps/github-actions</url>
-		</developer>
-		<developer>
-			<name>teletha</name>
-			<email/>
-			<url>https://github.com/teletha</url>
-		</developer>
-	</developers>
+	<developers/>
 	<build>
 		<plugins>
 			<plugin>
