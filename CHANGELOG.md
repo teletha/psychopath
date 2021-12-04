@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.4.2](https://www.github.com/teletha/psychopath/compare/v1.4.1...v1.4.2) (2021-12-04)
+
+
+### Bug Fixes
+
+* Revert Location#create. ([50705c0](https://www.github.com/teletha/psychopath/commit/50705c0a507b733fe670d36cf9e5e2240ec4eaa0))
+
 ### [1.4.1](https://www.github.com/teletha/psychopath/compare/v1.4.0...v1.4.1) (2021-12-04)
 
 
