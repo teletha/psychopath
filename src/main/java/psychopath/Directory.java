@@ -16,7 +16,6 @@ import java.nio.file.Files;
 import java.nio.file.LinkPermission;
 import java.nio.file.Path;
 import java.nio.file.WatchEvent;
-import java.nio.file.attribute.FileAttribute;
 import java.util.Collection;
 import java.util.Set;
 import java.util.function.Function;
@@ -187,10 +186,10 @@ public class Directory extends Location<Directory> {
      * {@inheritDoc}
      */
     @Override
-    public Directory create(FileAttribute<?>... attrs) {
+    public Directory create() {
         if (Files.notExists(path)) {
             try {
-                Files.createDirectories(path, attrs);
+                Files.createDirectories(path);
             } catch (IOException e) {
                 throw I.quiet(e);
             }

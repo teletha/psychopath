@@ -86,11 +86,11 @@ public class File extends Location<File> {
      * {@inheritDoc}
      */
     @Override
-    public File create(FileAttribute<?>... attrs) {
+    public File create() {
         if (Files.notExists(path)) {
             try {
                 parent().create();
-                Files.createFile(path, attrs);
+                Files.createFile(path);
             } catch (IOException e) {
                 throw I.quiet(e);
             }
