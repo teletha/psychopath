@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.4.1](https://www.github.com/teletha/psychopath/compare/v1.4.0...v1.4.1) (2021-12-04)
+
+
+### Bug Fixes
+
+* Drop file permissions. ([c179256](https://www.github.com/teletha/psychopath/commit/c179256d210b7cea971d31bcb776867f001d7c7e))
+
 ## [1.4.0](https://www.github.com/teletha/psychopath/compare/v1.3.1...v1.4.0) (2021-12-04)
 
 
