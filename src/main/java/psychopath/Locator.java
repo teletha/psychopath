@@ -9,8 +9,6 @@
  */
 package psychopath;
 
-import static java.nio.file.attribute.PosixFilePermission.*;
-
 import java.io.RandomAccessFile;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -21,13 +19,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
-import java.nio.file.attribute.FileAttribute;
-import java.nio.file.attribute.PosixFilePermission;
-import java.nio.file.attribute.PosixFilePermissions;
 import java.security.CodeSource;
 import java.security.SecureRandom;
-import java.util.EnumSet;
-import java.util.Set;
 
 import kiss.Decoder;
 import kiss.Encoder;
@@ -43,14 +36,6 @@ public class Locator {
 
     /** The temporary name generator. */
     private static final SecureRandom random = new SecureRandom();
-
-    /** Reusable permission. */
-    private static final FileAttribute<Set<PosixFilePermission>> authFile = PosixFilePermissions
-            .asFileAttribute(EnumSet.of(OWNER_READ, OWNER_WRITE));
-
-    /** Reusable permission. */
-    private static final FileAttribute<Set<PosixFilePermission>> authDir = PosixFilePermissions
-            .asFileAttribute(EnumSet.of(OWNER_READ, OWNER_WRITE, OWNER_EXECUTE));
 
     static {
         I.load(DirectoryCodec.class);
@@ -76,7 +61,7 @@ public class Locator {
                 if (lock != null) {
                     try {
                         sub.delete();
-                    } catch (Exception e) {
+                    } catch (Throwable e) {
                         // ignore
                     }
                 }
@@ -88,7 +73,7 @@ public class Locator {
             // Create a lock after creating the temporary directory so there is no race condition
             // with another application trying to clean our temporary directory.
             FileChannel.open(temporary.file("lock").asJavaPath(), StandardOpenOption.CREATE, StandardOpenOption.WRITE).tryLock();
-        } catch (Exception e) {
+        } catch (Throwable e) {
             throw I.quiet(e);
         }
     }
@@ -304,8 +289,8 @@ public class Locator {
     }
 
     /**
-     * Generates temporary files that are guaranteed to be created and deleted securely. The file
-     * name will be completely random.
+     * Generates temporary files that are guaranteed to be created and deleted safely. The file name
+     * will be completely random.
      * 
      * @return The definitely generated temporary file.
      */
@@ -314,8 +299,8 @@ public class Locator {
     }
 
     /**
-     * Generates temporary files that are guaranteed to be created and deleted securely. The file
-     * name can be specified.
+     * Generates temporary files that are guaranteed to be created and deleted safely. The file name
+     * can be specified.
      * 
      * @param name A file name.
      * @return The definitely generated temporary file.
@@ -325,7 +310,7 @@ public class Locator {
     }
 
     /**
-     * Generates temporary directory that are guaranteed to be created and deleted securely. The
+     * Generates temporary directory that are guaranteed to be created and deleted safely. The
      * directory name will be completely random.
      * 
      * @return The definitely generated temporary directory.
@@ -335,7 +320,7 @@ public class Locator {
     }
 
     /**
-     * Generates temporary directory that are guaranteed to be created and deleted securely. The
+     * Generates temporary directory that are guaranteed to be created and deleted safely. The
      * directory name can be specified.
      * 
      * @param name A directory name.
@@ -380,7 +365,7 @@ public class Locator {
             temp = type == File.class ? dir.file(name) : dir.directory(name);
         } while (temp.isPresent());
 
-        return (T) temp.create(type == File.class ? authFile : authDir);
+        return (T) temp.create();
     }
 
     /**
