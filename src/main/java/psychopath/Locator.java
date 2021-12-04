@@ -25,8 +25,8 @@ import java.nio.file.attribute.FileAttribute;
 import java.nio.file.attribute.PosixFilePermission;
 import java.nio.file.attribute.PosixFilePermissions;
 import java.security.CodeSource;
+import java.security.SecureRandom;
 import java.util.EnumSet;
-import java.util.Random;
 import java.util.Set;
 
 import kiss.Decoder;
@@ -41,12 +41,15 @@ public class Locator {
     /** The temporary directory for the current processing JVM. */
     private static final Directory temporary;
 
-    private static final Random random = new Random();
+    /** The temporary name generator. */
+    private static final SecureRandom random = new SecureRandom();
 
-    private static final FileAttribute<Set<PosixFilePermission>> filePermissions = PosixFilePermissions
+    /** Reusable permission. */
+    private static final FileAttribute<Set<PosixFilePermission>> authFile = PosixFilePermissions
             .asFileAttribute(EnumSet.of(OWNER_READ, OWNER_WRITE));
 
-    private static final FileAttribute<Set<PosixFilePermission>> dirPermissions = PosixFilePermissions
+    /** Reusable permission. */
+    private static final FileAttribute<Set<PosixFilePermission>> authDir = PosixFilePermissions
             .asFileAttribute(EnumSet.of(OWNER_READ, OWNER_WRITE, OWNER_EXECUTE));
 
     static {
@@ -301,34 +304,75 @@ public class Locator {
     }
 
     /**
-     * Creates a new abstract file somewhere beneath the system's temporary directory (as defined by
-     * the <code>java.io.tmpdir</code> system property).
+     * Generates temporary files that are guaranteed to be created and deleted securely. The file
+     * name will be completely random.
      * 
-     * @return
+     * @return The definitely generated temporary file.
      */
     public static File temporaryFile() {
         return create(File.class, temporary);
     }
 
     /**
-     * Creates a new abstract file somewhere beneath the system's temporary directory (as defined by
-     * the <code>java.io.tmpdir</code> system property).
+     * Generates temporary files that are guaranteed to be created and deleted securely. The file
+     * name can be specified.
      * 
-     * @return
+     * @param name A file name.
+     * @return The definitely generated temporary file.
      */
     public static File temporaryFile(String name) {
         return temporaryDirectory().file(name);
     }
 
     /**
-     * Locate the system temporary {@link Directory}.
+     * Generates temporary directory that are guaranteed to be created and deleted securely. The
+     * directory name will be completely random.
      * 
-     * @return
+     * @return The definitely generated temporary directory.
      */
     public static Directory temporaryDirectory() {
         return create(Directory.class, temporary);
     }
 
+    /**
+     * Generates temporary directory that are guaranteed to be created and deleted securely. The
+     * directory name can be specified.
+     * 
+     * @param name A directory name.
+     * @return The definitely generated temporary directory.
+     */
+    public static Directory temporaryDirectory(String name) {
+        return temporaryDirectory().directory(name);
+    }
+
+    /**
+     * <p>
+     * Create the safe temporary file or directory.
+     * </p>
+     * <p>
+     * When creating a file, you need to pay attention to the following.
+     * </p>
+     * <ul>
+     * <li>Do not use a fixed file name unless there is a particular need for it.</li>
+     * <li>Specify permissions at the time of creation (if you specify them later, there is a risk
+     * that a third party will gain access between creation and permission setting).</li>
+     * <li>Create a new file with the setting of "fail if file already exists" (to prevent attacks
+     * that prepare a file in advance and wait for it).</li>
+     * </ul>
+     * <p>
+     * If you check that a file meets a certain condition and then access it based on that
+     * condition, there is a risk that a third party will intervene between the check and the
+     * execution (especially in a shared temporary directory, where a third party can also create
+     * files). Therefore, it is necessary to defend yourself by specifying that execution should be
+     * performed while checking, or by making sure that the checked file and the file to be
+     * manipulated are identical.
+     * </p>
+     * 
+     * @param <T> A location type.
+     * @param type A location type.
+     * @param dir A target directory.
+     * @return A generated temporary location.
+     */
     private static <T extends Location> T create(Class<T> type, Directory dir) {
         Location temp;
         do {
@@ -336,7 +380,7 @@ public class Locator {
             temp = type == File.class ? dir.file(name) : dir.directory(name);
         } while (temp.isPresent());
 
-        return (T) temp.create();
+        return (T) temp.create(type == File.class ? authFile : authDir);
     }
 
     /**

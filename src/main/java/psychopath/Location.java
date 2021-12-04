@@ -24,6 +24,7 @@ import java.nio.file.SecureDirectoryStream;
 import java.nio.file.WatchEvent;
 import java.nio.file.attribute.BasicFileAttributeView;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.nio.file.attribute.FileAttribute;
 import java.nio.file.attribute.FileTime;
 import java.time.Instant;
 import java.time.ZoneId;
@@ -759,7 +760,13 @@ public abstract class Location<Self extends Location> implements Comparable<Loca
         return path;
     }
 
-    public abstract Self create();
+    /**
+     * Create this {@link Location} with the specified attributes.
+     * 
+     * @param attrs
+     * @return
+     */
+    public abstract Self create(FileAttribute<?>... attrs);
 
     /**
      * Delete this {@link Location} when JVM is shutdowned.
