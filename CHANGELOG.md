@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.4.0](https://www.github.com/teletha/psychopath/compare/v1.3.1...v1.4.0) (2021-12-04)
+
+
+### Features
+
+* Location#create accepts FileAttribute. ([5de2f25](https://www.github.com/teletha/psychopath/commit/5de2f2550dfa9f40db70581e79efb97635b34ec7))
+* Safe temporary system. ([8966042](https://www.github.com/teletha/psychopath/commit/8966042cdb4120150d22c38dba149b9bd629b3c2))
+
+
+### Bug Fixes
+
+* temporary root ([c144992](https://www.github.com/teletha/psychopath/commit/c144992ead5b020066135eff5183180116703d00))
+
 ### [1.3.1](https://www.github.com/teletha/psychopath/compare/v1.3.0...v1.3.1) (2021-12-03)
 
 
