@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.0](https://www.github.com/teletha/psychopath/compare/v1.4.2...v1.5.0) (2021-12-08)
+
+
+### Features
+
+* Add PathOperatable#existFile. ([c4ff5cc](https://www.github.com/teletha/psychopath/commit/c4ff5ccc9966cb02f1a05879169d28ef7a3a6fbf))
+
 ### [1.4.2](https://www.github.com/teletha/psychopath/compare/v1.4.1...v1.4.2) (2021-12-04)
 
 
