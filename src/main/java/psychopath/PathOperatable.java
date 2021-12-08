@@ -437,6 +437,10 @@ interface PathOperatable {
         return observePackingTo(destination, option).map(() -> initProgress(option), Progress::update);
     }
 
+    default boolean existFile(String... patterns) {
+        return walkFile(patterns).isEmitted().first().to().exact();
+    }
+
     default Signal<File> walkFile(String... patterns) {
         return walkFile(Option.of(patterns));
     }
