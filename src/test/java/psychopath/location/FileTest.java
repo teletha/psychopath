@@ -21,6 +21,7 @@ import java.io.StringReader;
 import java.nio.channels.OverlappingFileLockException;
 import java.nio.file.FileAlreadyExistsException;
 import java.util.List;
+import java.util.function.Function;
 
 import org.junit.jupiter.api.Test;
 
@@ -383,6 +384,27 @@ class FileTest extends LocationTestHelper {
         File file = locateAbsent("test/in/directory");
         file.text("update");
         assert file.text().equals("update");
+    }
+
+    @Test
+    void replaceText() {
+        File file = locateFile("test", "content");
+        file.text(String::toUpperCase);
+        assert file.text().equals("CONTENT");
+    }
+
+    @Test
+    void replaceTextNull() {
+        File file = locateFile("test", "content");
+        file.text((Function) null);
+        assert file.text().equals("content");
+    }
+
+    @Test
+    void replaceTextOnAbsentFile() {
+        File file = locateAbsent("test");
+        file.text(String::toUpperCase);
+        assert file.text().equals("");
     }
 
     @Test

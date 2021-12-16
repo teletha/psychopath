@@ -1034,6 +1034,23 @@ public class File extends Location<File> {
     }
 
     /**
+     * Replace text contents.
+     * 
+     * @param replacer
+     * @return
+     */
+    public File text(Function<String, String> replacer) {
+        if (replacer != null && isPresent()) {
+            try {
+                Files.writeString(path, replacer.apply(text()));
+            } catch (IOException e) {
+                throw I.quiet(e);
+            }
+        }
+        return this;
+    }
+
+    /**
      * Read all lines from a file as a {@code Stream}. Unlike
      * {@link Files#readAllLines(Path, Charset) readAllLines}, this method does not read all lines
      * into a {@code List}, but instead populates lazily as the stream is consumed.
