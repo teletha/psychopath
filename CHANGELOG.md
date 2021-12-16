@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.0](https://www.github.com/teletha/psychopath/compare/v1.5.0...v1.6.0) (2021-12-16)
+
+
+### Features
+
+* Add File#text(Function) to replace text contents. ([ebdb01f](https://www.github.com/teletha/psychopath/commit/ebdb01f2a9294673e055ddb4305f70db2020d5a9))
+
 ## [1.5.0](https://www.github.com/teletha/psychopath/compare/v1.4.2...v1.5.0) (2021-12-08)
 
 
