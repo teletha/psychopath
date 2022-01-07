@@ -17,7 +17,6 @@ import java.nio.file.CopyOption;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
-import java.nio.file.LinkPermission;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.SecureDirectoryStream;
@@ -144,10 +143,6 @@ public abstract class Location<Self extends Location> implements Comparable<Loca
      *
      * @return A {@code Location} object representing the absolute path.
      * @throws java.io.IOError if an I/O error occurs
-     * @throws SecurityException In the case of the default provider, a security manager is
-     *             installed, and this path is not absolute, then the security manager's
-     *             {@link SecurityManager#checkPropertyAccess(String) checkPropertyAccess} method is
-     *             invoked to check access to the system property {@code user.dir}
      */
     public final Self absolutize() {
         if (path.isAbsolute()) {
@@ -226,9 +221,6 @@ public abstract class Location<Self extends Location> implements Comparable<Loca
      * race-free manner then the returned directory stream is a {@link SecureDirectoryStream}.
      *
      * @return A {@link Signal} which iterate over all entries in this {@link Location}.
-     * @throws SecurityException In the case of the default provider, and a security manager is
-     *             installed, the {@link SecurityManager#checkRead(String) checkRead} method is
-     *             invoked to check read access to the directory.
      */
     public abstract Signal<Location> children();
 
@@ -244,9 +236,6 @@ public abstract class Location<Self extends Location> implements Comparable<Loca
      * race-free manner then the returned directory stream is a {@link SecureDirectoryStream}.
      *
      * @return A {@link Signal} which iterate over all entries in this {@link Location}.
-     * @throws SecurityException In the case of the default provider, and a security manager is
-     *             installed, the {@link SecurityManager#checkRead(String) checkRead} method is
-     *             invoked to check read access to the directory.
      */
     public abstract Signal<Location> descendant();
 
@@ -279,11 +268,6 @@ public abstract class Location<Self extends Location> implements Comparable<Loca
      *
      * @return the file attributes
      * @throws UnsupportedOperationException if an attributes of the given type are not supported
-     * @throws SecurityException In the case of the default provider, a security manager is
-     *             installed, its {@link SecurityManager#checkRead(String) checkRead} method is
-     *             invoked to check read access to the file. If this method is invoked to read
-     *             security sensitive attributes then the security manager may be invoke to check
-     *             for additional permissions.
      */
     public final BasicFileAttributes attr() {
         try {
@@ -300,9 +284,6 @@ public abstract class Location<Self extends Location> implements Comparable<Loca
      * unspecified.
      *
      * @return the file size, in bytes
-     * @throws SecurityException In the case of the default provider, and a security manager is
-     *             installed, its {@link SecurityManager#checkRead(String) checkRead} method denies
-     *             read access to the file.
      * @see BasicFileAttributes#size
      */
     public final long size() {
@@ -612,9 +593,6 @@ public abstract class Location<Self extends Location> implements Comparable<Loca
      * @return {@code true} if the file exists and is readable; {@code false} if the file does not
      *         exist, read access would be denied because the Java virtual machine has insufficient
      *         privileges, or access cannot be determined
-     * @throws SecurityException In the case of the default provider, and a security manager is
-     *             installed, the {@link SecurityManager#checkRead(String) checkRead} is invoked to
-     *             check read access to the file.
      */
     public final boolean isReadable() {
         return Files.isReadable(path);
@@ -638,9 +616,6 @@ public abstract class Location<Self extends Location> implements Comparable<Loca
      * @return {@code true} if the file is a regular file; {@code false} if the file does not exist,
      *         is not a regular file, or it cannot be determined if the file is a regular file or
      *         not.
-     * @throws SecurityException In the case of the default provider, and a security manager is
-     *             installed, its {@link SecurityManager#checkRead(String) checkRead} method denies
-     *             read access to the file.
      */
     public final boolean isFile(LinkOption... options) {
         return Files.isRegularFile(path, options);
@@ -663,9 +638,6 @@ public abstract class Location<Self extends Location> implements Comparable<Loca
      * @param options options indicating how symbolic links are handled
      * @return {@code true} if the file is a directory; {@code false} if the file does not exist, is
      *         not a directory, or it cannot be determined if the file is a directory or not.
-     * @throws SecurityException In the case of the default provider, and a security manager is
-     *             installed, its {@link SecurityManager#checkRead(String) checkRead} method denies
-     *             read access to the file.
      */
     public final boolean isDirectory(LinkOption... options) {
         return Files.isDirectory(path, options);
@@ -682,9 +654,6 @@ public abstract class Location<Self extends Location> implements Comparable<Loca
      * @return {@code true} if the file is a symbolic link; {@code false} if the file does not
      *         exist, is not a symbolic link, or it cannot be determined if the file is a symbolic
      *         link or not.
-     * @throws SecurityException In the case of the default provider, and a security manager is
-     *             installed, its {@link SecurityManager#checkRead(String) checkRead} method denies
-     *             read access to the file.
      */
     public final boolean isSymbolicLink() {
         return Files.isSymbolicLink(path);
@@ -834,12 +803,6 @@ public abstract class Location<Self extends Location> implements Comparable<Loca
      *
      * @return A observable event stream.
      * @throws NullPointerException If the specified path or listener is <code>null</code>.
-     * @throws SecurityException In the case of the default provider, and a security manager is
-     *             installed, the {@link SecurityManager#checkRead(String)} method is invoked to
-     *             check read access to the source file, the
-     *             {@link SecurityManager#checkWrite(String)} is invoked to check write access to
-     *             the target file. If a symbolic link is copied the security manager is invoked to
-     *             check {@link LinkPermission}("symbolic").
      */
     public abstract Signal<WatchEvent<Location>> observe();
 

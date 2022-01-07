@@ -13,7 +13,6 @@ import java.io.IOException;
 import java.nio.channels.FileLock;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
-import java.nio.file.LinkPermission;
 import java.nio.file.Path;
 import java.nio.file.WatchEvent;
 import java.util.Collection;
@@ -207,12 +206,6 @@ public class Directory extends Location<Directory> {
      * </p>
      *
      * @param option A {@link Option} builder.
-     * @throws SecurityException In the case of the default provider, and a security manager is
-     *             installed, the {@link SecurityManager#checkRead(String)} method is invoked to
-     *             check read access to the source file, the
-     *             {@link SecurityManager#checkWrite(String)} is invoked to check write access to
-     *             the target file. If a symbolic link is copied the security manager is invoked to
-     *             check {@link LinkPermission}("symbolic").
      */
     @Override
     public Signal<Location> observeDeleting(Function<Option, Option> option) {
@@ -238,12 +231,6 @@ public class Directory extends Location<Directory> {
      *
      * @param destination An output {@link Directory}.
      * @param option A {@link Option} builder.
-     * @throws SecurityException In the case of the default provider, and a security manager is
-     *             installed, the {@link SecurityManager#checkRead(String)} method is invoked to
-     *             check read access to the source file, the
-     *             {@link SecurityManager#checkWrite(String)} is invoked to check write access to
-     *             the target file. If a symbolic link is copied the security manager is invoked to
-     *             check {@link LinkPermission}("symbolic").
      */
     @Override
     public Signal<Location> observeCopyingTo(Directory destination, Function<Option, Option> option) {
@@ -267,12 +254,6 @@ public class Directory extends Location<Directory> {
      *
      * @param destination An output {@link Path} object which can be file or directory.
      * @param option A {@link Option} builder.
-     * @throws SecurityException In the case of the default provider, and a security manager is
-     *             installed, the {@link SecurityManager#checkRead(String)} method is invoked to
-     *             check read access to the source file, the
-     *             {@link SecurityManager#checkWrite(String)} is invoked to check write access to
-     *             the target file. If a symbolic link is copied the security manager is invoked to
-     *             check {@link LinkPermission}("symbolic").
      */
     @Override
     public Signal<Location> observeMovingTo(Directory destination, Function<Option, Option> option) {
@@ -321,12 +302,6 @@ public class Directory extends Location<Directory> {
      *            patterns if you want to observe a file.
      * @return A observable event stream.
      * @throws NullPointerException If the specified path or listener is <code>null</code>.
-     * @throws SecurityException In the case of the default provider, and a security manager is
-     *             installed, the {@link SecurityManager#checkRead(String)} method is invoked to
-     *             check read access to the source file, the
-     *             {@link SecurityManager#checkWrite(String)} is invoked to check write access to
-     *             the target file. If a symbolic link is copied the security manager is invoked to
-     *             check {@link LinkPermission}("symbolic").
      */
     public Signal<WatchEvent<Location>> observe(String... patterns) {
         return new Signal<>((observer, disposer) -> {
@@ -367,12 +342,6 @@ public class Directory extends Location<Directory> {
      *            patterns if you want to observe a file.
      * @return A observable event stream.
      * @throws NullPointerException If the specified path or listener is <code>null</code>.
-     * @throws SecurityException In the case of the default provider, and a security manager is
-     *             installed, the {@link SecurityManager#checkRead(String)} method is invoked to
-     *             check read access to the source file, the
-     *             {@link SecurityManager#checkWrite(String)} is invoked to check write access to
-     *             the target file. If a symbolic link is copied the security manager is invoked to
-     *             check {@link LinkPermission}("symbolic").
      */
     public Signal<WatchEvent<Location>> observe(Collection<String> patterns) {
         return observe(patterns.toArray(new String[patterns.size()]));

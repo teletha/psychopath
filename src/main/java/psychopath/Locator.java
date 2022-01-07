@@ -103,9 +103,6 @@ public class Locator {
      * @param filePath A location path.
      * @return A located {@link File}.
      * @throws NullPointerException If the given file path is null.
-     * @throws SecurityException If a security manager exists and its
-     *             {@link SecurityManager#checkWrite(String)} method does not allow a file to be
-     *             created.
      */
     public static File file(URL filePath) {
         return file(locate(filePath));
@@ -159,9 +156,6 @@ public class Locator {
      * @param directoryPath A location path.
      * @return A located {@link Directory}.
      * @throws NullPointerException If the given file path is null.
-     * @throws SecurityException If a security manager exists and its
-     *             {@link SecurityManager#checkWrite(String)} method does not allow a file to be
-     *             created.
      */
     public static Directory directory(URL directoryPath) {
         return directory(locate(directoryPath));

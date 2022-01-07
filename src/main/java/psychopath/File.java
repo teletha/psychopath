@@ -29,7 +29,6 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.FileSystemNotFoundException;
 import java.nio.file.Files;
-import java.nio.file.LinkPermission;
 import java.nio.file.OpenOption;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
@@ -143,12 +142,6 @@ public class File extends Location<File> {
      * </p>
      *
      * @param destination An output {@link Directory}.
-     * @throws SecurityException In the case of the default provider, and a security manager is
-     *             installed, the {@link SecurityManager#checkRead(String)} method is invoked to
-     *             check read access to the source file, the
-     *             {@link SecurityManager#checkWrite(String)} is invoked to check write access to
-     *             the target file. If a symbolic link is copied the security manager is invoked to
-     *             check {@link LinkPermission}("symbolic").
      */
     public Signal<Location> observeCopyingTo(File destination) {
         return new Signal<>((observer, disposer) -> {
@@ -185,12 +178,6 @@ public class File extends Location<File> {
      * </p>
      *
      * @param destination An output {@link Directory}.
-     * @throws SecurityException In the case of the default provider, and a security manager is
-     *             installed, the {@link SecurityManager#checkRead(String)} method is invoked to
-     *             check read access to the source file, the
-     *             {@link SecurityManager#checkWrite(String)} is invoked to check write access to
-     *             the target file. If a symbolic link is copied the security manager is invoked to
-     *             check {@link LinkPermission}("symbolic").
      */
     public File copyTo(File destination) {
         observeCopyingTo(destination).to(I.NoOP);
@@ -216,9 +203,6 @@ public class File extends Location<File> {
      *
      * @param destination the output stream to write to.
      * @return the number of bytes read or written
-     * @throws SecurityException In the case of the default provider, and a security manager is
-     *             installed, the {@link SecurityManager#checkRead(String) checkRead} method is
-     *             invoked to check read access to the file.
      */
     public long copyTo(OutputStream destination) {
         try (OutputStream out = destination) {
@@ -252,12 +236,6 @@ public class File extends Location<File> {
      * </p>
      *
      * @param destination An output {@link Path} object which can be file or directory.
-     * @throws SecurityException In the case of the default provider, and a security manager is
-     *             installed, the {@link SecurityManager#checkRead(String)} method is invoked to
-     *             check read access to the source file, the
-     *             {@link SecurityManager#checkWrite(String)} is invoked to check write access to
-     *             the target file. If a symbolic link is copied the security manager is invoked to
-     *             check {@link LinkPermission}("symbolic").
      */
     public Signal<Location> observeMovingTo(File destination) {
         return new Signal<>((observer, disposer) -> {
@@ -292,12 +270,6 @@ public class File extends Location<File> {
      * </p>
      *
      * @param destination An output {@link Path} object which can be file or directory.
-     * @throws SecurityException In the case of the default provider, and a security manager is
-     *             installed, the {@link SecurityManager#checkRead(String)} method is invoked to
-     *             check read access to the source file, the
-     *             {@link SecurityManager#checkWrite(String)} is invoked to check write access to
-     *             the target file. If a symbolic link is copied the security manager is invoked to
-     *             check {@link LinkPermission}("symbolic").
      */
     public File moveTo(File destination) {
         observeMovingTo(destination).to(I.NoOP);
@@ -508,9 +480,6 @@ public class File extends Location<File> {
      * @return a new input stream
      * @throws IllegalArgumentException if an invalid combination of options is specified
      * @throws UnsupportedOperationException if an unsupported option is specified
-     * @throws SecurityException In the case of the default provider, and a security manager is
-     *             installed, the {@link SecurityManager#checkRead(String) checkRead} method is
-     *             invoked to check read access to the file.
      */
     public InputStream newInputStream(OpenOption... options) {
         if (isAbsent()) {
@@ -547,12 +516,6 @@ public class File extends Location<File> {
      * @throws IllegalArgumentException if {@code options} contains an invalid combination of
      *             options
      * @throws UnsupportedOperationException if an unsupported option is specified
-     * @throws SecurityException In the case of the default provider, and a security manager is
-     *             installed, the {@link SecurityManager#checkWrite(String) checkWrite} method is
-     *             invoked to check write access to the file. The
-     *             {@link SecurityManager#checkDelete(String) checkDelete} method is invoked to
-     *             check delete access if the file is opened with the {@code DELETE_ON_CLOSE}
-     *             option.
      */
     public OutputStream newOutputStream(OpenOption... options) {
         try {
@@ -575,9 +538,6 @@ public class File extends Location<File> {
      * }</pre>
      *
      * @return a new buffered reader, with default buffer size, to read text from the file
-     * @throws SecurityException In the case of the default provider, and a security manager is
-     *             installed, the {@link SecurityManager#checkRead(String) checkRead} method is
-     *             invoked to check read access to the file.
      */
     public BufferedReader newBufferedReader() {
         if (isAbsent()) {
@@ -605,12 +565,6 @@ public class File extends Location<File> {
      * @throws IllegalArgumentException if {@code options} contains an invalid combination of
      *             options
      * @throws UnsupportedOperationException if an unsupported option is specified
-     * @throws SecurityException In the case of the default provider, and a security manager is
-     *             installed, the {@link SecurityManager#checkWrite(String) checkWrite} method is
-     *             invoked to check write access to the file. The
-     *             {@link SecurityManager#checkDelete(String) checkDelete} method is invoked to
-     *             check delete access if the file is opened with the {@code DELETE_ON_CLOSE}
-     *             option.
      */
     public BufferedWriter newBufferedWriter(OpenOption... options) {
         return newBufferedWriter(StandardCharsets.UTF_8, options);
@@ -630,12 +584,6 @@ public class File extends Location<File> {
      * @throws IllegalArgumentException if {@code options} contains an invalid combination of
      *             options
      * @throws UnsupportedOperationException if an unsupported option is specified
-     * @throws SecurityException In the case of the default provider, and a security manager is
-     *             installed, the {@link SecurityManager#checkWrite(String) checkWrite} method is
-     *             invoked to check write access to the file. The
-     *             {@link SecurityManager#checkDelete(String) checkDelete} method is invoked to
-     *             check delete access if the file is opened with the {@code DELETE_ON_CLOSE}
-     *             option.
      */
     public BufferedWriter newBufferedWriter(Charset charset, OpenOption... options) {
         try {
@@ -670,14 +618,6 @@ public class File extends Location<File> {
      * @return a new seekable byte channel
      * @throws IllegalArgumentException if the set contains an invalid combination of options
      * @throws UnsupportedOperationException if an unsupported open option is specified
-     * @throws SecurityException In the case of the default provider, and a security manager is
-     *             installed, the {@link SecurityManager#checkRead(String) checkRead} method is
-     *             invoked to check read access to the path if the file is opened for reading. The
-     *             {@link SecurityManager#checkWrite(String) checkWrite} method is invoked to check
-     *             write access to the path if the file is opened for writing. The
-     *             {@link SecurityManager#checkDelete(String) checkDelete} method is invoked to
-     *             check delete access if the file is opened with the {@code DELETE_ON_CLOSE}
-     *             option.
      * @see java.nio.channels.FileChannel#open(Path,OpenOption[])
      */
     public FileChannel newFileChannel(OpenOption... options) {
@@ -701,9 +641,6 @@ public class File extends Location<File> {
      * @return a byte array containing the bytes read from the file
      * @throws OutOfMemoryError if an array of the required size cannot be allocated, for example
      *             the file is larger that {@code 2GB}
-     * @throws SecurityException In the case of the default provider, and a security manager is
-     *             installed, the {@link SecurityManager#checkRead(String) checkRead} method is
-     *             invoked to check read access to the file.
      */
     public byte[] bytes() {
         try {
@@ -723,9 +660,6 @@ public class File extends Location<File> {
      *
      * @return a String containing the content read from the file
      * @throws OutOfMemoryError if the file is extremely large, for example larger than {@code 2GB}
-     * @throws SecurityException In the case of the default provider, and a security manager is
-     *             installed, the {@link SecurityManager#checkRead(String) checkRead} method is
-     *             invoked to check read access to the file.
      */
     public String text() {
         return text(StandardCharsets.UTF_8);
@@ -745,9 +679,6 @@ public class File extends Location<File> {
      * @param charset the charset to use for decoding
      * @return a String containing the content read from the file
      * @throws OutOfMemoryError if the file is extremely large, for example larger than {@code 2GB}
-     * @throws SecurityException In the case of the default provider, and a security manager is
-     *             installed, the {@link SecurityManager#checkRead(String) checkRead} method is
-     *             invoked to check read access to the file.
      */
     public String text(Charset charset) {
         try {
@@ -778,12 +709,6 @@ public class File extends Location<File> {
      * @throws IllegalArgumentException if {@code options} contains an invalid combination of
      *             options
      * @throws UnsupportedOperationException if an unsupported option is specified
-     * @throws SecurityException In the case of the default provider, and a security manager is
-     *             installed, the {@link SecurityManager#checkWrite(String) checkWrite} method is
-     *             invoked to check write access to the file. The
-     *             {@link SecurityManager#checkDelete(String) checkDelete} method is invoked to
-     *             check delete access if the file is opened with the {@code DELETE_ON_CLOSE}
-     *             option.
      */
     public File text(String... lines) {
         return text(StandardCharsets.UTF_8, lines);
@@ -810,12 +735,6 @@ public class File extends Location<File> {
      * @throws IllegalArgumentException if {@code options} contains an invalid combination of
      *             options
      * @throws UnsupportedOperationException if an unsupported option is specified
-     * @throws SecurityException In the case of the default provider, and a security manager is
-     *             installed, the {@link SecurityManager#checkWrite(String) checkWrite} method is
-     *             invoked to check write access to the file. The
-     *             {@link SecurityManager#checkDelete(String) checkDelete} method is invoked to
-     *             check delete access if the file is opened with the {@code DELETE_ON_CLOSE}
-     *             option.
      */
     public File text(Iterable<String> lines, OpenOption... options) {
         return text(StandardCharsets.UTF_8, lines, options);
@@ -843,12 +762,6 @@ public class File extends Location<File> {
      * @throws IllegalArgumentException if {@code options} contains an invalid combination of
      *             options
      * @throws UnsupportedOperationException if an unsupported option is specified
-     * @throws SecurityException In the case of the default provider, and a security manager is
-     *             installed, the {@link SecurityManager#checkWrite(String) checkWrite} method is
-     *             invoked to check write access to the file. The
-     *             {@link SecurityManager#checkDelete(String) checkDelete} method is invoked to
-     *             check delete access if the file is opened with the {@code DELETE_ON_CLOSE}
-     *             option.
      */
     public File text(Charset charset, String... lines) {
         return text(charset, List.of(lines));
@@ -876,12 +789,6 @@ public class File extends Location<File> {
      * @throws IllegalArgumentException if {@code options} contains an invalid combination of
      *             options
      * @throws UnsupportedOperationException if an unsupported option is specified
-     * @throws SecurityException In the case of the default provider, and a security manager is
-     *             installed, the {@link SecurityManager#checkWrite(String) checkWrite} method is
-     *             invoked to check write access to the file. The
-     *             {@link SecurityManager#checkDelete(String) checkDelete} method is invoked to
-     *             check delete access if the file is opened with the {@code DELETE_ON_CLOSE}
-     *             option.
      */
     public File text(Charset charset, Iterable<String> lines, OpenOption... options) {
         try {
@@ -924,12 +831,6 @@ public class File extends Location<File> {
      * @throws IllegalArgumentException if {@code options} contains an invalid combination of
      *             options
      * @throws UnsupportedOperationException if an unsupported option is specified
-     * @throws SecurityException In the case of the default provider, and a security manager is
-     *             installed, the {@link SecurityManager#checkWrite(String) checkWrite} method is
-     *             invoked to check write access to the file. The
-     *             {@link SecurityManager#checkDelete(String) checkDelete} method is invoked to
-     *             check delete access if the file is opened with the {@code DELETE_ON_CLOSE}
-     *             option.
      */
     public File textAtTail(String... lines) {
         return textAtTail(StandardCharsets.UTF_8, lines);
@@ -956,12 +857,6 @@ public class File extends Location<File> {
      * @throws IllegalArgumentException if {@code options} contains an invalid combination of
      *             options
      * @throws UnsupportedOperationException if an unsupported option is specified
-     * @throws SecurityException In the case of the default provider, and a security manager is
-     *             installed, the {@link SecurityManager#checkWrite(String) checkWrite} method is
-     *             invoked to check write access to the file. The
-     *             {@link SecurityManager#checkDelete(String) checkDelete} method is invoked to
-     *             check delete access if the file is opened with the {@code DELETE_ON_CLOSE}
-     *             option.
      */
     public File textAtTail(Iterable<String> lines) {
         return textAtTail(StandardCharsets.UTF_8, lines);
@@ -989,12 +884,6 @@ public class File extends Location<File> {
      * @throws IllegalArgumentException if {@code options} contains an invalid combination of
      *             options
      * @throws UnsupportedOperationException if an unsupported option is specified
-     * @throws SecurityException In the case of the default provider, and a security manager is
-     *             installed, the {@link SecurityManager#checkWrite(String) checkWrite} method is
-     *             invoked to check write access to the file. The
-     *             {@link SecurityManager#checkDelete(String) checkDelete} method is invoked to
-     *             check delete access if the file is opened with the {@code DELETE_ON_CLOSE}
-     *             option.
      */
     public File textAtTail(Charset charset, String... lines) {
         return textAtTail(charset, List.of(lines));
@@ -1022,12 +911,6 @@ public class File extends Location<File> {
      * @throws IllegalArgumentException if {@code options} contains an invalid combination of
      *             options
      * @throws UnsupportedOperationException if an unsupported option is specified
-     * @throws SecurityException In the case of the default provider, and a security manager is
-     *             installed, the {@link SecurityManager#checkWrite(String) checkWrite} method is
-     *             invoked to check write access to the file. The
-     *             {@link SecurityManager#checkDelete(String) checkDelete} method is invoked to
-     *             check delete access if the file is opened with the {@code DELETE_ON_CLOSE}
-     *             option.
      */
     public File textAtTail(Charset charset, Iterable<String> lines) {
         return text(charset, lines, StandardOpenOption.CREATE, StandardOpenOption.APPEND);
@@ -1094,9 +977,6 @@ public class File extends Location<File> {
      *           that when splitting it can approximately divide the number of covered lines in
      *           half.
      * @return the lines from the file as a {@code Stream}
-     * @throws SecurityException In the case of the default provider, and a security manager is
-     *             installed, the {@link SecurityManager#checkRead(String) checkRead} method is
-     *             invoked to check read access to the file.
      */
     public Signal<String> lines() {
         return lines(StandardCharsets.UTF_8);
@@ -1147,9 +1027,6 @@ public class File extends Location<File> {
      *           half.
      * @param charset the charset to use for decoding
      * @return the lines from the file as a {@code Stream}
-     * @throws SecurityException In the case of the default provider, and a security manager is
-     *             installed, the {@link SecurityManager#checkRead(String) checkRead} method is
-     *             invoked to check read access to the file.
      */
     public Signal<String> lines(Charset charset) {
         return new Signal<>((observer, disposer) -> {
