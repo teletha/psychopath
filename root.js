@@ -50,6 +50,13 @@ const root = {
 		{
 			"modifiers": {
 				"#": "java.util.Collections$UnmodifiableSet",},
+			"name": "PathOperatable",
+			"packageName": "psychopath",
+			"type": "Interface"
+		},
+		{
+			"modifiers": {
+				"#": "java.util.Collections$UnmodifiableSet",},
 			"name": "Progress",
 			"packageName": "psychopath",
 			"type": "Class"
