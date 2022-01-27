@@ -1,5 +1,13 @@
 # Changelog
 
+### [1.6.1](https://www.github.com/teletha/psychopath/compare/v1.6.0...v1.6.1) (2022-01-27)
+
+
+### Bug Fixes
+
+* PathOperatable must be public. ([1f4123b](https://www.github.com/teletha/psychopath/commit/1f4123b529311b88239a75891eccf618d731d9ba))
+* Update java to 17. ([8e1793c](https://www.github.com/teletha/psychopath/commit/8e1793c660b33d276037dd6fc2c6d4a291ed3009))
+
 ## [1.6.0](https://www.github.com/teletha/psychopath/compare/v1.5.0...v1.6.0) (2021-12-16)
 
 
