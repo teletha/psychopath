@@ -1,4 +1,5 @@
 import { Mimic as $ } from "./mimic.js"
+import hljs from "./highlight.js"
 
 // =====================================================
 // User Settings
