@@ -568,35 +568,4 @@ class FileTest extends LocationTestHelper {
         assertThrows(FileAlreadyExistsException.class, () -> dir.file("src").renameTo("dest-file"));
         assertThrows(FileAlreadyExistsException.class, () -> dir.file("src").renameTo("dest-dir"));
     }
-
-    @Test
-    void lock() {
-        File one = locateFile("same");
-        String[] result = new String[1];
-
-        one.lock().to(lock -> {
-            result[0] = "lock by one";
-        }, e -> {
-            result[0] = "can't lock by one";
-        });
-        assert result[0].equals("lock by one");
-    }
-
-    @Test
-    void lockOnSameLocationWillThrowOverlapingFileLockException() {
-        File one = locateFile("same");
-        String[] result = new String[1];
-
-        one.lock().to(lock -> {
-            result[0] = "lock by one";
-        });
-        assert result[0].equals("lock by one");
-
-        one.lock().to(lock -> {
-            result[0] = "lock twice";
-        }, e -> {
-            result[0] = "can't lock by one again " + e.getClass().getSimpleName();
-        });
-        assert result[0].equals("can't lock by one again " + OverlappingFileLockException.class.getSimpleName());
-    }
 }

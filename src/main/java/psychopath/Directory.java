@@ -10,7 +10,6 @@
 package psychopath;
 
 import java.io.IOException;
-import java.nio.channels.FileLock;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -345,14 +344,6 @@ public class Directory extends Location<Directory> {
      */
     public Signal<WatchEvent<Location>> observe(Collection<String> patterns) {
         return observe(patterns.toArray(new String[patterns.size()]));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Signal<FileLock> lock() {
-        return file(".lock").lock();
     }
 
     /**

@@ -11,8 +11,6 @@ package psychopath;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.nio.channels.FileLock;
-import java.nio.channels.OverlappingFileLockException;
 import java.nio.file.CopyOption;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
@@ -819,14 +817,6 @@ public abstract class Location<Self extends Location> implements Comparable<Loca
         }
         return (Self) this;
     }
-
-    /**
-     * Try to acquire exclusive lock on this {@link Location}. If a lock cannot be obtained,
-     * {@link NullPointerException} or {@link OverlappingFileLockException} will be thrown.
-     * 
-     * @return
-     */
-    public abstract Signal<FileLock> lock();
 
     /**
      * Test matching the specified pattern to this {@link Location}.

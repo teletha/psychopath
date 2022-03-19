@@ -10,7 +10,6 @@
 package psychopath;
 
 import static java.nio.file.StandardCopyOption.*;
-import static java.nio.file.StandardOpenOption.*;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -22,9 +21,7 @@ import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.UncheckedIOException;
 import java.io.Writer;
-import java.nio.channels.AsynchronousFileChannel;
 import java.nio.channels.FileChannel;
-import java.nio.channels.FileLock;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.FileSystemNotFoundException;
@@ -431,36 +428,6 @@ public class File extends Location<File> {
         // }
         // return disposer;
         // });
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Signal<FileLock> lock() {
-        return new Signal<>((observer, disposer) -> {
-            try {
-                AsynchronousFileChannel channel = AsynchronousFileChannel.open(path, CREATE, WRITE);
-                FileLock lock = channel.tryLock();
-
-                if (lock == null) {
-                    observer.error(new NullPointerException());
-                } else {
-                    observer.accept(lock);
-                    observer.complete();
-                    disposer.add(() -> {
-                        try {
-                            channel.close();
-                        } catch (IOException e) {
-                            throw I.quiet(e);
-                        }
-                    });
-                }
-            } catch (IOException e) {
-                observer.error(e);
-            }
-            return disposer;
-        });
     }
 
     /**
