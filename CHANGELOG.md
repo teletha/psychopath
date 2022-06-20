@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.7.0](https://www.github.com/teletha/psychopath/compare/v1.6.0...v1.7.0) (2022-06-20)
+
+
+### Features
+
+* Remove Location#lock. ([3dee183](https://www.github.com/teletha/psychopath/commit/3dee1835f9f2370cc7a33347e7a7cf20a4ac34b0))
+
+
+### Bug Fixes
+
+* Atomic writing mode generates backup file. ([32c285e](https://www.github.com/teletha/psychopath/commit/32c285e4d0056c576de07083787b3d8d009a0478))
+* PathOperatable must be public. ([1f4123b](https://www.github.com/teletha/psychopath/commit/1f4123b529311b88239a75891eccf618d731d9ba))
+* Update java to 17. ([8e1793c](https://www.github.com/teletha/psychopath/commit/8e1793c660b33d276037dd6fc2c6d4a291ed3009))
+
 ## [1.6.0](https://www.github.com/teletha/psychopath/compare/v1.5.0...v1.6.0) (2021-12-16)
 
 
