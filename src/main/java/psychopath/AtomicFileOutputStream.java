@@ -11,13 +11,19 @@ package psychopath;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.channels.FileChannel;
+import java.nio.channels.FileLock;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
+import java.nio.file.StandardOpenOption;
 
 class AtomicFileOutputStream extends OutputStream {
 
     /** The target file to write finally. */
     private final File dest;
+
+    /** The backup file. */
+    private final File backup;
 
     /** The file to write temporary. */
     private final File temp;
@@ -30,6 +36,7 @@ class AtomicFileOutputStream extends OutputStream {
      */
     AtomicFileOutputStream(File dest) {
         this.dest = dest;
+        this.backup = dest.extension(dest.extension() + ".bak");
         this.temp = dest.extension(dest.extension() + ".atomic").deleteOnExit();
         this.out = temp.newOutputStream();
     }
@@ -73,7 +80,14 @@ class AtomicFileOutputStream extends OutputStream {
     public void close() throws IOException {
         out.close();
 
-        try {
+        try (FileLock lock = FileChannel.open(dest.path, StandardOpenOption.WRITE).lock()) {
+            // delete old backup
+            backup.delete();
+
+            // create backup
+            Files.createLink(backup.path, dest.path);
+
+            // replace target by new file
             Files.move(temp.path, dest.path, StandardCopyOption.ATOMIC_MOVE);
         } catch (IOException moveFailed) {
             try {
