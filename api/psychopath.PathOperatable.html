@@ -7,10 +7,10 @@
 		<script src="mimic.js" type="module"></script>
 		<link href="main.css" rel="stylesheet"/>
 	</head>
-	<body class="l">
-		<header class="g">
-			<h1 class="J" date="Footer" ver="1.6.0"><code>Psychopath</code></h1>
-			<nav class="L"><a href="api/"><svg class="A svg" viewBox="0 0 24 24">
+	<body class="j">
+		<header class="Z">
+			<h1 class="m" date="Footer" ver="1.7.0"><code>Psychopath</code></h1>
+			<nav class="I"><a href="api/"><svg class="A svg" viewBox="0 0 24 24">
 						<use href="main.svg#package"/>
 					</svg><code>API</code></a><a href="https://github.com/teletha/psychopath/discussions" target="_blank"><svg class="A svg" viewBox="0 0 24 24">
 						<use href="main.svg#user"/>
@@ -19,7 +19,7 @@
 					</svg>Activity</a><a href="https://github.com/teletha/psychopath" target="_blank"><svg class="A svg" viewBox="0 0 24 24">
 						<use href="main.svg#github"/>
 					</svg>Repository</a></nav>
-			<div class="X" id="ViewMode"><a id="light" title="Change to a brighter color scheme"><svg class="A svg" viewBox="0 0 24 24">
+			<div class="P" id="ViewMode"><a id="light" title="Change to a brighter color scheme"><svg class="A svg" viewBox="0 0 24 24">
 						<use href="main.svg#sun"/>
 					</svg>
 				</a><a id="dark" title="Change to a darker color scheme"><svg class="A svg" viewBox="0 0 24 24">
@@ -27,14 +27,14 @@
 					</svg>
 				</a></div>
 		</header>
-		<main class="M">
-			<nav class="m">
+		<main class="f">
+			<nav class="e">
 				<div></div>
 			</nav>
-			<article class="V" id="Article">
-				<section class="P"><code class="T">psychopath</code>
-					<h2 class="Interface O"><code class="Q">PathOperatable</code></h2>
-					<div class="j">
+			<article class="d" id="Article">
+				<section class="O"><code class="k">psychopath</code>
+					<h2 class="Interface H"><code class="R">PathOperatable</code></h2>
+					<div class="l">
 						<ul class="C G">
 							<li><code><a href="api/psychopath.Directory.html">Directory</a></code></li>
 							<li><code><a href="api/psychopath.File.html">File</a></code></li>
@@ -43,240 +43,240 @@
 						</ul>
 					</div><span class="B"><p>Internal API to define default methods.</p>
 					</span></section>
-				<section class="P" id="delete(java.lang.String...)">
-					<h2 class="I"><i class="DEFAULT"><i class="PUBLIC"></i></i><code class="Q">delete</code><code class="i">(<code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code> <code class="parameterName">patterns</code>)</code><i class="R"><code>void</code></i></h2>
-					<table class="U">
-						<tr class="h">
+				<section class="O" id="delete(java.lang.String...)">
+					<h2 class="J"><i class="DEFAULT"><i class="PUBLIC"></i></i><code class="R">delete</code><code class="b">(<code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code> <code class="parameterName">patterns</code>)</code><i class="i"><code>void</code></i></h2>
+					<table class="h">
+						<tr class="X">
 							<td><code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code> <code>patterns</code></td>
 							<td><span><p>A list of glob patterns to accept file by its name.</p>
 								</span></td>
 						</tr>
 					</table><span class="B"><p>Delete resources.</p>
 					</span></section>
-				<section class="P" id="delete(java.util.Collection)">
-					<h2 class="I"><i class="DEFAULT"><i class="PUBLIC"></i></i><code class="Q">delete</code><code class="i">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/Collection.html">Collection</a><code class="parameters"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></code></code> <code class="parameterName">patterns</code>)</code><i class="R"><code>void</code></i></h2>
-					<table class="U">
-						<tr class="h">
+				<section class="O" id="delete(java.util.Collection)">
+					<h2 class="J"><i class="DEFAULT"><i class="PUBLIC"></i></i><code class="R">delete</code><code class="b">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/Collection.html">Collection</a><code class="parameters"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></code></code> <code class="parameterName">patterns</code>)</code><i class="i"><code>void</code></i></h2>
+					<table class="h">
+						<tr class="X">
 							<td><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/Collection.html">Collection</a><code class="parameters"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></code></code> <code>patterns</code></td>
 							<td><span><p>A list of glob patterns to accept file by its name.</p>
 								</span></td>
 						</tr>
 					</table><span class="B"><p>Delete resources.</p>
 					</span></section>
-				<section class="P" id="delete(java.util.function.Function)">
-					<h2 class="I"><i class="DEFAULT"><i class="PUBLIC"></i></i><code class="Q">delete</code><code class="i">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a href="api/psychopath.Option.html">Option</a></code>, <code><a href="api/psychopath.Option.html">Option</a></code></code></code> <code class="parameterName">option</code>)</code><i class="R"><code>void</code></i></h2>
-					<table class="U">
-						<tr class="h">
+				<section class="O" id="delete(java.util.function.Function)">
+					<h2 class="J"><i class="DEFAULT"><i class="PUBLIC"></i></i><code class="R">delete</code><code class="b">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a href="api/psychopath.Option.html">Option</a></code>, <code><a href="api/psychopath.Option.html">Option</a></code></code></code> <code class="parameterName">option</code>)</code><i class="i"><code>void</code></i></h2>
+					<table class="h">
+						<tr class="X">
 							<td><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a href="api/psychopath.Option.html">Option</a></code>, <code><a href="api/psychopath.Option.html">Option</a></code></code></code> <code>option</code></td>
 							<td><span><p>A operation <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/StackWalker.Option.html">Option</a></code>.</p>
 								</span></td>
 						</tr>
 					</table><span class="B"><p>Delete resources.</p>
 					</span></section>
-				<section class="P" id="observeDeleting(java.lang.String...)">
-					<h2 class="I"><i class="DEFAULT"><i class="PUBLIC"></i></i><code class="Q">observeDeleting</code><code class="i">(<code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code> <code class="parameterName">patterns</code>)</code><i class="R"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Location.html">Location</a></code></code></code></i></h2>
-					<table class="U">
-						<tr class="h">
+				<section class="O" id="observeDeleting(java.lang.String...)">
+					<h2 class="J"><i class="DEFAULT"><i class="PUBLIC"></i></i><code class="R">observeDeleting</code><code class="b">(<code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code> <code class="parameterName">patterns</code>)</code><i class="i"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Location.html">Location</a></code></code></code></i></h2>
+					<table class="h">
+						<tr class="X">
 							<td><code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code> <code>patterns</code></td>
 							<td><span><p>A list of glob patterns to accept file by its name.</p>
 								</span></td>
 						</tr>
-						<tr class="Z">
+						<tr class="N">
 							<td><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Location.html">Location</a></code></code></code></td>
 							<td><span><p>A event stream which emits operated <code><a href="api/psychopath.File.html">File</a></code>s.</p>
 								</span></td>
 						</tr>
 					</table><span class="B"><p>Build stream that delete resources.</p>
 					</span></section>
-				<section class="P" id="observeDeleting(java.util.Collection)">
-					<h2 class="I"><i class="DEFAULT"><i class="PUBLIC"></i></i><code class="Q">observeDeleting</code><code class="i">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/Collection.html">Collection</a><code class="parameters"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></code></code> <code class="parameterName">patterns</code>)</code><i class="R"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Location.html">Location</a></code></code></code></i></h2>
-					<table class="U">
-						<tr class="h">
+				<section class="O" id="observeDeleting(java.util.Collection)">
+					<h2 class="J"><i class="DEFAULT"><i class="PUBLIC"></i></i><code class="R">observeDeleting</code><code class="b">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/Collection.html">Collection</a><code class="parameters"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></code></code> <code class="parameterName">patterns</code>)</code><i class="i"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Location.html">Location</a></code></code></code></i></h2>
+					<table class="h">
+						<tr class="X">
 							<td><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/Collection.html">Collection</a><code class="parameters"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></code></code> <code>patterns</code></td>
 							<td><span><p>A list of glob patterns to accept file by its name.</p>
 								</span></td>
 						</tr>
-						<tr class="Z">
+						<tr class="N">
 							<td><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Location.html">Location</a></code></code></code></td>
 							<td><span><p>A event stream which emits operated <code><a href="api/psychopath.File.html">File</a></code>s.</p>
 								</span></td>
 						</tr>
 					</table><span class="B"><p>Build stream that delete resources.</p>
 					</span></section>
-				<section class="P" id="observeDeleting(java.util.function.Function)">
-					<h2 class="I"><i class="ABSTRACT"><i class="PUBLIC"></i></i><code class="Q">observeDeleting</code><code class="i">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a href="api/psychopath.Option.html">Option</a></code>, <code><a href="api/psychopath.Option.html">Option</a></code></code></code> <code class="parameterName">option</code>)</code><i class="R"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Location.html">Location</a></code></code></code></i></h2>
-					<table class="U">
-						<tr class="h">
+				<section class="O" id="observeDeleting(java.util.function.Function)">
+					<h2 class="J"><i class="ABSTRACT"><i class="PUBLIC"></i></i><code class="R">observeDeleting</code><code class="b">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a href="api/psychopath.Option.html">Option</a></code>, <code><a href="api/psychopath.Option.html">Option</a></code></code></code> <code class="parameterName">option</code>)</code><i class="i"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Location.html">Location</a></code></code></code></i></h2>
+					<table class="h">
+						<tr class="X">
 							<td><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a href="api/psychopath.Option.html">Option</a></code>, <code><a href="api/psychopath.Option.html">Option</a></code></code></code> <code>option</code></td>
 							<td><span><p>A operation <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/StackWalker.Option.html">Option</a></code>.</p>
 								</span></td>
 						</tr>
-						<tr class="Z">
+						<tr class="N">
 							<td><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Location.html">Location</a></code></code></code></td>
 							<td><span><p>A event stream which emits operated <code><a href="api/psychopath.File.html">File</a></code>s.</p>
 								</span></td>
 						</tr>
 					</table><span class="B"><p>Build stream that delete resources.</p>
 					</span></section>
-				<section class="P" id="trackDeleting(java.lang.String...)">
-					<h2 class="I"><i class="DEFAULT"><i class="PUBLIC"></i></i><code class="Q">trackDeleting</code><code class="i">(<code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code> <code class="parameterName">patterns</code>)</code><i class="R"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Progress.html">Progress</a></code></code></code></i></h2>
-					<table class="U">
-						<tr class="h">
+				<section class="O" id="trackDeleting(java.lang.String...)">
+					<h2 class="J"><i class="DEFAULT"><i class="PUBLIC"></i></i><code class="R">trackDeleting</code><code class="b">(<code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code> <code class="parameterName">patterns</code>)</code><i class="i"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Progress.html">Progress</a></code></code></code></i></h2>
+					<table class="h">
+						<tr class="X">
 							<td><code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code> <code>patterns</code></td>
 							<td><span><p>A list of glob patterns to accept file by its name.</p>
 								</span></td>
 						</tr>
-						<tr class="Z">
+						<tr class="N">
 							<td><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Progress.html">Progress</a></code></code></code></td>
 							<td><span><p>A event stream which emits operated <code><a href="api/psychopath.File.html">File</a></code>s.</p>
 								</span></td>
 						</tr>
 					</table><span class="B"><p>Build stream that delete resources.</p>
 					</span></section>
-				<section class="P" id="trackDeleting(java.util.Collection)">
-					<h2 class="I"><i class="DEFAULT"><i class="PUBLIC"></i></i><code class="Q">trackDeleting</code><code class="i">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/Collection.html">Collection</a><code class="parameters"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></code></code> <code class="parameterName">patterns</code>)</code><i class="R"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Progress.html">Progress</a></code></code></code></i></h2>
-					<table class="U">
-						<tr class="h">
+				<section class="O" id="trackDeleting(java.util.Collection)">
+					<h2 class="J"><i class="DEFAULT"><i class="PUBLIC"></i></i><code class="R">trackDeleting</code><code class="b">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/Collection.html">Collection</a><code class="parameters"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></code></code> <code class="parameterName">patterns</code>)</code><i class="i"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Progress.html">Progress</a></code></code></code></i></h2>
+					<table class="h">
+						<tr class="X">
 							<td><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/Collection.html">Collection</a><code class="parameters"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></code></code> <code>patterns</code></td>
 							<td><span><p>A list of glob patterns to accept file by its name.</p>
 								</span></td>
 						</tr>
-						<tr class="Z">
+						<tr class="N">
 							<td><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Progress.html">Progress</a></code></code></code></td>
 							<td><span><p>A event stream which emits operated <code><a href="api/psychopath.File.html">File</a></code>s.</p>
 								</span></td>
 						</tr>
 					</table><span class="B"><p>Build stream that delete resources.</p>
 					</span></section>
-				<section class="P" id="trackDeleting(java.util.function.Function)">
-					<h2 class="I"><i class="DEFAULT"><i class="PUBLIC"></i></i><code class="Q">trackDeleting</code><code class="i">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a href="api/psychopath.Option.html">Option</a></code>, <code><a href="api/psychopath.Option.html">Option</a></code></code></code> <code class="parameterName">option</code>)</code><i class="R"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Progress.html">Progress</a></code></code></code></i></h2>
-					<table class="U">
-						<tr class="h">
+				<section class="O" id="trackDeleting(java.util.function.Function)">
+					<h2 class="J"><i class="DEFAULT"><i class="PUBLIC"></i></i><code class="R">trackDeleting</code><code class="b">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a href="api/psychopath.Option.html">Option</a></code>, <code><a href="api/psychopath.Option.html">Option</a></code></code></code> <code class="parameterName">option</code>)</code><i class="i"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Progress.html">Progress</a></code></code></code></i></h2>
+					<table class="h">
+						<tr class="X">
 							<td><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a href="api/psychopath.Option.html">Option</a></code>, <code><a href="api/psychopath.Option.html">Option</a></code></code></code> <code>option</code></td>
 							<td><span><p>A operation <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/StackWalker.Option.html">Option</a></code>.</p>
 								</span></td>
 						</tr>
-						<tr class="Z">
+						<tr class="N">
 							<td><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Progress.html">Progress</a></code></code></code></td>
 							<td><span><p>A event stream which emits operated <code><a href="api/psychopath.File.html">File</a></code>s.</p>
 								</span></td>
 						</tr>
 					</table><span class="B"><p>Build stream that delete resources.</p>
 					</span></section>
-				<section class="P" id="copyTo(psychopath.Directory,java.lang.String...)">
-					<h2 class="I"><i class="DEFAULT"><i class="PUBLIC"></i></i><code class="Q">copyTo</code><code class="i">(<code><a href="api/psychopath.Directory.html">Directory</a></code> <code class="parameterName">destination</code>, <code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code> <code class="parameterName">patterns</code>)</code><i class="R"><code><a href="api/psychopath.Directory.html">Directory</a></code></i></h2>
-					<table class="U">
-						<tr class="h">
+				<section class="O" id="copyTo(psychopath.Directory,java.lang.String...)">
+					<h2 class="J"><i class="DEFAULT"><i class="PUBLIC"></i></i><code class="R">copyTo</code><code class="b">(<code><a href="api/psychopath.Directory.html">Directory</a></code> <code class="parameterName">destination</code>, <code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code> <code class="parameterName">patterns</code>)</code><i class="i"><code><a href="api/psychopath.Directory.html">Directory</a></code></i></h2>
+					<table class="h">
+						<tr class="X">
 							<td><code><a href="api/psychopath.Directory.html">Directory</a></code> <code>destination</code></td>
 							<td><span><p>A destination <code><a href="api/psychopath.Directory.html">Directory</a></code>.</p>
 								</span></td>
 						</tr>
-						<tr class="h">
+						<tr class="X">
 							<td><code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code> <code>patterns</code></td>
 							<td><span><p>A list of glob patterns to accept file by its name.</p>
 								</span></td>
 						</tr>
-						<tr class="Z">
+						<tr class="N">
 							<td><code><a href="api/psychopath.Directory.html">Directory</a></code></td>
 							<td><span><p>A destination <code><a href="api/psychopath.Directory.html">Directory</a></code>.</p>
 								</span></td>
 						</tr>
 					</table><span class="B"><p>Copy resources to the destination <code><a href="api/psychopath.Directory.html">Directory</a></code>.</p>
 					</span></section>
-				<section class="P" id="copyTo(psychopath.Directory,java.util.Collection)">
-					<h2 class="I"><i class="DEFAULT"><i class="PUBLIC"></i></i><code class="Q">copyTo</code><code class="i">(<code><a href="api/psychopath.Directory.html">Directory</a></code> <code class="parameterName">destination</code>, <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/Collection.html">Collection</a><code class="parameters"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></code></code> <code class="parameterName">patterns</code>)</code><i class="R"><code><a href="api/psychopath.Directory.html">Directory</a></code></i></h2>
-					<table class="U">
-						<tr class="h">
+				<section class="O" id="copyTo(psychopath.Directory,java.util.Collection)">
+					<h2 class="J"><i class="DEFAULT"><i class="PUBLIC"></i></i><code class="R">copyTo</code><code class="b">(<code><a href="api/psychopath.Directory.html">Directory</a></code> <code class="parameterName">destination</code>, <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/Collection.html">Collection</a><code class="parameters"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></code></code> <code class="parameterName">patterns</code>)</code><i class="i"><code><a href="api/psychopath.Directory.html">Directory</a></code></i></h2>
+					<table class="h">
+						<tr class="X">
 							<td><code><a href="api/psychopath.Directory.html">Directory</a></code> <code>destination</code></td>
 							<td><span><p>A destination <code><a href="api/psychopath.Directory.html">Directory</a></code>.</p>
 								</span></td>
 						</tr>
-						<tr class="h">
+						<tr class="X">
 							<td><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/Collection.html">Collection</a><code class="parameters"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></code></code> <code>patterns</code></td>
 							<td><span><p>A list of glob patterns to accept file by its name.</p>
 								</span></td>
 						</tr>
-						<tr class="Z">
+						<tr class="N">
 							<td><code><a href="api/psychopath.Directory.html">Directory</a></code></td>
 							<td><span><p>A destination <code><a href="api/psychopath.Directory.html">Directory</a></code>.</p>
 								</span></td>
 						</tr>
 					</table><span class="B"><p>Copy resources to the destination <code><a href="api/psychopath.Directory.html">Directory</a></code>.</p>
 					</span></section>
-				<section class="P" id="copyTo(psychopath.Directory,java.util.function.Function)">
-					<h2 class="I"><i class="DEFAULT"><i class="PUBLIC"></i></i><code class="Q">copyTo</code><code class="i">(<code><a href="api/psychopath.Directory.html">Directory</a></code> <code class="parameterName">destination</code>, <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a href="api/psychopath.Option.html">Option</a></code>, <code><a href="api/psychopath.Option.html">Option</a></code></code></code> <code class="parameterName">option</code>)</code><i class="R"><code><a href="api/psychopath.Directory.html">Directory</a></code></i></h2>
-					<table class="U">
-						<tr class="h">
+				<section class="O" id="copyTo(psychopath.Directory,java.util.function.Function)">
+					<h2 class="J"><i class="DEFAULT"><i class="PUBLIC"></i></i><code class="R">copyTo</code><code class="b">(<code><a href="api/psychopath.Directory.html">Directory</a></code> <code class="parameterName">destination</code>, <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a href="api/psychopath.Option.html">Option</a></code>, <code><a href="api/psychopath.Option.html">Option</a></code></code></code> <code class="parameterName">option</code>)</code><i class="i"><code><a href="api/psychopath.Directory.html">Directory</a></code></i></h2>
+					<table class="h">
+						<tr class="X">
 							<td><code><a href="api/psychopath.Directory.html">Directory</a></code> <code>destination</code></td>
 							<td><span><p>A destination <code><a href="api/psychopath.Directory.html">Directory</a></code>.</p>
 								</span></td>
 						</tr>
-						<tr class="h">
+						<tr class="X">
 							<td><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a href="api/psychopath.Option.html">Option</a></code>, <code><a href="api/psychopath.Option.html">Option</a></code></code></code> <code>option</code></td>
 							<td><span><p>A operation <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/StackWalker.Option.html">Option</a></code>.</p>
 								</span></td>
 						</tr>
-						<tr class="Z">
+						<tr class="N">
 							<td><code><a href="api/psychopath.Directory.html">Directory</a></code></td>
 							<td><span><p>A destination <code><a href="api/psychopath.Directory.html">Directory</a></code>.</p>
 								</span></td>
 						</tr>
 					</table><span class="B"><p>Copy resources to the destination <code><a href="api/psychopath.Directory.html">Directory</a></code> with some <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/StackWalker.Option.html">Option</a></code>.</p>
 					</span></section>
-				<section class="P" id="observeCopyingTo(psychopath.Directory,java.lang.String...)">
-					<h2 class="I"><i class="DEFAULT"><i class="PUBLIC"></i></i><code class="Q">observeCopyingTo</code><code class="i">(<code><a href="api/psychopath.Directory.html">Directory</a></code> <code class="parameterName">destination</code>, <code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code> <code class="parameterName">patterns</code>)</code><i class="R"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Location.html">Location</a></code></code></code></i></h2>
-					<table class="U">
-						<tr class="h">
+				<section class="O" id="observeCopyingTo(psychopath.Directory,java.lang.String...)">
+					<h2 class="J"><i class="DEFAULT"><i class="PUBLIC"></i></i><code class="R">observeCopyingTo</code><code class="b">(<code><a href="api/psychopath.Directory.html">Directory</a></code> <code class="parameterName">destination</code>, <code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code> <code class="parameterName">patterns</code>)</code><i class="i"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Location.html">Location</a></code></code></code></i></h2>
+					<table class="h">
+						<tr class="X">
 							<td><code><a href="api/psychopath.Directory.html">Directory</a></code> <code>destination</code></td>
 							<td><span><p>A destination <code><a href="api/psychopath.Directory.html">Directory</a></code>.</p>
 								</span></td>
 						</tr>
-						<tr class="h">
+						<tr class="X">
 							<td><code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code> <code>patterns</code></td>
 							<td><span><p>A list of glob patterns to accept file by its name.</p>
 								</span></td>
 						</tr>
-						<tr class="Z">
+						<tr class="N">
 							<td><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Location.html">Location</a></code></code></code></td>
 							<td><span><p>A event stream which emits operated <code><a href="api/psychopath.File.html">File</a></code>s.</p>
 								</span></td>
 						</tr>
 					</table><span class="B"><p>Build stream that copy resources to the destination <code><a href="api/psychopath.Directory.html">Directory</a></code>.</p>
 					</span></section>
-				<section class="P" id="observeCopyingTo(psychopath.Directory,java.util.Collection)">
-					<h2 class="I"><i class="DEFAULT"><i class="PUBLIC"></i></i><code class="Q">observeCopyingTo</code><code class="i">(<code><a href="api/psychopath.Directory.html">Directory</a></code> <code class="parameterName">destination</code>, <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/Collection.html">Collection</a><code class="parameters"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></code></code> <code class="parameterName">patterns</code>)</code><i class="R"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Location.html">Location</a></code></code></code></i></h2>
-					<table class="U">
-						<tr class="h">
+				<section class="O" id="observeCopyingTo(psychopath.Directory,java.util.Collection)">
+					<h2 class="J"><i class="DEFAULT"><i class="PUBLIC"></i></i><code class="R">observeCopyingTo</code><code class="b">(<code><a href="api/psychopath.Directory.html">Directory</a></code> <code class="parameterName">destination</code>, <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/Collection.html">Collection</a><code class="parameters"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></code></code> <code class="parameterName">patterns</code>)</code><i class="i"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Location.html">Location</a></code></code></code></i></h2>
+					<table class="h">
+						<tr class="X">
 							<td><code><a href="api/psychopath.Directory.html">Directory</a></code> <code>destination</code></td>
 							<td><span><p>A destination <code><a href="api/psychopath.Directory.html">Directory</a></code>.</p>
 								</span></td>
 						</tr>
-						<tr class="h">
+						<tr class="X">
 							<td><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/Collection.html">Collection</a><code class="parameters"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></code></code> <code>patterns</code></td>
 							<td><span><p>A list of glob patterns to accept file by its name.</p>
 								</span></td>
 						</tr>
-						<tr class="Z">
+						<tr class="N">
 							<td><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Location.html">Location</a></code></code></code></td>
 							<td><span><p>A event stream which emits operated <code><a href="api/psychopath.File.html">File</a></code>s.</p>
 								</span></td>
 						</tr>
 					</table><span class="B"><p>Build stream that copy resources to the destination <code><a href="api/psychopath.Directory.html">Directory</a></code>.</p>
 					</span></section>
-				<section class="P" id="observeCopyingTo(psychopath.Directory,java.util.function.Function)">
-					<h2 class="I"><i class="ABSTRACT"><i class="PUBLIC"></i></i><code class="Q">observeCopyingTo</code><code class="i">(<code><a href="api/psychopath.Directory.html">Directory</a></code> <code class="parameterName">destination</code>, <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a href="api/psychopath.Option.html">Option</a></code>, <code><a href="api/psychopath.Option.html">Option</a></code></code></code> <code class="parameterName">option</code>)</code><i class="R"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Location.html">Location</a></code></code></code></i></h2>
-					<table class="U">
-						<tr class="h">
+				<section class="O" id="observeCopyingTo(psychopath.Directory,java.util.function.Function)">
+					<h2 class="J"><i class="ABSTRACT"><i class="PUBLIC"></i></i><code class="R">observeCopyingTo</code><code class="b">(<code><a href="api/psychopath.Directory.html">Directory</a></code> <code class="parameterName">destination</code>, <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a href="api/psychopath.Option.html">Option</a></code>, <code><a href="api/psychopath.Option.html">Option</a></code></code></code> <code class="parameterName">option</code>)</code><i class="i"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Location.html">Location</a></code></code></code></i></h2>
+					<table class="h">
+						<tr class="X">
 							<td><code><a href="api/psychopath.Directory.html">Directory</a></code> <code>destination</code></td>
 							<td><span><p>A destination <code><a href="api/psychopath.Directory.html">Directory</a></code>.</p>
 								</span></td>
 						</tr>
-						<tr class="h">
+						<tr class="X">
 							<td><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a href="api/psychopath.Option.html">Option</a></code>, <code><a href="api/psychopath.Option.html">Option</a></code></code></code> <code>option</code></td>
 							<td><span><p>A operation <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/StackWalker.Option.html">Option</a></code>.</p>
 								</span></td>
 						</tr>
-						<tr class="Z">
+						<tr class="N">
 							<td><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Location.html">Location</a></code></code></code></td>
 							<td><span><p>A event stream which emits operated <code><a href="api/psychopath.File.html">File</a></code>s.</p>
 								</span></td>
@@ -284,60 +284,60 @@
 					</table><span class="B"><p>Build stream that copy resources to the destination <code><a href="api/psychopath.Directory.html">Directory</a></code> with some
  <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/StackWalker.Option.html">Option</a></code>.</p>
 					</span></section>
-				<section class="P" id="trackCopyingTo(psychopath.Directory,java.lang.String...)">
-					<h2 class="I"><i class="DEFAULT"><i class="PUBLIC"></i></i><code class="Q">trackCopyingTo</code><code class="i">(<code><a href="api/psychopath.Directory.html">Directory</a></code> <code class="parameterName">destination</code>, <code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code> <code class="parameterName">patterns</code>)</code><i class="R"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Progress.html">Progress</a></code></code></code></i></h2>
-					<table class="U">
-						<tr class="h">
+				<section class="O" id="trackCopyingTo(psychopath.Directory,java.lang.String...)">
+					<h2 class="J"><i class="DEFAULT"><i class="PUBLIC"></i></i><code class="R">trackCopyingTo</code><code class="b">(<code><a href="api/psychopath.Directory.html">Directory</a></code> <code class="parameterName">destination</code>, <code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code> <code class="parameterName">patterns</code>)</code><i class="i"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Progress.html">Progress</a></code></code></code></i></h2>
+					<table class="h">
+						<tr class="X">
 							<td><code><a href="api/psychopath.Directory.html">Directory</a></code> <code>destination</code></td>
 							<td><span><p>A destination <code><a href="api/psychopath.Directory.html">Directory</a></code>.</p>
 								</span></td>
 						</tr>
-						<tr class="h">
+						<tr class="X">
 							<td><code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code> <code>patterns</code></td>
 							<td><span><p>A list of glob patterns to accept file by its name.</p>
 								</span></td>
 						</tr>
-						<tr class="Z">
+						<tr class="N">
 							<td><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Progress.html">Progress</a></code></code></code></td>
 							<td><span><p>A event stream which emits operated <code><a href="api/psychopath.File.html">File</a></code>s.</p>
 								</span></td>
 						</tr>
 					</table><span class="B"><p>Build stream that copy resources to the destination <code><a href="api/psychopath.Directory.html">Directory</a></code>.</p>
 					</span></section>
-				<section class="P" id="trackCopyingTo(psychopath.Directory,java.util.Collection)">
-					<h2 class="I"><i class="DEFAULT"><i class="PUBLIC"></i></i><code class="Q">trackCopyingTo</code><code class="i">(<code><a href="api/psychopath.Directory.html">Directory</a></code> <code class="parameterName">destination</code>, <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/Collection.html">Collection</a><code class="parameters"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></code></code> <code class="parameterName">patterns</code>)</code><i class="R"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Progress.html">Progress</a></code></code></code></i></h2>
-					<table class="U">
-						<tr class="h">
+				<section class="O" id="trackCopyingTo(psychopath.Directory,java.util.Collection)">
+					<h2 class="J"><i class="DEFAULT"><i class="PUBLIC"></i></i><code class="R">trackCopyingTo</code><code class="b">(<code><a href="api/psychopath.Directory.html">Directory</a></code> <code class="parameterName">destination</code>, <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/Collection.html">Collection</a><code class="parameters"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></code></code> <code class="parameterName">patterns</code>)</code><i class="i"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Progress.html">Progress</a></code></code></code></i></h2>
+					<table class="h">
+						<tr class="X">
 							<td><code><a href="api/psychopath.Directory.html">Directory</a></code> <code>destination</code></td>
 							<td><span><p>A destination <code><a href="api/psychopath.Directory.html">Directory</a></code>.</p>
 								</span></td>
 						</tr>
-						<tr class="h">
+						<tr class="X">
 							<td><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/Collection.html">Collection</a><code class="parameters"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></code></code> <code>patterns</code></td>
 							<td><span><p>A list of glob patterns to accept file by its name.</p>
 								</span></td>
 						</tr>
-						<tr class="Z">
+						<tr class="N">
 							<td><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Progress.html">Progress</a></code></code></code></td>
 							<td><span><p>A event stream which emits operated <code><a href="api/psychopath.File.html">File</a></code>s.</p>
 								</span></td>
 						</tr>
 					</table><span class="B"><p>Build stream that copy resources to the destination <code><a href="api/psychopath.Directory.html">Directory</a></code>.</p>
 					</span></section>
-				<section class="P" id="trackCopyingTo(psychopath.Directory,java.util.function.Function)">
-					<h2 class="I"><i class="DEFAULT"><i class="PUBLIC"></i></i><code class="Q">trackCopyingTo</code><code class="i">(<code><a href="api/psychopath.Directory.html">Directory</a></code> <code class="parameterName">destination</code>, <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a href="api/psychopath.Option.html">Option</a></code>, <code><a href="api/psychopath.Option.html">Option</a></code></code></code> <code class="parameterName">option</code>)</code><i class="R"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Progress.html">Progress</a></code></code></code></i></h2>
-					<table class="U">
-						<tr class="h">
+				<section class="O" id="trackCopyingTo(psychopath.Directory,java.util.function.Function)">
+					<h2 class="J"><i class="DEFAULT"><i class="PUBLIC"></i></i><code class="R">trackCopyingTo</code><code class="b">(<code><a href="api/psychopath.Directory.html">Directory</a></code> <code class="parameterName">destination</code>, <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a href="api/psychopath.Option.html">Option</a></code>, <code><a href="api/psychopath.Option.html">Option</a></code></code></code> <code class="parameterName">option</code>)</code><i class="i"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Progress.html">Progress</a></code></code></code></i></h2>
+					<table class="h">
+						<tr class="X">
 							<td><code><a href="api/psychopath.Directory.html">Directory</a></code> <code>destination</code></td>
 							<td><span><p>A destination <code><a href="api/psychopath.Directory.html">Directory</a></code>.</p>
 								</span></td>
 						</tr>
-						<tr class="h">
+						<tr class="X">
 							<td><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a href="api/psychopath.Option.html">Option</a></code>, <code><a href="api/psychopath.Option.html">Option</a></code></code></code> <code>option</code></td>
 							<td><span><p>A operation <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/StackWalker.Option.html">Option</a></code>.</p>
 								</span></td>
 						</tr>
-						<tr class="Z">
+						<tr class="N">
 							<td><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Progress.html">Progress</a></code></code></code></td>
 							<td><span><p>A event stream which emits operated <code><a href="api/psychopath.File.html">File</a></code>s.</p>
 								</span></td>
@@ -345,120 +345,120 @@
 					</table><span class="B"><p>Build stream that copy resources to the destination <code><a href="api/psychopath.Directory.html">Directory</a></code> with some
  <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/StackWalker.Option.html">Option</a></code>.</p>
 					</span></section>
-				<section class="P" id="moveTo(psychopath.Directory,java.lang.String...)">
-					<h2 class="I"><i class="DEFAULT"><i class="PUBLIC"></i></i><code class="Q">moveTo</code><code class="i">(<code><a href="api/psychopath.Directory.html">Directory</a></code> <code class="parameterName">destination</code>, <code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code> <code class="parameterName">patterns</code>)</code><i class="R"><code><a href="api/psychopath.Directory.html">Directory</a></code></i></h2>
-					<table class="U">
-						<tr class="h">
+				<section class="O" id="moveTo(psychopath.Directory,java.lang.String...)">
+					<h2 class="J"><i class="DEFAULT"><i class="PUBLIC"></i></i><code class="R">moveTo</code><code class="b">(<code><a href="api/psychopath.Directory.html">Directory</a></code> <code class="parameterName">destination</code>, <code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code> <code class="parameterName">patterns</code>)</code><i class="i"><code><a href="api/psychopath.Directory.html">Directory</a></code></i></h2>
+					<table class="h">
+						<tr class="X">
 							<td><code><a href="api/psychopath.Directory.html">Directory</a></code> <code>destination</code></td>
 							<td><span><p>A destination <code><a href="api/psychopath.Directory.html">Directory</a></code>.</p>
 								</span></td>
 						</tr>
-						<tr class="h">
+						<tr class="X">
 							<td><code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code> <code>patterns</code></td>
 							<td><span><p>A list of glob patterns to accept file by its name.</p>
 								</span></td>
 						</tr>
-						<tr class="Z">
+						<tr class="N">
 							<td><code><a href="api/psychopath.Directory.html">Directory</a></code></td>
 							<td><span><p>A destination <code><a href="api/psychopath.Directory.html">Directory</a></code>.</p>
 								</span></td>
 						</tr>
 					</table><span class="B"><p>Move resources to the destination <code><a href="api/psychopath.Directory.html">Directory</a></code>.</p>
 					</span></section>
-				<section class="P" id="moveTo(psychopath.Directory,java.util.Collection)">
-					<h2 class="I"><i class="DEFAULT"><i class="PUBLIC"></i></i><code class="Q">moveTo</code><code class="i">(<code><a href="api/psychopath.Directory.html">Directory</a></code> <code class="parameterName">destination</code>, <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/Collection.html">Collection</a><code class="parameters"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></code></code> <code class="parameterName">patterns</code>)</code><i class="R"><code><a href="api/psychopath.Directory.html">Directory</a></code></i></h2>
-					<table class="U">
-						<tr class="h">
+				<section class="O" id="moveTo(psychopath.Directory,java.util.Collection)">
+					<h2 class="J"><i class="DEFAULT"><i class="PUBLIC"></i></i><code class="R">moveTo</code><code class="b">(<code><a href="api/psychopath.Directory.html">Directory</a></code> <code class="parameterName">destination</code>, <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/Collection.html">Collection</a><code class="parameters"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></code></code> <code class="parameterName">patterns</code>)</code><i class="i"><code><a href="api/psychopath.Directory.html">Directory</a></code></i></h2>
+					<table class="h">
+						<tr class="X">
 							<td><code><a href="api/psychopath.Directory.html">Directory</a></code> <code>destination</code></td>
 							<td><span><p>A destination <code><a href="api/psychopath.Directory.html">Directory</a></code>.</p>
 								</span></td>
 						</tr>
-						<tr class="h">
+						<tr class="X">
 							<td><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/Collection.html">Collection</a><code class="parameters"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></code></code> <code>patterns</code></td>
 							<td><span><p>A list of glob patterns to accept file by its name.</p>
 								</span></td>
 						</tr>
-						<tr class="Z">
+						<tr class="N">
 							<td><code><a href="api/psychopath.Directory.html">Directory</a></code></td>
 							<td><span><p>A destination <code><a href="api/psychopath.Directory.html">Directory</a></code>.</p>
 								</span></td>
 						</tr>
 					</table><span class="B"><p>Move resources to the destination <code><a href="api/psychopath.Directory.html">Directory</a></code>.</p>
 					</span></section>
-				<section class="P" id="moveTo(psychopath.Directory,java.util.function.Function)">
-					<h2 class="I"><i class="DEFAULT"><i class="PUBLIC"></i></i><code class="Q">moveTo</code><code class="i">(<code><a href="api/psychopath.Directory.html">Directory</a></code> <code class="parameterName">destination</code>, <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a href="api/psychopath.Option.html">Option</a></code>, <code><a href="api/psychopath.Option.html">Option</a></code></code></code> <code class="parameterName">option</code>)</code><i class="R"><code><a href="api/psychopath.Directory.html">Directory</a></code></i></h2>
-					<table class="U">
-						<tr class="h">
+				<section class="O" id="moveTo(psychopath.Directory,java.util.function.Function)">
+					<h2 class="J"><i class="DEFAULT"><i class="PUBLIC"></i></i><code class="R">moveTo</code><code class="b">(<code><a href="api/psychopath.Directory.html">Directory</a></code> <code class="parameterName">destination</code>, <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a href="api/psychopath.Option.html">Option</a></code>, <code><a href="api/psychopath.Option.html">Option</a></code></code></code> <code class="parameterName">option</code>)</code><i class="i"><code><a href="api/psychopath.Directory.html">Directory</a></code></i></h2>
+					<table class="h">
+						<tr class="X">
 							<td><code><a href="api/psychopath.Directory.html">Directory</a></code> <code>destination</code></td>
 							<td><span><p>A destination <code><a href="api/psychopath.Directory.html">Directory</a></code>.</p>
 								</span></td>
 						</tr>
-						<tr class="h">
+						<tr class="X">
 							<td><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a href="api/psychopath.Option.html">Option</a></code>, <code><a href="api/psychopath.Option.html">Option</a></code></code></code> <code>option</code></td>
 							<td><span><p>A operation <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/StackWalker.Option.html">Option</a></code>.</p>
 								</span></td>
 						</tr>
-						<tr class="Z">
+						<tr class="N">
 							<td><code><a href="api/psychopath.Directory.html">Directory</a></code></td>
 							<td><span><p>A destination <code><a href="api/psychopath.Directory.html">Directory</a></code>.</p>
 								</span></td>
 						</tr>
 					</table><span class="B"><p>Move resources to the destination <code><a href="api/psychopath.Directory.html">Directory</a></code> with some <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/StackWalker.Option.html">Option</a></code>.</p>
 					</span></section>
-				<section class="P" id="observeMovingTo(psychopath.Directory,java.lang.String...)">
-					<h2 class="I"><i class="DEFAULT"><i class="PUBLIC"></i></i><code class="Q">observeMovingTo</code><code class="i">(<code><a href="api/psychopath.Directory.html">Directory</a></code> <code class="parameterName">destination</code>, <code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code> <code class="parameterName">patterns</code>)</code><i class="R"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Location.html">Location</a></code></code></code></i></h2>
-					<table class="U">
-						<tr class="h">
+				<section class="O" id="observeMovingTo(psychopath.Directory,java.lang.String...)">
+					<h2 class="J"><i class="DEFAULT"><i class="PUBLIC"></i></i><code class="R">observeMovingTo</code><code class="b">(<code><a href="api/psychopath.Directory.html">Directory</a></code> <code class="parameterName">destination</code>, <code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code> <code class="parameterName">patterns</code>)</code><i class="i"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Location.html">Location</a></code></code></code></i></h2>
+					<table class="h">
+						<tr class="X">
 							<td><code><a href="api/psychopath.Directory.html">Directory</a></code> <code>destination</code></td>
 							<td><span><p>A destination <code><a href="api/psychopath.Directory.html">Directory</a></code>.</p>
 								</span></td>
 						</tr>
-						<tr class="h">
+						<tr class="X">
 							<td><code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code> <code>patterns</code></td>
 							<td><span><p>A list of glob patterns to accept file by its name.</p>
 								</span></td>
 						</tr>
-						<tr class="Z">
+						<tr class="N">
 							<td><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Location.html">Location</a></code></code></code></td>
 							<td><span><p>A event stream which emits operated <code><a href="api/psychopath.File.html">File</a></code>s.</p>
 								</span></td>
 						</tr>
 					</table><span class="B"><p>Build stream that move resources to the destination <code><a href="api/psychopath.Directory.html">Directory</a></code>.</p>
 					</span></section>
-				<section class="P" id="observeMovingTo(psychopath.Directory,java.util.Collection)">
-					<h2 class="I"><i class="DEFAULT"><i class="PUBLIC"></i></i><code class="Q">observeMovingTo</code><code class="i">(<code><a href="api/psychopath.Directory.html">Directory</a></code> <code class="parameterName">destination</code>, <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/Collection.html">Collection</a><code class="parameters"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></code></code> <code class="parameterName">patterns</code>)</code><i class="R"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Location.html">Location</a></code></code></code></i></h2>
-					<table class="U">
-						<tr class="h">
+				<section class="O" id="observeMovingTo(psychopath.Directory,java.util.Collection)">
+					<h2 class="J"><i class="DEFAULT"><i class="PUBLIC"></i></i><code class="R">observeMovingTo</code><code class="b">(<code><a href="api/psychopath.Directory.html">Directory</a></code> <code class="parameterName">destination</code>, <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/Collection.html">Collection</a><code class="parameters"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></code></code> <code class="parameterName">patterns</code>)</code><i class="i"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Location.html">Location</a></code></code></code></i></h2>
+					<table class="h">
+						<tr class="X">
 							<td><code><a href="api/psychopath.Directory.html">Directory</a></code> <code>destination</code></td>
 							<td><span><p>A destination <code><a href="api/psychopath.Directory.html">Directory</a></code>.</p>
 								</span></td>
 						</tr>
-						<tr class="h">
+						<tr class="X">
 							<td><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/Collection.html">Collection</a><code class="parameters"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></code></code> <code>patterns</code></td>
 							<td><span><p>A list of glob patterns to accept file by its name.</p>
 								</span></td>
 						</tr>
-						<tr class="Z">
+						<tr class="N">
 							<td><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Location.html">Location</a></code></code></code></td>
 							<td><span><p>A event stream which emits operated <code><a href="api/psychopath.File.html">File</a></code>s.</p>
 								</span></td>
 						</tr>
 					</table><span class="B"><p>Build stream that move resources to the destination <code><a href="api/psychopath.Directory.html">Directory</a></code>.</p>
 					</span></section>
-				<section class="P" id="observeMovingTo(psychopath.Directory,java.util.function.Function)">
-					<h2 class="I"><i class="ABSTRACT"><i class="PUBLIC"></i></i><code class="Q">observeMovingTo</code><code class="i">(<code><a href="api/psychopath.Directory.html">Directory</a></code> <code class="parameterName">destination</code>, <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a href="api/psychopath.Option.html">Option</a></code>, <code><a href="api/psychopath.Option.html">Option</a></code></code></code> <code class="parameterName">option</code>)</code><i class="R"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Location.html">Location</a></code></code></code></i></h2>
-					<table class="U">
-						<tr class="h">
+				<section class="O" id="observeMovingTo(psychopath.Directory,java.util.function.Function)">
+					<h2 class="J"><i class="ABSTRACT"><i class="PUBLIC"></i></i><code class="R">observeMovingTo</code><code class="b">(<code><a href="api/psychopath.Directory.html">Directory</a></code> <code class="parameterName">destination</code>, <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a href="api/psychopath.Option.html">Option</a></code>, <code><a href="api/psychopath.Option.html">Option</a></code></code></code> <code class="parameterName">option</code>)</code><i class="i"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Location.html">Location</a></code></code></code></i></h2>
+					<table class="h">
+						<tr class="X">
 							<td><code><a href="api/psychopath.Directory.html">Directory</a></code> <code>destination</code></td>
 							<td><span><p>A destination <code><a href="api/psychopath.Directory.html">Directory</a></code>.</p>
 								</span></td>
 						</tr>
-						<tr class="h">
+						<tr class="X">
 							<td><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a href="api/psychopath.Option.html">Option</a></code>, <code><a href="api/psychopath.Option.html">Option</a></code></code></code> <code>option</code></td>
 							<td><span><p>A operation <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/StackWalker.Option.html">Option</a></code>.</p>
 								</span></td>
 						</tr>
-						<tr class="Z">
+						<tr class="N">
 							<td><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Location.html">Location</a></code></code></code></td>
 							<td><span><p>A event stream which emits operated <code><a href="api/psychopath.File.html">File</a></code>s.</p>
 								</span></td>
@@ -466,60 +466,60 @@
 					</table><span class="B"><p>Build stream that move resources to the destination <code><a href="api/psychopath.Directory.html">Directory</a></code> with some
  <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/StackWalker.Option.html">Option</a></code>.</p>
 					</span></section>
-				<section class="P" id="trackMovingTo(psychopath.Directory,java.lang.String...)">
-					<h2 class="I"><i class="DEFAULT"><i class="PUBLIC"></i></i><code class="Q">trackMovingTo</code><code class="i">(<code><a href="api/psychopath.Directory.html">Directory</a></code> <code class="parameterName">destination</code>, <code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code> <code class="parameterName">patterns</code>)</code><i class="R"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Progress.html">Progress</a></code></code></code></i></h2>
-					<table class="U">
-						<tr class="h">
+				<section class="O" id="trackMovingTo(psychopath.Directory,java.lang.String...)">
+					<h2 class="J"><i class="DEFAULT"><i class="PUBLIC"></i></i><code class="R">trackMovingTo</code><code class="b">(<code><a href="api/psychopath.Directory.html">Directory</a></code> <code class="parameterName">destination</code>, <code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code> <code class="parameterName">patterns</code>)</code><i class="i"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Progress.html">Progress</a></code></code></code></i></h2>
+					<table class="h">
+						<tr class="X">
 							<td><code><a href="api/psychopath.Directory.html">Directory</a></code> <code>destination</code></td>
 							<td><span><p>A destination <code><a href="api/psychopath.Directory.html">Directory</a></code>.</p>
 								</span></td>
 						</tr>
-						<tr class="h">
+						<tr class="X">
 							<td><code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code> <code>patterns</code></td>
 							<td><span><p>A list of glob patterns to accept file by its name.</p>
 								</span></td>
 						</tr>
-						<tr class="Z">
+						<tr class="N">
 							<td><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Progress.html">Progress</a></code></code></code></td>
 							<td><span><p>A event stream which emits operated <code><a href="api/psychopath.File.html">File</a></code>s.</p>
 								</span></td>
 						</tr>
 					</table><span class="B"><p>Build stream that move resources to the destination <code><a href="api/psychopath.Directory.html">Directory</a></code>.</p>
 					</span></section>
-				<section class="P" id="trackMovingTo(psychopath.Directory,java.util.Collection)">
-					<h2 class="I"><i class="DEFAULT"><i class="PUBLIC"></i></i><code class="Q">trackMovingTo</code><code class="i">(<code><a href="api/psychopath.Directory.html">Directory</a></code> <code class="parameterName">destination</code>, <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/Collection.html">Collection</a><code class="parameters"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></code></code> <code class="parameterName">patterns</code>)</code><i class="R"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Progress.html">Progress</a></code></code></code></i></h2>
-					<table class="U">
-						<tr class="h">
+				<section class="O" id="trackMovingTo(psychopath.Directory,java.util.Collection)">
+					<h2 class="J"><i class="DEFAULT"><i class="PUBLIC"></i></i><code class="R">trackMovingTo</code><code class="b">(<code><a href="api/psychopath.Directory.html">Directory</a></code> <code class="parameterName">destination</code>, <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/Collection.html">Collection</a><code class="parameters"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></code></code> <code class="parameterName">patterns</code>)</code><i class="i"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Progress.html">Progress</a></code></code></code></i></h2>
+					<table class="h">
+						<tr class="X">
 							<td><code><a href="api/psychopath.Directory.html">Directory</a></code> <code>destination</code></td>
 							<td><span><p>A destination <code><a href="api/psychopath.Directory.html">Directory</a></code>.</p>
 								</span></td>
 						</tr>
-						<tr class="h">
+						<tr class="X">
 							<td><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/Collection.html">Collection</a><code class="parameters"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></code></code> <code>patterns</code></td>
 							<td><span><p>A list of glob patterns to accept file by its name.</p>
 								</span></td>
 						</tr>
-						<tr class="Z">
+						<tr class="N">
 							<td><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Progress.html">Progress</a></code></code></code></td>
 							<td><span><p>A event stream which emits operated <code><a href="api/psychopath.File.html">File</a></code>s.</p>
 								</span></td>
 						</tr>
 					</table><span class="B"><p>Build stream that move resources to the destination <code><a href="api/psychopath.Directory.html">Directory</a></code>.</p>
 					</span></section>
-				<section class="P" id="trackMovingTo(psychopath.Directory,java.util.function.Function)">
-					<h2 class="I"><i class="DEFAULT"><i class="PUBLIC"></i></i><code class="Q">trackMovingTo</code><code class="i">(<code><a href="api/psychopath.Directory.html">Directory</a></code> <code class="parameterName">destination</code>, <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a href="api/psychopath.Option.html">Option</a></code>, <code><a href="api/psychopath.Option.html">Option</a></code></code></code> <code class="parameterName">option</code>)</code><i class="R"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Progress.html">Progress</a></code></code></code></i></h2>
-					<table class="U">
-						<tr class="h">
+				<section class="O" id="trackMovingTo(psychopath.Directory,java.util.function.Function)">
+					<h2 class="J"><i class="DEFAULT"><i class="PUBLIC"></i></i><code class="R">trackMovingTo</code><code class="b">(<code><a href="api/psychopath.Directory.html">Directory</a></code> <code class="parameterName">destination</code>, <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a href="api/psychopath.Option.html">Option</a></code>, <code><a href="api/psychopath.Option.html">Option</a></code></code></code> <code class="parameterName">option</code>)</code><i class="i"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Progress.html">Progress</a></code></code></code></i></h2>
+					<table class="h">
+						<tr class="X">
 							<td><code><a href="api/psychopath.Directory.html">Directory</a></code> <code>destination</code></td>
 							<td><span><p>A destination <code><a href="api/psychopath.Directory.html">Directory</a></code>.</p>
 								</span></td>
 						</tr>
-						<tr class="h">
+						<tr class="X">
 							<td><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a href="api/psychopath.Option.html">Option</a></code>, <code><a href="api/psychopath.Option.html">Option</a></code></code></code> <code>option</code></td>
 							<td><span><p>A operation <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/StackWalker.Option.html">Option</a></code>.</p>
 								</span></td>
 						</tr>
-						<tr class="Z">
+						<tr class="N">
 							<td><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Progress.html">Progress</a></code></code></code></td>
 							<td><span><p>A event stream which emits operated <code><a href="api/psychopath.File.html">File</a></code>s.</p>
 								</span></td>
@@ -527,457 +527,457 @@
 					</table><span class="B"><p>Build stream that move resources to the destination <code><a href="api/psychopath.Directory.html">Directory</a></code> with some
  <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/StackWalker.Option.html">Option</a></code>.</p>
 					</span></section>
-				<section class="P" id="packTo(psychopath.File,java.lang.String...)">
-					<h2 class="I"><i class="DEFAULT"><i class="PUBLIC"></i></i><code class="Q">packTo</code><code class="i">(<code><a href="api/psychopath.File.html">File</a></code> <code class="parameterName">destination</code>, <code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code> <code class="parameterName">patterns</code>)</code><i class="R"><code><a href="api/psychopath.File.html">File</a></code></i></h2>
-					<table class="U">
-						<tr class="h">
+				<section class="O" id="packTo(psychopath.File,java.lang.String...)">
+					<h2 class="J"><i class="DEFAULT"><i class="PUBLIC"></i></i><code class="R">packTo</code><code class="b">(<code><a href="api/psychopath.File.html">File</a></code> <code class="parameterName">destination</code>, <code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code> <code class="parameterName">patterns</code>)</code><i class="i"><code><a href="api/psychopath.File.html">File</a></code></i></h2>
+					<table class="h">
+						<tr class="X">
 							<td><code><a href="api/psychopath.File.html">File</a></code> <code>destination</code></td>
 							<td><span><p>A destination <code><a href="api/psychopath.File.html">File</a></code>.</p>
 								</span></td>
 						</tr>
-						<tr class="h">
+						<tr class="X">
 							<td><code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code> <code>patterns</code></td>
 							<td><span><p>A list of glob patterns to accept file by its name.</p>
 								</span></td>
 						</tr>
-						<tr class="Z">
+						<tr class="N">
 							<td><code><a href="api/psychopath.File.html">File</a></code></td>
 							<td><span><p>A destination <code><a href="api/psychopath.File.html">File</a></code>.</p>
 								</span></td>
 						</tr>
 					</table><span class="B"><p>Pack resources to the destination <code><a href="api/psychopath.File.html">File</a></code>.</p>
 					</span></section>
-				<section class="P" id="packTo(psychopath.File,java.util.Collection)">
-					<h2 class="I"><i class="DEFAULT"><i class="PUBLIC"></i></i><code class="Q">packTo</code><code class="i">(<code><a href="api/psychopath.File.html">File</a></code> <code class="parameterName">destination</code>, <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/Collection.html">Collection</a><code class="parameters"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></code></code> <code class="parameterName">patterns</code>)</code><i class="R"><code><a href="api/psychopath.File.html">File</a></code></i></h2>
-					<table class="U">
-						<tr class="h">
+				<section class="O" id="packTo(psychopath.File,java.util.Collection)">
+					<h2 class="J"><i class="DEFAULT"><i class="PUBLIC"></i></i><code class="R">packTo</code><code class="b">(<code><a href="api/psychopath.File.html">File</a></code> <code class="parameterName">destination</code>, <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/Collection.html">Collection</a><code class="parameters"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></code></code> <code class="parameterName">patterns</code>)</code><i class="i"><code><a href="api/psychopath.File.html">File</a></code></i></h2>
+					<table class="h">
+						<tr class="X">
 							<td><code><a href="api/psychopath.File.html">File</a></code> <code>destination</code></td>
 							<td><span><p>A destination <code><a href="api/psychopath.File.html">File</a></code>.</p>
 								</span></td>
 						</tr>
-						<tr class="h">
+						<tr class="X">
 							<td><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/Collection.html">Collection</a><code class="parameters"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></code></code> <code>patterns</code></td>
 							<td><span><p>A list of glob patterns to accept file by its name.</p>
 								</span></td>
 						</tr>
-						<tr class="Z">
+						<tr class="N">
 							<td><code><a href="api/psychopath.File.html">File</a></code></td>
 							<td><span><p>A destination <code><a href="api/psychopath.File.html">File</a></code>.</p>
 								</span></td>
 						</tr>
 					</table><span class="B"><p>Pack resources to the destination <code><a href="api/psychopath.File.html">File</a></code>.</p>
 					</span></section>
-				<section class="P" id="packTo(psychopath.File,java.util.function.Function)">
-					<h2 class="I"><i class="DEFAULT"><i class="PUBLIC"></i></i><code class="Q">packTo</code><code class="i">(<code><a href="api/psychopath.File.html">File</a></code> <code class="parameterName">destination</code>, <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a href="api/psychopath.Option.html">Option</a></code>, <code><a href="api/psychopath.Option.html">Option</a></code></code></code> <code class="parameterName">option</code>)</code><i class="R"><code><a href="api/psychopath.File.html">File</a></code></i></h2>
-					<table class="U">
-						<tr class="h">
+				<section class="O" id="packTo(psychopath.File,java.util.function.Function)">
+					<h2 class="J"><i class="DEFAULT"><i class="PUBLIC"></i></i><code class="R">packTo</code><code class="b">(<code><a href="api/psychopath.File.html">File</a></code> <code class="parameterName">destination</code>, <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a href="api/psychopath.Option.html">Option</a></code>, <code><a href="api/psychopath.Option.html">Option</a></code></code></code> <code class="parameterName">option</code>)</code><i class="i"><code><a href="api/psychopath.File.html">File</a></code></i></h2>
+					<table class="h">
+						<tr class="X">
 							<td><code><a href="api/psychopath.File.html">File</a></code> <code>destination</code></td>
 							<td><span><p>A destination <code><a href="api/psychopath.File.html">File</a></code>.</p>
 								</span></td>
 						</tr>
-						<tr class="h">
+						<tr class="X">
 							<td><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a href="api/psychopath.Option.html">Option</a></code>, <code><a href="api/psychopath.Option.html">Option</a></code></code></code> <code>option</code></td>
 							<td><span><p>A operation <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/StackWalker.Option.html">Option</a></code>.</p>
 								</span></td>
 						</tr>
-						<tr class="Z">
+						<tr class="N">
 							<td><code><a href="api/psychopath.File.html">File</a></code></td>
 							<td><span><p>A destination <code><a href="api/psychopath.File.html">File</a></code>.</p>
 								</span></td>
 						</tr>
 					</table><span class="B"><p>Pack resources to the destination <code><a href="api/psychopath.File.html">File</a></code>.</p>
 					</span></section>
-				<section class="P" id="packToTemporary(java.lang.String...)">
-					<h2 class="I"><i class="DEFAULT"><i class="PUBLIC"></i></i><code class="Q">packToTemporary</code><code class="i">(<code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code> <code class="parameterName">patterns</code>)</code><i class="R"><code><a href="api/psychopath.File.html">File</a></code></i></h2>
-					<table class="U">
-						<tr class="h">
+				<section class="O" id="packToTemporary(java.lang.String...)">
+					<h2 class="J"><i class="DEFAULT"><i class="PUBLIC"></i></i><code class="R">packToTemporary</code><code class="b">(<code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code> <code class="parameterName">patterns</code>)</code><i class="i"><code><a href="api/psychopath.File.html">File</a></code></i></h2>
+					<table class="h">
+						<tr class="X">
 							<td><code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code> <code>patterns</code></td>
 							<td><span><p>A list of glob patterns to accept file by its name.</p>
 								</span></td>
 						</tr>
-						<tr class="Z">
+						<tr class="N">
 							<td><code><a href="api/psychopath.File.html">File</a></code></td>
 							<td><span><p>An archived <code><a href="api/psychopath.File.html">File</a></code>.</p>
 								</span></td>
 						</tr>
 					</table><span class="B"><p>Pack resources to the temporary <code><a href="api/psychopath.File.html">File</a></code>.</p>
 					</span></section>
-				<section class="P" id="packToTemporary(java.util.Collection)">
-					<h2 class="I"><i class="DEFAULT"><i class="PUBLIC"></i></i><code class="Q">packToTemporary</code><code class="i">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/Collection.html">Collection</a><code class="parameters"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></code></code> <code class="parameterName">patterns</code>)</code><i class="R"><code><a href="api/psychopath.File.html">File</a></code></i></h2>
-					<table class="U">
-						<tr class="h">
+				<section class="O" id="packToTemporary(java.util.Collection)">
+					<h2 class="J"><i class="DEFAULT"><i class="PUBLIC"></i></i><code class="R">packToTemporary</code><code class="b">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/Collection.html">Collection</a><code class="parameters"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></code></code> <code class="parameterName">patterns</code>)</code><i class="i"><code><a href="api/psychopath.File.html">File</a></code></i></h2>
+					<table class="h">
+						<tr class="X">
 							<td><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/Collection.html">Collection</a><code class="parameters"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></code></code> <code>patterns</code></td>
 							<td><span><p>A list of glob patterns to accept file by its name.</p>
 								</span></td>
 						</tr>
-						<tr class="Z">
+						<tr class="N">
 							<td><code><a href="api/psychopath.File.html">File</a></code></td>
 							<td><span><p>An archived <code><a href="api/psychopath.File.html">File</a></code>.</p>
 								</span></td>
 						</tr>
 					</table><span class="B"><p>Pack resources to the temporary <code><a href="api/psychopath.File.html">File</a></code>.</p>
 					</span></section>
-				<section class="P" id="packToTemporary(java.util.function.Function)">
-					<h2 class="I"><i class="DEFAULT"><i class="PUBLIC"></i></i><code class="Q">packToTemporary</code><code class="i">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a href="api/psychopath.Option.html">Option</a></code>, <code><a href="api/psychopath.Option.html">Option</a></code></code></code> <code class="parameterName">option</code>)</code><i class="R"><code><a href="api/psychopath.File.html">File</a></code></i></h2>
-					<table class="U">
-						<tr class="h">
+				<section class="O" id="packToTemporary(java.util.function.Function)">
+					<h2 class="J"><i class="DEFAULT"><i class="PUBLIC"></i></i><code class="R">packToTemporary</code><code class="b">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a href="api/psychopath.Option.html">Option</a></code>, <code><a href="api/psychopath.Option.html">Option</a></code></code></code> <code class="parameterName">option</code>)</code><i class="i"><code><a href="api/psychopath.File.html">File</a></code></i></h2>
+					<table class="h">
+						<tr class="X">
 							<td><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a href="api/psychopath.Option.html">Option</a></code>, <code><a href="api/psychopath.Option.html">Option</a></code></code></code> <code>option</code></td>
 							<td><span><p>A operation <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/StackWalker.Option.html">Option</a></code>.</p>
 								</span></td>
 						</tr>
-						<tr class="Z">
+						<tr class="N">
 							<td><code><a href="api/psychopath.File.html">File</a></code></td>
 							<td><span><p>An archived <code><a href="api/psychopath.File.html">File</a></code>.</p>
 								</span></td>
 						</tr>
 					</table><span class="B"><p>Pack resources to the temporary <code><a href="api/psychopath.File.html">File</a></code>.</p>
 					</span></section>
-				<section class="P" id="observePackingTo(psychopath.File,java.lang.String...)">
-					<h2 class="I"><i class="DEFAULT"><i class="PUBLIC"></i></i><code class="Q">observePackingTo</code><code class="i">(<code><a href="api/psychopath.File.html">File</a></code> <code class="parameterName">destination</code>, <code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code> <code class="parameterName">patterns</code>)</code><i class="R"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Location.html">Location</a></code></code></code></i></h2>
-					<table class="U">
-						<tr class="h">
+				<section class="O" id="observePackingTo(psychopath.File,java.lang.String...)">
+					<h2 class="J"><i class="DEFAULT"><i class="PUBLIC"></i></i><code class="R">observePackingTo</code><code class="b">(<code><a href="api/psychopath.File.html">File</a></code> <code class="parameterName">destination</code>, <code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code> <code class="parameterName">patterns</code>)</code><i class="i"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Location.html">Location</a></code></code></code></i></h2>
+					<table class="h">
+						<tr class="X">
 							<td><code><a href="api/psychopath.File.html">File</a></code> <code>destination</code></td>
 							<td><span><p>A destination <code><a href="api/psychopath.File.html">File</a></code>.</p>
 								</span></td>
 						</tr>
-						<tr class="h">
+						<tr class="X">
 							<td><code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code> <code>patterns</code></td>
 							<td><span><p>A list of glob patterns to accept file by its name.</p>
 								</span></td>
 						</tr>
-						<tr class="Z">
+						<tr class="N">
 							<td><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Location.html">Location</a></code></code></code></td>
 							<td><span><p>A event stream which emits operated <code><a href="api/psychopath.File.html">File</a></code>s.</p>
 								</span></td>
 						</tr>
 					</table><span class="B"><p>Build stream that pack resources to the destination <code><a href="api/psychopath.File.html">File</a></code>.</p>
 					</span></section>
-				<section class="P" id="observePackingTo(psychopath.File,java.util.Collection)">
-					<h2 class="I"><i class="DEFAULT"><i class="PUBLIC"></i></i><code class="Q">observePackingTo</code><code class="i">(<code><a href="api/psychopath.File.html">File</a></code> <code class="parameterName">destination</code>, <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/Collection.html">Collection</a><code class="parameters"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></code></code> <code class="parameterName">patterns</code>)</code><i class="R"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Location.html">Location</a></code></code></code></i></h2>
-					<table class="U">
-						<tr class="h">
+				<section class="O" id="observePackingTo(psychopath.File,java.util.Collection)">
+					<h2 class="J"><i class="DEFAULT"><i class="PUBLIC"></i></i><code class="R">observePackingTo</code><code class="b">(<code><a href="api/psychopath.File.html">File</a></code> <code class="parameterName">destination</code>, <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/Collection.html">Collection</a><code class="parameters"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></code></code> <code class="parameterName">patterns</code>)</code><i class="i"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Location.html">Location</a></code></code></code></i></h2>
+					<table class="h">
+						<tr class="X">
 							<td><code><a href="api/psychopath.File.html">File</a></code> <code>destination</code></td>
 							<td><span><p>A destination <code><a href="api/psychopath.File.html">File</a></code>.</p>
 								</span></td>
 						</tr>
-						<tr class="h">
+						<tr class="X">
 							<td><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/Collection.html">Collection</a><code class="parameters"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></code></code> <code>patterns</code></td>
 							<td><span><p>A list of glob patterns to accept file by its name.</p>
 								</span></td>
 						</tr>
-						<tr class="Z">
+						<tr class="N">
 							<td><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Location.html">Location</a></code></code></code></td>
 							<td><span><p>A event stream which emits operated <code><a href="api/psychopath.File.html">File</a></code>s.</p>
 								</span></td>
 						</tr>
 					</table><span class="B"><p>Build stream that pack resources to the destination <code><a href="api/psychopath.File.html">File</a></code>.</p>
 					</span></section>
-				<section class="P" id="observePackingTo(psychopath.File,java.util.function.Function)">
-					<h2 class="I"><i class="ABSTRACT"><i class="PUBLIC"></i></i><code class="Q">observePackingTo</code><code class="i">(<code><a href="api/psychopath.File.html">File</a></code> <code class="parameterName">destination</code>, <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a href="api/psychopath.Option.html">Option</a></code>, <code><a href="api/psychopath.Option.html">Option</a></code></code></code> <code class="parameterName">option</code>)</code><i class="R"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Location.html">Location</a></code></code></code></i></h2>
-					<table class="U">
-						<tr class="h">
+				<section class="O" id="observePackingTo(psychopath.File,java.util.function.Function)">
+					<h2 class="J"><i class="ABSTRACT"><i class="PUBLIC"></i></i><code class="R">observePackingTo</code><code class="b">(<code><a href="api/psychopath.File.html">File</a></code> <code class="parameterName">destination</code>, <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a href="api/psychopath.Option.html">Option</a></code>, <code><a href="api/psychopath.Option.html">Option</a></code></code></code> <code class="parameterName">option</code>)</code><i class="i"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Location.html">Location</a></code></code></code></i></h2>
+					<table class="h">
+						<tr class="X">
 							<td><code><a href="api/psychopath.File.html">File</a></code> <code>destination</code></td>
 							<td><span><p>A destination <code><a href="api/psychopath.File.html">File</a></code>.</p>
 								</span></td>
 						</tr>
-						<tr class="h">
+						<tr class="X">
 							<td><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a href="api/psychopath.Option.html">Option</a></code>, <code><a href="api/psychopath.Option.html">Option</a></code></code></code> <code>option</code></td>
 							<td><span><p>A operation <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/StackWalker.Option.html">Option</a></code>.</p>
 								</span></td>
 						</tr>
-						<tr class="Z">
+						<tr class="N">
 							<td><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Location.html">Location</a></code></code></code></td>
 							<td><span><p>A event stream which emits operated <code><a href="api/psychopath.File.html">File</a></code>s.</p>
 								</span></td>
 						</tr>
 					</table><span class="B"><p>Build stream that pack resources to the destination <code><a href="api/psychopath.File.html">File</a></code>.</p>
 					</span></section>
-				<section class="P" id="trackPackingTo(psychopath.File,java.lang.String...)">
-					<h2 class="I"><i class="DEFAULT"><i class="PUBLIC"></i></i><code class="Q">trackPackingTo</code><code class="i">(<code><a href="api/psychopath.File.html">File</a></code> <code class="parameterName">destination</code>, <code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code> <code class="parameterName">patterns</code>)</code><i class="R"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Progress.html">Progress</a></code></code></code></i></h2>
-					<table class="U">
-						<tr class="h">
+				<section class="O" id="trackPackingTo(psychopath.File,java.lang.String...)">
+					<h2 class="J"><i class="DEFAULT"><i class="PUBLIC"></i></i><code class="R">trackPackingTo</code><code class="b">(<code><a href="api/psychopath.File.html">File</a></code> <code class="parameterName">destination</code>, <code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code> <code class="parameterName">patterns</code>)</code><i class="i"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Progress.html">Progress</a></code></code></code></i></h2>
+					<table class="h">
+						<tr class="X">
 							<td><code><a href="api/psychopath.File.html">File</a></code> <code>destination</code></td>
 							<td><span><p>A destination <code><a href="api/psychopath.File.html">File</a></code>.</p>
 								</span></td>
 						</tr>
-						<tr class="h">
+						<tr class="X">
 							<td><code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code> <code>patterns</code></td>
 							<td><span><p>A list of glob patterns to accept file by its name.</p>
 								</span></td>
 						</tr>
-						<tr class="Z">
+						<tr class="N">
 							<td><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Progress.html">Progress</a></code></code></code></td>
 							<td><span><p>A event stream which emits operated <code><a href="api/psychopath.File.html">File</a></code>s.</p>
 								</span></td>
 						</tr>
 					</table><span class="B"><p>Build stream that pack resources to the destination <code><a href="api/psychopath.File.html">File</a></code>.</p>
 					</span></section>
-				<section class="P" id="trackPackingTo(psychopath.File,java.util.Collection)">
-					<h2 class="I"><i class="DEFAULT"><i class="PUBLIC"></i></i><code class="Q">trackPackingTo</code><code class="i">(<code><a href="api/psychopath.File.html">File</a></code> <code class="parameterName">destination</code>, <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/Collection.html">Collection</a><code class="parameters"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></code></code> <code class="parameterName">patterns</code>)</code><i class="R"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Progress.html">Progress</a></code></code></code></i></h2>
-					<table class="U">
-						<tr class="h">
+				<section class="O" id="trackPackingTo(psychopath.File,java.util.Collection)">
+					<h2 class="J"><i class="DEFAULT"><i class="PUBLIC"></i></i><code class="R">trackPackingTo</code><code class="b">(<code><a href="api/psychopath.File.html">File</a></code> <code class="parameterName">destination</code>, <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/Collection.html">Collection</a><code class="parameters"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></code></code> <code class="parameterName">patterns</code>)</code><i class="i"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Progress.html">Progress</a></code></code></code></i></h2>
+					<table class="h">
+						<tr class="X">
 							<td><code><a href="api/psychopath.File.html">File</a></code> <code>destination</code></td>
 							<td><span><p>A destination <code><a href="api/psychopath.File.html">File</a></code>.</p>
 								</span></td>
 						</tr>
-						<tr class="h">
+						<tr class="X">
 							<td><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/Collection.html">Collection</a><code class="parameters"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></code></code> <code>patterns</code></td>
 							<td><span><p>A list of glob patterns to accept file by its name.</p>
 								</span></td>
 						</tr>
-						<tr class="Z">
+						<tr class="N">
 							<td><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Progress.html">Progress</a></code></code></code></td>
 							<td><span><p>A event stream which emits operated <code><a href="api/psychopath.File.html">File</a></code>s.</p>
 								</span></td>
 						</tr>
 					</table><span class="B"><p>Build stream that pack resources to the destination <code><a href="api/psychopath.File.html">File</a></code>.</p>
 					</span></section>
-				<section class="P" id="trackPackingTo(psychopath.File,java.util.function.Function)">
-					<h2 class="I"><i class="DEFAULT"><i class="PUBLIC"></i></i><code class="Q">trackPackingTo</code><code class="i">(<code><a href="api/psychopath.File.html">File</a></code> <code class="parameterName">destination</code>, <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a href="api/psychopath.Option.html">Option</a></code>, <code><a href="api/psychopath.Option.html">Option</a></code></code></code> <code class="parameterName">option</code>)</code><i class="R"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Progress.html">Progress</a></code></code></code></i></h2>
-					<table class="U">
-						<tr class="h">
+				<section class="O" id="trackPackingTo(psychopath.File,java.util.function.Function)">
+					<h2 class="J"><i class="DEFAULT"><i class="PUBLIC"></i></i><code class="R">trackPackingTo</code><code class="b">(<code><a href="api/psychopath.File.html">File</a></code> <code class="parameterName">destination</code>, <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a href="api/psychopath.Option.html">Option</a></code>, <code><a href="api/psychopath.Option.html">Option</a></code></code></code> <code class="parameterName">option</code>)</code><i class="i"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Progress.html">Progress</a></code></code></code></i></h2>
+					<table class="h">
+						<tr class="X">
 							<td><code><a href="api/psychopath.File.html">File</a></code> <code>destination</code></td>
 							<td><span><p>A destination <code><a href="api/psychopath.File.html">File</a></code>.</p>
 								</span></td>
 						</tr>
-						<tr class="h">
+						<tr class="X">
 							<td><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a href="api/psychopath.Option.html">Option</a></code>, <code><a href="api/psychopath.Option.html">Option</a></code></code></code> <code>option</code></td>
 							<td><span><p>A operation <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/StackWalker.Option.html">Option</a></code>.</p>
 								</span></td>
 						</tr>
-						<tr class="Z">
+						<tr class="N">
 							<td><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Progress.html">Progress</a></code></code></code></td>
 							<td><span><p>A event stream which emits operated <code><a href="api/psychopath.File.html">File</a></code>s.</p>
 								</span></td>
 						</tr>
 					</table><span class="B"><p>Build stream that pack resources to the destination <code><a href="api/psychopath.File.html">File</a></code>.</p>
 					</span></section>
-				<section class="P" id="existFile(java.lang.String...)">
-					<h2 class="I"><i class="DEFAULT"><i class="PUBLIC"></i></i><code class="Q">existFile</code><code class="i">(<code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code> <code class="parameterName">patterns</code>)</code><i class="R"><code>boolean</code></i></h2>
-					<table class="U">
-						<tr class="h">
+				<section class="O" id="existFile(java.lang.String...)">
+					<h2 class="J"><i class="DEFAULT"><i class="PUBLIC"></i></i><code class="R">existFile</code><code class="b">(<code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code> <code class="parameterName">patterns</code>)</code><i class="i"><code>boolean</code></i></h2>
+					<table class="h">
+						<tr class="X">
 							<td><code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code> <code>patterns</code></td>
 							<td></td>
 						</tr>
-						<tr class="Z">
+						<tr class="N">
 							<td><code>boolean</code></td>
 							<td></td>
 						</tr>
 					</table>
 				</section>
-				<section class="P" id="walkFile(java.lang.String...)">
-					<h2 class="I"><i class="DEFAULT"><i class="PUBLIC"></i></i><code class="Q">walkFile</code><code class="i">(<code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code> <code class="parameterName">patterns</code>)</code><i class="R"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.File.html">File</a></code></code></code></i></h2>
-					<table class="U">
-						<tr class="h">
+				<section class="O" id="walkFile(java.lang.String...)">
+					<h2 class="J"><i class="DEFAULT"><i class="PUBLIC"></i></i><code class="R">walkFile</code><code class="b">(<code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code> <code class="parameterName">patterns</code>)</code><i class="i"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.File.html">File</a></code></code></code></i></h2>
+					<table class="h">
+						<tr class="X">
 							<td><code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code> <code>patterns</code></td>
 							<td></td>
 						</tr>
-						<tr class="Z">
+						<tr class="N">
 							<td><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.File.html">File</a></code></code></code></td>
 							<td></td>
 						</tr>
 					</table>
 				</section>
-				<section class="P" id="walkFile(java.util.Collection)">
-					<h2 class="I"><i class="DEFAULT"><i class="PUBLIC"></i></i><code class="Q">walkFile</code><code class="i">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/Collection.html">Collection</a><code class="parameters"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></code></code> <code class="parameterName">patterns</code>)</code><i class="R"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.File.html">File</a></code></code></code></i></h2>
-					<table class="U">
-						<tr class="h">
+				<section class="O" id="walkFile(java.util.Collection)">
+					<h2 class="J"><i class="DEFAULT"><i class="PUBLIC"></i></i><code class="R">walkFile</code><code class="b">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/Collection.html">Collection</a><code class="parameters"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></code></code> <code class="parameterName">patterns</code>)</code><i class="i"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.File.html">File</a></code></code></code></i></h2>
+					<table class="h">
+						<tr class="X">
 							<td><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/Collection.html">Collection</a><code class="parameters"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></code></code> <code>patterns</code></td>
 							<td></td>
 						</tr>
-						<tr class="Z">
+						<tr class="N">
 							<td><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.File.html">File</a></code></code></code></td>
 							<td></td>
 						</tr>
 					</table>
 				</section>
-				<section class="P" id="walkFile(java.util.function.Function)">
-					<h2 class="I"><i class="DEFAULT"><i class="PUBLIC"></i></i><code class="Q">walkFile</code><code class="i">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a href="api/psychopath.Option.html">Option</a></code>, <code><a href="api/psychopath.Option.html">Option</a></code></code></code> <code class="parameterName">option</code>)</code><i class="R"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.File.html">File</a></code></code></code></i></h2>
-					<table class="U">
-						<tr class="h">
+				<section class="O" id="walkFile(java.util.function.Function)">
+					<h2 class="J"><i class="DEFAULT"><i class="PUBLIC"></i></i><code class="R">walkFile</code><code class="b">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a href="api/psychopath.Option.html">Option</a></code>, <code><a href="api/psychopath.Option.html">Option</a></code></code></code> <code class="parameterName">option</code>)</code><i class="i"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.File.html">File</a></code></code></code></i></h2>
+					<table class="h">
+						<tr class="X">
 							<td><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a href="api/psychopath.Option.html">Option</a></code>, <code><a href="api/psychopath.Option.html">Option</a></code></code></code> <code>option</code></td>
 							<td></td>
 						</tr>
-						<tr class="Z">
+						<tr class="N">
 							<td><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.File.html">File</a></code></code></code></td>
 							<td></td>
 						</tr>
 					</table>
 				</section>
-				<section class="P" id="walkFileWithBase(java.lang.String...)">
-					<h2 class="I"><i class="DEFAULT"><i class="PUBLIC"></i></i><code class="Q">walkFileWithBase</code><code class="i">(<code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code> <code class="parameterName">patterns</code>)</code><i class="R"><code>kiss.Signal<code class="parameters"><code>kiss.Ⅱ<code class="parameters"><code><a href="api/psychopath.Directory.html">Directory</a></code>, <code><a href="api/psychopath.File.html">File</a></code></code></code></code></code></i></h2>
-					<table class="U">
-						<tr class="h">
+				<section class="O" id="walkFileWithBase(java.lang.String...)">
+					<h2 class="J"><i class="DEFAULT"><i class="PUBLIC"></i></i><code class="R">walkFileWithBase</code><code class="b">(<code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code> <code class="parameterName">patterns</code>)</code><i class="i"><code>kiss.Signal<code class="parameters"><code>kiss.Ⅱ<code class="parameters"><code><a href="api/psychopath.Directory.html">Directory</a></code>, <code><a href="api/psychopath.File.html">File</a></code></code></code></code></code></i></h2>
+					<table class="h">
+						<tr class="X">
 							<td><code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code> <code>patterns</code></td>
 							<td></td>
 						</tr>
-						<tr class="Z">
+						<tr class="N">
 							<td><code>kiss.Signal<code class="parameters"><code>kiss.Ⅱ<code class="parameters"><code><a href="api/psychopath.Directory.html">Directory</a></code>, <code><a href="api/psychopath.File.html">File</a></code></code></code></code></code></td>
 							<td></td>
 						</tr>
 					</table>
 				</section>
-				<section class="P" id="walkFileWithBase(java.util.Collection)">
-					<h2 class="I"><i class="DEFAULT"><i class="PUBLIC"></i></i><code class="Q">walkFileWithBase</code><code class="i">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/Collection.html">Collection</a><code class="parameters"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></code></code> <code class="parameterName">patterns</code>)</code><i class="R"><code>kiss.Signal<code class="parameters"><code>kiss.Ⅱ<code class="parameters"><code><a href="api/psychopath.Directory.html">Directory</a></code>, <code><a href="api/psychopath.File.html">File</a></code></code></code></code></code></i></h2>
-					<table class="U">
-						<tr class="h">
+				<section class="O" id="walkFileWithBase(java.util.Collection)">
+					<h2 class="J"><i class="DEFAULT"><i class="PUBLIC"></i></i><code class="R">walkFileWithBase</code><code class="b">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/Collection.html">Collection</a><code class="parameters"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></code></code> <code class="parameterName">patterns</code>)</code><i class="i"><code>kiss.Signal<code class="parameters"><code>kiss.Ⅱ<code class="parameters"><code><a href="api/psychopath.Directory.html">Directory</a></code>, <code><a href="api/psychopath.File.html">File</a></code></code></code></code></code></i></h2>
+					<table class="h">
+						<tr class="X">
 							<td><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/Collection.html">Collection</a><code class="parameters"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></code></code> <code>patterns</code></td>
 							<td></td>
 						</tr>
-						<tr class="Z">
+						<tr class="N">
 							<td><code>kiss.Signal<code class="parameters"><code>kiss.Ⅱ<code class="parameters"><code><a href="api/psychopath.Directory.html">Directory</a></code>, <code><a href="api/psychopath.File.html">File</a></code></code></code></code></code></td>
 							<td></td>
 						</tr>
 					</table>
 				</section>
-				<section class="P" id="walkFileWithBase(java.util.function.Function)">
-					<h2 class="I"><i class="ABSTRACT"><i class="PUBLIC"></i></i><code class="Q">walkFileWithBase</code><code class="i">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a href="api/psychopath.Option.html">Option</a></code>, <code><a href="api/psychopath.Option.html">Option</a></code></code></code> <code class="parameterName">option</code>)</code><i class="R"><code>kiss.Signal<code class="parameters"><code>kiss.Ⅱ<code class="parameters"><code><a href="api/psychopath.Directory.html">Directory</a></code>, <code><a href="api/psychopath.File.html">File</a></code></code></code></code></code></i></h2>
-					<table class="U">
-						<tr class="h">
+				<section class="O" id="walkFileWithBase(java.util.function.Function)">
+					<h2 class="J"><i class="ABSTRACT"><i class="PUBLIC"></i></i><code class="R">walkFileWithBase</code><code class="b">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a href="api/psychopath.Option.html">Option</a></code>, <code><a href="api/psychopath.Option.html">Option</a></code></code></code> <code class="parameterName">option</code>)</code><i class="i"><code>kiss.Signal<code class="parameters"><code>kiss.Ⅱ<code class="parameters"><code><a href="api/psychopath.Directory.html">Directory</a></code>, <code><a href="api/psychopath.File.html">File</a></code></code></code></code></code></i></h2>
+					<table class="h">
+						<tr class="X">
 							<td><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a href="api/psychopath.Option.html">Option</a></code>, <code><a href="api/psychopath.Option.html">Option</a></code></code></code> <code>option</code></td>
 							<td></td>
 						</tr>
-						<tr class="Z">
+						<tr class="N">
 							<td><code>kiss.Signal<code class="parameters"><code>kiss.Ⅱ<code class="parameters"><code><a href="api/psychopath.Directory.html">Directory</a></code>, <code><a href="api/psychopath.File.html">File</a></code></code></code></code></code></td>
 							<td></td>
 						</tr>
 					</table>
 				</section>
-				<section class="P" id="walkDirectory(java.lang.String...)">
-					<h2 class="I"><i class="DEFAULT"><i class="PUBLIC"></i></i><code class="Q">walkDirectory</code><code class="i">(<code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code> <code class="parameterName">patterns</code>)</code><i class="R"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Directory.html">Directory</a></code></code></code></i></h2>
-					<table class="U">
-						<tr class="h">
+				<section class="O" id="walkDirectory(java.lang.String...)">
+					<h2 class="J"><i class="DEFAULT"><i class="PUBLIC"></i></i><code class="R">walkDirectory</code><code class="b">(<code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code> <code class="parameterName">patterns</code>)</code><i class="i"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Directory.html">Directory</a></code></code></code></i></h2>
+					<table class="h">
+						<tr class="X">
 							<td><code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code> <code>patterns</code></td>
 							<td></td>
 						</tr>
-						<tr class="Z">
+						<tr class="N">
 							<td><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Directory.html">Directory</a></code></code></code></td>
 							<td></td>
 						</tr>
 					</table>
 				</section>
-				<section class="P" id="walkDirectory(java.util.Collection)">
-					<h2 class="I"><i class="DEFAULT"><i class="PUBLIC"></i></i><code class="Q">walkDirectory</code><code class="i">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/Collection.html">Collection</a><code class="parameters"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></code></code> <code class="parameterName">patterns</code>)</code><i class="R"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Directory.html">Directory</a></code></code></code></i></h2>
-					<table class="U">
-						<tr class="h">
+				<section class="O" id="walkDirectory(java.util.Collection)">
+					<h2 class="J"><i class="DEFAULT"><i class="PUBLIC"></i></i><code class="R">walkDirectory</code><code class="b">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/Collection.html">Collection</a><code class="parameters"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></code></code> <code class="parameterName">patterns</code>)</code><i class="i"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Directory.html">Directory</a></code></code></code></i></h2>
+					<table class="h">
+						<tr class="X">
 							<td><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/Collection.html">Collection</a><code class="parameters"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></code></code> <code>patterns</code></td>
 							<td></td>
 						</tr>
-						<tr class="Z">
+						<tr class="N">
 							<td><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Directory.html">Directory</a></code></code></code></td>
 							<td></td>
 						</tr>
 					</table>
 				</section>
-				<section class="P" id="walkDirectory(java.util.function.Function)">
-					<h2 class="I"><i class="DEFAULT"><i class="PUBLIC"></i></i><code class="Q">walkDirectory</code><code class="i">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a href="api/psychopath.Option.html">Option</a></code>, <code><a href="api/psychopath.Option.html">Option</a></code></code></code> <code class="parameterName">option</code>)</code><i class="R"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Directory.html">Directory</a></code></code></code></i></h2>
-					<table class="U">
-						<tr class="h">
+				<section class="O" id="walkDirectory(java.util.function.Function)">
+					<h2 class="J"><i class="DEFAULT"><i class="PUBLIC"></i></i><code class="R">walkDirectory</code><code class="b">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a href="api/psychopath.Option.html">Option</a></code>, <code><a href="api/psychopath.Option.html">Option</a></code></code></code> <code class="parameterName">option</code>)</code><i class="i"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Directory.html">Directory</a></code></code></code></i></h2>
+					<table class="h">
+						<tr class="X">
 							<td><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a href="api/psychopath.Option.html">Option</a></code>, <code><a href="api/psychopath.Option.html">Option</a></code></code></code> <code>option</code></td>
 							<td></td>
 						</tr>
-						<tr class="Z">
+						<tr class="N">
 							<td><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Directory.html">Directory</a></code></code></code></td>
 							<td></td>
 						</tr>
 					</table>
 				</section>
-				<section class="P" id="walkDirectoryWithBase(java.lang.String...)">
-					<h2 class="I"><i class="DEFAULT"><i class="PUBLIC"></i></i><code class="Q">walkDirectoryWithBase</code><code class="i">(<code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code> <code class="parameterName">patterns</code>)</code><i class="R"><code>kiss.Signal<code class="parameters"><code>kiss.Ⅱ<code class="parameters"><code><a href="api/psychopath.Directory.html">Directory</a></code>, <code><a href="api/psychopath.Directory.html">Directory</a></code></code></code></code></code></i></h2>
-					<table class="U">
-						<tr class="h">
+				<section class="O" id="walkDirectoryWithBase(java.lang.String...)">
+					<h2 class="J"><i class="DEFAULT"><i class="PUBLIC"></i></i><code class="R">walkDirectoryWithBase</code><code class="b">(<code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code> <code class="parameterName">patterns</code>)</code><i class="i"><code>kiss.Signal<code class="parameters"><code>kiss.Ⅱ<code class="parameters"><code><a href="api/psychopath.Directory.html">Directory</a></code>, <code><a href="api/psychopath.Directory.html">Directory</a></code></code></code></code></code></i></h2>
+					<table class="h">
+						<tr class="X">
 							<td><code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code> <code>patterns</code></td>
 							<td></td>
 						</tr>
-						<tr class="Z">
+						<tr class="N">
 							<td><code>kiss.Signal<code class="parameters"><code>kiss.Ⅱ<code class="parameters"><code><a href="api/psychopath.Directory.html">Directory</a></code>, <code><a href="api/psychopath.Directory.html">Directory</a></code></code></code></code></code></td>
 							<td></td>
 						</tr>
 					</table>
 				</section>
-				<section class="P" id="walkDirectoryWithBase(java.util.Collection)">
-					<h2 class="I"><i class="DEFAULT"><i class="PUBLIC"></i></i><code class="Q">walkDirectoryWithBase</code><code class="i">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/Collection.html">Collection</a><code class="parameters"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></code></code> <code class="parameterName">patterns</code>)</code><i class="R"><code>kiss.Signal<code class="parameters"><code>kiss.Ⅱ<code class="parameters"><code><a href="api/psychopath.Directory.html">Directory</a></code>, <code><a href="api/psychopath.Directory.html">Directory</a></code></code></code></code></code></i></h2>
-					<table class="U">
-						<tr class="h">
+				<section class="O" id="walkDirectoryWithBase(java.util.Collection)">
+					<h2 class="J"><i class="DEFAULT"><i class="PUBLIC"></i></i><code class="R">walkDirectoryWithBase</code><code class="b">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/Collection.html">Collection</a><code class="parameters"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></code></code> <code class="parameterName">patterns</code>)</code><i class="i"><code>kiss.Signal<code class="parameters"><code>kiss.Ⅱ<code class="parameters"><code><a href="api/psychopath.Directory.html">Directory</a></code>, <code><a href="api/psychopath.Directory.html">Directory</a></code></code></code></code></code></i></h2>
+					<table class="h">
+						<tr class="X">
 							<td><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/Collection.html">Collection</a><code class="parameters"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></code></code> <code>patterns</code></td>
 							<td></td>
 						</tr>
-						<tr class="Z">
+						<tr class="N">
 							<td><code>kiss.Signal<code class="parameters"><code>kiss.Ⅱ<code class="parameters"><code><a href="api/psychopath.Directory.html">Directory</a></code>, <code><a href="api/psychopath.Directory.html">Directory</a></code></code></code></code></code></td>
 							<td></td>
 						</tr>
 					</table>
 				</section>
-				<section class="P" id="walkDirectoryWithBase(java.util.function.Function)">
-					<h2 class="I"><i class="ABSTRACT"><i class="PUBLIC"></i></i><code class="Q">walkDirectoryWithBase</code><code class="i">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a href="api/psychopath.Option.html">Option</a></code>, <code><a href="api/psychopath.Option.html">Option</a></code></code></code> <code class="parameterName">option</code>)</code><i class="R"><code>kiss.Signal<code class="parameters"><code>kiss.Ⅱ<code class="parameters"><code><a href="api/psychopath.Directory.html">Directory</a></code>, <code><a href="api/psychopath.Directory.html">Directory</a></code></code></code></code></code></i></h2>
-					<table class="U">
-						<tr class="h">
+				<section class="O" id="walkDirectoryWithBase(java.util.function.Function)">
+					<h2 class="J"><i class="ABSTRACT"><i class="PUBLIC"></i></i><code class="R">walkDirectoryWithBase</code><code class="b">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a href="api/psychopath.Option.html">Option</a></code>, <code><a href="api/psychopath.Option.html">Option</a></code></code></code> <code class="parameterName">option</code>)</code><i class="i"><code>kiss.Signal<code class="parameters"><code>kiss.Ⅱ<code class="parameters"><code><a href="api/psychopath.Directory.html">Directory</a></code>, <code><a href="api/psychopath.Directory.html">Directory</a></code></code></code></code></code></i></h2>
+					<table class="h">
+						<tr class="X">
 							<td><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a href="api/psychopath.Option.html">Option</a></code>, <code><a href="api/psychopath.Option.html">Option</a></code></code></code> <code>option</code></td>
 							<td></td>
 						</tr>
-						<tr class="Z">
+						<tr class="N">
 							<td><code>kiss.Signal<code class="parameters"><code>kiss.Ⅱ<code class="parameters"><code><a href="api/psychopath.Directory.html">Directory</a></code>, <code><a href="api/psychopath.Directory.html">Directory</a></code></code></code></code></code></td>
 							<td></td>
 						</tr>
 					</table>
 				</section>
 			</article>
-			<aside class="d" id="SubNavi">
-				<div class="H">
-					<h5 class="f">Methods</h5>
+			<aside class="W" id="SubNavi">
+				<div class="T">
+					<h5 class="V">Methods</h5>
 					<ul>
-						<li><i class="DEFAULT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.PathOperatable.html#delete(java.lang.String...)">delete</a></code><code class="i">(<code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code> <code class="parameterName">patterns</code>)</code><i class="k"><code>void</code></i></li>
-						<li><i class="DEFAULT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.PathOperatable.html#delete(java.util.Collection)">delete</a></code><code class="i">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/Collection.html">Collection</a><code class="parameters"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></code></code> <code class="parameterName">patterns</code>)</code><i class="k"><code>void</code></i></li>
-						<li><i class="DEFAULT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.PathOperatable.html#delete(java.util.function.Function)">delete</a></code><code class="i">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a href="api/psychopath.Option.html">Option</a></code>, <code><a href="api/psychopath.Option.html">Option</a></code></code></code> <code class="parameterName">option</code>)</code><i class="k"><code>void</code></i></li>
-						<li><i class="DEFAULT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.PathOperatable.html#observeDeleting(java.lang.String...)">observeDeleting</a></code><code class="i">(<code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code> <code class="parameterName">patterns</code>)</code><i class="k"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Location.html">Location</a></code></code></code></i></li>
-						<li><i class="DEFAULT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.PathOperatable.html#observeDeleting(java.util.Collection)">observeDeleting</a></code><code class="i">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/Collection.html">Collection</a><code class="parameters"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></code></code> <code class="parameterName">patterns</code>)</code><i class="k"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Location.html">Location</a></code></code></code></i></li>
-						<li><i class="ABSTRACT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.PathOperatable.html#observeDeleting(java.util.function.Function)">observeDeleting</a></code><code class="i">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a href="api/psychopath.Option.html">Option</a></code>, <code><a href="api/psychopath.Option.html">Option</a></code></code></code> <code class="parameterName">option</code>)</code><i class="k"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Location.html">Location</a></code></code></code></i></li>
-						<li><i class="DEFAULT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.PathOperatable.html#trackDeleting(java.lang.String...)">trackDeleting</a></code><code class="i">(<code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code> <code class="parameterName">patterns</code>)</code><i class="k"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Progress.html">Progress</a></code></code></code></i></li>
-						<li><i class="DEFAULT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.PathOperatable.html#trackDeleting(java.util.Collection)">trackDeleting</a></code><code class="i">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/Collection.html">Collection</a><code class="parameters"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></code></code> <code class="parameterName">patterns</code>)</code><i class="k"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Progress.html">Progress</a></code></code></code></i></li>
-						<li><i class="DEFAULT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.PathOperatable.html#trackDeleting(java.util.function.Function)">trackDeleting</a></code><code class="i">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a href="api/psychopath.Option.html">Option</a></code>, <code><a href="api/psychopath.Option.html">Option</a></code></code></code> <code class="parameterName">option</code>)</code><i class="k"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Progress.html">Progress</a></code></code></code></i></li>
-						<li><i class="DEFAULT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.PathOperatable.html#copyTo(psychopath.Directory,java.lang.String...)">copyTo</a></code><code class="i">(<code><a href="api/psychopath.Directory.html">Directory</a></code> <code class="parameterName">destination</code>, <code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code> <code class="parameterName">patterns</code>)</code><i class="k"><code><a href="api/psychopath.Directory.html">Directory</a></code></i></li>
-						<li><i class="DEFAULT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.PathOperatable.html#copyTo(psychopath.Directory,java.util.Collection)">copyTo</a></code><code class="i">(<code><a href="api/psychopath.Directory.html">Directory</a></code> <code class="parameterName">destination</code>, <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/Collection.html">Collection</a><code class="parameters"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></code></code> <code class="parameterName">patterns</code>)</code><i class="k"><code><a href="api/psychopath.Directory.html">Directory</a></code></i></li>
-						<li><i class="DEFAULT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.PathOperatable.html#copyTo(psychopath.Directory,java.util.function.Function)">copyTo</a></code><code class="i">(<code><a href="api/psychopath.Directory.html">Directory</a></code> <code class="parameterName">destination</code>, <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a href="api/psychopath.Option.html">Option</a></code>, <code><a href="api/psychopath.Option.html">Option</a></code></code></code> <code class="parameterName">option</code>)</code><i class="k"><code><a href="api/psychopath.Directory.html">Directory</a></code></i></li>
-						<li><i class="DEFAULT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.PathOperatable.html#observeCopyingTo(psychopath.Directory,java.lang.String...)">observeCopyingTo</a></code><code class="i">(<code><a href="api/psychopath.Directory.html">Directory</a></code> <code class="parameterName">destination</code>, <code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code> <code class="parameterName">patterns</code>)</code><i class="k"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Location.html">Location</a></code></code></code></i></li>
-						<li><i class="DEFAULT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.PathOperatable.html#observeCopyingTo(psychopath.Directory,java.util.Collection)">observeCopyingTo</a></code><code class="i">(<code><a href="api/psychopath.Directory.html">Directory</a></code> <code class="parameterName">destination</code>, <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/Collection.html">Collection</a><code class="parameters"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></code></code> <code class="parameterName">patterns</code>)</code><i class="k"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Location.html">Location</a></code></code></code></i></li>
-						<li><i class="ABSTRACT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.PathOperatable.html#observeCopyingTo(psychopath.Directory,java.util.function.Function)">observeCopyingTo</a></code><code class="i">(<code><a href="api/psychopath.Directory.html">Directory</a></code> <code class="parameterName">destination</code>, <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a href="api/psychopath.Option.html">Option</a></code>, <code><a href="api/psychopath.Option.html">Option</a></code></code></code> <code class="parameterName">option</code>)</code><i class="k"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Location.html">Location</a></code></code></code></i></li>
-						<li><i class="DEFAULT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.PathOperatable.html#trackCopyingTo(psychopath.Directory,java.lang.String...)">trackCopyingTo</a></code><code class="i">(<code><a href="api/psychopath.Directory.html">Directory</a></code> <code class="parameterName">destination</code>, <code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code> <code class="parameterName">patterns</code>)</code><i class="k"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Progress.html">Progress</a></code></code></code></i></li>
-						<li><i class="DEFAULT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.PathOperatable.html#trackCopyingTo(psychopath.Directory,java.util.Collection)">trackCopyingTo</a></code><code class="i">(<code><a href="api/psychopath.Directory.html">Directory</a></code> <code class="parameterName">destination</code>, <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/Collection.html">Collection</a><code class="parameters"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></code></code> <code class="parameterName">patterns</code>)</code><i class="k"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Progress.html">Progress</a></code></code></code></i></li>
-						<li><i class="DEFAULT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.PathOperatable.html#trackCopyingTo(psychopath.Directory,java.util.function.Function)">trackCopyingTo</a></code><code class="i">(<code><a href="api/psychopath.Directory.html">Directory</a></code> <code class="parameterName">destination</code>, <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a href="api/psychopath.Option.html">Option</a></code>, <code><a href="api/psychopath.Option.html">Option</a></code></code></code> <code class="parameterName">option</code>)</code><i class="k"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Progress.html">Progress</a></code></code></code></i></li>
-						<li><i class="DEFAULT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.PathOperatable.html#moveTo(psychopath.Directory,java.lang.String...)">moveTo</a></code><code class="i">(<code><a href="api/psychopath.Directory.html">Directory</a></code> <code class="parameterName">destination</code>, <code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code> <code class="parameterName">patterns</code>)</code><i class="k"><code><a href="api/psychopath.Directory.html">Directory</a></code></i></li>
-						<li><i class="DEFAULT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.PathOperatable.html#moveTo(psychopath.Directory,java.util.Collection)">moveTo</a></code><code class="i">(<code><a href="api/psychopath.Directory.html">Directory</a></code> <code class="parameterName">destination</code>, <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/Collection.html">Collection</a><code class="parameters"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></code></code> <code class="parameterName">patterns</code>)</code><i class="k"><code><a href="api/psychopath.Directory.html">Directory</a></code></i></li>
-						<li><i class="DEFAULT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.PathOperatable.html#moveTo(psychopath.Directory,java.util.function.Function)">moveTo</a></code><code class="i">(<code><a href="api/psychopath.Directory.html">Directory</a></code> <code class="parameterName">destination</code>, <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a href="api/psychopath.Option.html">Option</a></code>, <code><a href="api/psychopath.Option.html">Option</a></code></code></code> <code class="parameterName">option</code>)</code><i class="k"><code><a href="api/psychopath.Directory.html">Directory</a></code></i></li>
-						<li><i class="DEFAULT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.PathOperatable.html#observeMovingTo(psychopath.Directory,java.lang.String...)">observeMovingTo</a></code><code class="i">(<code><a href="api/psychopath.Directory.html">Directory</a></code> <code class="parameterName">destination</code>, <code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code> <code class="parameterName">patterns</code>)</code><i class="k"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Location.html">Location</a></code></code></code></i></li>
-						<li><i class="DEFAULT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.PathOperatable.html#observeMovingTo(psychopath.Directory,java.util.Collection)">observeMovingTo</a></code><code class="i">(<code><a href="api/psychopath.Directory.html">Directory</a></code> <code class="parameterName">destination</code>, <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/Collection.html">Collection</a><code class="parameters"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></code></code> <code class="parameterName">patterns</code>)</code><i class="k"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Location.html">Location</a></code></code></code></i></li>
-						<li><i class="ABSTRACT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.PathOperatable.html#observeMovingTo(psychopath.Directory,java.util.function.Function)">observeMovingTo</a></code><code class="i">(<code><a href="api/psychopath.Directory.html">Directory</a></code> <code class="parameterName">destination</code>, <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a href="api/psychopath.Option.html">Option</a></code>, <code><a href="api/psychopath.Option.html">Option</a></code></code></code> <code class="parameterName">option</code>)</code><i class="k"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Location.html">Location</a></code></code></code></i></li>
-						<li><i class="DEFAULT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.PathOperatable.html#trackMovingTo(psychopath.Directory,java.lang.String...)">trackMovingTo</a></code><code class="i">(<code><a href="api/psychopath.Directory.html">Directory</a></code> <code class="parameterName">destination</code>, <code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code> <code class="parameterName">patterns</code>)</code><i class="k"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Progress.html">Progress</a></code></code></code></i></li>
-						<li><i class="DEFAULT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.PathOperatable.html#trackMovingTo(psychopath.Directory,java.util.Collection)">trackMovingTo</a></code><code class="i">(<code><a href="api/psychopath.Directory.html">Directory</a></code> <code class="parameterName">destination</code>, <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/Collection.html">Collection</a><code class="parameters"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></code></code> <code class="parameterName">patterns</code>)</code><i class="k"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Progress.html">Progress</a></code></code></code></i></li>
-						<li><i class="DEFAULT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.PathOperatable.html#trackMovingTo(psychopath.Directory,java.util.function.Function)">trackMovingTo</a></code><code class="i">(<code><a href="api/psychopath.Directory.html">Directory</a></code> <code class="parameterName">destination</code>, <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a href="api/psychopath.Option.html">Option</a></code>, <code><a href="api/psychopath.Option.html">Option</a></code></code></code> <code class="parameterName">option</code>)</code><i class="k"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Progress.html">Progress</a></code></code></code></i></li>
-						<li><i class="DEFAULT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.PathOperatable.html#packTo(psychopath.File,java.lang.String...)">packTo</a></code><code class="i">(<code><a href="api/psychopath.File.html">File</a></code> <code class="parameterName">destination</code>, <code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code> <code class="parameterName">patterns</code>)</code><i class="k"><code><a href="api/psychopath.File.html">File</a></code></i></li>
-						<li><i class="DEFAULT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.PathOperatable.html#packTo(psychopath.File,java.util.Collection)">packTo</a></code><code class="i">(<code><a href="api/psychopath.File.html">File</a></code> <code class="parameterName">destination</code>, <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/Collection.html">Collection</a><code class="parameters"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></code></code> <code class="parameterName">patterns</code>)</code><i class="k"><code><a href="api/psychopath.File.html">File</a></code></i></li>
-						<li><i class="DEFAULT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.PathOperatable.html#packTo(psychopath.File,java.util.function.Function)">packTo</a></code><code class="i">(<code><a href="api/psychopath.File.html">File</a></code> <code class="parameterName">destination</code>, <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a href="api/psychopath.Option.html">Option</a></code>, <code><a href="api/psychopath.Option.html">Option</a></code></code></code> <code class="parameterName">option</code>)</code><i class="k"><code><a href="api/psychopath.File.html">File</a></code></i></li>
-						<li><i class="DEFAULT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.PathOperatable.html#packToTemporary(java.lang.String...)">packToTemporary</a></code><code class="i">(<code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code> <code class="parameterName">patterns</code>)</code><i class="k"><code><a href="api/psychopath.File.html">File</a></code></i></li>
-						<li><i class="DEFAULT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.PathOperatable.html#packToTemporary(java.util.Collection)">packToTemporary</a></code><code class="i">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/Collection.html">Collection</a><code class="parameters"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></code></code> <code class="parameterName">patterns</code>)</code><i class="k"><code><a href="api/psychopath.File.html">File</a></code></i></li>
-						<li><i class="DEFAULT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.PathOperatable.html#packToTemporary(java.util.function.Function)">packToTemporary</a></code><code class="i">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a href="api/psychopath.Option.html">Option</a></code>, <code><a href="api/psychopath.Option.html">Option</a></code></code></code> <code class="parameterName">option</code>)</code><i class="k"><code><a href="api/psychopath.File.html">File</a></code></i></li>
-						<li><i class="DEFAULT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.PathOperatable.html#observePackingTo(psychopath.File,java.lang.String...)">observePackingTo</a></code><code class="i">(<code><a href="api/psychopath.File.html">File</a></code> <code class="parameterName">destination</code>, <code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code> <code class="parameterName">patterns</code>)</code><i class="k"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Location.html">Location</a></code></code></code></i></li>
-						<li><i class="DEFAULT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.PathOperatable.html#observePackingTo(psychopath.File,java.util.Collection)">observePackingTo</a></code><code class="i">(<code><a href="api/psychopath.File.html">File</a></code> <code class="parameterName">destination</code>, <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/Collection.html">Collection</a><code class="parameters"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></code></code> <code class="parameterName">patterns</code>)</code><i class="k"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Location.html">Location</a></code></code></code></i></li>
-						<li><i class="ABSTRACT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.PathOperatable.html#observePackingTo(psychopath.File,java.util.function.Function)">observePackingTo</a></code><code class="i">(<code><a href="api/psychopath.File.html">File</a></code> <code class="parameterName">destination</code>, <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a href="api/psychopath.Option.html">Option</a></code>, <code><a href="api/psychopath.Option.html">Option</a></code></code></code> <code class="parameterName">option</code>)</code><i class="k"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Location.html">Location</a></code></code></code></i></li>
-						<li><i class="DEFAULT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.PathOperatable.html#trackPackingTo(psychopath.File,java.lang.String...)">trackPackingTo</a></code><code class="i">(<code><a href="api/psychopath.File.html">File</a></code> <code class="parameterName">destination</code>, <code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code> <code class="parameterName">patterns</code>)</code><i class="k"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Progress.html">Progress</a></code></code></code></i></li>
-						<li><i class="DEFAULT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.PathOperatable.html#trackPackingTo(psychopath.File,java.util.Collection)">trackPackingTo</a></code><code class="i">(<code><a href="api/psychopath.File.html">File</a></code> <code class="parameterName">destination</code>, <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/Collection.html">Collection</a><code class="parameters"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></code></code> <code class="parameterName">patterns</code>)</code><i class="k"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Progress.html">Progress</a></code></code></code></i></li>
-						<li><i class="DEFAULT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.PathOperatable.html#trackPackingTo(psychopath.File,java.util.function.Function)">trackPackingTo</a></code><code class="i">(<code><a href="api/psychopath.File.html">File</a></code> <code class="parameterName">destination</code>, <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a href="api/psychopath.Option.html">Option</a></code>, <code><a href="api/psychopath.Option.html">Option</a></code></code></code> <code class="parameterName">option</code>)</code><i class="k"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Progress.html">Progress</a></code></code></code></i></li>
-						<li><i class="DEFAULT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.PathOperatable.html#existFile(java.lang.String...)">existFile</a></code><code class="i">(<code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code> <code class="parameterName">patterns</code>)</code><i class="k"><code>boolean</code></i></li>
-						<li><i class="DEFAULT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.PathOperatable.html#walkFile(java.lang.String...)">walkFile</a></code><code class="i">(<code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code> <code class="parameterName">patterns</code>)</code><i class="k"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.File.html">File</a></code></code></code></i></li>
-						<li><i class="DEFAULT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.PathOperatable.html#walkFile(java.util.Collection)">walkFile</a></code><code class="i">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/Collection.html">Collection</a><code class="parameters"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></code></code> <code class="parameterName">patterns</code>)</code><i class="k"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.File.html">File</a></code></code></code></i></li>
-						<li><i class="DEFAULT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.PathOperatable.html#walkFile(java.util.function.Function)">walkFile</a></code><code class="i">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a href="api/psychopath.Option.html">Option</a></code>, <code><a href="api/psychopath.Option.html">Option</a></code></code></code> <code class="parameterName">option</code>)</code><i class="k"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.File.html">File</a></code></code></code></i></li>
-						<li><i class="DEFAULT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.PathOperatable.html#walkFileWithBase(java.lang.String...)">walkFileWithBase</a></code><code class="i">(<code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code> <code class="parameterName">patterns</code>)</code><i class="k"><code>kiss.Signal<code class="parameters"><code>kiss.Ⅱ<code class="parameters"><code><a href="api/psychopath.Directory.html">Directory</a></code>, <code><a href="api/psychopath.File.html">File</a></code></code></code></code></code></i></li>
-						<li><i class="DEFAULT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.PathOperatable.html#walkFileWithBase(java.util.Collection)">walkFileWithBase</a></code><code class="i">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/Collection.html">Collection</a><code class="parameters"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></code></code> <code class="parameterName">patterns</code>)</code><i class="k"><code>kiss.Signal<code class="parameters"><code>kiss.Ⅱ<code class="parameters"><code><a href="api/psychopath.Directory.html">Directory</a></code>, <code><a href="api/psychopath.File.html">File</a></code></code></code></code></code></i></li>
-						<li><i class="ABSTRACT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.PathOperatable.html#walkFileWithBase(java.util.function.Function)">walkFileWithBase</a></code><code class="i">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a href="api/psychopath.Option.html">Option</a></code>, <code><a href="api/psychopath.Option.html">Option</a></code></code></code> <code class="parameterName">option</code>)</code><i class="k"><code>kiss.Signal<code class="parameters"><code>kiss.Ⅱ<code class="parameters"><code><a href="api/psychopath.Directory.html">Directory</a></code>, <code><a href="api/psychopath.File.html">File</a></code></code></code></code></code></i></li>
-						<li><i class="DEFAULT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.PathOperatable.html#walkDirectory(java.lang.String...)">walkDirectory</a></code><code class="i">(<code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code> <code class="parameterName">patterns</code>)</code><i class="k"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Directory.html">Directory</a></code></code></code></i></li>
-						<li><i class="DEFAULT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.PathOperatable.html#walkDirectory(java.util.Collection)">walkDirectory</a></code><code class="i">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/Collection.html">Collection</a><code class="parameters"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></code></code> <code class="parameterName">patterns</code>)</code><i class="k"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Directory.html">Directory</a></code></code></code></i></li>
-						<li><i class="DEFAULT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.PathOperatable.html#walkDirectory(java.util.function.Function)">walkDirectory</a></code><code class="i">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a href="api/psychopath.Option.html">Option</a></code>, <code><a href="api/psychopath.Option.html">Option</a></code></code></code> <code class="parameterName">option</code>)</code><i class="k"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Directory.html">Directory</a></code></code></code></i></li>
-						<li><i class="DEFAULT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.PathOperatable.html#walkDirectoryWithBase(java.lang.String...)">walkDirectoryWithBase</a></code><code class="i">(<code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code> <code class="parameterName">patterns</code>)</code><i class="k"><code>kiss.Signal<code class="parameters"><code>kiss.Ⅱ<code class="parameters"><code><a href="api/psychopath.Directory.html">Directory</a></code>, <code><a href="api/psychopath.Directory.html">Directory</a></code></code></code></code></code></i></li>
-						<li><i class="DEFAULT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.PathOperatable.html#walkDirectoryWithBase(java.util.Collection)">walkDirectoryWithBase</a></code><code class="i">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/Collection.html">Collection</a><code class="parameters"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></code></code> <code class="parameterName">patterns</code>)</code><i class="k"><code>kiss.Signal<code class="parameters"><code>kiss.Ⅱ<code class="parameters"><code><a href="api/psychopath.Directory.html">Directory</a></code>, <code><a href="api/psychopath.Directory.html">Directory</a></code></code></code></code></code></i></li>
-						<li><i class="ABSTRACT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.PathOperatable.html#walkDirectoryWithBase(java.util.function.Function)">walkDirectoryWithBase</a></code><code class="i">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a href="api/psychopath.Option.html">Option</a></code>, <code><a href="api/psychopath.Option.html">Option</a></code></code></code> <code class="parameterName">option</code>)</code><i class="k"><code>kiss.Signal<code class="parameters"><code>kiss.Ⅱ<code class="parameters"><code><a href="api/psychopath.Directory.html">Directory</a></code>, <code><a href="api/psychopath.Directory.html">Directory</a></code></code></code></code></code></i></li>
+						<li><i class="DEFAULT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.PathOperatable.html#delete(java.lang.String...)">delete</a></code><code class="b">(<code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code> <code class="parameterName">patterns</code>)</code><i class="g"><code>void</code></i></li>
+						<li><i class="DEFAULT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.PathOperatable.html#delete(java.util.Collection)">delete</a></code><code class="b">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/Collection.html">Collection</a><code class="parameters"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></code></code> <code class="parameterName">patterns</code>)</code><i class="g"><code>void</code></i></li>
+						<li><i class="DEFAULT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.PathOperatable.html#delete(java.util.function.Function)">delete</a></code><code class="b">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a href="api/psychopath.Option.html">Option</a></code>, <code><a href="api/psychopath.Option.html">Option</a></code></code></code> <code class="parameterName">option</code>)</code><i class="g"><code>void</code></i></li>
+						<li><i class="DEFAULT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.PathOperatable.html#observeDeleting(java.lang.String...)">observeDeleting</a></code><code class="b">(<code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code> <code class="parameterName">patterns</code>)</code><i class="g"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Location.html">Location</a></code></code></code></i></li>
+						<li><i class="DEFAULT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.PathOperatable.html#observeDeleting(java.util.Collection)">observeDeleting</a></code><code class="b">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/Collection.html">Collection</a><code class="parameters"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></code></code> <code class="parameterName">patterns</code>)</code><i class="g"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Location.html">Location</a></code></code></code></i></li>
+						<li><i class="ABSTRACT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.PathOperatable.html#observeDeleting(java.util.function.Function)">observeDeleting</a></code><code class="b">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a href="api/psychopath.Option.html">Option</a></code>, <code><a href="api/psychopath.Option.html">Option</a></code></code></code> <code class="parameterName">option</code>)</code><i class="g"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Location.html">Location</a></code></code></code></i></li>
+						<li><i class="DEFAULT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.PathOperatable.html#trackDeleting(java.lang.String...)">trackDeleting</a></code><code class="b">(<code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code> <code class="parameterName">patterns</code>)</code><i class="g"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Progress.html">Progress</a></code></code></code></i></li>
+						<li><i class="DEFAULT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.PathOperatable.html#trackDeleting(java.util.Collection)">trackDeleting</a></code><code class="b">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/Collection.html">Collection</a><code class="parameters"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></code></code> <code class="parameterName">patterns</code>)</code><i class="g"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Progress.html">Progress</a></code></code></code></i></li>
+						<li><i class="DEFAULT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.PathOperatable.html#trackDeleting(java.util.function.Function)">trackDeleting</a></code><code class="b">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a href="api/psychopath.Option.html">Option</a></code>, <code><a href="api/psychopath.Option.html">Option</a></code></code></code> <code class="parameterName">option</code>)</code><i class="g"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Progress.html">Progress</a></code></code></code></i></li>
+						<li><i class="DEFAULT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.PathOperatable.html#copyTo(psychopath.Directory,java.lang.String...)">copyTo</a></code><code class="b">(<code><a href="api/psychopath.Directory.html">Directory</a></code> <code class="parameterName">destination</code>, <code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code> <code class="parameterName">patterns</code>)</code><i class="g"><code><a href="api/psychopath.Directory.html">Directory</a></code></i></li>
+						<li><i class="DEFAULT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.PathOperatable.html#copyTo(psychopath.Directory,java.util.Collection)">copyTo</a></code><code class="b">(<code><a href="api/psychopath.Directory.html">Directory</a></code> <code class="parameterName">destination</code>, <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/Collection.html">Collection</a><code class="parameters"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></code></code> <code class="parameterName">patterns</code>)</code><i class="g"><code><a href="api/psychopath.Directory.html">Directory</a></code></i></li>
+						<li><i class="DEFAULT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.PathOperatable.html#copyTo(psychopath.Directory,java.util.function.Function)">copyTo</a></code><code class="b">(<code><a href="api/psychopath.Directory.html">Directory</a></code> <code class="parameterName">destination</code>, <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a href="api/psychopath.Option.html">Option</a></code>, <code><a href="api/psychopath.Option.html">Option</a></code></code></code> <code class="parameterName">option</code>)</code><i class="g"><code><a href="api/psychopath.Directory.html">Directory</a></code></i></li>
+						<li><i class="DEFAULT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.PathOperatable.html#observeCopyingTo(psychopath.Directory,java.lang.String...)">observeCopyingTo</a></code><code class="b">(<code><a href="api/psychopath.Directory.html">Directory</a></code> <code class="parameterName">destination</code>, <code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code> <code class="parameterName">patterns</code>)</code><i class="g"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Location.html">Location</a></code></code></code></i></li>
+						<li><i class="DEFAULT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.PathOperatable.html#observeCopyingTo(psychopath.Directory,java.util.Collection)">observeCopyingTo</a></code><code class="b">(<code><a href="api/psychopath.Directory.html">Directory</a></code> <code class="parameterName">destination</code>, <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/Collection.html">Collection</a><code class="parameters"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></code></code> <code class="parameterName">patterns</code>)</code><i class="g"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Location.html">Location</a></code></code></code></i></li>
+						<li><i class="ABSTRACT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.PathOperatable.html#observeCopyingTo(psychopath.Directory,java.util.function.Function)">observeCopyingTo</a></code><code class="b">(<code><a href="api/psychopath.Directory.html">Directory</a></code> <code class="parameterName">destination</code>, <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a href="api/psychopath.Option.html">Option</a></code>, <code><a href="api/psychopath.Option.html">Option</a></code></code></code> <code class="parameterName">option</code>)</code><i class="g"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Location.html">Location</a></code></code></code></i></li>
+						<li><i class="DEFAULT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.PathOperatable.html#trackCopyingTo(psychopath.Directory,java.lang.String...)">trackCopyingTo</a></code><code class="b">(<code><a href="api/psychopath.Directory.html">Directory</a></code> <code class="parameterName">destination</code>, <code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code> <code class="parameterName">patterns</code>)</code><i class="g"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Progress.html">Progress</a></code></code></code></i></li>
+						<li><i class="DEFAULT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.PathOperatable.html#trackCopyingTo(psychopath.Directory,java.util.Collection)">trackCopyingTo</a></code><code class="b">(<code><a href="api/psychopath.Directory.html">Directory</a></code> <code class="parameterName">destination</code>, <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/Collection.html">Collection</a><code class="parameters"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></code></code> <code class="parameterName">patterns</code>)</code><i class="g"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Progress.html">Progress</a></code></code></code></i></li>
+						<li><i class="DEFAULT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.PathOperatable.html#trackCopyingTo(psychopath.Directory,java.util.function.Function)">trackCopyingTo</a></code><code class="b">(<code><a href="api/psychopath.Directory.html">Directory</a></code> <code class="parameterName">destination</code>, <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a href="api/psychopath.Option.html">Option</a></code>, <code><a href="api/psychopath.Option.html">Option</a></code></code></code> <code class="parameterName">option</code>)</code><i class="g"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Progress.html">Progress</a></code></code></code></i></li>
+						<li><i class="DEFAULT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.PathOperatable.html#moveTo(psychopath.Directory,java.lang.String...)">moveTo</a></code><code class="b">(<code><a href="api/psychopath.Directory.html">Directory</a></code> <code class="parameterName">destination</code>, <code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code> <code class="parameterName">patterns</code>)</code><i class="g"><code><a href="api/psychopath.Directory.html">Directory</a></code></i></li>
+						<li><i class="DEFAULT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.PathOperatable.html#moveTo(psychopath.Directory,java.util.Collection)">moveTo</a></code><code class="b">(<code><a href="api/psychopath.Directory.html">Directory</a></code> <code class="parameterName">destination</code>, <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/Collection.html">Collection</a><code class="parameters"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></code></code> <code class="parameterName">patterns</code>)</code><i class="g"><code><a href="api/psychopath.Directory.html">Directory</a></code></i></li>
+						<li><i class="DEFAULT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.PathOperatable.html#moveTo(psychopath.Directory,java.util.function.Function)">moveTo</a></code><code class="b">(<code><a href="api/psychopath.Directory.html">Directory</a></code> <code class="parameterName">destination</code>, <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a href="api/psychopath.Option.html">Option</a></code>, <code><a href="api/psychopath.Option.html">Option</a></code></code></code> <code class="parameterName">option</code>)</code><i class="g"><code><a href="api/psychopath.Directory.html">Directory</a></code></i></li>
+						<li><i class="DEFAULT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.PathOperatable.html#observeMovingTo(psychopath.Directory,java.lang.String...)">observeMovingTo</a></code><code class="b">(<code><a href="api/psychopath.Directory.html">Directory</a></code> <code class="parameterName">destination</code>, <code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code> <code class="parameterName">patterns</code>)</code><i class="g"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Location.html">Location</a></code></code></code></i></li>
+						<li><i class="DEFAULT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.PathOperatable.html#observeMovingTo(psychopath.Directory,java.util.Collection)">observeMovingTo</a></code><code class="b">(<code><a href="api/psychopath.Directory.html">Directory</a></code> <code class="parameterName">destination</code>, <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/Collection.html">Collection</a><code class="parameters"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></code></code> <code class="parameterName">patterns</code>)</code><i class="g"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Location.html">Location</a></code></code></code></i></li>
+						<li><i class="ABSTRACT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.PathOperatable.html#observeMovingTo(psychopath.Directory,java.util.function.Function)">observeMovingTo</a></code><code class="b">(<code><a href="api/psychopath.Directory.html">Directory</a></code> <code class="parameterName">destination</code>, <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a href="api/psychopath.Option.html">Option</a></code>, <code><a href="api/psychopath.Option.html">Option</a></code></code></code> <code class="parameterName">option</code>)</code><i class="g"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Location.html">Location</a></code></code></code></i></li>
+						<li><i class="DEFAULT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.PathOperatable.html#trackMovingTo(psychopath.Directory,java.lang.String...)">trackMovingTo</a></code><code class="b">(<code><a href="api/psychopath.Directory.html">Directory</a></code> <code class="parameterName">destination</code>, <code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code> <code class="parameterName">patterns</code>)</code><i class="g"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Progress.html">Progress</a></code></code></code></i></li>
+						<li><i class="DEFAULT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.PathOperatable.html#trackMovingTo(psychopath.Directory,java.util.Collection)">trackMovingTo</a></code><code class="b">(<code><a href="api/psychopath.Directory.html">Directory</a></code> <code class="parameterName">destination</code>, <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/Collection.html">Collection</a><code class="parameters"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></code></code> <code class="parameterName">patterns</code>)</code><i class="g"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Progress.html">Progress</a></code></code></code></i></li>
+						<li><i class="DEFAULT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.PathOperatable.html#trackMovingTo(psychopath.Directory,java.util.function.Function)">trackMovingTo</a></code><code class="b">(<code><a href="api/psychopath.Directory.html">Directory</a></code> <code class="parameterName">destination</code>, <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a href="api/psychopath.Option.html">Option</a></code>, <code><a href="api/psychopath.Option.html">Option</a></code></code></code> <code class="parameterName">option</code>)</code><i class="g"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Progress.html">Progress</a></code></code></code></i></li>
+						<li><i class="DEFAULT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.PathOperatable.html#packTo(psychopath.File,java.lang.String...)">packTo</a></code><code class="b">(<code><a href="api/psychopath.File.html">File</a></code> <code class="parameterName">destination</code>, <code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code> <code class="parameterName">patterns</code>)</code><i class="g"><code><a href="api/psychopath.File.html">File</a></code></i></li>
+						<li><i class="DEFAULT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.PathOperatable.html#packTo(psychopath.File,java.util.Collection)">packTo</a></code><code class="b">(<code><a href="api/psychopath.File.html">File</a></code> <code class="parameterName">destination</code>, <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/Collection.html">Collection</a><code class="parameters"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></code></code> <code class="parameterName">patterns</code>)</code><i class="g"><code><a href="api/psychopath.File.html">File</a></code></i></li>
+						<li><i class="DEFAULT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.PathOperatable.html#packTo(psychopath.File,java.util.function.Function)">packTo</a></code><code class="b">(<code><a href="api/psychopath.File.html">File</a></code> <code class="parameterName">destination</code>, <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a href="api/psychopath.Option.html">Option</a></code>, <code><a href="api/psychopath.Option.html">Option</a></code></code></code> <code class="parameterName">option</code>)</code><i class="g"><code><a href="api/psychopath.File.html">File</a></code></i></li>
+						<li><i class="DEFAULT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.PathOperatable.html#packToTemporary(java.lang.String...)">packToTemporary</a></code><code class="b">(<code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code> <code class="parameterName">patterns</code>)</code><i class="g"><code><a href="api/psychopath.File.html">File</a></code></i></li>
+						<li><i class="DEFAULT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.PathOperatable.html#packToTemporary(java.util.Collection)">packToTemporary</a></code><code class="b">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/Collection.html">Collection</a><code class="parameters"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></code></code> <code class="parameterName">patterns</code>)</code><i class="g"><code><a href="api/psychopath.File.html">File</a></code></i></li>
+						<li><i class="DEFAULT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.PathOperatable.html#packToTemporary(java.util.function.Function)">packToTemporary</a></code><code class="b">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a href="api/psychopath.Option.html">Option</a></code>, <code><a href="api/psychopath.Option.html">Option</a></code></code></code> <code class="parameterName">option</code>)</code><i class="g"><code><a href="api/psychopath.File.html">File</a></code></i></li>
+						<li><i class="DEFAULT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.PathOperatable.html#observePackingTo(psychopath.File,java.lang.String...)">observePackingTo</a></code><code class="b">(<code><a href="api/psychopath.File.html">File</a></code> <code class="parameterName">destination</code>, <code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code> <code class="parameterName">patterns</code>)</code><i class="g"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Location.html">Location</a></code></code></code></i></li>
+						<li><i class="DEFAULT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.PathOperatable.html#observePackingTo(psychopath.File,java.util.Collection)">observePackingTo</a></code><code class="b">(<code><a href="api/psychopath.File.html">File</a></code> <code class="parameterName">destination</code>, <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/Collection.html">Collection</a><code class="parameters"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></code></code> <code class="parameterName">patterns</code>)</code><i class="g"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Location.html">Location</a></code></code></code></i></li>
+						<li><i class="ABSTRACT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.PathOperatable.html#observePackingTo(psychopath.File,java.util.function.Function)">observePackingTo</a></code><code class="b">(<code><a href="api/psychopath.File.html">File</a></code> <code class="parameterName">destination</code>, <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a href="api/psychopath.Option.html">Option</a></code>, <code><a href="api/psychopath.Option.html">Option</a></code></code></code> <code class="parameterName">option</code>)</code><i class="g"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Location.html">Location</a></code></code></code></i></li>
+						<li><i class="DEFAULT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.PathOperatable.html#trackPackingTo(psychopath.File,java.lang.String...)">trackPackingTo</a></code><code class="b">(<code><a href="api/psychopath.File.html">File</a></code> <code class="parameterName">destination</code>, <code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code> <code class="parameterName">patterns</code>)</code><i class="g"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Progress.html">Progress</a></code></code></code></i></li>
+						<li><i class="DEFAULT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.PathOperatable.html#trackPackingTo(psychopath.File,java.util.Collection)">trackPackingTo</a></code><code class="b">(<code><a href="api/psychopath.File.html">File</a></code> <code class="parameterName">destination</code>, <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/Collection.html">Collection</a><code class="parameters"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></code></code> <code class="parameterName">patterns</code>)</code><i class="g"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Progress.html">Progress</a></code></code></code></i></li>
+						<li><i class="DEFAULT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.PathOperatable.html#trackPackingTo(psychopath.File,java.util.function.Function)">trackPackingTo</a></code><code class="b">(<code><a href="api/psychopath.File.html">File</a></code> <code class="parameterName">destination</code>, <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a href="api/psychopath.Option.html">Option</a></code>, <code><a href="api/psychopath.Option.html">Option</a></code></code></code> <code class="parameterName">option</code>)</code><i class="g"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Progress.html">Progress</a></code></code></code></i></li>
+						<li><i class="DEFAULT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.PathOperatable.html#existFile(java.lang.String...)">existFile</a></code><code class="b">(<code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code> <code class="parameterName">patterns</code>)</code><i class="g"><code>boolean</code></i></li>
+						<li><i class="DEFAULT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.PathOperatable.html#walkFile(java.lang.String...)">walkFile</a></code><code class="b">(<code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code> <code class="parameterName">patterns</code>)</code><i class="g"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.File.html">File</a></code></code></code></i></li>
+						<li><i class="DEFAULT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.PathOperatable.html#walkFile(java.util.Collection)">walkFile</a></code><code class="b">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/Collection.html">Collection</a><code class="parameters"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></code></code> <code class="parameterName">patterns</code>)</code><i class="g"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.File.html">File</a></code></code></code></i></li>
+						<li><i class="DEFAULT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.PathOperatable.html#walkFile(java.util.function.Function)">walkFile</a></code><code class="b">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a href="api/psychopath.Option.html">Option</a></code>, <code><a href="api/psychopath.Option.html">Option</a></code></code></code> <code class="parameterName">option</code>)</code><i class="g"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.File.html">File</a></code></code></code></i></li>
+						<li><i class="DEFAULT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.PathOperatable.html#walkFileWithBase(java.lang.String...)">walkFileWithBase</a></code><code class="b">(<code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code> <code class="parameterName">patterns</code>)</code><i class="g"><code>kiss.Signal<code class="parameters"><code>kiss.Ⅱ<code class="parameters"><code><a href="api/psychopath.Directory.html">Directory</a></code>, <code><a href="api/psychopath.File.html">File</a></code></code></code></code></code></i></li>
+						<li><i class="DEFAULT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.PathOperatable.html#walkFileWithBase(java.util.Collection)">walkFileWithBase</a></code><code class="b">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/Collection.html">Collection</a><code class="parameters"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></code></code> <code class="parameterName">patterns</code>)</code><i class="g"><code>kiss.Signal<code class="parameters"><code>kiss.Ⅱ<code class="parameters"><code><a href="api/psychopath.Directory.html">Directory</a></code>, <code><a href="api/psychopath.File.html">File</a></code></code></code></code></code></i></li>
+						<li><i class="ABSTRACT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.PathOperatable.html#walkFileWithBase(java.util.function.Function)">walkFileWithBase</a></code><code class="b">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a href="api/psychopath.Option.html">Option</a></code>, <code><a href="api/psychopath.Option.html">Option</a></code></code></code> <code class="parameterName">option</code>)</code><i class="g"><code>kiss.Signal<code class="parameters"><code>kiss.Ⅱ<code class="parameters"><code><a href="api/psychopath.Directory.html">Directory</a></code>, <code><a href="api/psychopath.File.html">File</a></code></code></code></code></code></i></li>
+						<li><i class="DEFAULT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.PathOperatable.html#walkDirectory(java.lang.String...)">walkDirectory</a></code><code class="b">(<code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code> <code class="parameterName">patterns</code>)</code><i class="g"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Directory.html">Directory</a></code></code></code></i></li>
+						<li><i class="DEFAULT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.PathOperatable.html#walkDirectory(java.util.Collection)">walkDirectory</a></code><code class="b">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/Collection.html">Collection</a><code class="parameters"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></code></code> <code class="parameterName">patterns</code>)</code><i class="g"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Directory.html">Directory</a></code></code></code></i></li>
+						<li><i class="DEFAULT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.PathOperatable.html#walkDirectory(java.util.function.Function)">walkDirectory</a></code><code class="b">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a href="api/psychopath.Option.html">Option</a></code>, <code><a href="api/psychopath.Option.html">Option</a></code></code></code> <code class="parameterName">option</code>)</code><i class="g"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Directory.html">Directory</a></code></code></code></i></li>
+						<li><i class="DEFAULT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.PathOperatable.html#walkDirectoryWithBase(java.lang.String...)">walkDirectoryWithBase</a></code><code class="b">(<code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code> <code class="parameterName">patterns</code>)</code><i class="g"><code>kiss.Signal<code class="parameters"><code>kiss.Ⅱ<code class="parameters"><code><a href="api/psychopath.Directory.html">Directory</a></code>, <code><a href="api/psychopath.Directory.html">Directory</a></code></code></code></code></code></i></li>
+						<li><i class="DEFAULT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.PathOperatable.html#walkDirectoryWithBase(java.util.Collection)">walkDirectoryWithBase</a></code><code class="b">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/Collection.html">Collection</a><code class="parameters"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></code></code> <code class="parameterName">patterns</code>)</code><i class="g"><code>kiss.Signal<code class="parameters"><code>kiss.Ⅱ<code class="parameters"><code><a href="api/psychopath.Directory.html">Directory</a></code>, <code><a href="api/psychopath.Directory.html">Directory</a></code></code></code></code></code></i></li>
+						<li><i class="ABSTRACT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.PathOperatable.html#walkDirectoryWithBase(java.util.function.Function)">walkDirectoryWithBase</a></code><code class="b">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a href="api/psychopath.Option.html">Option</a></code>, <code><a href="api/psychopath.Option.html">Option</a></code></code></code> <code class="parameterName">option</code>)</code><i class="g"><code>kiss.Signal<code class="parameters"><code>kiss.Ⅱ<code class="parameters"><code><a href="api/psychopath.Directory.html">Directory</a></code>, <code><a href="api/psychopath.Directory.html">Directory</a></code></code></code></code></code></i></li>
 					</ul>
 				</div>
 			</aside>
