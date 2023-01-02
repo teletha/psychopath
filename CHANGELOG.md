@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.1](https://github.com/teletha/psychopath/compare/v1.7.0...v1.7.1) (2023-01-02)
+
+
+### Bug Fixes
+
+* test ([9af0b68](https://github.com/teletha/psychopath/commit/9af0b688d1c13188d4157842eedc6d9dd610f9a1))
+
 ## [1.7.0](https://github.com/teletha/psychopath/compare/v1.6.0...v1.7.0) (2023-01-01)
 
 
