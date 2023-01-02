@@ -16,7 +16,7 @@ import org.junit.jupiter.api.Test;
 class CopyTest extends LocationTestHelper {
 
     @Test
-    public void absentToFile() {
+    void absentToFile() {
         File in = locateAbsent("absent");
         File out = locateFile("out");
 
@@ -27,7 +27,7 @@ class CopyTest extends LocationTestHelper {
     }
 
     @Test
-    public void absentToDirectory() {
+    void absentToDirectory() {
         File in = locateAbsent("absent");
         Directory out = locateDirectory("out");
 
@@ -38,7 +38,7 @@ class CopyTest extends LocationTestHelper {
     }
 
     @Test
-    public void absentToAbsent() {
+    void absentToAbsent() {
         File in = locateAbsent("absent");
         File out = locateAbsent("out");
 
@@ -49,7 +49,7 @@ class CopyTest extends LocationTestHelper {
     }
 
     @Test
-    public void fileToFile() {
+    void fileToFile() {
         File in = locateFile("In", "Success");
         File out = locateFile("Out", "This text will be overwritten by input file.");
 
@@ -59,7 +59,7 @@ class CopyTest extends LocationTestHelper {
     }
 
     @Test
-    public void fileToFileWithSameTimeStamp() {
+    void fileToFileWithSameTimeStamp() {
         Instant now = Instant.now();
         File in = locateFile("In", now, "Success");
         File out = locateFile("Out", now, "This text will be overwritten by input file.");
@@ -70,7 +70,7 @@ class CopyTest extends LocationTestHelper {
     }
 
     @Test
-    public void fileToFileWithDifferentTimeStamp() {
+    void fileToFileWithDifferentTimeStamp() {
         Instant now = Instant.now();
         File in = locateFile("In", now, "Success");
         File out = locateFile("Out", now.plusSeconds(10), "This text will be overwritten by input file.");
@@ -81,7 +81,7 @@ class CopyTest extends LocationTestHelper {
     }
 
     @Test
-    public void fileToAbsent() {
+    void fileToAbsent() {
         File in = locateFile("In", "Success");
         File out = locateAbsent("Out");
 
@@ -91,7 +91,7 @@ class CopyTest extends LocationTestHelper {
     }
 
     @Test
-    public void fileToDeepAbsent() {
+    void fileToDeepAbsent() {
         File in = locateFile("In", "Success");
         File out = locateAbsent("1/2/3");
 
@@ -101,7 +101,7 @@ class CopyTest extends LocationTestHelper {
     }
 
     @Test
-    public void fileToDirectory() {
+    void fileToDirectory() {
         File in = locateFile("In", "Success");
         Directory out = locateDirectory("Out");
 
@@ -111,7 +111,7 @@ class CopyTest extends LocationTestHelper {
     }
 
     @Test
-    public void directoryToDirectory() {
+    void directoryToDirectory() {
         Directory in = locateDirectory("In", $ -> {
             $.file("1", "One");
         });
@@ -125,7 +125,7 @@ class CopyTest extends LocationTestHelper {
     }
 
     @Test
-    public void directoryToDirectoryWithPattern() {
+    void directoryToDirectoryWithPattern() {
         Directory in = locateDirectory("In", $ -> {
             $.file("1", "One");
         });
@@ -141,7 +141,7 @@ class CopyTest extends LocationTestHelper {
     }
 
     @Test
-    public void directoryToDirectoryWithFilter() {
+    void directoryToDirectoryWithFilter() {
         Directory in = locateDirectory("In", $ -> {
             $.file("file");
             $.file("text");
@@ -161,7 +161,7 @@ class CopyTest extends LocationTestHelper {
     }
 
     @Test
-    public void directoryToAbsent() {
+    void directoryToAbsent() {
         Directory in = locateDirectory("In", $ -> {
             $.file("1", "One");
         });
@@ -173,7 +173,7 @@ class CopyTest extends LocationTestHelper {
     }
 
     @Test
-    public void directoryToDeepAbsent() {
+    void directoryToDeepAbsent() {
         Directory in = locateDirectory("In", $ -> {
             $.file("1", "One");
         });
@@ -185,7 +185,7 @@ class CopyTest extends LocationTestHelper {
     }
 
     @Test
-    public void children() {
+    void children() {
         Directory in = locateDirectory("In", $ -> {
             $.file("file");
             $.file("text");
@@ -206,7 +206,7 @@ class CopyTest extends LocationTestHelper {
     }
 
     @Test
-    public void descendant() {
+    void descendant() {
         Directory in = locateDirectory("In", $ -> {
             $.file("1", "One");
             $.file("2", "Two");
@@ -222,7 +222,7 @@ class CopyTest extends LocationTestHelper {
     }
 
     @Test
-    public void archiveToDirectory() {
+    void archiveToDirectory() {
         Folder in = locateArchive("main.zip", $ -> {
             $.file("1", "override");
         }).asArchive();
@@ -239,7 +239,7 @@ class CopyTest extends LocationTestHelper {
     }
 
     @Test
-    public void archiveToDirectoryWithPattern() {
+    void archiveToDirectoryWithPattern() {
         Folder in = locateArchive("main.zip", $ -> {
             $.file("1.txt", "override");
             $.file("2.txt", "not match");
@@ -257,7 +257,7 @@ class CopyTest extends LocationTestHelper {
     }
 
     @Test
-    public void archiveToAbsent() {
+    void archiveToAbsent() {
         Folder in = locateArchive("main.zip", $ -> {
             $.file("1.txt", "ok");
         }).asArchive();

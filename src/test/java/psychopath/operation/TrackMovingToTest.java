@@ -17,9 +17,6 @@ import psychopath.Folder;
 import psychopath.LocationTestHelper;
 import psychopath.Locator;
 
-/**
- * 
- */
 class TrackMovingToTest extends LocationTestHelper {
 
     @Test
