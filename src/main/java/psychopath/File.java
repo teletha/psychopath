@@ -446,7 +446,7 @@ public class File extends Location<File> {
     private Progress initProgress(Function<Option, Option> option) {
         long[] values = new long[2];
 
-        walkFile(option).to(file -> {
+        asArchive().walkFile(option).to(file -> {
             values[0]++;
             values[1] += file.size();
         });
