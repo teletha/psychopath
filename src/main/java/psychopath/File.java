@@ -9,7 +9,8 @@
  */
 package psychopath;
 
-import static java.nio.file.StandardCopyOption.*;
+import static java.nio.file.StandardCopyOption.COPY_ATTRIBUTES;
+import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -32,6 +33,7 @@ import java.nio.file.StandardOpenOption;
 import java.nio.file.WatchEvent;
 import java.nio.file.attribute.FileAttribute;
 import java.nio.file.spi.FileSystemProvider;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -398,36 +400,58 @@ public class File extends Location<File> {
      * @param option A operation {@link Option}.
      * @return A event stream which emits operated {@link File}s.
      */
-    public Signal<File> observeUnpackingTo(Directory destination, Function<Option, Option> option) {
+    public final Signal<File> observeUnpackingTo(Directory destination, Function<Option, Option> option) {
         return asArchive().observeCopyingTo(destination, option).as(File.class);
+    }
 
-        // return new Signal<>((observer, disposer) -> {
-        // try (ArchiveInputStream in = new ArchiveStreamFactory()
-        // .createArchiveInputStream(extension().replaceAll("7z", "7z-override"), newInputStream()))
-        // {
-        // destination.create();
-        //
-        // ArchiveEntry entry = null;
-        // while ((entry = in.getNextEntry()) != null) {
-        // if (in.canReadEntryData(entry)) {
-        // if (entry.isDirectory()) {
-        // destination.directory(entry.getName()).create();
-        // } else {
-        // File file = destination.file(entry.getName());
-        //
-        // try (OutputStream out = file.newOutputStream()) {
-        // observer.accept(file);
-        // I.copy(in, out, false);
-        // }
-        // }
-        // }
-        // }
-        // observer.complete();
-        // } catch (Throwable e) {
-        // observer.error(e);
-        // }
-        // return disposer;
-        // });
+    /**
+     * Build stream that unpack archive file to the destination {@link Directory}.
+     * 
+     * @param destination A destination {@link Directory}.
+     * @param patterns A list of glob patterns to accept file by its name.
+     * @return A event stream which emits operated {@link File}s.
+     */
+    public final Signal<Progress> trackUnpackingTo(Directory destination, String... patterns) {
+        return trackUnpackingTo(destination, Option.of(patterns));
+    }
+
+    /**
+     * Build stream that unpack archive file to the destination {@link Directory}.
+     * 
+     * @param destination A destination {@link Directory}.
+     * @param patterns A list of glob patterns to accept file by its name.
+     * @return A event stream which emits operated {@link File}s.
+     */
+    public final Signal<Progress> trackUnpackingTo(Directory destination, Collection<String> patterns) {
+        return trackUnpackingTo(destination, patterns.toArray(new String[patterns.size()]));
+    }
+
+    /**
+     * Build stream that unpack archive file to the destination {@link Directory}.
+     * 
+     * @param destination A destination {@link Directory}.
+     * @param option A operation {@link Option}.
+     * @return A event stream which emits operated {@link File}s.
+     */
+    public final Signal<Progress> trackUnpackingTo(Directory destination, Function<Option, Option> option) {
+        return observeUnpackingTo(destination, option).map(() -> initProgress(option), Progress::update);
+    }
+
+    /**
+     * Initialize the tracking model.
+     * 
+     * @param option
+     * @return
+     */
+    private Progress initProgress(Function<Option, Option> option) {
+        long[] values = new long[2];
+
+        walkFile(option).to(file -> {
+            values[0]++;
+            values[1] += file.size();
+        });
+
+        return new Progress((int) values[0], values[1]);
     }
 
     /**
