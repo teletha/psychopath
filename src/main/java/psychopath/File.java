@@ -48,6 +48,8 @@ import kiss.Ⅱ;
 
 public class File extends Location<File> {
 
+    private static final long serialVersionUID = -4975215112975879767L;
+
     /**
      * @param path
      */
@@ -61,7 +63,7 @@ public class File extends Location<File> {
      * @return
      */
     public Folder asArchive() {
-        return Locator.folder().add(new Directory(detectFileSystetm(this), o -> o.strip()));
+        return Locator.folder().add(new Directory(detectFileSystetm(this), true));
     }
 
     /**

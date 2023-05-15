@@ -26,21 +26,23 @@ import kiss.Ⅱ;
 
 public class Directory extends Location<Directory> {
 
-    private final Function<Option, Option> option;
+    private static final long serialVersionUID = -198528653744414727L;
+
+    private final boolean strip;
 
     /**
      * @param path
      */
     Directory(Path path) {
-        this(path, Function.identity());
+        this(path, false);
     }
 
     /**
      * 
      */
-    Directory(Path path, Function<Option, Option> option) {
+    Directory(Path path, boolean strip) {
         super(path);
-        this.option = option;
+        this.strip = strip;
     }
 
     /**
@@ -170,7 +172,8 @@ public class Directory extends Location<Directory> {
     private <L extends Location> Signal<L> walk(Class<L> clazz, Directory out, int type, Function<Option, Option> option) {
         return new Signal<L>((observer, disposer) -> {
             try {
-                Option o = this.option.andThen(option).apply(new Option());
+                Option o = option.apply(new Option());
+                if (strip) o = o.strip();
                 Files.walkFileTree(path, Set.of(), o.depth, new CymaticScan(this, out, type, observer, disposer, o));
                 observer.complete();
             } catch (Throwable e) {

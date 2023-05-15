@@ -10,6 +10,9 @@
 package psychopath;
 
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.nio.file.CopyOption;
 import java.nio.file.DirectoryStream;
@@ -32,13 +35,15 @@ import kiss.I;
 import kiss.Observer;
 import kiss.Signal;
 
-public abstract class Location<Self extends Location> implements Comparable<Location>, PathOperatable {
+public abstract class Location<Self extends Location> implements Comparable<Location>, PathOperatable, Serializable {
+
+    private static final long serialVersionUID = 3025018591084336134L;
 
     /** The separator flag. */
     private static final boolean useNativeSeparator = java.io.File.separatorChar == '/';
 
     /** The actual location. */
-    protected final Path path;
+    protected transient Path path;
 
     /**
      * @param path
@@ -902,4 +907,25 @@ public abstract class Location<Self extends Location> implements Comparable<Loca
      * @return The {@link Location}.
      */
     protected abstract Self convert(Path path);
+
+    /**
+     * Intercept serialization.
+     * 
+     * @param out
+     * @throws IOException
+     */
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        out.writeUTF(path());
+    }
+
+    /**
+     * Intercept deserialization.
+     * 
+     * @param in
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        path = Path.of(in.readUTF());
+    }
 }
