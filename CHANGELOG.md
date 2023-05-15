@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.8.0](https://github.com/teletha/psychopath/compare/v1.7.1...v1.8.0) (2023-05-15)
+
+
+### Features
+
+* Add trackable unpacking method on File. ([b7c97ba](https://github.com/teletha/psychopath/commit/b7c97ba74273214b146926c43e05f07592be2d01))
+* Location is serializable. ([86ad59c](https://github.com/teletha/psychopath/commit/86ad59ccbeb4254651c156caaafafe4a131b215f))
+
+
+### Bug Fixes
+
+* Progress for archive is broken. ([b7e78c0](https://github.com/teletha/psychopath/commit/b7e78c0eed8add23be3dbf97c27793ec9c85a56a))
+
 ## [1.7.1](https://github.com/teletha/psychopath/compare/v1.7.0...v1.7.1) (2023-01-02)
 
 
