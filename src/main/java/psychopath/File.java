@@ -9,9 +9,6 @@
  */
 package psychopath;
 
-import static java.nio.file.StandardCopyOption.COPY_ATTRIBUTES;
-import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOError;
@@ -29,6 +26,7 @@ import java.nio.file.FileSystemNotFoundException;
 import java.nio.file.Files;
 import java.nio.file.OpenOption;
 import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.nio.file.StandardOpenOption;
 import java.nio.file.WatchEvent;
 import java.nio.file.attribute.FileAttribute;
@@ -122,7 +120,7 @@ public class File extends Location<File> {
      */
     @Override
     public Signal<Location> observeCopyingTo(Directory destination, Function<Option, Option> option) {
-        return observeCopyingTo(destination.directory(option.apply(new Option()).allocator).file(name()));
+        return observeCopyingTo(destination.directory(option.apply(new Option()).allocator).file(name()), option);
     }
 
     /**
@@ -145,13 +143,38 @@ public class File extends Location<File> {
      * @param destination An output {@link Directory}.
      */
     public Signal<Location> observeCopyingTo(File destination) {
+        return observeCopyingTo(destination, Function.identity());
+    }
+
+    /**
+     * <p>
+     * Copy this {@link File} to the output {@link File} with its attributes.
+     * </p>
+     * <p>
+     * If the output file already exists, it will be replaced by input file unconditionaly. The
+     * exact file attributes that are copied is platform and file system dependent and therefore
+     * unspecified. Minimally, the last-modified-time is copied to the output file if supported by
+     * both the input and output file store. Copying of file timestamps may result in precision
+     * loss.
+     * </p>
+     * <p>
+     * Copying a file is not an atomic operation. If an {@link IOException} is thrown then it
+     * possible that the output file is incomplete or some of its file attributes have not been
+     * copied from the input file.
+     * </p>
+     *
+     * @param destination An output {@link Directory}.
+     */
+    public Signal<Location> observeCopyingTo(File destination, Function<Option, Option> option) {
+        Option o = option.apply(new Option());
+
         return new Signal<>((observer, disposer) -> {
             try {
-                if (isPresent() && !disposer.isDisposed()) {
+                if (isPresent() && !disposer.isDisposed() && o.canReplace(path, destination.path)) {
                     observer.accept(this);
 
                     destination.parent().create();
-                    Files.copy(path, destination.path, REPLACE_EXISTING, COPY_ATTRIBUTES);
+                    Files.copy(path, destination.path, StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.COPY_ATTRIBUTES);
                 }
                 observer.complete();
             } catch (Exception e) {
@@ -181,7 +204,30 @@ public class File extends Location<File> {
      * @param destination An output {@link Directory}.
      */
     public File copyTo(File destination) {
-        observeCopyingTo(destination).to(I.NoOP);
+        return copyTo(destination, Function.identity());
+    }
+
+    /**
+     * <p>
+     * Copy this {@link File} to the output {@link File} with its attributes.
+     * </p>
+     * <p>
+     * If the output file already exists, it will be replaced by input file unconditionaly. The
+     * exact file attributes that are copied is platform and file system dependent and therefore
+     * unspecified. Minimally, the last-modified-time is copied to the output file if supported by
+     * both the input and output file store. Copying of file timestamps may result in precision
+     * loss.
+     * </p>
+     * <p>
+     * Copying a file is not an atomic operation. If an {@link IOException} is thrown then it
+     * possible that the output file is incomplete or some of its file attributes have not been
+     * copied from the input file.
+     * </p>
+     *
+     * @param destination An output {@link Directory}.
+     */
+    public File copyTo(File destination, Function<Option, Option> option) {
+        observeCopyingTo(destination, option).to(I.NoOP);
         return destination;
     }
 
@@ -218,7 +264,7 @@ public class File extends Location<File> {
      */
     @Override
     public Signal<Location> observeMovingTo(Directory destination, Function<Option, Option> option) {
-        return observeMovingTo(destination.directory(option.apply(new Option()).allocator).file(name()));
+        return observeMovingTo(destination.directory(option.apply(new Option()).allocator).file(name()), option);
     }
 
     /**
@@ -239,13 +285,36 @@ public class File extends Location<File> {
      * @param destination An output {@link Path} object which can be file or directory.
      */
     public Signal<Location> observeMovingTo(File destination) {
+        return observeMovingTo(destination, Function.identity());
+    }
+
+    /**
+     * <p>
+     * Move this {@link File} to an output {@link File} with its attributes.
+     * </p>
+     * <p>
+     * If the output file already exists, it will be replaced by input file unconditionaly. The
+     * exact file attributes that are copied is platform and file system dependent and therefore
+     * unspecified. Minimally, the last-modified-time is copied to the output file if supported by
+     * both the input and output file store. Copying of file timestamps may result in precision
+     * loss.
+     * </p>
+     * <p>
+     * Moving a file is an atomic operation.
+     * </p>
+     *
+     * @param destination An output {@link Path} object which can be file or directory.
+     */
+    public Signal<Location> observeMovingTo(File destination, Function<Option, Option> option) {
+        Option o = option.apply(new Option());
+
         return new Signal<>((observer, disposer) -> {
             try {
-                if (isPresent() && !disposer.isDisposed()) {
+                if (isPresent() && !disposer.isDisposed() && o.canReplace(path, destination.path)) {
                     observer.accept(this);
 
                     destination.parent().create();
-                    Files.move(path, destination.path, REPLACE_EXISTING);
+                    Files.move(path, destination.path, StandardCopyOption.REPLACE_EXISTING);
                 }
                 observer.complete();
             } catch (Exception e) {
@@ -273,7 +342,28 @@ public class File extends Location<File> {
      * @param destination An output {@link Path} object which can be file or directory.
      */
     public File moveTo(File destination) {
-        observeMovingTo(destination).to(I.NoOP);
+        return moveTo(destination, Function.identity());
+    }
+
+    /**
+     * <p>
+     * Move this {@link File} to an output {@link File} with its attributes.
+     * </p>
+     * <p>
+     * If the output file already exists, it will be replaced by input file unconditionaly. The
+     * exact file attributes that are copied is platform and file system dependent and therefore
+     * unspecified. Minimally, the last-modified-time is copied to the output file if supported by
+     * both the input and output file store. Copying of file timestamps may result in precision
+     * loss.
+     * </p>
+     * <p>
+     * Moving a file is an atomic operation.
+     * </p>
+     *
+     * @param destination An output {@link Path} object which can be file or directory.
+     */
+    public File moveTo(File destination, Function<Option, Option> option) {
+        observeMovingTo(destination, option).to(I.NoOP);
 
         return destination;
     }

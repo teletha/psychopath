@@ -9,8 +9,12 @@
  */
 package psychopath;
 
-import static java.nio.file.FileVisitResult.*;
-import static java.nio.file.StandardWatchEventKinds.*;
+import static java.nio.file.FileVisitResult.CONTINUE;
+import static java.nio.file.FileVisitResult.SKIP_SUBTREE;
+import static java.nio.file.FileVisitResult.TERMINATE;
+import static java.nio.file.StandardWatchEventKinds.ENTRY_CREATE;
+import static java.nio.file.StandardWatchEventKinds.ENTRY_DELETE;
+import static java.nio.file.StandardWatchEventKinds.ENTRY_MODIFY;
 
 import java.io.IOException;
 import java.nio.file.ClosedWatchServiceException;
@@ -56,6 +60,9 @@ class CymaticScan implements FileVisitor<Path>, Runnable, Disposable {
     /** Can we accept root directory? */
     private final boolean root;
 
+    /** The replace mode. */
+    private final Option o;
+
     /** The include file patterns. */
     private BiPredicate<Path, BasicFileAttributes> include;
 
@@ -90,10 +97,11 @@ class CymaticScan implements FileVisitor<Path>, Runnable, Disposable {
         this.disposer = disposer;
         this.include = o.filter;
         this.root = o.acceptRoot;
+        this.o = o;
 
         Set<CopyOption> copies = new HashSet();
         if (type == 0) copies.add(StandardCopyOption.COPY_ATTRIBUTES);
-        if (o.existingMode == 0) copies.add(StandardCopyOption.REPLACE_EXISTING);
+        if (o.existingMode <= 1) copies.add(StandardCopyOption.REPLACE_EXISTING);
         this.copies = copies.toArray(new CopyOption[copies.size()]);
 
         // The copy and move operations need the root path.
@@ -227,11 +235,17 @@ class CymaticScan implements FileVisitor<Path>, Runnable, Disposable {
 
                 switch (type) {
                 case 0: // copy
-                    Files.copy(path, to.resolve(relative.toString()), copies);
+                    Path copyDestination = to.resolve(relative.toString());
+                    if (o.canReplace(path, copyDestination)) {
+                        Files.copy(path, copyDestination, copies);
+                    }
                     break;
 
                 case 1: // move
-                    Files.move(path, to.resolve(relative.toString()), copies);
+                    Path moveDestination = to.resolve(relative.toString());
+                    if (o.canReplace(path, moveDestination)) {
+                        Files.move(path, moveDestination, copies);
+                    }
                     break;
 
                 case 2: // delete

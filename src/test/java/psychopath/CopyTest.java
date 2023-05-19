@@ -81,6 +81,45 @@ class CopyTest extends LocationTestHelper {
     }
 
     @Test
+    void fileToFileOptionReplaceExisting() {
+        File in = locateFile("file", "update").lastModifiedTime(10);
+        File out = locateFile("out", "new").lastModifiedTime(20);
+
+        in.copyTo(out, o -> o.replaceExisting());
+        assert out.text().equals("update");
+
+        out = locateFile("out", "old").lastModifiedTime(0);
+        in.copyTo(out, o -> o.replaceExisting());
+        assert out.text().equals("update");
+    }
+
+    @Test
+    void fileToFileOptionReplaceOld() {
+        File in = locateFile("file", "update").lastModifiedTime(10);
+        File out = locateFile("out", "new").lastModifiedTime(20);
+
+        in.copyTo(out, o -> o.replaceOld());
+        assert out.text().equals("new");
+
+        out = locateFile("out", "old").lastModifiedTime(0);
+        in.copyTo(out, o -> o.replaceOld());
+        assert out.text().equals("update");
+    }
+
+    @Test
+    void fileToFileOptionSkip() {
+        File in = locateFile("file", "update").lastModifiedTime(10);
+        File out = locateFile("out", "new").lastModifiedTime(20);
+
+        in.copyTo(out, o -> o.skipExisting());
+        assert out.text().equals("new");
+
+        out = locateFile("out", "old").lastModifiedTime(0);
+        in.copyTo(out, o -> o.skipExisting());
+        assert out.text().equals("old");
+    }
+
+    @Test
     void fileToAbsent() {
         File in = locateFile("In", "Success");
         File out = locateAbsent("Out");
@@ -108,6 +147,54 @@ class CopyTest extends LocationTestHelper {
         in.copyTo(out);
 
         assert sameFile(in, out.file("In"));
+    }
+
+    @Test
+    void fileToDirectoryOptionReplaceExisting() {
+        File in = locateFile("file", "update").lastModifiedTime(10);
+        Directory out = locateDirectory("out", dir -> {
+            Locator.file(dir.file("file", "new")).lastModifiedTime(20);
+        });
+        in.copyTo(out, o -> o.replaceExisting());
+        assert out.file("file").text().equals("update");
+
+        out = locateDirectory("out", dir -> {
+            Locator.file(dir.file("file", "old")).lastModifiedTime(0);
+        });
+        in.copyTo(out, o -> o.replaceExisting());
+        assert out.file("file").text().equals("update");
+    }
+
+    @Test
+    void fileToDirectoryOptionReplaceOld() {
+        File in = locateFile("file", "update").lastModifiedTime(10);
+        Directory out = locateDirectory("out", dir -> {
+            Locator.file(dir.file("file", "new")).lastModifiedTime(20);
+        });
+        in.copyTo(out, o -> o.replaceOld());
+        assert out.file("file").text().trim().equals("new");
+
+        out = locateDirectory("out", dir -> {
+            Locator.file(dir.file("file", "old")).lastModifiedTime(0);
+        });
+        in.copyTo(out, o -> o.replaceOld());
+        assert out.file("file").text().trim().equals("update");
+    }
+
+    @Test
+    void fileToDirectoryOptionSkip() {
+        File in = locateFile("file", "update").lastModifiedTime(10);
+        Directory out = locateDirectory("out", dir -> {
+            Locator.file(dir.file("file", "new")).lastModifiedTime(20);
+        });
+        in.copyTo(out, o -> o.skipExisting());
+        assert out.file("file").text().trim().equals("new");
+
+        out = locateDirectory("out", dir -> {
+            Locator.file(dir.file("file", "old")).lastModifiedTime(0);
+        });
+        in.copyTo(out, o -> o.skipExisting());
+        assert out.file("file").text().trim().equals("old");
     }
 
     @Test
@@ -158,6 +245,60 @@ class CopyTest extends LocationTestHelper {
         assert sameFile(in.file("dir/file"), out.file("In/dir/file"));
         assert out.file("In/text").isAbsent();
         assert out.file("In/dir/text").isAbsent();
+    }
+
+    @Test
+    void directoryToDirectoryOptionReplaceExisting() {
+        Directory in = locateDirectory("In", $ -> {
+            Locator.file($.file("file", "update")).lastModifiedTime(10);
+        });
+        Directory out = locateDirectory("Out", $ -> {
+            Locator.file($.file("file", "new")).lastModifiedTime(20);
+        });
+        in.copyTo(out, o -> o.replaceExisting().strip());
+        assert out.file("file").text().trim().equals("update");
+
+        out = locateDirectory("Out", $ -> {
+            Locator.file($.file("file", "old")).lastModifiedTime(0);
+        });
+        in.copyTo(out, o -> o.replaceExisting().strip());
+        assert out.file("file").text().trim().equals("update");
+    }
+
+    @Test
+    void directoryToDirectoryOptionReplaceOld() {
+        Directory in = locateDirectory("In", $ -> {
+            Locator.file($.file("file", "update")).lastModifiedTime(10);
+        });
+        Directory out = locateDirectory("Out", $ -> {
+            Locator.file($.file("file", "new")).lastModifiedTime(20);
+        });
+        in.copyTo(out, o -> o.replaceOld().strip());
+        assert out.file("file").text().trim().equals("new");
+
+        out = locateDirectory("Out", $ -> {
+            Locator.file($.file("file", "old")).lastModifiedTime(0);
+        });
+        in.copyTo(out, o -> o.replaceOld().strip());
+        assert out.file("file").text().trim().equals("update");
+    }
+
+    @Test
+    void directoryToDirectoryOptionSkip() {
+        Directory in = locateDirectory("In", $ -> {
+            Locator.file($.file("file", "update")).lastModifiedTime(10);
+        });
+        Directory out = locateDirectory("Out", $ -> {
+            Locator.file($.file("file", "new")).lastModifiedTime(20);
+        });
+        in.copyTo(out, o -> o.skipExisting().strip());
+        assert out.file("file").text().trim().equals("new");
+
+        out = locateDirectory("Out", $ -> {
+            Locator.file($.file("file", "old")).lastModifiedTime(0);
+        });
+        in.copyTo(out, o -> o.skipExisting().strip());
+        assert out.file("file").text().trim().equals("old");
     }
 
     @Test

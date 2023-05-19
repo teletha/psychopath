@@ -9,6 +9,9 @@
  */
 package psychopath;
 
+import java.io.IOException;
+import java.nio.file.FileAlreadyExistsException;
+import java.nio.file.Files;
 import java.nio.file.OpenOption;
 import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
@@ -41,8 +44,9 @@ public class Option {
     /**
      * <ul>
      * <li>0 - replace</li>
-     * <li>1 - skip</li>
-     * <li>2 - stop with error</li>
+     * <li>1 - replace old</li>
+     * <li>2 - skip</li>
+     * <li>3 - stop with error</li>
      * </ul>
      */
     int existingMode;
@@ -149,7 +153,7 @@ public class Option {
      * 
      * @return
      */
-    public Option skipExisting() {
+    public Option replaceOld() {
         existingMode = 1;
         return this;
     }
@@ -159,9 +163,45 @@ public class Option {
      * 
      * @return
      */
-    public Option stopExisting() {
+    public Option skipExisting() {
         existingMode = 2;
         return this;
+    }
+
+    /**
+     * Specify override mode.
+     * 
+     * @return
+     */
+    public Option stopExisting() {
+        existingMode = 3;
+        return this;
+    }
+
+    boolean canReplace(Path from, Path to) throws FileAlreadyExistsException {
+        if (Files.notExists(to)) {
+            return true;
+        }
+
+        switch (existingMode) {
+        case 0:
+            return true;
+
+        case 1:
+            try {
+                long fromMilli = Files.getLastModifiedTime(from).toMillis();
+                long toMilli = Files.getLastModifiedTime(to).toMillis();
+                return toMilli < fromMilli;
+            } catch (IOException e) {
+                return false;
+            }
+
+        case 2:
+            return false;
+
+        default:
+            throw new FileAlreadyExistsException("The path [" + to + "] alread exist.");
+        }
     }
 
     /**
