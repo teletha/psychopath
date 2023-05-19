@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.9.0](https://github.com/teletha/psychopath/compare/v1.8.0...v1.9.0) (2023-05-19)
+
+
+### Features
+
+* Implements Option#skipExisting and Option#replaceOld. ([5768587](https://github.com/teletha/psychopath/commit/5768587a271fe36232a2922b20413f34ab823766))
+
 ## [1.8.0](https://github.com/teletha/psychopath/compare/v1.7.1...v1.8.0) (2023-05-15)
 
 
