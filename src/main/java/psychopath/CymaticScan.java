@@ -101,7 +101,7 @@ class CymaticScan implements FileVisitor<Path>, Runnable, Disposable {
 
         Set<CopyOption> copies = new HashSet();
         if (type == 0) copies.add(StandardCopyOption.COPY_ATTRIBUTES);
-        if (o.existingMode <= 1) copies.add(StandardCopyOption.REPLACE_EXISTING);
+        if (o.existingMode <= 2) copies.add(StandardCopyOption.REPLACE_EXISTING);
         this.copies = copies.toArray(new CopyOption[copies.size()]);
 
         // The copy and move operations need the root path.

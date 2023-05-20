@@ -163,7 +163,7 @@ public class Option {
      * 
      * @return
      */
-    public Option skipExisting() {
+    public Option replaceDifferent() {
         existingMode = 2;
         return this;
     }
@@ -173,8 +173,18 @@ public class Option {
      * 
      * @return
      */
-    public Option stopExisting() {
+    public Option skipExisting() {
         existingMode = 3;
+        return this;
+    }
+
+    /**
+     * Specify override mode.
+     * 
+     * @return
+     */
+    public Option stopExisting() {
+        existingMode = 4;
         return this;
     }
 
@@ -197,6 +207,17 @@ public class Option {
             }
 
         case 2:
+            try {
+                long fromMilli = Files.getLastModifiedTime(from).toMillis();
+                long toMilli = Files.getLastModifiedTime(to).toMillis();
+                long fromSize = Files.size(from);
+                long toSize = Files.size(to);
+                return toMilli != fromMilli || fromSize != toSize;
+            } catch (IOException e) {
+                return false;
+            }
+
+        case 3:
             return false;
 
         default:
