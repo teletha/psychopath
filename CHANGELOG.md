@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.10.0](https://github.com/teletha/psychopath/compare/v1.9.0...v1.10.0) (2023-05-20)
+
+
+### Features
+
+* Add Option#replaceDifferent. ([04a82bf](https://github.com/teletha/psychopath/commit/04a82bf48f8238e903379001eddb715e5ca27a42))
+
 ## [1.9.0](https://github.com/teletha/psychopath/compare/v1.8.0...v1.9.0) (2023-05-19)
 
 
