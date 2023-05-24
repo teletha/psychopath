@@ -41,7 +41,7 @@ class UnpackTest extends LocationTestHelper {
 
         Directory out = locateDirectory("Out", $ -> {
             $.file("1.txt", "This text will be overridden.");
-            $.file("3.txt", "This file will be deleted.");
+            $.file("3.txt", "This file will be remained.");
         });
 
         in.unpackTo(out, o -> o.sync().glob("1.txt"));
