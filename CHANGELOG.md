@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.11.0](https://github.com/teletha/psychopath/compare/v1.10.0...v1.11.0) (2023-05-24)
+
+
+### Features
+
+* Add File#asArchiveDirectory. ([b084a3d](https://github.com/teletha/psychopath/commit/b084a3ded1c9684a00bcc6f1a8d057596f3ab0ed))
+* Add sync option. ([d45c8a6](https://github.com/teletha/psychopath/commit/d45c8a6e54ea0b03a0ddd86556db7ff1b22d154d))
+
+
+### Bug Fixes
+
+* NPE ([b8f605a](https://github.com/teletha/psychopath/commit/b8f605aa784b4a03faa6928e558b80894e15e310))
+
 ## [1.10.0](https://github.com/teletha/psychopath/compare/v1.9.0...v1.10.0) (2023-05-20)
 
 
