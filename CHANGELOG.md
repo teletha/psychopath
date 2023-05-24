@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.12.0](https://github.com/teletha/psychopath/compare/v1.11.0...v1.12.0) (2023-05-24)
+
+
+### Features
+
+* Add Location#isBefore and #isAfter. ([9d34148](https://github.com/teletha/psychopath/commit/9d3414853313627f6ce16d020ff0893f9cbcf6e1))
+
 ## [1.11.0](https://github.com/teletha/psychopath/compare/v1.10.0...v1.11.0) (2023-05-24)
 
 
