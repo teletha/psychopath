@@ -349,6 +349,23 @@ class MoveTest extends LocationTestHelper {
     }
 
     @Test
+    void directoryToDirectoryOptionSync() {
+        Directory in = locateDirectory("In", $ -> {
+            $.file("create");
+            Locator.file($.file("file", "update")).lastModifiedTime(10);
+        });
+        Directory out = locateDirectory("Out", $ -> {
+            Locator.file($.file("file", "new")).lastModifiedTime(20);
+            $.file("delete", "This file will be deleted");
+        });
+
+        in.moveTo(out, o -> o.sync().strip());
+        assert out.file("file").isPresent();
+        assert out.file("create").isPresent();
+        assert out.file("delete").isAbsent();
+    }
+
+    @Test
     void directoryToAbsent() {
         Directory in = locateDirectory("In", $ -> {
             $.file("1", "One");

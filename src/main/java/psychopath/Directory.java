@@ -173,8 +173,15 @@ public class Directory extends Location<Directory> {
         return new Signal<L>((observer, disposer) -> {
             try {
                 Option o = option.apply(new Option());
-                if (strip) o = o.strip();
-                Files.walkFileTree(path, Set.of(), o.depth, new CymaticScan(this, out, type, observer, disposer, o));
+                if (o.sync) {
+                    out.walkFileWithBase(sub -> sub.glob(o.patterns)).to(x -> {
+                        File original = file(x.ⅰ.relativize(x.ⅱ).path());
+                        if (original.isAbsent()) {
+                            x.ⅱ.delete();
+                        }
+                    });
+                }
+                Files.walkFileTree(path, Set.of(), o.depth, new CymaticScan(this, out, type, observer, disposer, strip ? o.strip() : o));
                 observer.complete();
             } catch (Throwable e) {
                 observer.error(e);

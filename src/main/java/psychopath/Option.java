@@ -51,6 +51,9 @@ public class Option {
      */
     int existingMode;
 
+    /** The synchronize mode. */
+    boolean sync;
+
     /**
      * Hide.
      */
@@ -74,7 +77,7 @@ public class Option {
      * @param patterns
      * @return
      */
-    public Option glob(String... patterns) {
+    public Option glob(List<String> patterns) {
         if (patterns != null) {
             for (String pattern : patterns) {
                 if (pattern != null) {
@@ -83,6 +86,16 @@ public class Option {
             }
         }
         return this;
+    }
+
+    /**
+     * Specify glob pattern to specify location.
+     * 
+     * @param patterns
+     * @return
+     */
+    public Option glob(String... patterns) {
+        return glob(List.of(patterns));
     }
 
     /**
@@ -135,6 +148,16 @@ public class Option {
         if (relative != null && relative.isRelative()) {
             this.allocator = relative;
         }
+        return this;
+    }
+
+    /**
+     * Specify synchronize mode.
+     * 
+     * @return
+     */
+    public Option sync() {
+        this.sync = true;
         return this;
     }
 
