@@ -31,4 +31,23 @@ class UnpackTest extends LocationTestHelper {
         assert out.file("2.txt").isPresent();
         assert out.file("3.txt").isAbsent();
     }
+
+    @Test
+    void unpackToDirectoryWithSyncPattern() {
+        File in = locateArchive("main.zip", $ -> {
+            $.file("1.txt", "override");
+            $.file("2.txt", "not match");
+        });
+
+        Directory out = locateDirectory("Out", $ -> {
+            $.file("1.txt", "This text will be overridden.");
+            $.file("3.txt", "This file will be deleted.");
+        });
+
+        in.unpackTo(out, o -> o.sync().glob("1.txt"));
+
+        assert out.file("1.txt").isPresent();
+        assert out.file("2.txt").isAbsent();
+        assert out.file("3.txt").isPresent();
+    }
 }
