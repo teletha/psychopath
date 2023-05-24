@@ -672,6 +672,24 @@ public abstract class Location<Self extends Location> implements Comparable<Loca
     }
 
     /**
+     * Test whether this location is older than the specified location or not.
+     * 
+     * @return
+     */
+    public final boolean isBefore(Location other) {
+        return lastModifiedMilli() < other.lastModifiedMilli();
+    }
+
+    /**
+     * Test whether this location is newer than the specified location or not.
+     * 
+     * @return
+     */
+    public final boolean isAfter(Location other) {
+        return lastModifiedMilli() > other.lastModifiedMilli();
+    }
+
+    /**
      * Convert to {@link Directory} if it is possible. If this {@link Location} indicate
      * {@link File}, throw error.
      * 

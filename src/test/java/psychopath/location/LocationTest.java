@@ -136,4 +136,24 @@ class LocationTest extends LocationTestHelper {
         file.lastModifiedTime(now);
         assert file.lastModifiedDateTime().isEqual(now);
     }
+
+    @Test
+    void isBefore() {
+        File one = locateFile("one").lastModifiedTime(20);
+        File other = locateFile("other").lastModifiedTime(30);
+        File same = locateFile("same").lastModifiedTime(20);
+        assert one.isBefore(other);
+        assert other.isBefore(one) == false;
+        assert one.isBefore(same) == false;
+    }
+
+    @Test
+    void isAfter() {
+        File one = locateFile("one").lastModifiedTime(20);
+        File other = locateFile("other").lastModifiedTime(30);
+        File same = locateFile("same").lastModifiedTime(20);
+        assert one.isAfter(other) == false;
+        assert other.isAfter(one);
+        assert one.isAfter(same) == false;
+    }
 }
