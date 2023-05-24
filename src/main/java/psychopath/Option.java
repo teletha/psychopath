@@ -20,6 +20,8 @@ import java.util.List;
 import java.util.function.BiPredicate;
 import java.util.function.Function;
 
+import kiss.I;
+
 public class Option {
 
     /** The atomic writing. */
@@ -95,7 +97,7 @@ public class Option {
      * @return
      */
     public Option glob(String... patterns) {
-        return glob(List.of(patterns));
+        return glob(I.list(patterns));
     }
 
     /**
