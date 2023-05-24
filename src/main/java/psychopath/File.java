@@ -61,7 +61,16 @@ public class File extends Location<File> {
      * @return
      */
     public Folder asArchive() {
-        return Locator.folder().add(new Directory(detectFileSystetm(this), true));
+        return Locator.folder().add(asArchiveDirectory());
+    }
+
+    /**
+     * Cast to directory based on archive.
+     * 
+     * @return
+     */
+    public Directory asArchiveDirectory() {
+        return new Directory(detectFileSystetm(this), true);
     }
 
     /**
