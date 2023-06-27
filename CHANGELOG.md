@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.12.1](https://github.com/teletha/psychopath/compare/v1.12.0...v1.12.1) (2023-06-06)
+
+
+### Bug Fixes
+
+* Update sinobu. ([fa295ef](https://github.com/teletha/psychopath/commit/fa295ef6b9c0baed433e38a3b02a6de8ea538b52))
+
 ## [1.12.0](https://github.com/teletha/psychopath/compare/v1.11.0...v1.12.0) (2023-05-24)
 
 
