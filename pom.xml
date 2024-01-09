@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.github.teletha</groupId>
 	<artifactId>psychopath</artifactId>
-	<version>1.4.2</version>
+	<version>1.12.1</version>
 	<packaging>jar</packaging>
 	<name>psychopath</name>
 	<description/>
@@ -10,21 +10,21 @@
 		<dependency>
 			<groupId>com.github.teletha</groupId>
 			<artifactId>antibug</artifactId>
-			<version>[1.2.5,)</version>
+			<version>1.6.0</version>
 			<scope>test</scope>
 			<exclusions/>
 		</dependency>
 		<dependency>
 			<groupId>com.github.teletha</groupId>
 			<artifactId>sinobu</artifactId>
-			<version>[2.10.0,)</version>
+			<version>3.9.1</version>
 			<scope>compile</scope>
 			<exclusions/>
 		</dependency>
 	</dependencies>
 	<licenses>
 		<license>
-			<name>The MIT License</name>
+			<name>MIT License</name>
 			<url>https://opensource.org/licenses/MIT</url>
 		</license>
 	</licenses>
@@ -40,17 +40,6 @@
 			<url>https://jitpack.io/</url>
 		</repository>
 	</repositories>
-	<url>https://github.com/Teletha/Psychopath</url>
-	<scm>
-		<url>https://github.com/Teletha/Psychopath</url>
-		<connection>scm:git:https://github.com/Teletha/Psychopath.git</connection>
-		<developerConnection>scm:git:https://github.com/Teletha/Psychopath.git</developerConnection>
-	</scm>
-	<issueManagement>
-		<system>GitHub</system>
-		<url>https://github.com/Teletha/Psychopath/issues</url>
-	</issueManagement>
-	<developers/>
 	<build>
 		<plugins>
 			<plugin>
@@ -58,7 +47,7 @@
 				<version>3.8.1</version>
 				<configuration>
 					<encoding>UTF-8</encoding>
-					<release>16</release>
+					<release>19</release>
 					<compilerArgs/>
 				</configuration>
 			</plugin>
