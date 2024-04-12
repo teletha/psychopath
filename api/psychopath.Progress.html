@@ -1,16 +1,20 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 	<head>
 		<meta charset="UTF-8"/>
+		<meta content="width=device-width, initial-scale=1" name="viewport"/>
+		<meta content="Explains how to use Psychopath and its API. " name="description"/>
+		<link href="https://fonts.googleapis.com" rel="preconnect"/>
+		<link href="https://cdn.jsdelivr.net" rel="preconnect"/>
 		<title>Psychopath API</title>
 		<base href="../"/>
 		<script src="mimic.js" type="module"></script>
 		<link href="main.css" rel="stylesheet"/>
 	</head>
-	<body class="h">
-		<header class="j">
-			<h1 class="f" date="Use saved searches to filter your results more quickly" ver="1.12.1"><code>Psychopath</code></h1>
-			<nav class="I"><a href="api/"><svg class="A svg" viewBox="0 0 24 24">
+	<body class="M">
+		<header class="X">
+			<h1 class="j" date="2023-06-06" ver="1.12.1"><code>Psychopath</code></h1>
+			<nav class="Y"><a href="api/"><svg class="A svg" viewBox="0 0 24 24">
 						<use href="main.svg#package"/>
 					</svg><code>API</code></a><a href="https://github.com/teletha/psychopath/discussions" target="_blank"><svg class="A svg" viewBox="0 0 24 24">
 						<use href="main.svg#user"/>
@@ -19,7 +23,7 @@
 					</svg>Activity</a><a href="https://github.com/teletha/psychopath" target="_blank"><svg class="A svg" viewBox="0 0 24 24">
 						<use href="main.svg#github"/>
 					</svg>Repository</a></nav>
-			<div class="L" id="ViewMode"><a id="light" title="Change to a brighter color scheme"><svg class="A svg" viewBox="0 0 24 24">
+			<div class="l" id="ViewMode"><a id="light" title="Change to a brighter color scheme"><svg class="A svg" viewBox="0 0 24 24">
 						<use href="main.svg#sun"/>
 					</svg>
 				</a><a id="dark" title="Change to a darker color scheme"><svg class="A svg" viewBox="0 0 24 24">
@@ -27,119 +31,119 @@
 					</svg>
 				</a></div>
 		</header>
-		<main class="P">
-			<nav class="O">
+		<main class="O">
+			<nav class="L">
 				<div></div>
 			</nav>
-			<article class="X" id="Article">
-				<section class="l"><code class="H">psychopath</code>
-					<h2 class="Class N"><code class="m">Progress</code></h2>
-					<div class="S"></div><span class="B"><p>You can get detailed progress information on the process.</p>
-					</span></section>
-				<section class="l" id="totalFiles">
-					<h2 class="Y"><i class="FINAL"><i class="PUBLIC"></i></i><code class="m">totalFiles</code><i class="k"><code class="return">int</code></i></h2><span class="B"><p>Total number of files to be processed</p>
-					</span></section>
-				<section class="l" id="totalSize">
-					<h2 class="Y"><i class="FINAL"><i class="PUBLIC"></i></i><code class="m">totalSize</code><i class="k"><code class="return">long</code></i></h2><span class="B"><p>Total data size (byte) to be processed</p>
-					</span></section>
-				<section class="l" id="startingTime">
-					<h2 class="Y"><i class="FINAL"><i class="PUBLIC"></i></i><code class="m">startingTime</code><i class="k"><code class="return">long</code></i></h2><span class="B"><p>The starting time. (nano)</p>
-					</span></section>
-				<section class="l" id="location">
-					<h2 class="Y"><i class="PUBLIC"></i><code class="m">location</code><i class="k"><code class="return"><a href="api/psychopath.Location.html">Location</a></code></i></h2><span class="B"><p>The current processing file.</p>
-					</span></section>
-				<section class="l" id="completedFiles()">
-					<h2 class="Y"><i class="PUBLIC"></i><code class="m">completedFiles</code><code class="Z">()</code><i class="k"><code>int</code></i></h2>
-					<table class="J">
-						<tr class="g">
+			<article class="f" id="Article">
+				<section class="i"><code class="N">psychopath</code>
+					<h2 class="Class a"><code class="S">Progress</code></h2>
+					<div class="g"></div><span class="B"><p>You can get detailed progress information on the process.</p>
+</span></section>
+				<section class="i" id="totalFiles">
+					<h2 class="J"><i class="FINAL"><i class="PUBLIC"></i></i><code class="S">totalFiles</code><i class="K"><code class="return">int</code></i></h2><span class="B"><p>Total number of files to be processed</p>
+</span></section>
+				<section class="i" id="totalSize">
+					<h2 class="J"><i class="FINAL"><i class="PUBLIC"></i></i><code class="S">totalSize</code><i class="K"><code class="return">long</code></i></h2><span class="B"><p>Total data size (byte) to be processed</p>
+</span></section>
+				<section class="i" id="startingTime">
+					<h2 class="J"><i class="FINAL"><i class="PUBLIC"></i></i><code class="S">startingTime</code><i class="K"><code class="return">long</code></i></h2><span class="B"><p>The starting time. (nano)</p>
+</span></section>
+				<section class="i" id="location">
+					<h2 class="J"><i class="PUBLIC"></i><code class="S">location</code><i class="K"><code class="return"><a href="api/psychopath.Location.html">Location</a></code></i></h2><span class="B"><p>The current processing file.</p>
+</span></section>
+				<section class="i" id="completedFiles()">
+					<h2 class="J"><i class="PUBLIC"></i><code class="S">completedFiles</code><code class="Z">()</code><i class="K"><code>int</code></i></h2>
+					<table class="W">
+						<tr class="T">
 							<td><code>int</code></td>
 							<td></td>
 						</tr>
 					</table><span class="B"><p>Calculate the number of completed files.</p>
-					</span></section>
-				<section class="l" id="completedSize()">
-					<h2 class="Y"><i class="PUBLIC"></i><code class="m">completedSize</code><code class="Z">()</code><i class="k"><code>long</code></i></h2>
-					<table class="J">
-						<tr class="g">
+</span></section>
+				<section class="i" id="completedSize()">
+					<h2 class="J"><i class="PUBLIC"></i><code class="S">completedSize</code><code class="Z">()</code><i class="K"><code>long</code></i></h2>
+					<table class="W">
+						<tr class="T">
 							<td><code>long</code></td>
 							<td></td>
 						</tr>
 					</table><span class="B"><p>Calculate the data size (byte) of completed files.</p>
-					</span></section>
-				<section class="l" id="remainingFiles()">
-					<h2 class="Y"><i class="PUBLIC"></i><code class="m">remainingFiles</code><code class="Z">()</code><i class="k"><code>int</code></i></h2>
-					<table class="J">
-						<tr class="g">
+</span></section>
+				<section class="i" id="remainingFiles()">
+					<h2 class="J"><i class="PUBLIC"></i><code class="S">remainingFiles</code><code class="Z">()</code><i class="K"><code>int</code></i></h2>
+					<table class="W">
+						<tr class="T">
 							<td><code>int</code></td>
 							<td></td>
 						</tr>
 					</table><span class="B"><p>Calculate the number of remaining files.</p>
-					</span></section>
-				<section class="l" id="remainingSize()">
-					<h2 class="Y"><i class="PUBLIC"></i><code class="m">remainingSize</code><code class="Z">()</code><i class="k"><code>long</code></i></h2>
-					<table class="J">
-						<tr class="g">
+</span></section>
+				<section class="i" id="remainingSize()">
+					<h2 class="J"><i class="PUBLIC"></i><code class="S">remainingSize</code><code class="Z">()</code><i class="K"><code>long</code></i></h2>
+					<table class="W">
+						<tr class="T">
 							<td><code>long</code></td>
 							<td></td>
 						</tr>
 					</table><span class="B"><p>Calculate the data size (byte) of remaining files.</p>
-					</span></section>
-				<section class="l" id="rateByFiles()">
-					<h2 class="Y"><i class="PUBLIC"></i><code class="m">rateByFiles</code><code class="Z">()</code><i class="k"><code>int</code></i></h2>
-					<table class="J">
-						<tr class="g">
+</span></section>
+				<section class="i" id="rateByFiles()">
+					<h2 class="J"><i class="PUBLIC"></i><code class="S">rateByFiles</code><code class="Z">()</code><i class="K"><code>int</code></i></h2>
+					<table class="W">
+						<tr class="T">
 							<td><code>int</code></td>
 							<td></td>
 						</tr>
 					</table><span class="B"><p>Calculate the progress rate by number of files. (0 ~ 100)</p>
-					</span></section>
-				<section class="l" id="rateBySize()">
-					<h2 class="Y"><i class="PUBLIC"></i><code class="m">rateBySize</code><code class="Z">()</code><i class="k"><code>int</code></i></h2>
-					<table class="J">
-						<tr class="g">
+</span></section>
+				<section class="i" id="rateBySize()">
+					<h2 class="J"><i class="PUBLIC"></i><code class="S">rateBySize</code><code class="Z">()</code><i class="K"><code>int</code></i></h2>
+					<table class="W">
+						<tr class="T">
 							<td><code>int</code></td>
 							<td></td>
 						</tr>
 					</table><span class="B"><p>Calculate the progress rate by data size. (0 ~ 100)</p>
-					</span></section>
-				<section class="l" id="elapsedTime()">
-					<h2 class="Y"><i class="PUBLIC"></i><code class="m">elapsedTime</code><code class="Z">()</code><i class="k"><code>long</code></i></h2>
-					<table class="J">
-						<tr class="g">
+</span></section>
+				<section class="i" id="elapsedTime()">
+					<h2 class="J"><i class="PUBLIC"></i><code class="S">elapsedTime</code><code class="Z">()</code><i class="K"><code>long</code></i></h2>
+					<table class="W">
+						<tr class="T">
 							<td><code>long</code></td>
 							<td></td>
 						</tr>
 					</table><span class="B"><p>Estimate the elapsed time of the current processing.</p>
-					</span></section>
-				<section class="l" id="remainingTime()">
-					<h2 class="Y"><i class="PUBLIC"></i><code class="m">remainingTime</code><code class="Z">()</code><i class="k"><code>long</code></i></h2>
-					<table class="J">
-						<tr class="g">
+</span></section>
+				<section class="i" id="remainingTime()">
+					<h2 class="J"><i class="PUBLIC"></i><code class="S">remainingTime</code><code class="Z">()</code><i class="K"><code>long</code></i></h2>
+					<table class="W">
+						<tr class="T">
 							<td><code>long</code></td>
 							<td></td>
 						</tr>
 					</table><span class="B"><p>Estimate the remaining time of the current processing.</p>
-					</span></section>
+</span></section>
 			</article>
-			<aside class="W" id="SubNavi">
-				<div class="d">
-					<h5 class="K">Fields</h5>
+			<aside class="h" id="SubNavi">
+				<div class="V">
+					<h5 class="P">Fields</h5>
 					<ul>
-						<li><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Progress.html#totalFiles">totalFiles</a></code><i class="Q"><code class="return">int</code></i></li>
-						<li><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Progress.html#totalSize">totalSize</a></code><i class="Q"><code class="return">long</code></i></li>
-						<li><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Progress.html#startingTime">startingTime</a></code><i class="Q"><code class="return">long</code></i></li>
-						<li><i class="PUBLIC"></i><code><a href="api/psychopath.Progress.html#location">location</a></code><i class="Q"><code class="return"><a href="api/psychopath.Location.html">Location</a></code></i></li>
+						<li><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Progress.html#totalFiles">totalFiles</a></code><i class="e"><code class="return">int</code></i></li>
+						<li><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Progress.html#totalSize">totalSize</a></code><i class="e"><code class="return">long</code></i></li>
+						<li><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Progress.html#startingTime">startingTime</a></code><i class="e"><code class="return">long</code></i></li>
+						<li><i class="PUBLIC"></i><code><a href="api/psychopath.Progress.html#location">location</a></code><i class="e"><code class="return"><a href="api/psychopath.Location.html">Location</a></code></i></li>
 					</ul>
-					<h5 class="K">Methods</h5>
+					<h5 class="P">Methods</h5>
 					<ul>
-						<li><i class="PUBLIC"></i><code><a href="api/psychopath.Progress.html#completedFiles()">completedFiles</a></code><code class="Z">()</code><i class="Q"><code>int</code></i></li>
-						<li><i class="PUBLIC"></i><code><a href="api/psychopath.Progress.html#completedSize()">completedSize</a></code><code class="Z">()</code><i class="Q"><code>long</code></i></li>
-						<li><i class="PUBLIC"></i><code><a href="api/psychopath.Progress.html#remainingFiles()">remainingFiles</a></code><code class="Z">()</code><i class="Q"><code>int</code></i></li>
-						<li><i class="PUBLIC"></i><code><a href="api/psychopath.Progress.html#remainingSize()">remainingSize</a></code><code class="Z">()</code><i class="Q"><code>long</code></i></li>
-						<li><i class="PUBLIC"></i><code><a href="api/psychopath.Progress.html#rateByFiles()">rateByFiles</a></code><code class="Z">()</code><i class="Q"><code>int</code></i></li>
-						<li><i class="PUBLIC"></i><code><a href="api/psychopath.Progress.html#rateBySize()">rateBySize</a></code><code class="Z">()</code><i class="Q"><code>int</code></i></li>
-						<li><i class="PUBLIC"></i><code><a href="api/psychopath.Progress.html#elapsedTime()">elapsedTime</a></code><code class="Z">()</code><i class="Q"><code>long</code></i></li>
-						<li><i class="PUBLIC"></i><code><a href="api/psychopath.Progress.html#remainingTime()">remainingTime</a></code><code class="Z">()</code><i class="Q"><code>long</code></i></li>
+						<li><i class="PUBLIC"></i><code><a href="api/psychopath.Progress.html#completedFiles()">completedFiles</a></code><code class="Z">()</code><i class="e"><code>int</code></i></li>
+						<li><i class="PUBLIC"></i><code><a href="api/psychopath.Progress.html#completedSize()">completedSize</a></code><code class="Z">()</code><i class="e"><code>long</code></i></li>
+						<li><i class="PUBLIC"></i><code><a href="api/psychopath.Progress.html#remainingFiles()">remainingFiles</a></code><code class="Z">()</code><i class="e"><code>int</code></i></li>
+						<li><i class="PUBLIC"></i><code><a href="api/psychopath.Progress.html#remainingSize()">remainingSize</a></code><code class="Z">()</code><i class="e"><code>long</code></i></li>
+						<li><i class="PUBLIC"></i><code><a href="api/psychopath.Progress.html#rateByFiles()">rateByFiles</a></code><code class="Z">()</code><i class="e"><code>int</code></i></li>
+						<li><i class="PUBLIC"></i><code><a href="api/psychopath.Progress.html#rateBySize()">rateBySize</a></code><code class="Z">()</code><i class="e"><code>int</code></i></li>
+						<li><i class="PUBLIC"></i><code><a href="api/psychopath.Progress.html#elapsedTime()">elapsedTime</a></code><code class="Z">()</code><i class="e"><code>long</code></i></li>
+						<li><i class="PUBLIC"></i><code><a href="api/psychopath.Progress.html#remainingTime()">remainingTime</a></code><code class="Z">()</code><i class="e"><code>long</code></i></li>
 					</ul>
 				</div>
 			</aside>
