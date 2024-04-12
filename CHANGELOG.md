@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.12.2](https://github.com/teletha/psychopath/compare/v1.12.1...v1.12.2) (2024-04-12)
+
+
+### Bug Fixes
+
+* update ci process ([37ad45b](https://github.com/teletha/psychopath/commit/37ad45b41da95fe2b5f428f429c29f8032f7152f))
+* update license ([da720de](https://github.com/teletha/psychopath/commit/da720def29bbc22d1812c58ebb536775abc8c4b6))
+* Use independent thread pool for observing modification. ([ca0d343](https://github.com/teletha/psychopath/commit/ca0d343e672b9e9e9a4fc7fbdfe298d60ee28fe3))
+
 ## [1.12.1](https://github.com/teletha/psychopath/compare/v1.12.0...v1.12.1) (2023-06-06)
 
 
