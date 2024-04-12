@@ -9,8 +9,6 @@
  */
 package psychopath;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.Map;
 
 import org.junit.jupiter.api.Test;
@@ -32,8 +30,8 @@ class LocateTest extends LocationTestHelper {
     }
 
     @Test
-    void locateWhitespace() throws MalformedURLException {
-        File file = Locator.file(new URL("file://white space"));
+    void locateWhitespace() {
+        File file = Locator.file("white space");
         assert !file.isAbsolute();
     }
 
