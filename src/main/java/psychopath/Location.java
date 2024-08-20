@@ -29,7 +29,9 @@ import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.temporal.TemporalAccessor;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import kiss.I;
 import kiss.Observer;
@@ -41,6 +43,9 @@ public abstract class Location<Self extends Location> implements Comparable<Loca
 
     /** The separator flag. */
     private static final boolean useNativeSeparator = java.io.File.separatorChar == '/';
+
+    /** The deleteOnExit supporter on fail-over strategy. */
+    private static Set<Location> deletions;
 
     /** The actual location. */
     protected transient Path path;
@@ -261,12 +266,12 @@ public abstract class Location<Self extends Location> implements Comparable<Loca
      * respect to other file system operations.
      * <p>
      * <b>Usage Example:</b> Suppose we want to read a file's attributes in bulk: <pre>
-     *    Path path = ...
-     *    BasicFileAttributes attrs = Files.readAttributes(path, BasicFileAttributes.class);
+     * Path path = ...
+     * BasicFileAttributes attrs = Files.readAttributes(path, BasicFileAttributes.class);
      * </pre> Alternatively, suppose we want to read file's POSIX attributes without following
      * symbolic links: <pre>
-     *    PosixFileAttributes attrs =
-     *        Files.readAttributes(path, PosixFileAttributes.class, NOFOLLOW_LINKS);
+     * PosixFileAttributes attrs =
+     * Files.readAttributes(path, PosixFileAttributes.class, NOFOLLOW_LINKS);
      * </pre>
      *
      * @return the file attributes
@@ -762,7 +767,15 @@ public abstract class Location<Self extends Location> implements Comparable<Loca
      * @return
      */
     public Self deleteOnExit() {
-        asJavaFile().deleteOnExit();
+        try {
+            asJavaFile().deleteOnExit();
+        } catch (UnsupportedOperationException e) {
+            if (deletions == null) {
+                deletions = new HashSet();
+                Runtime.getRuntime().addShutdownHook(new Thread(() -> deletions.forEach(Location::delete)));
+            }
+            deletions.add(this);
+        }
         return (Self) this;
     }
 

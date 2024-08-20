@@ -20,5 +20,6 @@ public class Project extends bee.api.Project {
 
         require("com.github.teletha", "sinobu");
         require("com.github.teletha", "antibug").atTest();
+        require("com.google.jimfs", "jimfs").atTest();
     }
 }
