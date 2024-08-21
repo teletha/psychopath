@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.13.0](https://github.com/teletha/psychopath/compare/v1.12.2...v1.13.0) (2024-08-20)
+
+
+### Features
+
+* fail over on Location#exitOnClose ([5d9ba5a](https://github.com/teletha/psychopath/commit/5d9ba5ac94495b81ee3f1b525dcabe3a8940b083))
+
 ## [1.12.2](https://github.com/teletha/psychopath/compare/v1.12.1...v1.12.2) (2024-04-12)
 
 
