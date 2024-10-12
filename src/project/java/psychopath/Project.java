@@ -16,7 +16,7 @@ public class Project extends bee.api.Project {
     {
         product("com.github.teletha", "psychopath", ref("version.txt"));
 
-        require(SourceVersion.RELEASE_19, SourceVersion.RELEASE_17);
+        require(SourceVersion.RELEASE_21, SourceVersion.RELEASE_21);
 
         require("com.github.teletha", "sinobu");
         require("com.github.teletha", "antibug").atTest();

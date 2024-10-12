@@ -1,5 +1,5 @@
 <p align="center">
-    <a href="https://docs.oracle.com/en/java/javase/17/"><img src="https://img.shields.io/badge/Java-Release%2017-green"/></a>
+    <a href="https://docs.oracle.com/en/java/javase/21/"><img src="https://img.shields.io/badge/Java-Release%2021-green"/></a>
     <span>&nbsp;</span>
     <a href="https://jitpack.io/#teletha/psychopath"><img src="https://img.shields.io/jitpack/v/github/teletha/psychopath?label=Repository&color=green"></a>
     <span>&nbsp;</span>
@@ -7,25 +7,14 @@
 </p>
 
 
-## Summary
-
-<p align="right"><a href="#top">back to top</a></p>
 
 
-## Usage
 
-<p align="right"><a href="#top">back to top</a></p>
 
 
 ## Prerequisites
-Psychopath runs on all major operating systems and requires only [Java version 17](https://docs.oracle.com/en/java/javase/17/) or later to run.
-To check, please run `java -version` from the command line interface. You should see something like this:
-```
-> java -version
-openjdk version "16" 2021-03-16
-OpenJDK Runtime Environment (build 16+36-2231)
-OpenJDK 64-Bit Server VM (build 16+36-2231, mixed mode, sharing)
-```
+Psychopath runs on all major operating systems and requires only [Java version 21](https://docs.oracle.com/en/java/javase/21/) or later to run.
+To check, please run `java -version` on your terminal.
 <p align="right"><a href="#top">back to top</a></p>
 
 ## Install
@@ -108,7 +97,7 @@ If you think something might be a bug, but you're not sure, ask on StackOverflow
 
 ## Dependency
 Psychopath depends on the following products on runtime.
-* [sinobu-3.12.0](https://mvnrepository.com/artifact/com.github.teletha/sinobu/3.12.0)
+* [sinobu-3.14.1](https://mvnrepository.com/artifact/com.github.teletha/sinobu/3.14.1)
 <p align="right"><a href="#top">back to top</a></p>
 
 

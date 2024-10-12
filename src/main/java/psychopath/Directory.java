@@ -16,10 +16,7 @@ import java.nio.file.Path;
 import java.nio.file.WatchEvent;
 import java.util.Collection;
 import java.util.Set;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import java.util.concurrent.ThreadFactory;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
@@ -31,17 +28,6 @@ import kiss.Ⅱ;
 public class Directory extends Location<Directory> {
 
     private static final long serialVersionUID = -198528653744414727L;
-
-    private static final ExecutorService threads = Executors.newCachedThreadPool(new ThreadFactory() {
-
-        @Override
-        public Thread newThread(Runnable run) {
-            Thread thread = new Thread(run);
-            thread.setDaemon(true);
-            thread.setName("Psychopath File Watcher");
-            return thread;
-        }
-    });
 
     private final boolean strip;
 
@@ -333,7 +319,7 @@ public class Directory extends Location<Directory> {
             CymaticScan watcher = new CymaticScan(this, observer, disposer, patterns);
 
             // Run in anothor thread.
-            Future<?> submit = threads.submit(watcher);
+            Future<?> submit = I.Jobs.submit(watcher);
 
             // API definition
             return watcher.add(submit);
