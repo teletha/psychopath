@@ -1,5 +1,16 @@
 # Changelog
 
+## [2.0.0](https://github.com/teletha/psychopath/compare/v1.13.0...v2.0.0) (2024-10-12)
+
+
+### ⚠ BREAKING CHANGES
+
+* update java version to 21
+
+### Features
+
+* update java version to 21 ([8e926f0](https://github.com/teletha/psychopath/commit/8e926f02e7607a021d1650df6be9dff7e1297b0f))
+
 ## [1.13.0](https://github.com/teletha/psychopath/compare/v1.12.2...v1.13.0) (2024-08-20)
 
 
