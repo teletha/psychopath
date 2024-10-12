@@ -10,7 +10,7 @@
 		<dependency>
 			<groupId>com.github.teletha</groupId>
 			<artifactId>antibug</artifactId>
-			<version>1.7.0</version>
+			<version>1.9.0</version>
 			<scope>test</scope>
 			<exclusions/>
 		</dependency>
@@ -24,7 +24,7 @@
 		<dependency>
 			<groupId>com.github.teletha</groupId>
 			<artifactId>sinobu</artifactId>
-			<version>3.12.0</version>
+			<version>4.0.0</version>
 			<scope>compile</scope>
 			<exclusions/>
 		</dependency>
@@ -54,7 +54,7 @@
 				<version>3.8.1</version>
 				<configuration>
 					<encoding>UTF-8</encoding>
-					<release>19</release>
+					<release>21</release>
 					<compilerArgs/>
 				</configuration>
 			</plugin>
