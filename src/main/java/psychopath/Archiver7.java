@@ -10,6 +10,7 @@
 package psychopath;
 
 import java.lang.ProcessBuilder.Redirect;
+import java.net.URI;
 import java.net.URL;
 
 import kiss.I;
@@ -31,7 +32,7 @@ class Archiver7 {
         if (archiver.isAbsent()) {
             // try to download
             try {
-                URL in = new URL("https://github.com/Teletha/Psychopath/raw/master/7z.zip");
+                URL in = URI.create("https://github.com/Teletha/Psychopath/raw/master/7z.zip").toURL();
 
                 Locator.temporaryFile("7z.zip").writeFrom(in.openStream()).unpackTo(archiverDirectory);
             } catch (Exception e) {
