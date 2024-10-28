@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.0.1](https://github.com/teletha/psychopath/compare/v2.0.0...v2.0.1) (2024-10-28)
+
+
+### Bug Fixes
+
+* remove deprecated api ([40985b8](https://github.com/teletha/psychopath/commit/40985b83a4880239ac45b0a464fe346dc84e338d))
+* unpacking with strip option is broken ([543cf17](https://github.com/teletha/psychopath/commit/543cf17b563825964a11788c4f2ccce091f61e60))
+
 ## [2.0.0](https://github.com/teletha/psychopath/compare/v1.13.0...v2.0.0) (2024-10-12)
 
 
