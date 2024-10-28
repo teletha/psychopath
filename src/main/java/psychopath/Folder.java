@@ -379,7 +379,7 @@ public final class Folder implements PathOperatable {
                 return pack(archive, location.parent(), location.asFile(), o.allocator);
             } else {
                 return location.walkFile(combined)
-                        .flatMap(file -> pack(archive, !location.isRoot() && o.acceptRoot ? location.parent()
+                        .flatMap(file -> pack(archive, !location.isRoot() && o.strip == 0 ? location.parent()
                                 : location.asDirectory(), file, o.allocator));
             }
         }

@@ -9,12 +9,8 @@
  */
 package psychopath;
 
-import static java.nio.file.FileVisitResult.CONTINUE;
-import static java.nio.file.FileVisitResult.SKIP_SUBTREE;
-import static java.nio.file.FileVisitResult.TERMINATE;
-import static java.nio.file.StandardWatchEventKinds.ENTRY_CREATE;
-import static java.nio.file.StandardWatchEventKinds.ENTRY_DELETE;
-import static java.nio.file.StandardWatchEventKinds.ENTRY_MODIFY;
+import static java.nio.file.FileVisitResult.*;
+import static java.nio.file.StandardWatchEventKinds.*;
 
 import java.io.IOException;
 import java.nio.file.ClosedWatchServiceException;
@@ -57,9 +53,6 @@ class CymaticScan implements FileVisitor<Path>, Runnable, Disposable {
     /** The operation type. */
     private final int type;
 
-    /** Can we accept root directory? */
-    private final boolean root;
-
     /** The replace mode. */
     private final Option o;
 
@@ -96,7 +89,6 @@ class CymaticScan implements FileVisitor<Path>, Runnable, Disposable {
         this.observer = observer;
         this.disposer = disposer;
         this.include = o.filter;
-        this.root = o.acceptRoot;
         this.o = o;
 
         Set<CopyOption> copies = new HashSet();
@@ -105,7 +97,7 @@ class CymaticScan implements FileVisitor<Path>, Runnable, Disposable {
         this.copies = copies.toArray(new CopyOption[copies.size()]);
 
         // The copy and move operations need the root path.
-        if (root && type < 2) from = from.parent();
+        if (o.strip == 0 && type < 2) from = from.parent();
         this.from = from.path;
         this.to = to.directory(o.allocator.toString()).path;
 
@@ -167,7 +159,7 @@ class CymaticScan implements FileVisitor<Path>, Runnable, Disposable {
         switch (type) {
         case 0: // copy
         case 1: // move
-            Files.createDirectories(to.resolve(relative.toString()));
+            Files.createDirectories(resolve(to, relative));
             // fall-through to reduce footprint
 
         case 2: // delete
@@ -175,7 +167,7 @@ class CymaticScan implements FileVisitor<Path>, Runnable, Disposable {
             return CONTINUE;
 
         case 4: // walk directory
-            if ((root || from != path) && accept(relative, attrs)) {
+            if ((o.strip == 0 || from != path) && accept(relative, attrs)) {
                 observer.accept(Locator.directory(path));
             }
             // fall-through to reduce footprint
@@ -197,7 +189,7 @@ class CymaticScan implements FileVisitor<Path>, Runnable, Disposable {
         switch (type) {
         case 0: // copy
         case 1: // move
-            Directory dir = Locator.directory(to.resolve(from.relativize(path).toString()));
+            Directory dir = Locator.directory(resolve(to, from.relativize(path)));
 
             if (dir.isEmpty()) {
                 Files.delete(dir.path);
@@ -207,7 +199,7 @@ class CymaticScan implements FileVisitor<Path>, Runnable, Disposable {
             // fall-through to reduce footprint
 
         case 2: // delete
-            if (type != 0 && (root || from != path) && Locator.directory(path).isEmpty()) {
+            if (type != 0 && (o.strip == 0 || from != path) && Locator.directory(path).isEmpty()) {
                 Files.delete(path);
             }
             // fall-through to reduce footprint
@@ -235,14 +227,14 @@ class CymaticScan implements FileVisitor<Path>, Runnable, Disposable {
 
                 switch (type) {
                 case 0: // copy
-                    Path copyDestination = to.resolve(relative.toString());
+                    Path copyDestination = resolve(to, relative);
                     if (o.canReplace(path, copyDestination)) {
                         Files.copy(path, copyDestination, copies);
                     }
                     break;
 
                 case 1: // move
-                    Path moveDestination = to.resolve(relative.toString());
+                    Path moveDestination = resolve(to, relative);
                     if (o.canReplace(path, moveDestination)) {
                         Files.move(path, moveDestination, copies);
                     }
@@ -258,6 +250,18 @@ class CymaticScan implements FileVisitor<Path>, Runnable, Disposable {
             }
         }
         return CONTINUE;
+    }
+
+    private Path resolve(Path to, Path relative) {
+        if (1 < o.strip) {
+            int count = relative.getNameCount();
+            if (count == 1) {
+                relative = relative.resolveSibling("");
+            } else {
+                relative = relative.subpath(o.strip - 1, count);
+            }
+        }
+        return to.resolve(relative.toString());
     }
 
     /**

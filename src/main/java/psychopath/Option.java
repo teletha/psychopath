@@ -35,7 +35,7 @@ public class Option {
     BiPredicate<Path, BasicFileAttributes> filter;
 
     /** The departure's root handling. */
-    boolean acceptRoot = true;
+    int strip;
 
     /** The depth of directory digging. */
     int depth = Integer.MAX_VALUE;
@@ -126,7 +126,7 @@ public class Option {
      * @return
      */
     public Option strip() {
-        this.acceptRoot = false;
+        strip++;
         return this;
     }
 
