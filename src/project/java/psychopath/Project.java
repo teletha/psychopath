@@ -9,10 +9,13 @@
  */
 package psychopath;
 
+import javax.lang.model.SourceVersion;
+
 public class Project extends bee.api.Project {
 
     {
         product("com.github.teletha", "psychopath", ref("version.txt"));
+        require(SourceVersion.latest(), SourceVersion.RELEASE_21);
 
         require("com.github.teletha", "sinobu");
         require("com.github.teletha", "antibug").atTest();
