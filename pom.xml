@@ -24,7 +24,7 @@
 		<dependency>
 			<groupId>com.github.teletha</groupId>
 			<artifactId>sinobu</artifactId>
-			<version>4.2.0</version>
+			<version>4.3.0</version>
 			<scope>compile</scope>
 			<exclusions/>
 		</dependency>
@@ -51,11 +51,16 @@
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.13.0</version>
 				<configuration>
 					<encoding>UTF-8</encoding>
 					<release>23</release>
 					<compilerArgs/>
 				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>3.5.1</version>
 			</plugin>
 		</plugins>
 	</build>
