@@ -97,7 +97,7 @@ If you think something might be a bug, but you're not sure, ask on StackOverflow
 
 ## Dependency
 Psychopath depends on the following products on runtime.
-* [sinobu-4.3.0](https://mvnrepository.com/artifact/com.github.teletha/sinobu/4.3.0)
+* [sinobu-4.5.0](https://mvnrepository.com/artifact/com.github.teletha/sinobu/4.5.0)
 <p align="right"><a href="#top">back to top</a></p>
 
 
