@@ -4,603 +4,611 @@
 		<meta charset="UTF-8"/>
 		<meta content="width=device-width, initial-scale=1" name="viewport"/>
 		<meta content="Explains how to use Psychopath and its API. " name="description"/>
-		<link href="https://fonts.googleapis.com" rel="preconnect"/>
 		<link href="https://cdn.jsdelivr.net" rel="preconnect"/>
+		<link href="https://fonts.googleapis.com" rel="preconnect"/>
+		<link crossorigin="null" href="https://fonts.gstatic.com" rel="preconnect"/>
+		<link as="style" fetchpriority="high" href="https://fonts.googleapis.com/css2?display=swap&#38;family=Inter" rel="preload"/>
+		<link href="https://fonts.googleapis.com/css2?display=swap&#38;family=Inter" media="print" onload="this.media=&#39;all&#39;" rel="stylesheet"/>
+		<link as="style" fetchpriority="high" href="https://fonts.googleapis.com/css2?display=swap&#38;family=Material+Icons" rel="preload"/>
+		<link href="https://fonts.googleapis.com/css2?display=swap&#38;family=Material+Icons" media="print" onload="this.media=&#39;all&#39;" rel="stylesheet"/>
+		<link as="style" fetchpriority="high" href="https://fonts.googleapis.com/css2?display=swap&#38;family=Vollkorn" rel="preload"/>
+		<link href="https://fonts.googleapis.com/css2?display=swap&#38;family=Vollkorn" media="print" onload="this.media=&#39;all&#39;" rel="stylesheet"/>
 		<title>Psychopath API</title>
 		<base href="../"/>
 		<script src="mimic.js" type="module"></script>
+		<link href="https://cdn.jsdelivr.net/npm/ress@4.0.0/dist/ress.min.css" rel="stylesheet"/>
 		<link href="main.css" rel="stylesheet"/>
 	</head>
-	<body class="P">
-		<header class="J">
-			<h1 class="U" date="2024-11-11" ver="2.0.2"><code>Psychopath</code></h1>
-			<nav class="L"><a href="api/"><svg class="A svg" viewBox="0 0 24 24">
+	<body class="R">
+		<header class="S" date="2024-11-11" ver="2.0.2">
+			<h1 class="r"><code>Psychopath</code></h1>
+			<nav class="i"><a href="api/" id="API"><svg class="package A svg" viewBox="0 0 24 24">
 						<use href="main.svg#package"/>
-					</svg><code>API</code></a><a href="https://github.com/teletha/psychopath/discussions" target="_blank"><svg class="A svg" viewBox="0 0 24 24">
-						<use href="main.svg#user"/>
-					</svg>Community</a><a href="doc/changelog.html"><svg class="A svg" viewBox="0 0 24 24">
-						<use href="main.svg#activity"/>
-					</svg>Activity</a><a href="https://github.com/teletha/psychopath" target="_blank"><svg class="A svg" viewBox="0 0 24 24">
-						<use href="main.svg#github"/>
-					</svg>Repository</a></nav>
-			<div class="e" id="ViewMode"><a id="light" title="Change to a brighter color scheme"><svg class="A svg" viewBox="0 0 24 24">
-						<use href="main.svg#sun"/>
 					</svg>
-				</a><a id="dark" title="Change to a darker color scheme"><svg class="A svg" viewBox="0 0 24 24">
+				</a><a href="https://github.com/teletha/psychopath/discussions" id="Community" target="_blank"><svg class="user A svg" viewBox="0 0 24 24">
+						<use href="main.svg#user"/>
+					</svg>
+				</a><a href="doc/changelog.html" id="Activity"><svg class="activity A svg" viewBox="0 0 24 24">
+						<use href="main.svg#activity"/>
+					</svg>
+				</a><a href="https://github.com/teletha/psychopath" id="Repository" target="_blank"><svg class="github A svg" viewBox="0 0 24 24">
+						<use href="main.svg#github"/>
+					</svg>
+				</a></nav>
+			<div class="n"><a aria-label="Change color scheme" id="theme"><svg class="sun A svg" viewBox="0 0 24 24">
+						<use href="main.svg#sun"/>
+					</svg><svg class="moon A svg" viewBox="0 0 24 24">
 						<use href="main.svg#moon"/>
 					</svg>
 				</a></div>
 		</header>
-		<main class="K">
-			<nav class="f">
-				<div></div>
-			</nav>
-			<article class="T" id="Article">
-				<section class="a"><code class="Z">psychopath</code>
-					<h2 class="AbstractClass R"><code class="V">Location</code><code class="X">&#60;<code>Self</code>&#62;</code></h2>
-					<div class="d">
-						<ul class="C D">
-							<li><code>Self</code><code class="extends"><code><a href="api/psychopath.Location.html">Location</a></code></code></li>
-						</ul>
-						<ul class="C F">
-							<li><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/Comparable.html">Comparable</a><code class="parameters"><code><a href="api/psychopath.Location.html">Location</a></code></code></code></li>
-							<li><code><a href="api/psychopath.PathOperatable.html">PathOperatable</a></code></li>
-							<li><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/io/Serializable.html">Serializable</a></code></li>
-						</ul>
-						<ul class="C G">
-							<li><code><a href="api/psychopath.Directory.html">Directory</a></code></li>
-							<li><code><a href="api/psychopath.File.html">File</a></code></li>
-						</ul>
-					</div>
-				</section>
-				<section class="a" id="path">
-					<h2 class="S"><i class="TRANSIENT"><i class="PROTECTED"></i></i><code class="V">path</code><i class="H"><code class="return"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/Path.html">Path</a></code></i></h2><span class="B"><p>The actual location.</p></span></section>
-				<section class="a" id="Location(java.nio.file.Path)">
-					<h2 class="S"><i class="PROTECTED"></i><code class="V">Location</code><code class="X">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/Path.html">Path</a></code><code class="parameterName">path</code>)</code></h2>
-					<table class="h">
-						<tr class="c">
-							<td><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/Path.html">Path</a></code><code>path</code></td>
-							<td></td>
-						</tr>
-					</table>
-				</section>
-				<section class="a" id="name()">
-					<h2 class="S"><i class="FINAL"><i class="PUBLIC"></i></i><code class="V">name</code><code class="X">()</code><i class="H"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></i></h2>
-					<table class="h">
-						<tr class="g">
-							<td><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></td>
-							<td><span><p>A path representing the name of the file or directory, or <code>null</code> if this path
+		<nav class="K"></nav>
+		<article class="O" id="Article">
+			<section class="V"><code class="k">psychopath</code>
+				<h2 class="AbstractClass s"><code class="M">Location</code><code class="o">&#60;<code>Self</code>&#62;</code></h2>
+				<div class="H">
+					<ul class="C D">
+						<li><code>Self</code><code class="extends"><code><a aria-label="psychopath.Location" href="api/psychopath.Location.html">Location</a></code></code></li>
+					</ul>
+					<ul class="C F">
+						<li><code><a aria-label="java.lang.Comparable 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/Comparable.html">Comparable</a><code class="parameters"><code><a aria-label="psychopath.Location" href="api/psychopath.Location.html">Location</a></code></code></code></li>
+						<li><code><a aria-label="psychopath.PathOperatable" href="api/psychopath.PathOperatable.html">PathOperatable</a></code></li>
+						<li><code><a aria-label="java.io.Serializable 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/io/Serializable.html">Serializable</a></code></li>
+					</ul>
+					<ul class="C G">
+						<li><code><a aria-label="psychopath.Directory" href="api/psychopath.Directory.html">Directory</a></code></li>
+						<li><code><a aria-label="psychopath.File" href="api/psychopath.File.html">File</a></code></li>
+					</ul>
+				</div>
+			</section>
+			<section class="V" id="path">
+				<h2 class="e"><i class="TRANSIENT"><i class="PROTECTED"></i></i><code class="M">path</code><i class="q"><code class="return"><a aria-label="java.nio.file.Path 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/Path.html">Path</a></code></i></h2><span class="B"><p>The actual location.</p></span></section>
+			<section class="V" id="Location(java.nio.file.Path)">
+				<h2 class="e"><i class="PROTECTED"></i><code class="M">Location</code><code class="o">(<code><a aria-label="java.nio.file.Path 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/Path.html">Path</a></code><code class="parameterName">path</code>)</code></h2>
+				<table class="L">
+					<tr class="Z">
+						<td><code><a aria-label="java.nio.file.Path 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/Path.html">Path</a></code><code class="parameterName">path</code></td>
+						<td></td>
+					</tr>
+				</table>
+			</section>
+			<section class="V" id="name()">
+				<h2 class="e"><i class="FINAL"><i class="PUBLIC"></i></i><code class="M">name</code><code class="o">()</code><i class="q"><code><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></i></h2>
+				<table class="L">
+					<tr class="d">
+						<td><code><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></td>
+						<td><span><p>A path representing the name of the file or directory, or <code>null</code> if this path
 has zero elements</p></span></td>
-						</tr>
-					</table><span class="B"><p>Returns the name of the file or directory denoted by this path as a <code>Location</code> object.
+					</tr>
+				</table><span class="B"><p>Returns the name of the file or directory denoted by this path as a <code>Location</code> object.
 The file name is the <em>farthest</em> element from the root in the directory hierarchy.</p></span></section>
-				<section class="a" id="base()">
-					<h2 class="S"><i class="FINAL"><i class="PUBLIC"></i></i><code class="V">base</code><code class="X">()</code><i class="H"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></i></h2>
-					<table class="h">
-						<tr class="g">
-							<td><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></td>
-							<td><span><p>A base name.</p></span></td>
-						</tr>
-					</table><span class="B"><p>Retrieve the base name of this <code><a href="api/psychopath.Location.html">Location</a></code>.</p></span></section>
-				<section class="a" id="base(java.lang.String)">
-					<h2 class="S"><i class="FINAL"><i class="PUBLIC"></i></i><code class="V">base</code><code class="X">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code><code class="parameterName">newBaseName</code>)</code><i class="H"><code>Self</code></i></h2>
-					<table class="h">
-						<tr class="c">
-							<td><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code><code>newBaseName</code></td>
-							<td><span><p>A new base name.</p></span></td>
-						</tr>
-						<tr class="g">
-							<td><code>Self</code></td>
-							<td><span><p>New located <code><a href="api/psychopath.Location.html">Location</a></code>.</p></span></td>
-						</tr>
-					</table><span class="B"><p>Locate <code><a href="api/psychopath.Location.html">Location</a></code> with the specified new base name, but extension is same.</p></span></section>
-				<section class="a" id="extension()">
-					<h2 class="S"><i class="FINAL"><i class="PUBLIC"></i></i><code class="V">extension</code><code class="X">()</code><i class="H"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></i></h2>
-					<table class="h">
-						<tr class="g">
-							<td><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></td>
-							<td><span><p>An extension or empty if it has no extension.</p></span></td>
-						</tr>
-					</table><span class="B"><p>Retrieve the extension of this <code><a href="api/psychopath.Location.html">Location</a></code>.</p></span></section>
-				<section class="a" id="extension(java.lang.String)">
-					<h2 class="S"><i class="FINAL"><i class="PUBLIC"></i></i><code class="V">extension</code><code class="X">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code><code class="parameterName">newExtension</code>)</code><i class="H"><code>Self</code></i></h2>
-					<table class="h">
-						<tr class="c">
-							<td><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code><code>newExtension</code></td>
-							<td><span><p>A new extension.</p></span></td>
-						</tr>
-						<tr class="g">
-							<td><code>Self</code></td>
-							<td><span><p>New located <code><a href="api/psychopath.Location.html">Location</a></code>.</p></span></td>
-						</tr>
-					</table><span class="B"><p>Locate <code><a href="api/psychopath.Location.html">Location</a></code> with the specified new extension, but base name is same.</p></span></section>
-				<section class="a" id="path()">
-					<h2 class="S"><i class="FINAL"><i class="PUBLIC"></i></i><code class="V">path</code><code class="X">()</code><i class="H"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></i></h2>
-					<table class="h">
-						<tr class="g">
-							<td><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></td>
-							<td><span><p>A path to this <code><a href="api/psychopath.Location.html">Location</a></code>.</p></span></td>
-						</tr>
-					</table><span class="B"><p>Returns the path expression of this <code><a href="api/psychopath.Location.html">Location</a></code>.</p></span></section>
-				<section class="a" id="externalForm()">
-					<h2 class="S"><i class="FINAL"><i class="PUBLIC"></i></i><code class="V">externalForm</code><code class="X">()</code><i class="H"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></i></h2>
-					<table class="h">
-						<tr class="g">
-							<td><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></td>
-							<td><span><p>An external form to this <code><a href="api/psychopath.Location.html">Location</a></code>.</p></span></td>
-						</tr>
-					</table><span class="B"><p>Returns the external form of this <code><a href="api/psychopath.Location.html">Location</a></code>.</p></span></section>
-				<section class="a" id="absolutize()">
-					<h2 class="S"><i class="FINAL"><i class="PUBLIC"></i></i><code class="V">absolutize</code><code class="X">()</code><i class="H"><code>Self</code></i></h2>
-					<table class="h">
-						<tr class="g">
-							<td><code>Self</code></td>
-							<td><span><p>A <code>Location</code> object representing the absolute path.</p></span></td>
-						</tr>
-					</table><span class="B"><p>Returns a <code>Location</code> object representing the absolute path of this path.</p><p>
- If this path is already <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/Path.html#isAbsolute">Path#isAbsolute</a></code> then this method simply returns this
+			<section class="V" id="base()">
+				<h2 class="e"><i class="FINAL"><i class="PUBLIC"></i></i><code class="M">base</code><code class="o">()</code><i class="q"><code><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></i></h2>
+				<table class="L">
+					<tr class="d">
+						<td><code><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></td>
+						<td><span><p>A base name.</p></span></td>
+					</tr>
+				</table><span class="B"><p>Retrieve the base name of this <code><a aria-label="psychopath.Location" href="api/psychopath.Location.html">Location</a></code>.</p></span></section>
+			<section class="V" id="base(java.lang.String)">
+				<h2 class="e"><i class="FINAL"><i class="PUBLIC"></i></i><code class="M">base</code><code class="o">(<code><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code><code class="parameterName">newBaseName</code>)</code><i class="q"><code>Self</code></i></h2>
+				<table class="L">
+					<tr class="Z">
+						<td><code><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code><code class="parameterName">newBaseName</code></td>
+						<td><span><p>A new base name.</p></span></td>
+					</tr>
+					<tr class="d">
+						<td><code>Self</code></td>
+						<td><span><p>New located <code><a aria-label="psychopath.Location" href="api/psychopath.Location.html">Location</a></code>.</p></span></td>
+					</tr>
+				</table><span class="B"><p>Locate <code><a aria-label="psychopath.Location" href="api/psychopath.Location.html">Location</a></code> with the specified new base name, but extension is same.</p></span></section>
+			<section class="V" id="extension()">
+				<h2 class="e"><i class="FINAL"><i class="PUBLIC"></i></i><code class="M">extension</code><code class="o">()</code><i class="q"><code><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></i></h2>
+				<table class="L">
+					<tr class="d">
+						<td><code><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></td>
+						<td><span><p>An extension or empty if it has no extension.</p></span></td>
+					</tr>
+				</table><span class="B"><p>Retrieve the extension of this <code><a aria-label="psychopath.Location" href="api/psychopath.Location.html">Location</a></code>.</p></span></section>
+			<section class="V" id="extension(java.lang.String)">
+				<h2 class="e"><i class="FINAL"><i class="PUBLIC"></i></i><code class="M">extension</code><code class="o">(<code><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code><code class="parameterName">newExtension</code>)</code><i class="q"><code>Self</code></i></h2>
+				<table class="L">
+					<tr class="Z">
+						<td><code><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code><code class="parameterName">newExtension</code></td>
+						<td><span><p>A new extension.</p></span></td>
+					</tr>
+					<tr class="d">
+						<td><code>Self</code></td>
+						<td><span><p>New located <code><a aria-label="psychopath.Location" href="api/psychopath.Location.html">Location</a></code>.</p></span></td>
+					</tr>
+				</table><span class="B"><p>Locate <code><a aria-label="psychopath.Location" href="api/psychopath.Location.html">Location</a></code> with the specified new extension, but base name is same.</p></span></section>
+			<section class="V" id="path()">
+				<h2 class="e"><i class="FINAL"><i class="PUBLIC"></i></i><code class="M">path</code><code class="o">()</code><i class="q"><code><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></i></h2>
+				<table class="L">
+					<tr class="d">
+						<td><code><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></td>
+						<td><span><p>A path to this <code><a aria-label="psychopath.Location" href="api/psychopath.Location.html">Location</a></code>.</p></span></td>
+					</tr>
+				</table><span class="B"><p>Returns the path expression of this <code><a aria-label="psychopath.Location" href="api/psychopath.Location.html">Location</a></code>.</p></span></section>
+			<section class="V" id="externalForm()">
+				<h2 class="e"><i class="FINAL"><i class="PUBLIC"></i></i><code class="M">externalForm</code><code class="o">()</code><i class="q"><code><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></i></h2>
+				<table class="L">
+					<tr class="d">
+						<td><code><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></td>
+						<td><span><p>An external form to this <code><a aria-label="psychopath.Location" href="api/psychopath.Location.html">Location</a></code>.</p></span></td>
+					</tr>
+				</table><span class="B"><p>Returns the external form of this <code><a aria-label="psychopath.Location" href="api/psychopath.Location.html">Location</a></code>.</p></span></section>
+			<section class="V" id="absolutize()">
+				<h2 class="e"><i class="FINAL"><i class="PUBLIC"></i></i><code class="M">absolutize</code><code class="o">()</code><i class="q"><code>Self</code></i></h2>
+				<table class="L">
+					<tr class="d">
+						<td><code>Self</code></td>
+						<td><span><p>A <code>Location</code> object representing the absolute path.</p></span></td>
+					</tr>
+				</table><span class="B"><p>Returns a <code>Location</code> object representing the absolute path of this path.</p><p>
+ If this path is already <code><a aria-label="java.nio.file.Path 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/Path.html#isAbsolute">Path#isAbsolute</a></code> then this method simply returns this
  path. Otherwise, this method resolves the path in an implementation dependent manner,
  typically by resolving the path against a file system default directory. Depending on the
  implementation, this method may throw an I/O error if the file system is not accessible.
 </p>
-					</span></section>
-				<section class="a" id="relativize(java.lang.Object)">
-					<h2 class="S"><i class="FINAL"><i class="PUBLIC"></i></i><code class="V">relativize</code><code class="X">(<code>T</code><code class="parameterName">other</code>)</code><i class="H"><code>T</code></i></h2>
-					<table class="h">
-						<tr class="W">
-							<td><code>T</code><code class="extends"><code><a href="api/psychopath.Location.html">Location</a></code></code></td>
-							<td></td>
-						</tr>
-						<tr class="c">
-							<td><code>T</code><code>other</code></td>
-							<td><span><p>the path to relativize against this path</p></span></td>
-						</tr>
-						<tr class="g">
-							<td><code>T</code></td>
-							<td><span><p>the resulting relative path, or an empty path if both paths are equal</p></span></td>
-						</tr>
-					</table><span class="B"><p>Constructs a relative path between this path and a given path.</p><p>
- Relativization is the inverse of <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/Path.html#resolve(java.nio.file.Path)">Path#resolve(Path)</a></code>. This method attempts
- to construct a <code><a href="api/psychopath.Location.html#isAbsolute">#isAbsolute</a></code> path that when <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/Path.html#resolve(java.nio.file.Path)">Path#resolve(Path)</a></code> against this path, yields a path that locates the same file as the given path. For
+				</span></section>
+			<section class="V" id="relativize(java.lang.Object)">
+				<h2 class="e"><i class="FINAL"><i class="PUBLIC"></i></i><code class="M">relativize</code><code class="o">(<code>T</code><code class="parameterName">other</code>)</code><i class="q"><code>T</code></i></h2>
+				<table class="L">
+					<tr class="j">
+						<td><code>T</code><code class="extends"><code><a aria-label="psychopath.Location" href="api/psychopath.Location.html">Location</a></code></code></td>
+						<td></td>
+					</tr>
+					<tr class="Z">
+						<td><code>T</code><code class="parameterName">other</code></td>
+						<td><span><p>the path to relativize against this path</p></span></td>
+					</tr>
+					<tr class="d">
+						<td><code>T</code></td>
+						<td><span><p>the resulting relative path, or an empty path if both paths are equal</p></span></td>
+					</tr>
+				</table><span class="B"><p>Constructs a relative path between this path and a given path.</p><p>
+ Relativization is the inverse of <code><a aria-label="java.nio.file.Path 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/Path.html#resolve(java.nio.file.Path)">Path#resolve(Path)</a></code>. This method attempts
+ to construct a <code><a aria-label="psychopath.Location" href="api/psychopath.Location.html#isAbsolute">#isAbsolute</a></code> path that when <code><a aria-label="java.nio.file.Path 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/Path.html#resolve(java.nio.file.Path)">Path#resolve(Path)</a></code> against this path, yields a path that locates the same file as the given path. For
  example, on UNIX, if this path is <code>&#34;/a/b&#34;</code> and the given path is <code>&#34;/a/b/c/d&#34;</code>
  then the resulting relative path would be <code>&#34;c/d&#34;</code>. Where this path and the given path
- do not have a <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/Path.html#getRoot">Path#getRoot</a></code> component, then a relative path can be constructed. A
+ do not have a <code><a aria-label="java.nio.file.Path 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/Path.html#getRoot">Path#getRoot</a></code> component, then a relative path can be constructed. A
  relative path cannot be constructed if only one of the paths have a root component. Where
  both paths have a root component then it is implementation dependent if a relative path can
- be constructed. If this path and the given path are <code><a href="api/psychopath.Location.html#equals">#equals</a></code> then an <i>empty
+ be constructed. If this path and the given path are <code><a aria-label="psychopath.Location" href="api/psychopath.Location.html#equals">#equals</a></code> then an <i>empty
  path</i> is returned.
  
-							<p>
- For any two <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/Path.html#normalize">Path#normalize</a></code> paths <i>p</i> and <i>q</i>, where <i>q</i>
+						<p>
+ For any two <code><a aria-label="java.nio.file.Path 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/Path.html#normalize">Path#normalize</a></code> paths <i>p</i> and <i>q</i>, where <i>q</i>
  does not have a root component, 
-								<blockquote><i>p</i><code>.relativize(</code><i>p</i><code>.resolve(</code><i>q</i><code>)).equals(</code><i>q</i><code>)</code>
-								</blockquote>
-								<p>
+							<blockquote><i>p</i><code>.relativize(</code><i>p</i><code>.resolve(</code><i>q</i><code>)).equals(</code><i>q</i><code>)</code>
+							</blockquote>
+							<p>
  When symbolic links are supported, then whether the resulting path, when resolved against
- this path, yields a path that can be used to locate the <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/Files.html#isSameFile">Files#isSameFile</a></code> file as
+ this path, yields a path that can be used to locate the <code><a aria-label="java.nio.file.Files 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/Files.html#isSameFile">Files#isSameFile</a></code> file as
  <code>other</code> is implementation dependent. For example, if this path is <code>&#34;/a/b&#34;</code> and
  the given path is <code>&#34;/a/x&#34;</code> then the resulting relative path may be <code>
  &#34;../x&#34;</code>. If <code>&#34;b&#34;</code> is a symbolic link then is implementation dependent if
  <code>&#34;a/b/../x&#34;</code> would locate the same file as <code>&#34;/a/x&#34;</code>.
 </p>
-							</p>
 						</p>
-					</span></section>
-				<section class="a" id="parent()">
-					<h2 class="S"><i class="FINAL"><i class="PUBLIC"></i></i><code class="V">parent</code><code class="X">()</code><i class="H"><code><a href="api/psychopath.Directory.html">Directory</a></code></i></h2>
-					<table class="h">
-						<tr class="g">
-							<td><code><a href="api/psychopath.Directory.html">Directory</a></code></td>
-							<td><span><p>A <code><a href="api/psychopath.Location.html">Location</a></code> representing the path&#39;s parent</p></span></td>
-						</tr>
-					</table><span class="B"><p>Returns the <em>parent path</em>, or <code>null</code> if this path does not have a parent.</p><p>
+					</p>
+				</span></section>
+			<section class="V" id="parent()">
+				<h2 class="e"><i class="FINAL"><i class="PUBLIC"></i></i><code class="M">parent</code><code class="o">()</code><i class="q"><code><a aria-label="psychopath.Directory" href="api/psychopath.Directory.html">Directory</a></code></i></h2>
+				<table class="L">
+					<tr class="d">
+						<td><code><a aria-label="psychopath.Directory" href="api/psychopath.Directory.html">Directory</a></code></td>
+						<td><span><p>A <code><a aria-label="psychopath.Location" href="api/psychopath.Location.html">Location</a></code> representing the path&#39;s parent</p></span></td>
+					</tr>
+				</table><span class="B"><p>Returns the <em>parent path</em>, or <code>null</code> if this path does not have a parent.</p><p>
  The parent of this path object consists of this path&#39;s root component, if any, and each
  element in the path except for the <em>farthest</em> from the root in the directory
  hierarchy. This method does not access the file system; the path or its parent may not exist.
  Furthermore, this method does not eliminate special names such as &#34;.&#34; and &#34;..&#34; that may be
  used in some implementations. On UNIX for example, the parent of &#34;<code>/a/b/c</code>&#34; is
  &#34;<code>/a/b</code>&#34;, and the parent of <code>&#34;x/y/.</code>&#34; is &#34;<code>x/y</code>&#34;. This method may be used
- with the <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/Path.html#normalize">Path#normalize</a></code> method, to eliminate redundant names, for cases
+ with the <code><a aria-label="java.nio.file.Path 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/Path.html#normalize">Path#normalize</a></code> method, to eliminate redundant names, for cases
  where <em>shell-like</em> navigation is required.
  
-							<p>
+						<p>
  If this path has more than one element, and no root component, then this method is equivalent
  to evaluating the expression: 
-								<blockquote>
-									<pre>
+							<blockquote>
+								<pre>
  subpath(0,&#38;nbsp;getNameCount()-1);
  </pre>
-								</blockquote>
-							</p>
+							</blockquote>
 						</p>
-					</span></section>
-				<section class="a" id="children()">
-					<h2 class="S"><i class="ABSTRACT"><i class="PUBLIC"></i></i><code class="V">children</code><code class="X">()</code><i class="H"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Location.html">Location</a></code></code></code></i></h2>
-					<table class="h">
-						<tr class="g">
-							<td><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Location.html">Location</a></code></code></code></td>
-							<td><span><p>A Signal which iterate over all entries in this <code><a href="api/psychopath.Location.html">Location</a></code>.</p></span></td>
-						</tr>
-					</table><span class="B"><p>Return a Signal to iterate over all entries in this <code><a href="api/psychopath.Location.html">Location</a></code>. The entry
-returned by the directory stream&#39;s <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/DirectoryStream.html#iterator">DirectoryStream#iterator</a></code> are of type
+					</p>
+				</span></section>
+			<section class="V" id="children()">
+				<h2 class="e"><i class="ABSTRACT"><i class="PUBLIC"></i></i><code class="M">children</code><code class="o">()</code><i class="q"><code>kiss.Signal<code class="parameters"><code><a aria-label="psychopath.Location" href="api/psychopath.Location.html">Location</a></code></code></code></i></h2>
+				<table class="L">
+					<tr class="d">
+						<td><code>kiss.Signal<code class="parameters"><code><a aria-label="psychopath.Location" href="api/psychopath.Location.html">Location</a></code></code></code></td>
+						<td><span><p>A Signal which iterate over all entries in this <code><a aria-label="psychopath.Location" href="api/psychopath.Location.html">Location</a></code>.</p></span></td>
+					</tr>
+				</table><span class="B"><p>Return a Signal to iterate over all entries in this <code><a aria-label="psychopath.Location" href="api/psychopath.Location.html">Location</a></code>. The entry
+returned by the directory stream&#39;s <code><a aria-label="java.nio.file.DirectoryStream 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/DirectoryStream.html#iterator">DirectoryStream#iterator</a></code> are of type
 <code>
 Path</code>, each one representing an entry in the directory. The <code>Path</code> objects are obtained
-as if by <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/Path.html#resolve(java.nio.file.Path)">Path#resolve(Path)</a></code> the name of the directory entry against
+as if by <code><a aria-label="java.nio.file.Path 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/Path.html#resolve(java.nio.file.Path)">Path#resolve(Path)</a></code> the name of the directory entry against
 <code>dir</code>.</p><p>
  When an implementation supports operations on entries in the directory that execute in a
- race-free manner then the returned directory stream is a <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/SecureDirectoryStream.html">SecureDirectoryStream</a></code>.
+ race-free manner then the returned directory stream is a <code><a aria-label="java.nio.file.SecureDirectoryStream 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/SecureDirectoryStream.html">SecureDirectoryStream</a></code>.
 </p>
-					</span></section>
-				<section class="a" id="descendant()">
-					<h2 class="S"><i class="ABSTRACT"><i class="PUBLIC"></i></i><code class="V">descendant</code><code class="X">()</code><i class="H"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Location.html">Location</a></code></code></code></i></h2>
-					<table class="h">
-						<tr class="g">
-							<td><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Location.html">Location</a></code></code></code></td>
-							<td><span><p>A Signal which iterate over all entries in this <code><a href="api/psychopath.Location.html">Location</a></code>.</p></span></td>
-						</tr>
-					</table><span class="B"><p>Return a Signal to iterate over all entries in this <code><a href="api/psychopath.Location.html">Location</a></code>. The entry
-returned by the directory stream&#39;s <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/DirectoryStream.html#iterator">DirectoryStream#iterator</a></code> are of type
+				</span></section>
+			<section class="V" id="descendant()">
+				<h2 class="e"><i class="ABSTRACT"><i class="PUBLIC"></i></i><code class="M">descendant</code><code class="o">()</code><i class="q"><code>kiss.Signal<code class="parameters"><code><a aria-label="psychopath.Location" href="api/psychopath.Location.html">Location</a></code></code></code></i></h2>
+				<table class="L">
+					<tr class="d">
+						<td><code>kiss.Signal<code class="parameters"><code><a aria-label="psychopath.Location" href="api/psychopath.Location.html">Location</a></code></code></code></td>
+						<td><span><p>A Signal which iterate over all entries in this <code><a aria-label="psychopath.Location" href="api/psychopath.Location.html">Location</a></code>.</p></span></td>
+					</tr>
+				</table><span class="B"><p>Return a Signal to iterate over all entries in this <code><a aria-label="psychopath.Location" href="api/psychopath.Location.html">Location</a></code>. The entry
+returned by the directory stream&#39;s <code><a aria-label="java.nio.file.DirectoryStream 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/DirectoryStream.html#iterator">DirectoryStream#iterator</a></code> are of type
 <code>
 Path</code>, each one representing an entry in the directory. The <code>Path</code> objects are obtained
-as if by <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/Path.html#resolve(java.nio.file.Path)">Path#resolve(Path)</a></code> the name of the directory entry against
+as if by <code><a aria-label="java.nio.file.Path 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/Path.html#resolve(java.nio.file.Path)">Path#resolve(Path)</a></code> the name of the directory entry against
 <code>dir</code>.</p><p>
  When an implementation supports operations on entries in the directory that execute in a
- race-free manner then the returned directory stream is a <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/SecureDirectoryStream.html">SecureDirectoryStream</a></code>.
+ race-free manner then the returned directory stream is a <code><a aria-label="java.nio.file.SecureDirectoryStream 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/SecureDirectoryStream.html">SecureDirectoryStream</a></code>.
 </p>
-					</span></section>
-				<section class="a" id="attr()">
-					<h2 class="S"><i class="FINAL"><i class="PUBLIC"></i></i><code class="V">attr</code><code class="X">()</code><i class="H"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/attribute/BasicFileAttributes.html">BasicFileAttributes</a></code></i></h2>
-					<table class="h">
-						<tr class="g">
-							<td><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/attribute/BasicFileAttributes.html">BasicFileAttributes</a></code></td>
-							<td><span><p>the file attributes</p></span></td>
-						</tr>
-					</table><span class="B"><p>Reads a file&#39;s attributes as a bulk operation.</p><p>
+				</span></section>
+			<section class="V" id="attr()">
+				<h2 class="e"><i class="FINAL"><i class="PUBLIC"></i></i><code class="M">attr</code><code class="o">()</code><i class="q"><code><a aria-label="java.nio.file.attribute.BasicFileAttributes 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/attribute/BasicFileAttributes.html">BasicFileAttributes</a></code></i></h2>
+				<table class="L">
+					<tr class="d">
+						<td><code><a aria-label="java.nio.file.attribute.BasicFileAttributes 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/attribute/BasicFileAttributes.html">BasicFileAttributes</a></code></td>
+						<td><span><p>the file attributes</p></span></td>
+					</tr>
+				</table><span class="B"><p>Reads a file&#39;s attributes as a bulk operation.</p><p>
  The <code>type</code> parameter is the type of the attributes required and this method returns an
  instance of that type if supported. All implementations support a basic set of file
  attributes and so invoking this method with a <code>type</code> parameter of <code>
  BasicFileAttributes.class</code> will not throw <code>
  UnsupportedOperationException</code>.
  
-							<p>
+						<p>
  The <code>options</code> array may be used to indicate how symbolic links are handled for the case
  that the file is a symbolic link. By default, symbolic links are followed and the file
  attribute of the final target of the link is read. If the option
- <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/LinkOption.html#NOFOLLOW_LINKS">LinkOption#NOFOLLOW_LINKS</a></code> is present then symbolic links are not
+ <code><a aria-label="java.nio.file.LinkOption 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/LinkOption.html#NOFOLLOW_LINKS">LinkOption#NOFOLLOW_LINKS</a></code> is present then symbolic links are not
  followed.
  
-								<p>
+							<p>
  It is implementation specific if all file attributes are read as an atomic operation with
  respect to other file system operations.
  
-									<p><b>Usage Example:</b> Suppose we want to read a file&#39;s attributes in bulk: 
-										<pre>
+								<p><b>Usage Example:</b> Suppose we want to read a file&#39;s attributes in bulk: 
+									<pre>
  Path path = ...
  BasicFileAttributes attrs = Files.readAttributes(path, BasicFileAttributes.class);
  </pre> Alternatively, suppose we want to read file&#39;s POSIX attributes without following
  symbolic links: 
-										<pre>
+									<pre>
  PosixFileAttributes attrs =
  Files.readAttributes(path, PosixFileAttributes.class, NOFOLLOW_LINKS);
  </pre>
-									</p>
 								</p>
 							</p>
 						</p>
-					</span></section>
-				<section class="a" id="size()">
-					<h2 class="S"><i class="FINAL"><i class="PUBLIC"></i></i><code class="V">size</code><code class="X">()</code><i class="H"><code>long</code></i></h2>
-					<table class="h">
-						<tr class="g">
-							<td><code>long</code></td>
-							<td><span><p>the file size, in bytes</p></span></td>
-						</tr>
-					</table><span class="B"><p>Returns the size of a file (in bytes). The size may differ from the actual size on the file
+					</p>
+				</span></section>
+			<section class="V" id="size()">
+				<h2 class="e"><i class="FINAL"><i class="PUBLIC"></i></i><code class="M">size</code><code class="o">()</code><i class="q"><code>long</code></i></h2>
+				<table class="L">
+					<tr class="d">
+						<td><code>long</code></td>
+						<td><span><p>the file size, in bytes</p></span></td>
+					</tr>
+				</table><span class="B"><p>Returns the size of a file (in bytes). The size may differ from the actual size on the file
 system due to compression, support for sparse files, or other reasons. The size of files that
-are not <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/Files.html#isRegularFile">Files#isRegularFile</a></code> files is implementation specific and therefore
+are not <code><a aria-label="java.nio.file.Files 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/Files.html#isRegularFile">Files#isRegularFile</a></code> files is implementation specific and therefore
 unspecified.</p></span></section>
-				<section class="a" id="creationMilli(java.nio.file.LinkOption...)">
-					<h2 class="S"><i class="FINAL"><i class="PUBLIC"></i></i><code class="V">creationMilli</code><code class="X">(<code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/LinkOption.html">LinkOption</a></code><code class="parameterName">options</code>)</code><i class="H"><code>long</code></i></h2>
-					<table class="h">
-						<tr class="c">
-							<td><code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/LinkOption.html">LinkOption</a></code><code>options</code></td>
-							<td></td>
-						</tr>
-						<tr class="g">
-							<td><code>long</code></td>
-							<td><span><p>The creation time.</p></span></td>
-						</tr>
-					</table><span class="B"><p>Returns the creation time that this location was created.</p></span></section>
-				<section class="a" id="creationTime(java.nio.file.LinkOption...)">
-					<h2 class="S"><i class="FINAL"><i class="PUBLIC"></i></i><code class="V">creationTime</code><code class="X">(<code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/LinkOption.html">LinkOption</a></code><code class="parameterName">options</code>)</code><i class="H"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/time/Instant.html">Instant</a></code></i></h2>
-					<table class="h">
-						<tr class="c">
-							<td><code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/LinkOption.html">LinkOption</a></code><code>options</code></td>
-							<td></td>
-						</tr>
-						<tr class="g">
-							<td><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/time/Instant.html">Instant</a></code></td>
-							<td><span><p>The creation time.</p></span></td>
-						</tr>
-					</table><span class="B"><p>Returns the creation time that this location was created.</p></span></section>
-				<section class="a" id="creationDateTime(java.nio.file.LinkOption...)">
-					<h2 class="S"><i class="FINAL"><i class="PUBLIC"></i></i><code class="V">creationDateTime</code><code class="X">(<code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/LinkOption.html">LinkOption</a></code><code class="parameterName">options</code>)</code><i class="H"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/time/ZonedDateTime.html">ZonedDateTime</a></code></i></h2>
-					<table class="h">
-						<tr class="c">
-							<td><code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/LinkOption.html">LinkOption</a></code><code>options</code></td>
-							<td></td>
-						</tr>
-						<tr class="g">
-							<td><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/time/ZonedDateTime.html">ZonedDateTime</a></code></td>
-							<td><span><p>The creation time.</p></span></td>
-						</tr>
-					</table><span class="B"><p>Returns the creation time that this location was created.</p></span></section>
-				<section class="a" id="creationTime(long)">
-					<h2 class="S"><i class="FINAL"><i class="PUBLIC"></i></i><code class="V">creationTime</code><code class="X">(<code>long</code><code class="parameterName">millisecond</code>)</code><i class="H"><code>Self</code></i></h2>
-					<table class="h">
-						<tr class="c">
-							<td><code>long</code><code>millisecond</code></td>
-							<td><span><p>A epoch time. (millisecond)</p></span></td>
-						</tr>
-						<tr class="g">
-							<td><code>Self</code></td>
-							<td><span><p>Chainable API</p></span></td>
-						</tr>
-					</table><span class="B"><p>Updates this location&#39;s creation time attribute.</p></span></section>
-				<section class="a" id="creationTime(java.nio.file.attribute.FileTime)">
-					<h2 class="S"><i class="FINAL"><i class="PUBLIC"></i></i><code class="V">creationTime</code><code class="X">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/attribute/FileTime.html">FileTime</a></code><code class="parameterName">time</code>)</code><i class="H"><code>Self</code></i></h2>
-					<table class="h">
-						<tr class="c">
-							<td><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/attribute/FileTime.html">FileTime</a></code><code>time</code></td>
-							<td><span><p>A epoch time. (millisecond)</p></span></td>
-						</tr>
-						<tr class="g">
-							<td><code>Self</code></td>
-							<td><span><p>Chainable API</p></span></td>
-						</tr>
-					</table><span class="B"><p>Updates this location&#39;s creation time attribute.</p></span></section>
-				<section class="a" id="creationTime(java.time.temporal.TemporalAccessor)">
-					<h2 class="S"><i class="FINAL"><i class="PUBLIC"></i></i><code class="V">creationTime</code><code class="X">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/time/temporal/TemporalAccessor.html">TemporalAccessor</a></code><code class="parameterName">time</code>)</code><i class="H"><code>Self</code></i></h2>
-					<table class="h">
-						<tr class="c">
-							<td><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/time/temporal/TemporalAccessor.html">TemporalAccessor</a></code><code>time</code></td>
-							<td><span><p>A epoch time.</p></span></td>
-						</tr>
-						<tr class="g">
-							<td><code>Self</code></td>
-							<td><span><p>Chainable API</p></span></td>
-						</tr>
-					</table><span class="B"><p>Updates this location&#39;s creation time attribute.</p></span></section>
-				<section class="a" id="lastAccessMilli(java.nio.file.LinkOption...)">
-					<h2 class="S"><i class="FINAL"><i class="PUBLIC"></i></i><code class="V">lastAccessMilli</code><code class="X">(<code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/LinkOption.html">LinkOption</a></code><code class="parameterName">options</code>)</code><i class="H"><code>long</code></i></h2>
-					<table class="h">
-						<tr class="c">
-							<td><code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/LinkOption.html">LinkOption</a></code><code>options</code></td>
-							<td></td>
-						</tr>
-						<tr class="g">
-							<td><code>long</code></td>
-							<td><span><p>The last access time.</p></span></td>
-						</tr>
-					</table><span class="B"><p>Returns the last access time that this location was accessed.</p></span></section>
-				<section class="a" id="lastAccessTime(java.nio.file.LinkOption...)">
-					<h2 class="S"><i class="FINAL"><i class="PUBLIC"></i></i><code class="V">lastAccessTime</code><code class="X">(<code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/LinkOption.html">LinkOption</a></code><code class="parameterName">options</code>)</code><i class="H"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/time/Instant.html">Instant</a></code></i></h2>
-					<table class="h">
-						<tr class="c">
-							<td><code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/LinkOption.html">LinkOption</a></code><code>options</code></td>
-							<td></td>
-						</tr>
-						<tr class="g">
-							<td><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/time/Instant.html">Instant</a></code></td>
-							<td><span><p>The last access time.</p></span></td>
-						</tr>
-					</table><span class="B"><p>Returns the last access time that this location was accessed.</p></span></section>
-				<section class="a" id="lastAccessDateTime(java.nio.file.LinkOption...)">
-					<h2 class="S"><i class="FINAL"><i class="PUBLIC"></i></i><code class="V">lastAccessDateTime</code><code class="X">(<code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/LinkOption.html">LinkOption</a></code><code class="parameterName">options</code>)</code><i class="H"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/time/ZonedDateTime.html">ZonedDateTime</a></code></i></h2>
-					<table class="h">
-						<tr class="c">
-							<td><code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/LinkOption.html">LinkOption</a></code><code>options</code></td>
-							<td></td>
-						</tr>
-						<tr class="g">
-							<td><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/time/ZonedDateTime.html">ZonedDateTime</a></code></td>
-							<td><span><p>The last access time.</p></span></td>
-						</tr>
-					</table><span class="B"><p>Returns the last access time that this location was accessed.</p></span></section>
-				<section class="a" id="lastAccessTime(long)">
-					<h2 class="S"><i class="FINAL"><i class="PUBLIC"></i></i><code class="V">lastAccessTime</code><code class="X">(<code>long</code><code class="parameterName">millisecond</code>)</code><i class="H"><code>Self</code></i></h2>
-					<table class="h">
-						<tr class="c">
-							<td><code>long</code><code>millisecond</code></td>
-							<td><span><p>A epoch time.</p></span></td>
-						</tr>
-						<tr class="g">
-							<td><code>Self</code></td>
-							<td><span><p>Chainable API</p></span></td>
-						</tr>
-					</table><span class="B"><p>Updates this location&#39;s last access time attribute.</p></span></section>
-				<section class="a" id="lastAccessTime(java.nio.file.attribute.FileTime)">
-					<h2 class="S"><i class="FINAL"><i class="PUBLIC"></i></i><code class="V">lastAccessTime</code><code class="X">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/attribute/FileTime.html">FileTime</a></code><code class="parameterName">time</code>)</code><i class="H"><code>Self</code></i></h2>
-					<table class="h">
-						<tr class="c">
-							<td><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/attribute/FileTime.html">FileTime</a></code><code>time</code></td>
-							<td><span><p>A epoch time.</p></span></td>
-						</tr>
-						<tr class="g">
-							<td><code>Self</code></td>
-							<td><span><p>Chainable API</p></span></td>
-						</tr>
-					</table><span class="B"><p>Updates this location&#39;s last access time attribute.</p></span></section>
-				<section class="a" id="lastAccessTime(java.time.temporal.TemporalAccessor)">
-					<h2 class="S"><i class="FINAL"><i class="PUBLIC"></i></i><code class="V">lastAccessTime</code><code class="X">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/time/temporal/TemporalAccessor.html">TemporalAccessor</a></code><code class="parameterName">time</code>)</code><i class="H"><code>Self</code></i></h2>
-					<table class="h">
-						<tr class="c">
-							<td><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/time/temporal/TemporalAccessor.html">TemporalAccessor</a></code><code>time</code></td>
-							<td><span><p>A epoch time.</p></span></td>
-						</tr>
-						<tr class="g">
-							<td><code>Self</code></td>
-							<td><span><p>Chainable API</p></span></td>
-						</tr>
-					</table><span class="B"><p>Updates this location&#39;s last access time attribute.</p></span></section>
-				<section class="a" id="lastModifiedMilli(java.nio.file.LinkOption...)">
-					<h2 class="S"><i class="FINAL"><i class="PUBLIC"></i></i><code class="V">lastModifiedMilli</code><code class="X">(<code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/LinkOption.html">LinkOption</a></code><code class="parameterName">options</code>)</code><i class="H"><code>long</code></i></h2>
-					<table class="h">
-						<tr class="c">
-							<td><code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/LinkOption.html">LinkOption</a></code><code>options</code></td>
-							<td></td>
-						</tr>
-						<tr class="g">
-							<td><code>long</code></td>
-							<td><span><p>The last modified time.</p></span></td>
-						</tr>
-					</table><span class="B"><p>Returns the last modified time that this location was changed.</p></span></section>
-				<section class="a" id="lastModifiedTime(java.nio.file.LinkOption...)">
-					<h2 class="S"><i class="FINAL"><i class="PUBLIC"></i></i><code class="V">lastModifiedTime</code><code class="X">(<code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/LinkOption.html">LinkOption</a></code><code class="parameterName">options</code>)</code><i class="H"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/time/Instant.html">Instant</a></code></i></h2>
-					<table class="h">
-						<tr class="c">
-							<td><code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/LinkOption.html">LinkOption</a></code><code>options</code></td>
-							<td></td>
-						</tr>
-						<tr class="g">
-							<td><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/time/Instant.html">Instant</a></code></td>
-							<td><span><p>The last modified time.</p></span></td>
-						</tr>
-					</table><span class="B"><p>Returns the last modified time that this location was changed.</p></span></section>
-				<section class="a" id="lastModifiedDateTime(java.nio.file.LinkOption...)">
-					<h2 class="S"><i class="FINAL"><i class="PUBLIC"></i></i><code class="V">lastModifiedDateTime</code><code class="X">(<code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/LinkOption.html">LinkOption</a></code><code class="parameterName">options</code>)</code><i class="H"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/time/ZonedDateTime.html">ZonedDateTime</a></code></i></h2>
-					<table class="h">
-						<tr class="c">
-							<td><code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/LinkOption.html">LinkOption</a></code><code>options</code></td>
-							<td></td>
-						</tr>
-						<tr class="g">
-							<td><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/time/ZonedDateTime.html">ZonedDateTime</a></code></td>
-							<td><span><p>The last modified time.</p></span></td>
-						</tr>
-					</table><span class="B"><p>Returns the last modified time that this location was changed.</p></span></section>
-				<section class="a" id="lastModifiedTime(long)">
-					<h2 class="S"><i class="FINAL"><i class="PUBLIC"></i></i><code class="V">lastModifiedTime</code><code class="X">(<code>long</code><code class="parameterName">millisecond</code>)</code><i class="H"><code>Self</code></i></h2>
-					<table class="h">
-						<tr class="c">
-							<td><code>long</code><code>millisecond</code></td>
-							<td><span><p>A epoch time.</p></span></td>
-						</tr>
-						<tr class="g">
-							<td><code>Self</code></td>
-							<td><span><p>Chainable API</p></span></td>
-						</tr>
-					</table><span class="B"><p>Updates this location&#39;s last modified time attribute.</p></span></section>
-				<section class="a" id="lastModifiedTime(java.nio.file.attribute.FileTime)">
-					<h2 class="S"><i class="FINAL"><i class="PUBLIC"></i></i><code class="V">lastModifiedTime</code><code class="X">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/attribute/FileTime.html">FileTime</a></code><code class="parameterName">time</code>)</code><i class="H"><code>Self</code></i></h2>
-					<table class="h">
-						<tr class="c">
-							<td><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/attribute/FileTime.html">FileTime</a></code><code>time</code></td>
-							<td><span><p>A epoch time.</p></span></td>
-						</tr>
-						<tr class="g">
-							<td><code>Self</code></td>
-							<td><span><p>Chainable API</p></span></td>
-						</tr>
-					</table><span class="B"><p>Updates this location&#39;s last modified time attribute.</p></span></section>
-				<section class="a" id="lastModifiedTime(java.time.temporal.TemporalAccessor)">
-					<h2 class="S"><i class="FINAL"><i class="PUBLIC"></i></i><code class="V">lastModifiedTime</code><code class="X">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/time/temporal/TemporalAccessor.html">TemporalAccessor</a></code><code class="parameterName">time</code>)</code><i class="H"><code>Self</code></i></h2>
-					<table class="h">
-						<tr class="c">
-							<td><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/time/temporal/TemporalAccessor.html">TemporalAccessor</a></code><code>time</code></td>
-							<td><span><p>A epoch time.</p></span></td>
-						</tr>
-						<tr class="g">
-							<td><code>Self</code></td>
-							<td><span><p>Chainable API</p></span></td>
-						</tr>
-					</table><span class="B"><p>Updates this location&#39;s last modified time attribute.</p></span></section>
-				<section class="a" id="attribute(java.nio.file.LinkOption...)">
-					<h2 class="S"><i class="FINAL"><i class="PUBLIC"></i></i><code class="V">attribute</code><code class="X">(<code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/LinkOption.html">LinkOption</a></code><code class="parameterName">options</code>)</code><i class="H"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/attribute/BasicFileAttributes.html">BasicFileAttributes</a></code></i></h2>
-					<table class="h">
-						<tr class="c">
-							<td><code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/LinkOption.html">LinkOption</a></code><code>options</code></td>
-							<td></td>
-						</tr>
-						<tr class="g">
-							<td><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/attribute/BasicFileAttributes.html">BasicFileAttributes</a></code></td>
-							<td><span><p>A <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/attribute/BasicFileAttributes.html">BasicFileAttributes</a></code>.</p></span></td>
-						</tr>
-					</table><span class="B"><p>Retrieve the <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/attribute/BasicFileAttributes.html">BasicFileAttributes</a></code> of this <code><a href="api/psychopath.Location.html">Location</a></code>.</p></span></section>
-				<section class="a" id="attributeView(java.nio.file.LinkOption...)">
-					<h2 class="S"><i class="FINAL"><i class="PUBLIC"></i></i><code class="V">attributeView</code><code class="X">(<code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/LinkOption.html">LinkOption</a></code><code class="parameterName">options</code>)</code><i class="H"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/attribute/BasicFileAttributeView.html">BasicFileAttributeView</a></code></i></h2>
-					<table class="h">
-						<tr class="c">
-							<td><code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/LinkOption.html">LinkOption</a></code><code>options</code></td>
-							<td></td>
-						</tr>
-						<tr class="g">
-							<td><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/attribute/BasicFileAttributeView.html">BasicFileAttributeView</a></code></td>
-							<td><span><p>A <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/attribute/BasicFileAttributeView.html">BasicFileAttributeView</a></code>.</p></span></td>
-						</tr>
-					</table><span class="B"><p>Retrieve the <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/attribute/BasicFileAttributeView.html">BasicFileAttributeView</a></code> of this <code><a href="api/psychopath.Location.html">Location</a></code>.</p></span></section>
-				<section class="a" id="isAbsolute()">
-					<h2 class="S"><i class="FINAL"><i class="PUBLIC"></i></i><code class="V">isAbsolute</code><code class="X">()</code><i class="H"><code>boolean</code></i></h2>
-					<table class="h">
-						<tr class="g">
-							<td><code>boolean</code></td>
-							<td><span><code>true</code> if, and only if, this path is absolute</span></td>
-						</tr>
-					</table><span class="B"><p>Tells whether or not this path is absolute.</p><p>
+			<section class="V" id="creationMilli(java.nio.file.LinkOption...)">
+				<h2 class="e"><i class="FINAL"><i class="PUBLIC"></i></i><code class="M">creationMilli</code><code class="o">(<code array="var"><a aria-label="java.nio.file.LinkOption 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/LinkOption.html">LinkOption</a></code><code class="parameterName">options</code>)</code><i class="q"><code>long</code></i></h2>
+				<table class="L">
+					<tr class="Z">
+						<td><code array="var"><a aria-label="java.nio.file.LinkOption 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/LinkOption.html">LinkOption</a></code><code class="parameterName">options</code></td>
+						<td></td>
+					</tr>
+					<tr class="d">
+						<td><code>long</code></td>
+						<td><span><p>The creation time.</p></span></td>
+					</tr>
+				</table><span class="B"><p>Returns the creation time that this location was created.</p></span></section>
+			<section class="V" id="creationTime(java.nio.file.LinkOption...)">
+				<h2 class="e"><i class="FINAL"><i class="PUBLIC"></i></i><code class="M">creationTime</code><code class="o">(<code array="var"><a aria-label="java.nio.file.LinkOption 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/LinkOption.html">LinkOption</a></code><code class="parameterName">options</code>)</code><i class="q"><code><a aria-label="java.time.Instant 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/time/Instant.html">Instant</a></code></i></h2>
+				<table class="L">
+					<tr class="Z">
+						<td><code array="var"><a aria-label="java.nio.file.LinkOption 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/LinkOption.html">LinkOption</a></code><code class="parameterName">options</code></td>
+						<td></td>
+					</tr>
+					<tr class="d">
+						<td><code><a aria-label="java.time.Instant 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/time/Instant.html">Instant</a></code></td>
+						<td><span><p>The creation time.</p></span></td>
+					</tr>
+				</table><span class="B"><p>Returns the creation time that this location was created.</p></span></section>
+			<section class="V" id="creationDateTime(java.nio.file.LinkOption...)">
+				<h2 class="e"><i class="FINAL"><i class="PUBLIC"></i></i><code class="M">creationDateTime</code><code class="o">(<code array="var"><a aria-label="java.nio.file.LinkOption 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/LinkOption.html">LinkOption</a></code><code class="parameterName">options</code>)</code><i class="q"><code><a aria-label="java.time.ZonedDateTime 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/time/ZonedDateTime.html">ZonedDateTime</a></code></i></h2>
+				<table class="L">
+					<tr class="Z">
+						<td><code array="var"><a aria-label="java.nio.file.LinkOption 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/LinkOption.html">LinkOption</a></code><code class="parameterName">options</code></td>
+						<td></td>
+					</tr>
+					<tr class="d">
+						<td><code><a aria-label="java.time.ZonedDateTime 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/time/ZonedDateTime.html">ZonedDateTime</a></code></td>
+						<td><span><p>The creation time.</p></span></td>
+					</tr>
+				</table><span class="B"><p>Returns the creation time that this location was created.</p></span></section>
+			<section class="V" id="creationTime(long)">
+				<h2 class="e"><i class="FINAL"><i class="PUBLIC"></i></i><code class="M">creationTime</code><code class="o">(<code>long</code><code class="parameterName">millisecond</code>)</code><i class="q"><code>Self</code></i></h2>
+				<table class="L">
+					<tr class="Z">
+						<td><code>long</code><code class="parameterName">millisecond</code></td>
+						<td><span><p>A epoch time. (millisecond)</p></span></td>
+					</tr>
+					<tr class="d">
+						<td><code>Self</code></td>
+						<td><span><p>Chainable API</p></span></td>
+					</tr>
+				</table><span class="B"><p>Updates this location&#39;s creation time attribute.</p></span></section>
+			<section class="V" id="creationTime(java.nio.file.attribute.FileTime)">
+				<h2 class="e"><i class="FINAL"><i class="PUBLIC"></i></i><code class="M">creationTime</code><code class="o">(<code><a aria-label="java.nio.file.attribute.FileTime 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/attribute/FileTime.html">FileTime</a></code><code class="parameterName">time</code>)</code><i class="q"><code>Self</code></i></h2>
+				<table class="L">
+					<tr class="Z">
+						<td><code><a aria-label="java.nio.file.attribute.FileTime 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/attribute/FileTime.html">FileTime</a></code><code class="parameterName">time</code></td>
+						<td><span><p>A epoch time. (millisecond)</p></span></td>
+					</tr>
+					<tr class="d">
+						<td><code>Self</code></td>
+						<td><span><p>Chainable API</p></span></td>
+					</tr>
+				</table><span class="B"><p>Updates this location&#39;s creation time attribute.</p></span></section>
+			<section class="V" id="creationTime(java.time.temporal.TemporalAccessor)">
+				<h2 class="e"><i class="FINAL"><i class="PUBLIC"></i></i><code class="M">creationTime</code><code class="o">(<code><a aria-label="java.time.temporal.TemporalAccessor 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/time/temporal/TemporalAccessor.html">TemporalAccessor</a></code><code class="parameterName">time</code>)</code><i class="q"><code>Self</code></i></h2>
+				<table class="L">
+					<tr class="Z">
+						<td><code><a aria-label="java.time.temporal.TemporalAccessor 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/time/temporal/TemporalAccessor.html">TemporalAccessor</a></code><code class="parameterName">time</code></td>
+						<td><span><p>A epoch time.</p></span></td>
+					</tr>
+					<tr class="d">
+						<td><code>Self</code></td>
+						<td><span><p>Chainable API</p></span></td>
+					</tr>
+				</table><span class="B"><p>Updates this location&#39;s creation time attribute.</p></span></section>
+			<section class="V" id="lastAccessMilli(java.nio.file.LinkOption...)">
+				<h2 class="e"><i class="FINAL"><i class="PUBLIC"></i></i><code class="M">lastAccessMilli</code><code class="o">(<code array="var"><a aria-label="java.nio.file.LinkOption 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/LinkOption.html">LinkOption</a></code><code class="parameterName">options</code>)</code><i class="q"><code>long</code></i></h2>
+				<table class="L">
+					<tr class="Z">
+						<td><code array="var"><a aria-label="java.nio.file.LinkOption 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/LinkOption.html">LinkOption</a></code><code class="parameterName">options</code></td>
+						<td></td>
+					</tr>
+					<tr class="d">
+						<td><code>long</code></td>
+						<td><span><p>The last access time.</p></span></td>
+					</tr>
+				</table><span class="B"><p>Returns the last access time that this location was accessed.</p></span></section>
+			<section class="V" id="lastAccessTime(java.nio.file.LinkOption...)">
+				<h2 class="e"><i class="FINAL"><i class="PUBLIC"></i></i><code class="M">lastAccessTime</code><code class="o">(<code array="var"><a aria-label="java.nio.file.LinkOption 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/LinkOption.html">LinkOption</a></code><code class="parameterName">options</code>)</code><i class="q"><code><a aria-label="java.time.Instant 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/time/Instant.html">Instant</a></code></i></h2>
+				<table class="L">
+					<tr class="Z">
+						<td><code array="var"><a aria-label="java.nio.file.LinkOption 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/LinkOption.html">LinkOption</a></code><code class="parameterName">options</code></td>
+						<td></td>
+					</tr>
+					<tr class="d">
+						<td><code><a aria-label="java.time.Instant 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/time/Instant.html">Instant</a></code></td>
+						<td><span><p>The last access time.</p></span></td>
+					</tr>
+				</table><span class="B"><p>Returns the last access time that this location was accessed.</p></span></section>
+			<section class="V" id="lastAccessDateTime(java.nio.file.LinkOption...)">
+				<h2 class="e"><i class="FINAL"><i class="PUBLIC"></i></i><code class="M">lastAccessDateTime</code><code class="o">(<code array="var"><a aria-label="java.nio.file.LinkOption 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/LinkOption.html">LinkOption</a></code><code class="parameterName">options</code>)</code><i class="q"><code><a aria-label="java.time.ZonedDateTime 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/time/ZonedDateTime.html">ZonedDateTime</a></code></i></h2>
+				<table class="L">
+					<tr class="Z">
+						<td><code array="var"><a aria-label="java.nio.file.LinkOption 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/LinkOption.html">LinkOption</a></code><code class="parameterName">options</code></td>
+						<td></td>
+					</tr>
+					<tr class="d">
+						<td><code><a aria-label="java.time.ZonedDateTime 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/time/ZonedDateTime.html">ZonedDateTime</a></code></td>
+						<td><span><p>The last access time.</p></span></td>
+					</tr>
+				</table><span class="B"><p>Returns the last access time that this location was accessed.</p></span></section>
+			<section class="V" id="lastAccessTime(long)">
+				<h2 class="e"><i class="FINAL"><i class="PUBLIC"></i></i><code class="M">lastAccessTime</code><code class="o">(<code>long</code><code class="parameterName">millisecond</code>)</code><i class="q"><code>Self</code></i></h2>
+				<table class="L">
+					<tr class="Z">
+						<td><code>long</code><code class="parameterName">millisecond</code></td>
+						<td><span><p>A epoch time.</p></span></td>
+					</tr>
+					<tr class="d">
+						<td><code>Self</code></td>
+						<td><span><p>Chainable API</p></span></td>
+					</tr>
+				</table><span class="B"><p>Updates this location&#39;s last access time attribute.</p></span></section>
+			<section class="V" id="lastAccessTime(java.nio.file.attribute.FileTime)">
+				<h2 class="e"><i class="FINAL"><i class="PUBLIC"></i></i><code class="M">lastAccessTime</code><code class="o">(<code><a aria-label="java.nio.file.attribute.FileTime 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/attribute/FileTime.html">FileTime</a></code><code class="parameterName">time</code>)</code><i class="q"><code>Self</code></i></h2>
+				<table class="L">
+					<tr class="Z">
+						<td><code><a aria-label="java.nio.file.attribute.FileTime 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/attribute/FileTime.html">FileTime</a></code><code class="parameterName">time</code></td>
+						<td><span><p>A epoch time.</p></span></td>
+					</tr>
+					<tr class="d">
+						<td><code>Self</code></td>
+						<td><span><p>Chainable API</p></span></td>
+					</tr>
+				</table><span class="B"><p>Updates this location&#39;s last access time attribute.</p></span></section>
+			<section class="V" id="lastAccessTime(java.time.temporal.TemporalAccessor)">
+				<h2 class="e"><i class="FINAL"><i class="PUBLIC"></i></i><code class="M">lastAccessTime</code><code class="o">(<code><a aria-label="java.time.temporal.TemporalAccessor 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/time/temporal/TemporalAccessor.html">TemporalAccessor</a></code><code class="parameterName">time</code>)</code><i class="q"><code>Self</code></i></h2>
+				<table class="L">
+					<tr class="Z">
+						<td><code><a aria-label="java.time.temporal.TemporalAccessor 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/time/temporal/TemporalAccessor.html">TemporalAccessor</a></code><code class="parameterName">time</code></td>
+						<td><span><p>A epoch time.</p></span></td>
+					</tr>
+					<tr class="d">
+						<td><code>Self</code></td>
+						<td><span><p>Chainable API</p></span></td>
+					</tr>
+				</table><span class="B"><p>Updates this location&#39;s last access time attribute.</p></span></section>
+			<section class="V" id="lastModifiedMilli(java.nio.file.LinkOption...)">
+				<h2 class="e"><i class="FINAL"><i class="PUBLIC"></i></i><code class="M">lastModifiedMilli</code><code class="o">(<code array="var"><a aria-label="java.nio.file.LinkOption 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/LinkOption.html">LinkOption</a></code><code class="parameterName">options</code>)</code><i class="q"><code>long</code></i></h2>
+				<table class="L">
+					<tr class="Z">
+						<td><code array="var"><a aria-label="java.nio.file.LinkOption 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/LinkOption.html">LinkOption</a></code><code class="parameterName">options</code></td>
+						<td></td>
+					</tr>
+					<tr class="d">
+						<td><code>long</code></td>
+						<td><span><p>The last modified time.</p></span></td>
+					</tr>
+				</table><span class="B"><p>Returns the last modified time that this location was changed.</p></span></section>
+			<section class="V" id="lastModifiedTime(java.nio.file.LinkOption...)">
+				<h2 class="e"><i class="FINAL"><i class="PUBLIC"></i></i><code class="M">lastModifiedTime</code><code class="o">(<code array="var"><a aria-label="java.nio.file.LinkOption 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/LinkOption.html">LinkOption</a></code><code class="parameterName">options</code>)</code><i class="q"><code><a aria-label="java.time.Instant 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/time/Instant.html">Instant</a></code></i></h2>
+				<table class="L">
+					<tr class="Z">
+						<td><code array="var"><a aria-label="java.nio.file.LinkOption 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/LinkOption.html">LinkOption</a></code><code class="parameterName">options</code></td>
+						<td></td>
+					</tr>
+					<tr class="d">
+						<td><code><a aria-label="java.time.Instant 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/time/Instant.html">Instant</a></code></td>
+						<td><span><p>The last modified time.</p></span></td>
+					</tr>
+				</table><span class="B"><p>Returns the last modified time that this location was changed.</p></span></section>
+			<section class="V" id="lastModifiedDateTime(java.nio.file.LinkOption...)">
+				<h2 class="e"><i class="FINAL"><i class="PUBLIC"></i></i><code class="M">lastModifiedDateTime</code><code class="o">(<code array="var"><a aria-label="java.nio.file.LinkOption 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/LinkOption.html">LinkOption</a></code><code class="parameterName">options</code>)</code><i class="q"><code><a aria-label="java.time.ZonedDateTime 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/time/ZonedDateTime.html">ZonedDateTime</a></code></i></h2>
+				<table class="L">
+					<tr class="Z">
+						<td><code array="var"><a aria-label="java.nio.file.LinkOption 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/LinkOption.html">LinkOption</a></code><code class="parameterName">options</code></td>
+						<td></td>
+					</tr>
+					<tr class="d">
+						<td><code><a aria-label="java.time.ZonedDateTime 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/time/ZonedDateTime.html">ZonedDateTime</a></code></td>
+						<td><span><p>The last modified time.</p></span></td>
+					</tr>
+				</table><span class="B"><p>Returns the last modified time that this location was changed.</p></span></section>
+			<section class="V" id="lastModifiedTime(long)">
+				<h2 class="e"><i class="FINAL"><i class="PUBLIC"></i></i><code class="M">lastModifiedTime</code><code class="o">(<code>long</code><code class="parameterName">millisecond</code>)</code><i class="q"><code>Self</code></i></h2>
+				<table class="L">
+					<tr class="Z">
+						<td><code>long</code><code class="parameterName">millisecond</code></td>
+						<td><span><p>A epoch time.</p></span></td>
+					</tr>
+					<tr class="d">
+						<td><code>Self</code></td>
+						<td><span><p>Chainable API</p></span></td>
+					</tr>
+				</table><span class="B"><p>Updates this location&#39;s last modified time attribute.</p></span></section>
+			<section class="V" id="lastModifiedTime(java.nio.file.attribute.FileTime)">
+				<h2 class="e"><i class="FINAL"><i class="PUBLIC"></i></i><code class="M">lastModifiedTime</code><code class="o">(<code><a aria-label="java.nio.file.attribute.FileTime 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/attribute/FileTime.html">FileTime</a></code><code class="parameterName">time</code>)</code><i class="q"><code>Self</code></i></h2>
+				<table class="L">
+					<tr class="Z">
+						<td><code><a aria-label="java.nio.file.attribute.FileTime 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/attribute/FileTime.html">FileTime</a></code><code class="parameterName">time</code></td>
+						<td><span><p>A epoch time.</p></span></td>
+					</tr>
+					<tr class="d">
+						<td><code>Self</code></td>
+						<td><span><p>Chainable API</p></span></td>
+					</tr>
+				</table><span class="B"><p>Updates this location&#39;s last modified time attribute.</p></span></section>
+			<section class="V" id="lastModifiedTime(java.time.temporal.TemporalAccessor)">
+				<h2 class="e"><i class="FINAL"><i class="PUBLIC"></i></i><code class="M">lastModifiedTime</code><code class="o">(<code><a aria-label="java.time.temporal.TemporalAccessor 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/time/temporal/TemporalAccessor.html">TemporalAccessor</a></code><code class="parameterName">time</code>)</code><i class="q"><code>Self</code></i></h2>
+				<table class="L">
+					<tr class="Z">
+						<td><code><a aria-label="java.time.temporal.TemporalAccessor 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/time/temporal/TemporalAccessor.html">TemporalAccessor</a></code><code class="parameterName">time</code></td>
+						<td><span><p>A epoch time.</p></span></td>
+					</tr>
+					<tr class="d">
+						<td><code>Self</code></td>
+						<td><span><p>Chainable API</p></span></td>
+					</tr>
+				</table><span class="B"><p>Updates this location&#39;s last modified time attribute.</p></span></section>
+			<section class="V" id="attribute(java.nio.file.LinkOption...)">
+				<h2 class="e"><i class="FINAL"><i class="PUBLIC"></i></i><code class="M">attribute</code><code class="o">(<code array="var"><a aria-label="java.nio.file.LinkOption 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/LinkOption.html">LinkOption</a></code><code class="parameterName">options</code>)</code><i class="q"><code><a aria-label="java.nio.file.attribute.BasicFileAttributes 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/attribute/BasicFileAttributes.html">BasicFileAttributes</a></code></i></h2>
+				<table class="L">
+					<tr class="Z">
+						<td><code array="var"><a aria-label="java.nio.file.LinkOption 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/LinkOption.html">LinkOption</a></code><code class="parameterName">options</code></td>
+						<td></td>
+					</tr>
+					<tr class="d">
+						<td><code><a aria-label="java.nio.file.attribute.BasicFileAttributes 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/attribute/BasicFileAttributes.html">BasicFileAttributes</a></code></td>
+						<td><span><p>A <code><a aria-label="java.nio.file.attribute.BasicFileAttributes 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/attribute/BasicFileAttributes.html">BasicFileAttributes</a></code>.</p></span></td>
+					</tr>
+				</table><span class="B"><p>Retrieve the <code><a aria-label="java.nio.file.attribute.BasicFileAttributes 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/attribute/BasicFileAttributes.html">BasicFileAttributes</a></code> of this <code><a aria-label="psychopath.Location" href="api/psychopath.Location.html">Location</a></code>.</p></span></section>
+			<section class="V" id="attributeView(java.nio.file.LinkOption...)">
+				<h2 class="e"><i class="FINAL"><i class="PUBLIC"></i></i><code class="M">attributeView</code><code class="o">(<code array="var"><a aria-label="java.nio.file.LinkOption 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/LinkOption.html">LinkOption</a></code><code class="parameterName">options</code>)</code><i class="q"><code><a aria-label="java.nio.file.attribute.BasicFileAttributeView 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/attribute/BasicFileAttributeView.html">BasicFileAttributeView</a></code></i></h2>
+				<table class="L">
+					<tr class="Z">
+						<td><code array="var"><a aria-label="java.nio.file.LinkOption 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/LinkOption.html">LinkOption</a></code><code class="parameterName">options</code></td>
+						<td></td>
+					</tr>
+					<tr class="d">
+						<td><code><a aria-label="java.nio.file.attribute.BasicFileAttributeView 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/attribute/BasicFileAttributeView.html">BasicFileAttributeView</a></code></td>
+						<td><span><p>A <code><a aria-label="java.nio.file.attribute.BasicFileAttributeView 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/attribute/BasicFileAttributeView.html">BasicFileAttributeView</a></code>.</p></span></td>
+					</tr>
+				</table><span class="B"><p>Retrieve the <code><a aria-label="java.nio.file.attribute.BasicFileAttributeView 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/attribute/BasicFileAttributeView.html">BasicFileAttributeView</a></code> of this <code><a aria-label="psychopath.Location" href="api/psychopath.Location.html">Location</a></code>.</p></span></section>
+			<section class="V" id="isAbsolute()">
+				<h2 class="e"><i class="FINAL"><i class="PUBLIC"></i></i><code class="M">isAbsolute</code><code class="o">()</code><i class="q"><code>boolean</code></i></h2>
+				<table class="L">
+					<tr class="d">
+						<td><code>boolean</code></td>
+						<td><span><code>true</code> if, and only if, this path is absolute</span></td>
+					</tr>
+				</table><span class="B"><p>Tells whether or not this path is absolute.</p><p>
  An absolute path is complete in that it doesn&#39;t need to be combined with other path
  information in order to locate a file.
 </p>
-					</span></section>
-				<section class="a" id="isRelative()">
-					<h2 class="S"><i class="FINAL"><i class="PUBLIC"></i></i><code class="V">isRelative</code><code class="X">()</code><i class="H"><code>boolean</code></i></h2>
-					<table class="h">
-						<tr class="g">
-							<td><code>boolean</code></td>
-							<td><span><code>true</code> if, and only if, this path is relative</span></td>
-						</tr>
-					</table><span class="B"><p>Tells whether or not this path is relative.</p><p>
+				</span></section>
+			<section class="V" id="isRelative()">
+				<h2 class="e"><i class="FINAL"><i class="PUBLIC"></i></i><code class="M">isRelative</code><code class="o">()</code><i class="q"><code>boolean</code></i></h2>
+				<table class="L">
+					<tr class="d">
+						<td><code>boolean</code></td>
+						<td><span><code>true</code> if, and only if, this path is relative</span></td>
+					</tr>
+				</table><span class="B"><p>Tells whether or not this path is relative.</p><p>
  An absolute path is complete in that it doesn&#39;t need to be combined with other path
  information in order to locate a file.
 </p>
-					</span></section>
-				<section class="a" id="isAbsent(java.nio.file.LinkOption...)">
-					<h2 class="S"><i class="FINAL"><i class="PUBLIC"></i></i><code class="V">isAbsent</code><code class="X">(<code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/LinkOption.html">LinkOption</a></code><code class="parameterName">options</code>)</code><i class="H"><code>boolean</code></i></h2>
-					<table class="h">
-						<tr class="c">
-							<td><code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/LinkOption.html">LinkOption</a></code><code>options</code></td>
-							<td><span><p>options indicating how symbolic links are handled</p></span></td>
-						</tr>
-						<tr class="g">
-							<td><code>boolean</code></td>
-							<td><span><code>true</code> if the file does not exist; <code>false</code> if the file exists or its
+				</span></section>
+			<section class="V" id="isAbsent(java.nio.file.LinkOption...)">
+				<h2 class="e"><i class="FINAL"><i class="PUBLIC"></i></i><code class="M">isAbsent</code><code class="o">(<code array="var"><a aria-label="java.nio.file.LinkOption 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/LinkOption.html">LinkOption</a></code><code class="parameterName">options</code>)</code><i class="q"><code>boolean</code></i></h2>
+				<table class="L">
+					<tr class="Z">
+						<td><code array="var"><a aria-label="java.nio.file.LinkOption 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/LinkOption.html">LinkOption</a></code><code class="parameterName">options</code></td>
+						<td><span><p>options indicating how symbolic links are handled</p></span></td>
+					</tr>
+					<tr class="d">
+						<td><code>boolean</code></td>
+						<td><span><code>true</code> if the file does not exist; <code>false</code> if the file exists or its
          existence cannot be determined</span></td>
-						</tr>
-					</table><span class="B"><p>Tests whether this location does not exist or not. This method is intended for cases where it
+					</tr>
+				</table><span class="B"><p>Tests whether this location does not exist or not. This method is intended for cases where it
 is required to take action when it can be confirmed that a file does not exist.</p></span></section>
-				<section class="a" id="isPresent(java.nio.file.LinkOption...)">
-					<h2 class="S"><i class="FINAL"><i class="PUBLIC"></i></i><code class="V">isPresent</code><code class="X">(<code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/LinkOption.html">LinkOption</a></code><code class="parameterName">options</code>)</code><i class="H"><code>boolean</code></i></h2>
-					<table class="h">
-						<tr class="c">
-							<td><code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/LinkOption.html">LinkOption</a></code><code>options</code></td>
-							<td><span><p>options indicating how symbolic links are handled</p></span></td>
-						</tr>
-						<tr class="g">
-							<td><code>boolean</code></td>
-							<td><span><code>false</code> if the file does not exist; <code>true</code> if the file exists or its
+			<section class="V" id="isPresent(java.nio.file.LinkOption...)">
+				<h2 class="e"><i class="FINAL"><i class="PUBLIC"></i></i><code class="M">isPresent</code><code class="o">(<code array="var"><a aria-label="java.nio.file.LinkOption 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/LinkOption.html">LinkOption</a></code><code class="parameterName">options</code>)</code><i class="q"><code>boolean</code></i></h2>
+				<table class="L">
+					<tr class="Z">
+						<td><code array="var"><a aria-label="java.nio.file.LinkOption 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/LinkOption.html">LinkOption</a></code><code class="parameterName">options</code></td>
+						<td><span><p>options indicating how symbolic links are handled</p></span></td>
+					</tr>
+					<tr class="d">
+						<td><code>boolean</code></td>
+						<td><span><code>false</code> if the file does not exist; <code>true</code> if the file exists or its
          existence cannot be determined</span></td>
-						</tr>
-					</table><span class="B"><p>Tests whether this location does exist or not. This method is intended for cases where it is
+					</tr>
+				</table><span class="B"><p>Tests whether this location does exist or not. This method is intended for cases where it is
 required to take action when it can be confirmed that a file does exist.</p></span></section>
-				<section class="a" id="isReadable()">
-					<h2 class="S"><i class="FINAL"><i class="PUBLIC"></i></i><code class="V">isReadable</code><code class="X">()</code><i class="H"><code>boolean</code></i></h2>
-					<table class="h">
-						<tr class="g">
-							<td><code>boolean</code></td>
-							<td><span><code>true</code> if the file exists and is readable; <code>false</code> if the file does not
+			<section class="V" id="isReadable()">
+				<h2 class="e"><i class="FINAL"><i class="PUBLIC"></i></i><code class="M">isReadable</code><code class="o">()</code><i class="q"><code>boolean</code></i></h2>
+				<table class="L">
+					<tr class="d">
+						<td><code>boolean</code></td>
+						<td><span><code>true</code> if the file exists and is readable; <code>false</code> if the file does not
          exist, read access would be denied because the Java virtual machine has insufficient
          privileges, or access cannot be determined</span></td>
-						</tr>
-					</table><span class="B"><p>Tests whether a file is readable. This method checks that a file exists and that this Java
+					</tr>
+				</table><span class="B"><p>Tests whether a file is readable. This method checks that a file exists and that this Java
 virtual machine has appropriate privileges that would allow it open the file for reading.
 Depending on the implementation, this method may require to read file permissions, access
 control lists, or other file attributes in order to check the effective access to the file.
@@ -609,208 +617,208 @@ Consequently, this method may not be atomic with respect to other file system op
  subsequent attempt to open the file for reading will succeed (or even that it will access the
  same file). Care should be taken when using this method in security sensitive applications.
 </p>
-					</span></section>
-				<section class="a" id="isFile(java.nio.file.LinkOption...)">
-					<h2 class="S"><i class="FINAL"><i class="PUBLIC"></i></i><code class="V">isFile</code><code class="X">(<code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/LinkOption.html">LinkOption</a></code><code class="parameterName">options</code>)</code><i class="H"><code>boolean</code></i></h2>
-					<table class="h">
-						<tr class="c">
-							<td><code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/LinkOption.html">LinkOption</a></code><code>options</code></td>
-							<td><span><p>options indicating how symbolic links are handled</p></span></td>
-						</tr>
-						<tr class="g">
-							<td><code>boolean</code></td>
-							<td><span><code>true</code> if the file is a regular file; <code>false</code> if the file does not exist,
+				</span></section>
+			<section class="V" id="isFile(java.nio.file.LinkOption...)">
+				<h2 class="e"><i class="FINAL"><i class="PUBLIC"></i></i><code class="M">isFile</code><code class="o">(<code array="var"><a aria-label="java.nio.file.LinkOption 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/LinkOption.html">LinkOption</a></code><code class="parameterName">options</code>)</code><i class="q"><code>boolean</code></i></h2>
+				<table class="L">
+					<tr class="Z">
+						<td><code array="var"><a aria-label="java.nio.file.LinkOption 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/LinkOption.html">LinkOption</a></code><code class="parameterName">options</code></td>
+						<td><span><p>options indicating how symbolic links are handled</p></span></td>
+					</tr>
+					<tr class="d">
+						<td><code>boolean</code></td>
+						<td><span><code>true</code> if the file is a regular file; <code>false</code> if the file does not exist,
          is not a regular file, or it cannot be determined if the file is a regular file or
          not.</span></td>
-						</tr>
-					</table><span class="B"><p>Tests whether a file is a regular file with opaque content.</p><p>
+					</tr>
+				</table><span class="B"><p>Tests whether a file is a regular file with opaque content.</p><p>
  The <code>options</code> array may be used to indicate how symbolic links are handled for the case
  that the file is a symbolic link. By default, symbolic links are followed and the file
  attribute of the final target of the link is read. If the option
- <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/LinkOption.html#NOFOLLOW_LINKS">LinkOption#NOFOLLOW_LINKS</a></code> is present then symbolic links are not
+ <code><a aria-label="java.nio.file.LinkOption 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/LinkOption.html#NOFOLLOW_LINKS">LinkOption#NOFOLLOW_LINKS</a></code> is present then symbolic links are not
  followed.
  
-							<p>
+						<p>
  Where it is required to distinguish an I/O exception from the case that the file is not a
  regular file then the file attributes can be read with the
- <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/Files.html#readAttributes(java.nio.file.Path,java.lang.Class,java.nio.file.LinkOption[])">Files#readAttributes(Path,Class,LinkOption[])</a></code> method and the file type
- tested with the <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/attribute/BasicFileAttributes.html#isRegularFile">BasicFileAttributes#isRegularFile</a></code> method.
+ <code><a aria-label="java.nio.file.Files 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/Files.html#readAttributes(java.nio.file.Path,java.lang.Class,java.nio.file.LinkOption[])">Files#readAttributes(Path,Class,LinkOption[])</a></code> method and the file type
+ tested with the <code><a aria-label="java.nio.file.attribute.BasicFileAttributes 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/attribute/BasicFileAttributes.html#isRegularFile">BasicFileAttributes#isRegularFile</a></code> method.
 </p>
-						</p>
-					</span></section>
-				<section class="a" id="isDirectory(java.nio.file.LinkOption...)">
-					<h2 class="S"><i class="FINAL"><i class="PUBLIC"></i></i><code class="V">isDirectory</code><code class="X">(<code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/LinkOption.html">LinkOption</a></code><code class="parameterName">options</code>)</code><i class="H"><code>boolean</code></i></h2>
-					<table class="h">
-						<tr class="c">
-							<td><code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/LinkOption.html">LinkOption</a></code><code>options</code></td>
-							<td><span><p>options indicating how symbolic links are handled</p></span></td>
-						</tr>
-						<tr class="g">
-							<td><code>boolean</code></td>
-							<td><span><code>true</code> if the file is a directory; <code>false</code> if the file does not exist, is
+					</p>
+				</span></section>
+			<section class="V" id="isDirectory(java.nio.file.LinkOption...)">
+				<h2 class="e"><i class="FINAL"><i class="PUBLIC"></i></i><code class="M">isDirectory</code><code class="o">(<code array="var"><a aria-label="java.nio.file.LinkOption 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/LinkOption.html">LinkOption</a></code><code class="parameterName">options</code>)</code><i class="q"><code>boolean</code></i></h2>
+				<table class="L">
+					<tr class="Z">
+						<td><code array="var"><a aria-label="java.nio.file.LinkOption 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/LinkOption.html">LinkOption</a></code><code class="parameterName">options</code></td>
+						<td><span><p>options indicating how symbolic links are handled</p></span></td>
+					</tr>
+					<tr class="d">
+						<td><code>boolean</code></td>
+						<td><span><code>true</code> if the file is a directory; <code>false</code> if the file does not exist, is
          not a directory, or it cannot be determined if the file is a directory or not.</span></td>
-						</tr>
-					</table><span class="B"><p>Tests whether a file is a directory.</p><p>
+					</tr>
+				</table><span class="B"><p>Tests whether a file is a directory.</p><p>
  The <code>options</code> array may be used to indicate how symbolic links are handled for the case
  that the file is a symbolic link. By default, symbolic links are followed and the file
  attribute of the final target of the link is read. If the option
- <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/LinkOption.html#NOFOLLOW_LINKS">LinkOption#NOFOLLOW_LINKS</a></code> is present then symbolic links are not
+ <code><a aria-label="java.nio.file.LinkOption 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/LinkOption.html#NOFOLLOW_LINKS">LinkOption#NOFOLLOW_LINKS</a></code> is present then symbolic links are not
  followed.
  
-							<p>
+						<p>
  Where it is required to distinguish an I/O exception from the case that the file is not a
  directory then the file attributes can be read with the
- <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/Files.html#readAttributes(java.nio.file.Path,java.lang.Class,java.nio.file.LinkOption[])">Files#readAttributes(Path,Class,LinkOption[])</a></code> method and the file type
- tested with the <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/attribute/BasicFileAttributes.html#isDirectory">BasicFileAttributes#isDirectory</a></code> method.
+ <code><a aria-label="java.nio.file.Files 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/Files.html#readAttributes(java.nio.file.Path,java.lang.Class,java.nio.file.LinkOption[])">Files#readAttributes(Path,Class,LinkOption[])</a></code> method and the file type
+ tested with the <code><a aria-label="java.nio.file.attribute.BasicFileAttributes 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/attribute/BasicFileAttributes.html#isDirectory">BasicFileAttributes#isDirectory</a></code> method.
 </p>
-						</p>
-					</span></section>
-				<section class="a" id="isSymbolicLink()">
-					<h2 class="S"><i class="FINAL"><i class="PUBLIC"></i></i><code class="V">isSymbolicLink</code><code class="X">()</code><i class="H"><code>boolean</code></i></h2>
-					<table class="h">
-						<tr class="g">
-							<td><code>boolean</code></td>
-							<td><span><code>true</code> if the file is a symbolic link; <code>false</code> if the file does not
+					</p>
+				</span></section>
+			<section class="V" id="isSymbolicLink()">
+				<h2 class="e"><i class="FINAL"><i class="PUBLIC"></i></i><code class="M">isSymbolicLink</code><code class="o">()</code><i class="q"><code>boolean</code></i></h2>
+				<table class="L">
+					<tr class="d">
+						<td><code>boolean</code></td>
+						<td><span><code>true</code> if the file is a symbolic link; <code>false</code> if the file does not
          exist, is not a symbolic link, or it cannot be determined if the file is a symbolic
          link or not.</span></td>
-						</tr>
-					</table><span class="B"><p>Tests whether a file is a symbolic link.</p><p>
+					</tr>
+				</table><span class="B"><p>Tests whether a file is a symbolic link.</p><p>
  Where it is required to distinguish an I/O exception from the case that the file is not a
  symbolic link then the file attributes can be read with the
- <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/Files.html#readAttributes(java.nio.file.Path,java.lang.Class,java.nio.file.LinkOption[])">Files#readAttributes(Path,Class,LinkOption[])</a></code> method and the file type
- tested with the <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/attribute/BasicFileAttributes.html#isSymbolicLink">BasicFileAttributes#isSymbolicLink</a></code> method.
+ <code><a aria-label="java.nio.file.Files 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/Files.html#readAttributes(java.nio.file.Path,java.lang.Class,java.nio.file.LinkOption[])">Files#readAttributes(Path,Class,LinkOption[])</a></code> method and the file type
+ tested with the <code><a aria-label="java.nio.file.attribute.BasicFileAttributes 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/attribute/BasicFileAttributes.html#isSymbolicLink">BasicFileAttributes#isSymbolicLink</a></code> method.
 </p>
-					</span></section>
-				<section class="a" id="isRoot()">
-					<h2 class="S"><i class="FINAL"><i class="PUBLIC"></i></i><code class="V">isRoot</code><code class="X">()</code><i class="H"><code>boolean</code></i></h2>
-					<table class="h">
-						<tr class="g">
-							<td><code>boolean</code></td>
-							<td></td>
-						</tr>
-					</table><span class="B"><p>Test whether this location indicates root or not.</p></span></section>
-				<section class="a" id="isBefore(psychopath.Location)">
-					<h2 class="S"><i class="FINAL"><i class="PUBLIC"></i></i><code class="V">isBefore</code><code class="X">(<code><a href="api/psychopath.Location.html">Location</a></code><code class="parameterName">other</code>)</code><i class="H"><code>boolean</code></i></h2>
-					<table class="h">
-						<tr class="c">
-							<td><code><a href="api/psychopath.Location.html">Location</a></code><code>other</code></td>
-							<td></td>
-						</tr>
-						<tr class="g">
-							<td><code>boolean</code></td>
-							<td></td>
-						</tr>
-					</table><span class="B"><p>Test whether this location is older than the specified location or not.</p></span></section>
-				<section class="a" id="isAfter(psychopath.Location)">
-					<h2 class="S"><i class="FINAL"><i class="PUBLIC"></i></i><code class="V">isAfter</code><code class="X">(<code><a href="api/psychopath.Location.html">Location</a></code><code class="parameterName">other</code>)</code><i class="H"><code>boolean</code></i></h2>
-					<table class="h">
-						<tr class="c">
-							<td><code><a href="api/psychopath.Location.html">Location</a></code><code>other</code></td>
-							<td></td>
-						</tr>
-						<tr class="g">
-							<td><code>boolean</code></td>
-							<td></td>
-						</tr>
-					</table><span class="B"><p>Test whether this location is newer than the specified location or not.</p></span></section>
-				<section class="a" id="asDirectory()">
-					<h2 class="S"><i class="FINAL"><i class="PUBLIC"></i></i><code class="V">asDirectory</code><code class="X">()</code><i class="H"><code><a href="api/psychopath.Directory.html">Directory</a></code></i></h2>
-					<table class="h">
-						<tr class="g">
-							<td><code><a href="api/psychopath.Directory.html">Directory</a></code></td>
-							<td><span><code><a href="api/psychopath.Directory.html">Directory</a></code> interface.</span></td>
-						</tr>
-					</table><span class="B"><p>Convert to <code><a href="api/psychopath.Directory.html">Directory</a></code> if it is possible. If this <code><a href="api/psychopath.Location.html">Location</a></code> indicate
-<code><a href="api/psychopath.File.html">File</a></code>, throw error.</p></span></section>
-				<section class="a" id="asFile()">
-					<h2 class="S"><i class="FINAL"><i class="PUBLIC"></i></i><code class="V">asFile</code><code class="X">()</code><i class="H"><code><a href="api/psychopath.File.html">File</a></code></i></h2>
-					<table class="h">
-						<tr class="g">
-							<td><code><a href="api/psychopath.File.html">File</a></code></td>
-							<td><span><code><a href="api/psychopath.File.html">File</a></code> interface.</span></td>
-						</tr>
-					</table><span class="B"><p>Convert to <code><a href="api/psychopath.File.html">File</a></code> if it is possible. If this <code><a href="api/psychopath.Location.html">Location</a></code> indicate
-<code><a href="api/psychopath.Directory.html">Directory</a></code>, throw error.</p></span></section>
-				<section class="a" id="asJavaFile()">
-					<h2 class="S"><i class="FINAL"><i class="PUBLIC"></i></i><code class="V">asJavaFile</code><code class="X">()</code><i class="H"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/io/File.html">File</a></code></i></h2>
-					<table class="h">
-						<tr class="g">
-							<td><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/io/File.html">File</a></code></td>
-							<td><span><p>a <code>File</code> object representing this path</p></span></td>
-						</tr>
-					</table><span class="B"><p>Returns a <code><a href="api/psychopath.File.html">File</a></code> object representing this path. Where this <code>
+				</span></section>
+			<section class="V" id="isRoot()">
+				<h2 class="e"><i class="FINAL"><i class="PUBLIC"></i></i><code class="M">isRoot</code><code class="o">()</code><i class="q"><code>boolean</code></i></h2>
+				<table class="L">
+					<tr class="d">
+						<td><code>boolean</code></td>
+						<td></td>
+					</tr>
+				</table><span class="B"><p>Test whether this location indicates root or not.</p></span></section>
+			<section class="V" id="isBefore(psychopath.Location)">
+				<h2 class="e"><i class="FINAL"><i class="PUBLIC"></i></i><code class="M">isBefore</code><code class="o">(<code><a aria-label="psychopath.Location" href="api/psychopath.Location.html">Location</a></code><code class="parameterName">other</code>)</code><i class="q"><code>boolean</code></i></h2>
+				<table class="L">
+					<tr class="Z">
+						<td><code><a aria-label="psychopath.Location" href="api/psychopath.Location.html">Location</a></code><code class="parameterName">other</code></td>
+						<td></td>
+					</tr>
+					<tr class="d">
+						<td><code>boolean</code></td>
+						<td></td>
+					</tr>
+				</table><span class="B"><p>Test whether this location is older than the specified location or not.</p></span></section>
+			<section class="V" id="isAfter(psychopath.Location)">
+				<h2 class="e"><i class="FINAL"><i class="PUBLIC"></i></i><code class="M">isAfter</code><code class="o">(<code><a aria-label="psychopath.Location" href="api/psychopath.Location.html">Location</a></code><code class="parameterName">other</code>)</code><i class="q"><code>boolean</code></i></h2>
+				<table class="L">
+					<tr class="Z">
+						<td><code><a aria-label="psychopath.Location" href="api/psychopath.Location.html">Location</a></code><code class="parameterName">other</code></td>
+						<td></td>
+					</tr>
+					<tr class="d">
+						<td><code>boolean</code></td>
+						<td></td>
+					</tr>
+				</table><span class="B"><p>Test whether this location is newer than the specified location or not.</p></span></section>
+			<section class="V" id="asDirectory()">
+				<h2 class="e"><i class="FINAL"><i class="PUBLIC"></i></i><code class="M">asDirectory</code><code class="o">()</code><i class="q"><code><a aria-label="psychopath.Directory" href="api/psychopath.Directory.html">Directory</a></code></i></h2>
+				<table class="L">
+					<tr class="d">
+						<td><code><a aria-label="psychopath.Directory" href="api/psychopath.Directory.html">Directory</a></code></td>
+						<td><span><code><a aria-label="psychopath.Directory" href="api/psychopath.Directory.html">Directory</a></code> interface.</span></td>
+					</tr>
+				</table><span class="B"><p>Convert to <code><a aria-label="psychopath.Directory" href="api/psychopath.Directory.html">Directory</a></code> if it is possible. If this <code><a aria-label="psychopath.Location" href="api/psychopath.Location.html">Location</a></code> indicate
+<code><a aria-label="psychopath.File" href="api/psychopath.File.html">File</a></code>, throw error.</p></span></section>
+			<section class="V" id="asFile()">
+				<h2 class="e"><i class="FINAL"><i class="PUBLIC"></i></i><code class="M">asFile</code><code class="o">()</code><i class="q"><code><a aria-label="psychopath.File" href="api/psychopath.File.html">File</a></code></i></h2>
+				<table class="L">
+					<tr class="d">
+						<td><code><a aria-label="psychopath.File" href="api/psychopath.File.html">File</a></code></td>
+						<td><span><code><a aria-label="psychopath.File" href="api/psychopath.File.html">File</a></code> interface.</span></td>
+					</tr>
+				</table><span class="B"><p>Convert to <code><a aria-label="psychopath.File" href="api/psychopath.File.html">File</a></code> if it is possible. If this <code><a aria-label="psychopath.Location" href="api/psychopath.Location.html">Location</a></code> indicate
+<code><a aria-label="psychopath.Directory" href="api/psychopath.Directory.html">Directory</a></code>, throw error.</p></span></section>
+			<section class="V" id="asJavaFile()">
+				<h2 class="e"><i class="FINAL"><i class="PUBLIC"></i></i><code class="M">asJavaFile</code><code class="o">()</code><i class="q"><code><a aria-label="java.io.File 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/io/File.html">File</a></code></i></h2>
+				<table class="L">
+					<tr class="d">
+						<td><code><a aria-label="java.io.File 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/io/File.html">File</a></code></td>
+						<td><span><p>a <code>File</code> object representing this path</p></span></td>
+					</tr>
+				</table><span class="B"><p>Returns a <code><a aria-label="psychopath.File" href="api/psychopath.File.html">File</a></code> object representing this path. Where this <code>
 Path</code> is associated with the default provider, then this method is equivalent to returning a
 <code>File</code> object constructed with the <code>String</code> representation of this path.</p></span></section>
-				<section class="a" id="asJavaPath()">
-					<h2 class="S"><i class="FINAL"><i class="PUBLIC"></i></i><code class="V">asJavaPath</code><code class="X">()</code><i class="H"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/Path.html">Path</a></code></i></h2>
-					<table class="h">
-						<tr class="g">
-							<td><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/Path.html">Path</a></code></td>
-							<td><span><p>a <code>Path</code> constructed from this abstract path</p></span></td>
-						</tr>
-					</table><span class="B"><p>Returns a <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/Path.html">Path</a></code> object constructed from the this abstract path. The
-resulting <code>Path</code> is associated with the <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/FileSystems.html#getDefault">java.nio.file.FileSystems#getDefault</a></code>.</p><p>
+			<section class="V" id="asJavaPath()">
+				<h2 class="e"><i class="FINAL"><i class="PUBLIC"></i></i><code class="M">asJavaPath</code><code class="o">()</code><i class="q"><code><a aria-label="java.nio.file.Path 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/Path.html">Path</a></code></i></h2>
+				<table class="L">
+					<tr class="d">
+						<td><code><a aria-label="java.nio.file.Path 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/Path.html">Path</a></code></td>
+						<td><span><p>a <code>Path</code> constructed from this abstract path</p></span></td>
+					</tr>
+				</table><span class="B"><p>Returns a <code><a aria-label="java.nio.file.Path 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/Path.html">Path</a></code> object constructed from the this abstract path. The
+resulting <code>Path</code> is associated with the <code><a aria-label="java.nio.file.FileSystems 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/FileSystems.html#getDefault">java.nio.file.FileSystems#getDefault</a></code>.</p><p>
  If this abstract pathname is the empty abstract pathname then this method returns a
  <code>Path</code> that may be used to access the current user directory.
 </p>
-					</span></section>
-				<section class="a" id="create()">
-					<h2 class="S"><i class="ABSTRACT"><i class="PUBLIC"></i></i><code class="V">create</code><code class="X">()</code><i class="H"><code>Self</code></i></h2>
-					<table class="h">
-						<tr class="g">
-							<td><code>Self</code></td>
-							<td></td>
-						</tr>
-					</table><span class="B"><p>Create this <code><a href="api/psychopath.Location.html">Location</a></code> with the specified attributes.</p></span></section>
-				<section class="a" id="deleteOnExit()">
-					<h2 class="S"><i class="PUBLIC"></i><code class="V">deleteOnExit</code><code class="X">()</code><i class="H"><code>Self</code></i></h2>
-					<table class="h">
-						<tr class="g">
-							<td><code>Self</code></td>
-							<td></td>
-						</tr>
-					</table><span class="B"><p>Delete this <code><a href="api/psychopath.Location.html">Location</a></code> when JVM is shutdowned.</p></span></section>
-				<section class="a" id="moveUp()">
-					<h2 class="S"><i class="FINAL"><i class="PUBLIC"></i></i><code class="V">moveUp</code><code class="X">()</code><i class="H"><code>Self</code></i></h2>
-					<table class="h">
-						<tr class="g">
-							<td><code>Self</code></td>
-							<td><span><p>A new moved location in the parent <code><a href="api/psychopath.Directory.html">Directory</a></code> (NOT parent directory).</p></span></td>
-						</tr>
-					</table><span class="B"><p>Move to the parent <code><a href="api/psychopath.Directory.html">Directory</a></code>.</p></span></section>
-				<section class="a" id="renameTo(java.lang.String,java.nio.file.CopyOption...)">
-					<h2 class="S"><i class="FINAL"><i class="PUBLIC"></i></i><code class="V">renameTo</code><code class="X">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code><code class="parameterName">name</code>, <code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/CopyOption.html">CopyOption</a></code><code class="parameterName">options</code>)</code><i class="H"><code>Self</code></i></h2>
-					<table class="h">
-						<tr class="c">
-							<td><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code><code>name</code></td>
-							<td><span><p>A new name.</p></span></td>
-						</tr>
-						<tr class="c">
-							<td><code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/CopyOption.html">CopyOption</a></code><code>options</code></td>
-							<td><span><p>A set of copy options.</p></span></td>
-						</tr>
-						<tr class="g">
-							<td><code>Self</code></td>
-							<td><span><p>A new renamed location in same <code><a href="api/psychopath.Directory.html">Directory</a></code>.</p></span></td>
-						</tr>
-					</table><span class="B"><p>Rename to the specified name.</p></span></section>
-				<section class="a" id="pack()">
-					<h2 class="S"><i class="FINAL"><i class="PUBLIC"></i></i><code class="V">pack</code><code class="X">()</code><i class="H"><code><a href="api/psychopath.File.html">File</a></code></i></h2>
-					<table class="h">
-						<tr class="g">
-							<td><code><a href="api/psychopath.File.html">File</a></code></td>
-							<td></td>
-						</tr>
-					</table>
-				</section>
-				<section class="a" id="observe()">
-					<h2 class="S"><i class="ABSTRACT"><i class="PUBLIC"></i></i><code class="V">observe</code><code class="X">()</code><i class="H"><code>kiss.Signal<code class="parameters"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/WatchEvent.html">WatchEvent</a><code class="parameters"><code><a href="api/psychopath.Location.html">Location</a></code></code></code></code></code></i></h2>
-					<table class="h">
-						<tr class="g">
-							<td><code>kiss.Signal<code class="parameters"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/WatchEvent.html">WatchEvent</a><code class="parameters"><code><a href="api/psychopath.Location.html">Location</a></code></code></code></code></code></td>
-							<td><span><p>A observable event stream.</p></span></td>
-						</tr>
-					</table><span class="B"><p>
+				</span></section>
+			<section class="V" id="create()">
+				<h2 class="e"><i class="ABSTRACT"><i class="PUBLIC"></i></i><code class="M">create</code><code class="o">()</code><i class="q"><code>Self</code></i></h2>
+				<table class="L">
+					<tr class="d">
+						<td><code>Self</code></td>
+						<td></td>
+					</tr>
+				</table><span class="B"><p>Create this <code><a aria-label="psychopath.Location" href="api/psychopath.Location.html">Location</a></code> with the specified attributes.</p></span></section>
+			<section class="V" id="deleteOnExit()">
+				<h2 class="e"><i class="PUBLIC"></i><code class="M">deleteOnExit</code><code class="o">()</code><i class="q"><code>Self</code></i></h2>
+				<table class="L">
+					<tr class="d">
+						<td><code>Self</code></td>
+						<td></td>
+					</tr>
+				</table><span class="B"><p>Delete this <code><a aria-label="psychopath.Location" href="api/psychopath.Location.html">Location</a></code> when JVM is shutdowned.</p></span></section>
+			<section class="V" id="moveUp()">
+				<h2 class="e"><i class="FINAL"><i class="PUBLIC"></i></i><code class="M">moveUp</code><code class="o">()</code><i class="q"><code>Self</code></i></h2>
+				<table class="L">
+					<tr class="d">
+						<td><code>Self</code></td>
+						<td><span><p>A new moved location in the parent <code><a aria-label="psychopath.Directory" href="api/psychopath.Directory.html">Directory</a></code> (NOT parent directory).</p></span></td>
+					</tr>
+				</table><span class="B"><p>Move to the parent <code><a aria-label="psychopath.Directory" href="api/psychopath.Directory.html">Directory</a></code>.</p></span></section>
+			<section class="V" id="renameTo(java.lang.String,java.nio.file.CopyOption...)">
+				<h2 class="e"><i class="FINAL"><i class="PUBLIC"></i></i><code class="M">renameTo</code><code class="o">(<code><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code><code class="parameterName">name</code>, <code array="var"><a aria-label="java.nio.file.CopyOption 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/CopyOption.html">CopyOption</a></code><code class="parameterName">options</code>)</code><i class="q"><code>Self</code></i></h2>
+				<table class="L">
+					<tr class="Z">
+						<td><code><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code><code class="parameterName">name</code></td>
+						<td><span><p>A new name.</p></span></td>
+					</tr>
+					<tr class="Z">
+						<td><code array="var"><a aria-label="java.nio.file.CopyOption 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/CopyOption.html">CopyOption</a></code><code class="parameterName">options</code></td>
+						<td><span><p>A set of copy options.</p></span></td>
+					</tr>
+					<tr class="d">
+						<td><code>Self</code></td>
+						<td><span><p>A new renamed location in same <code><a aria-label="psychopath.Directory" href="api/psychopath.Directory.html">Directory</a></code>.</p></span></td>
+					</tr>
+				</table><span class="B"><p>Rename to the specified name.</p></span></section>
+			<section class="V" id="pack()">
+				<h2 class="e"><i class="FINAL"><i class="PUBLIC"></i></i><code class="M">pack</code><code class="o">()</code><i class="q"><code><a aria-label="psychopath.File" href="api/psychopath.File.html">File</a></code></i></h2>
+				<table class="L">
+					<tr class="d">
+						<td><code><a aria-label="psychopath.File" href="api/psychopath.File.html">File</a></code></td>
+						<td></td>
+					</tr>
+				</table>
+			</section>
+			<section class="V" id="observe()">
+				<h2 class="e"><i class="ABSTRACT"><i class="PUBLIC"></i></i><code class="M">observe</code><code class="o">()</code><i class="q"><code>kiss.Signal<code class="parameters"><code><a aria-label="java.nio.file.WatchEvent 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/WatchEvent.html">WatchEvent</a><code class="parameters"><code><a aria-label="psychopath.Location" href="api/psychopath.Location.html">Location</a></code></code></code></code></code></i></h2>
+				<table class="L">
+					<tr class="d">
+						<td><code>kiss.Signal<code class="parameters"><code><a aria-label="java.nio.file.WatchEvent 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/WatchEvent.html">WatchEvent</a><code class="parameters"><code><a aria-label="psychopath.Location" href="api/psychopath.Location.html">Location</a></code></code></code></code></code></td>
+						<td><span><p>A observable event stream.</p></span></td>
+					</tr>
+				</table><span class="B"><p>
  Observe the file system change and raises events when a file, directory, or file in a
  directory, changes.
  </p><p>
@@ -827,191 +835,191 @@ resulting <code>Path</code> is associated with the <code><a href="https://docs.o
  therefore raising multiple events. Likewise, some applications might cause additional file
  system events that are detected by the Observer.
  </p>
-					</span></section>
-				<section class="a" id="touch()">
-					<h2 class="S"><i class="FINAL"><i class="PUBLIC"></i></i><code class="V">touch</code><code class="X">()</code><i class="H"><code>Self</code></i></h2>
-					<table class="h">
-						<tr class="g">
-							<td><code>Self</code></td>
-							<td></td>
-						</tr>
-					</table><span class="B"><p>Implements the same behaviour as the &#38;quot;touch&#38;quot; utility on Unix. It creates a new file with size
+				</span></section>
+			<section class="V" id="touch()">
+				<h2 class="e"><i class="FINAL"><i class="PUBLIC"></i></i><code class="M">touch</code><code class="o">()</code><i class="q"><code>Self</code></i></h2>
+				<table class="L">
+					<tr class="d">
+						<td><code>Self</code></td>
+						<td></td>
+					</tr>
+				</table><span class="B"><p>Implements the same behaviour as the &#38;quot;touch&#38;quot; utility on Unix. It creates a new file with size
 0 or, if the file exists already, it is opened and closed without modifying it, but updating
 the file date and time.</p></span></section>
-				<section class="a" id="match(java.lang.String)">
-					<h2 class="S"><i class="FINAL"><i class="PUBLIC"></i></i><code class="V">match</code><code class="X">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code><code class="parameterName">pattern</code>)</code><i class="H"><code>boolean</code></i></h2>
-					<table class="h">
-						<tr class="c">
-							<td><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code><code>pattern</code></td>
-							<td><span><p>A glob pattern.</p></span></td>
-						</tr>
-						<tr class="g">
-							<td><code>boolean</code></td>
-							<td><span><p>A result.</p></span></td>
-						</tr>
-					</table><span class="B"><p>Test matching the specified pattern to this <code><a href="api/psychopath.Location.html">Location</a></code>.</p></span></section>
-				<section class="a" id="match(java.lang.String...)">
-					<h2 class="S"><i class="FINAL"><i class="PUBLIC"></i></i><code class="V">match</code><code class="X">(<code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code><code class="parameterName">patterns</code>)</code><i class="H"><code>boolean</code></i></h2>
-					<table class="h">
-						<tr class="c">
-							<td><code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code><code>patterns</code></td>
-							<td><span><p>A set of glob patterns.</p></span></td>
-						</tr>
-						<tr class="g">
-							<td><code>boolean</code></td>
-							<td><span><p>A result.</p></span></td>
-						</tr>
-					</table><span class="B"><p>Test matching the specified pattern to this <code><a href="api/psychopath.Location.html">Location</a></code>.</p></span></section>
-				<section class="a" id="match(java.util.List)">
-					<h2 class="S"><i class="FINAL"><i class="PUBLIC"></i></i><code class="V">match</code><code class="X">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/List.html">List</a><code class="parameters"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></code></code><code class="parameterName">patterns</code>)</code><i class="H"><code>boolean</code></i></h2>
-					<table class="h">
-						<tr class="c">
-							<td><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/List.html">List</a><code class="parameters"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></code></code><code>patterns</code></td>
-							<td><span><p>A set of glob patterns.</p></span></td>
-						</tr>
-						<tr class="g">
-							<td><code>boolean</code></td>
-							<td><span><p>A result.</p></span></td>
-						</tr>
-					</table><span class="B"><p>Test matching the specified pattern to this <code><a href="api/psychopath.Location.html">Location</a></code>.</p></span></section>
-				<section class="a" id="hashCode()">
-					<h2 class="S"><i class="FINAL"><i class="OVERRIDE PUBLIC"></i></i><code class="V">hashCode</code><code class="X">()</code><i class="H"><code>int</code></i></h2>
-					<table class="h">
-						<tr class="g">
-							<td><code>int</code></td>
-							<td></td>
-						</tr>
-					</table>
-				</section>
-				<section class="a" id="equals(java.lang.Object)">
-					<h2 class="S"><i class="FINAL"><i class="OVERRIDE PUBLIC"></i></i><code class="V">equals</code><code class="X">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/Object.html">Object</a></code><code class="parameterName">other</code>)</code><i class="H"><code>boolean</code></i></h2>
-					<table class="h">
-						<tr class="c">
-							<td><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/Object.html">Object</a></code><code>other</code></td>
-							<td></td>
-						</tr>
-						<tr class="g">
-							<td><code>boolean</code></td>
-							<td></td>
-						</tr>
-					</table>
-				</section>
-				<section class="a" id="toString()">
-					<h2 class="S"><i class="FINAL"><i class="OVERRIDE PUBLIC"></i></i><code class="V">toString</code><code class="X">()</code><i class="H"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></i></h2>
-					<table class="h">
-						<tr class="g">
-							<td><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></td>
-							<td></td>
-						</tr>
-					</table>
-				</section>
-				<section class="a" id="compareTo(psychopath.Location)">
-					<h2 class="S"><i class="FINAL"><i class="OVERRIDE PUBLIC"></i></i><code class="V">compareTo</code><code class="X">(<code><a href="api/psychopath.Location.html">Location</a></code><code class="parameterName">o</code>)</code><i class="H"><code>int</code></i></h2>
-					<table class="h">
-						<tr class="c">
-							<td><code><a href="api/psychopath.Location.html">Location</a></code><code>o</code></td>
-							<td></td>
-						</tr>
-						<tr class="g">
-							<td><code>int</code></td>
-							<td></td>
-						</tr>
-					</table>
-				</section>
-				<section class="a" id="convert(java.nio.file.Path)">
-					<h2 class="S"><i class="ABSTRACT"><i class="PROTECTED"></i></i><code class="V">convert</code><code class="X">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/Path.html">Path</a></code><code class="parameterName">path</code>)</code><i class="H"><code>Self</code></i></h2>
-					<table class="h">
-						<tr class="c">
-							<td><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/Path.html">Path</a></code><code>path</code></td>
-							<td><span><p>A target path.</p></span></td>
-						</tr>
-						<tr class="g">
-							<td><code>Self</code></td>
-							<td><span><p>The <code><a href="api/psychopath.Location.html">Location</a></code>.</p></span></td>
-						</tr>
-					</table><span class="B"><p>Convert from <code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/Path.html">Path</a></code>.</p></span></section>
-			</article>
-			<aside class="j" id="SubNavi">
-				<div class="Y">
-					<h5 class="I">Constructors</h5>
-					<ul>
-						<li><i class="PROTECTED"></i><code><a href="api/psychopath.Location.html#Location(java.nio.file.Path)">Location</a></code><code class="X">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/Path.html">Path</a></code><code class="parameterName">path</code>)</code></li>
-					</ul>
-					<h5 class="I">Fields</h5>
-					<ul>
-						<li><i class="TRANSIENT"><i class="PROTECTED"></i></i><code><a href="api/psychopath.Location.html#path">path</a></code><i class="i"><code class="return"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/Path.html">Path</a></code></i></li>
-					</ul>
-					<h5 class="I">Methods</h5>
-					<ul>
-						<li><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#name()">name</a></code><code class="X">()</code><i class="i"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></i></li>
-						<li><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#base()">base</a></code><code class="X">()</code><i class="i"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></i></li>
-						<li><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#base(java.lang.String)">base</a></code><code class="X">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code><code class="parameterName">newBaseName</code>)</code><i class="i"><code>Self</code></i></li>
-						<li><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#extension()">extension</a></code><code class="X">()</code><i class="i"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></i></li>
-						<li><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#extension(java.lang.String)">extension</a></code><code class="X">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code><code class="parameterName">newExtension</code>)</code><i class="i"><code>Self</code></i></li>
-						<li><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#path()">path</a></code><code class="X">()</code><i class="i"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></i></li>
-						<li><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#externalForm()">externalForm</a></code><code class="X">()</code><i class="i"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></i></li>
-						<li><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#absolutize()">absolutize</a></code><code class="X">()</code><i class="i"><code>Self</code></i></li>
-						<li><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#relativize(java.lang.Object)">relativize</a></code><code class="X">(<code>T</code><code class="parameterName">other</code>)</code><i class="i"><code>T</code></i></li>
-						<li><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#parent()">parent</a></code><code class="X">()</code><i class="i"><code><a href="api/psychopath.Directory.html">Directory</a></code></i></li>
-						<li><i class="ABSTRACT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#children()">children</a></code><code class="X">()</code><i class="i"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Location.html">Location</a></code></code></code></i></li>
-						<li><i class="ABSTRACT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#descendant()">descendant</a></code><code class="X">()</code><i class="i"><code>kiss.Signal<code class="parameters"><code><a href="api/psychopath.Location.html">Location</a></code></code></code></i></li>
-						<li><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#attr()">attr</a></code><code class="X">()</code><i class="i"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/attribute/BasicFileAttributes.html">BasicFileAttributes</a></code></i></li>
-						<li><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#size()">size</a></code><code class="X">()</code><i class="i"><code>long</code></i></li>
-						<li><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#creationMilli(java.nio.file.LinkOption...)">creationMilli</a></code><code class="X">(<code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/LinkOption.html">LinkOption</a></code><code class="parameterName">options</code>)</code><i class="i"><code>long</code></i></li>
-						<li><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#creationTime(java.nio.file.LinkOption...)">creationTime</a></code><code class="X">(<code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/LinkOption.html">LinkOption</a></code><code class="parameterName">options</code>)</code><i class="i"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/time/Instant.html">Instant</a></code></i></li>
-						<li><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#creationDateTime(java.nio.file.LinkOption...)">creationDateTime</a></code><code class="X">(<code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/LinkOption.html">LinkOption</a></code><code class="parameterName">options</code>)</code><i class="i"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/time/ZonedDateTime.html">ZonedDateTime</a></code></i></li>
-						<li><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#creationTime(long)">creationTime</a></code><code class="X">(<code>long</code><code class="parameterName">millisecond</code>)</code><i class="i"><code>Self</code></i></li>
-						<li><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#creationTime(java.nio.file.attribute.FileTime)">creationTime</a></code><code class="X">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/attribute/FileTime.html">FileTime</a></code><code class="parameterName">time</code>)</code><i class="i"><code>Self</code></i></li>
-						<li><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#creationTime(java.time.temporal.TemporalAccessor)">creationTime</a></code><code class="X">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/time/temporal/TemporalAccessor.html">TemporalAccessor</a></code><code class="parameterName">time</code>)</code><i class="i"><code>Self</code></i></li>
-						<li><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#lastAccessMilli(java.nio.file.LinkOption...)">lastAccessMilli</a></code><code class="X">(<code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/LinkOption.html">LinkOption</a></code><code class="parameterName">options</code>)</code><i class="i"><code>long</code></i></li>
-						<li><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#lastAccessTime(java.nio.file.LinkOption...)">lastAccessTime</a></code><code class="X">(<code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/LinkOption.html">LinkOption</a></code><code class="parameterName">options</code>)</code><i class="i"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/time/Instant.html">Instant</a></code></i></li>
-						<li><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#lastAccessDateTime(java.nio.file.LinkOption...)">lastAccessDateTime</a></code><code class="X">(<code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/LinkOption.html">LinkOption</a></code><code class="parameterName">options</code>)</code><i class="i"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/time/ZonedDateTime.html">ZonedDateTime</a></code></i></li>
-						<li><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#lastAccessTime(long)">lastAccessTime</a></code><code class="X">(<code>long</code><code class="parameterName">millisecond</code>)</code><i class="i"><code>Self</code></i></li>
-						<li><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#lastAccessTime(java.nio.file.attribute.FileTime)">lastAccessTime</a></code><code class="X">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/attribute/FileTime.html">FileTime</a></code><code class="parameterName">time</code>)</code><i class="i"><code>Self</code></i></li>
-						<li><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#lastAccessTime(java.time.temporal.TemporalAccessor)">lastAccessTime</a></code><code class="X">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/time/temporal/TemporalAccessor.html">TemporalAccessor</a></code><code class="parameterName">time</code>)</code><i class="i"><code>Self</code></i></li>
-						<li><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#lastModifiedMilli(java.nio.file.LinkOption...)">lastModifiedMilli</a></code><code class="X">(<code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/LinkOption.html">LinkOption</a></code><code class="parameterName">options</code>)</code><i class="i"><code>long</code></i></li>
-						<li><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#lastModifiedTime(java.nio.file.LinkOption...)">lastModifiedTime</a></code><code class="X">(<code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/LinkOption.html">LinkOption</a></code><code class="parameterName">options</code>)</code><i class="i"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/time/Instant.html">Instant</a></code></i></li>
-						<li><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#lastModifiedDateTime(java.nio.file.LinkOption...)">lastModifiedDateTime</a></code><code class="X">(<code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/LinkOption.html">LinkOption</a></code><code class="parameterName">options</code>)</code><i class="i"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/time/ZonedDateTime.html">ZonedDateTime</a></code></i></li>
-						<li><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#lastModifiedTime(long)">lastModifiedTime</a></code><code class="X">(<code>long</code><code class="parameterName">millisecond</code>)</code><i class="i"><code>Self</code></i></li>
-						<li><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#lastModifiedTime(java.nio.file.attribute.FileTime)">lastModifiedTime</a></code><code class="X">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/attribute/FileTime.html">FileTime</a></code><code class="parameterName">time</code>)</code><i class="i"><code>Self</code></i></li>
-						<li><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#lastModifiedTime(java.time.temporal.TemporalAccessor)">lastModifiedTime</a></code><code class="X">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/time/temporal/TemporalAccessor.html">TemporalAccessor</a></code><code class="parameterName">time</code>)</code><i class="i"><code>Self</code></i></li>
-						<li><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#attribute(java.nio.file.LinkOption...)">attribute</a></code><code class="X">(<code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/LinkOption.html">LinkOption</a></code><code class="parameterName">options</code>)</code><i class="i"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/attribute/BasicFileAttributes.html">BasicFileAttributes</a></code></i></li>
-						<li><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#attributeView(java.nio.file.LinkOption...)">attributeView</a></code><code class="X">(<code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/LinkOption.html">LinkOption</a></code><code class="parameterName">options</code>)</code><i class="i"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/attribute/BasicFileAttributeView.html">BasicFileAttributeView</a></code></i></li>
-						<li><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#isAbsolute()">isAbsolute</a></code><code class="X">()</code><i class="i"><code>boolean</code></i></li>
-						<li><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#isRelative()">isRelative</a></code><code class="X">()</code><i class="i"><code>boolean</code></i></li>
-						<li><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#isAbsent(java.nio.file.LinkOption...)">isAbsent</a></code><code class="X">(<code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/LinkOption.html">LinkOption</a></code><code class="parameterName">options</code>)</code><i class="i"><code>boolean</code></i></li>
-						<li><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#isPresent(java.nio.file.LinkOption...)">isPresent</a></code><code class="X">(<code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/LinkOption.html">LinkOption</a></code><code class="parameterName">options</code>)</code><i class="i"><code>boolean</code></i></li>
-						<li><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#isReadable()">isReadable</a></code><code class="X">()</code><i class="i"><code>boolean</code></i></li>
-						<li><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#isFile(java.nio.file.LinkOption...)">isFile</a></code><code class="X">(<code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/LinkOption.html">LinkOption</a></code><code class="parameterName">options</code>)</code><i class="i"><code>boolean</code></i></li>
-						<li><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#isDirectory(java.nio.file.LinkOption...)">isDirectory</a></code><code class="X">(<code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/LinkOption.html">LinkOption</a></code><code class="parameterName">options</code>)</code><i class="i"><code>boolean</code></i></li>
-						<li><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#isSymbolicLink()">isSymbolicLink</a></code><code class="X">()</code><i class="i"><code>boolean</code></i></li>
-						<li><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#isRoot()">isRoot</a></code><code class="X">()</code><i class="i"><code>boolean</code></i></li>
-						<li><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#isBefore(psychopath.Location)">isBefore</a></code><code class="X">(<code><a href="api/psychopath.Location.html">Location</a></code><code class="parameterName">other</code>)</code><i class="i"><code>boolean</code></i></li>
-						<li><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#isAfter(psychopath.Location)">isAfter</a></code><code class="X">(<code><a href="api/psychopath.Location.html">Location</a></code><code class="parameterName">other</code>)</code><i class="i"><code>boolean</code></i></li>
-						<li><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#asDirectory()">asDirectory</a></code><code class="X">()</code><i class="i"><code><a href="api/psychopath.Directory.html">Directory</a></code></i></li>
-						<li><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#asFile()">asFile</a></code><code class="X">()</code><i class="i"><code><a href="api/psychopath.File.html">File</a></code></i></li>
-						<li><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#asJavaFile()">asJavaFile</a></code><code class="X">()</code><i class="i"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/io/File.html">File</a></code></i></li>
-						<li><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#asJavaPath()">asJavaPath</a></code><code class="X">()</code><i class="i"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/Path.html">Path</a></code></i></li>
-						<li><i class="ABSTRACT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#create()">create</a></code><code class="X">()</code><i class="i"><code>Self</code></i></li>
-						<li><i class="PUBLIC"></i><code><a href="api/psychopath.Location.html#deleteOnExit()">deleteOnExit</a></code><code class="X">()</code><i class="i"><code>Self</code></i></li>
-						<li><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#moveUp()">moveUp</a></code><code class="X">()</code><i class="i"><code>Self</code></i></li>
-						<li><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#renameTo(java.lang.String,java.nio.file.CopyOption...)">renameTo</a></code><code class="X">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code><code class="parameterName">name</code>, <code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/CopyOption.html">CopyOption</a></code><code class="parameterName">options</code>)</code><i class="i"><code>Self</code></i></li>
-						<li><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#pack()">pack</a></code><code class="X">()</code><i class="i"><code><a href="api/psychopath.File.html">File</a></code></i></li>
-						<li><i class="ABSTRACT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#observe()">observe</a></code><code class="X">()</code><i class="i"><code>kiss.Signal<code class="parameters"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/WatchEvent.html">WatchEvent</a><code class="parameters"><code><a href="api/psychopath.Location.html">Location</a></code></code></code></code></code></i></li>
-						<li><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#touch()">touch</a></code><code class="X">()</code><i class="i"><code>Self</code></i></li>
-						<li><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#match(java.lang.String)">match</a></code><code class="X">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code><code class="parameterName">pattern</code>)</code><i class="i"><code>boolean</code></i></li>
-						<li><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#match(java.lang.String...)">match</a></code><code class="X">(<code array="var"><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code><code class="parameterName">patterns</code>)</code><i class="i"><code>boolean</code></i></li>
-						<li><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#match(java.util.List)">match</a></code><code class="X">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/List.html">List</a><code class="parameters"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></code></code><code class="parameterName">patterns</code>)</code><i class="i"><code>boolean</code></i></li>
-						<li><i class="FINAL"><i class="OVERRIDE PUBLIC"></i></i><code><a href="api/psychopath.Location.html#hashCode()">hashCode</a></code><code class="X">()</code><i class="i"><code>int</code></i></li>
-						<li><i class="FINAL"><i class="OVERRIDE PUBLIC"></i></i><code><a href="api/psychopath.Location.html#equals(java.lang.Object)">equals</a></code><code class="X">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/Object.html">Object</a></code><code class="parameterName">other</code>)</code><i class="i"><code>boolean</code></i></li>
-						<li><i class="FINAL"><i class="OVERRIDE PUBLIC"></i></i><code><a href="api/psychopath.Location.html#toString()">toString</a></code><code class="X">()</code><i class="i"><code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></i></li>
-						<li><i class="FINAL"><i class="OVERRIDE PUBLIC"></i></i><code><a href="api/psychopath.Location.html#compareTo(psychopath.Location)">compareTo</a></code><code class="X">(<code><a href="api/psychopath.Location.html">Location</a></code><code class="parameterName">o</code>)</code><i class="i"><code>int</code></i></li>
-						<li><i class="ABSTRACT"><i class="PROTECTED"></i></i><code><a href="api/psychopath.Location.html#convert(java.nio.file.Path)">convert</a></code><code class="X">(<code><a href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/Path.html">Path</a></code><code class="parameterName">path</code>)</code><i class="i"><code>Self</code></i></li>
-					</ul>
-				</div>
-			</aside>
-		</main>
-		<script src="root.js"></script>
-		<script src="main.js" type="module"></script>
+			<section class="V" id="match(java.lang.String)">
+				<h2 class="e"><i class="FINAL"><i class="PUBLIC"></i></i><code class="M">match</code><code class="o">(<code><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code><code class="parameterName">pattern</code>)</code><i class="q"><code>boolean</code></i></h2>
+				<table class="L">
+					<tr class="Z">
+						<td><code><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code><code class="parameterName">pattern</code></td>
+						<td><span><p>A glob pattern.</p></span></td>
+					</tr>
+					<tr class="d">
+						<td><code>boolean</code></td>
+						<td><span><p>A result.</p></span></td>
+					</tr>
+				</table><span class="B"><p>Test matching the specified pattern to this <code><a aria-label="psychopath.Location" href="api/psychopath.Location.html">Location</a></code>.</p></span></section>
+			<section class="V" id="match(java.lang.String...)">
+				<h2 class="e"><i class="FINAL"><i class="PUBLIC"></i></i><code class="M">match</code><code class="o">(<code array="var"><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code><code class="parameterName">patterns</code>)</code><i class="q"><code>boolean</code></i></h2>
+				<table class="L">
+					<tr class="Z">
+						<td><code array="var"><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code><code class="parameterName">patterns</code></td>
+						<td><span><p>A set of glob patterns.</p></span></td>
+					</tr>
+					<tr class="d">
+						<td><code>boolean</code></td>
+						<td><span><p>A result.</p></span></td>
+					</tr>
+				</table><span class="B"><p>Test matching the specified pattern to this <code><a aria-label="psychopath.Location" href="api/psychopath.Location.html">Location</a></code>.</p></span></section>
+			<section class="V" id="match(java.util.List)">
+				<h2 class="e"><i class="FINAL"><i class="PUBLIC"></i></i><code class="M">match</code><code class="o">(<code><a aria-label="java.util.List 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/List.html">List</a><code class="parameters"><code><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></code></code><code class="parameterName">patterns</code>)</code><i class="q"><code>boolean</code></i></h2>
+				<table class="L">
+					<tr class="Z">
+						<td><code><a aria-label="java.util.List 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/List.html">List</a><code class="parameters"><code><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></code></code><code class="parameterName">patterns</code></td>
+						<td><span><p>A set of glob patterns.</p></span></td>
+					</tr>
+					<tr class="d">
+						<td><code>boolean</code></td>
+						<td><span><p>A result.</p></span></td>
+					</tr>
+				</table><span class="B"><p>Test matching the specified pattern to this <code><a aria-label="psychopath.Location" href="api/psychopath.Location.html">Location</a></code>.</p></span></section>
+			<section class="V" id="hashCode()">
+				<h2 class="e"><i class="FINAL"><i class="OVERRIDE PUBLIC"></i></i><code class="M">hashCode</code><code class="o">()</code><i class="q"><code>int</code></i></h2>
+				<table class="L">
+					<tr class="d">
+						<td><code>int</code></td>
+						<td></td>
+					</tr>
+				</table>
+			</section>
+			<section class="V" id="equals(java.lang.Object)">
+				<h2 class="e"><i class="FINAL"><i class="OVERRIDE PUBLIC"></i></i><code class="M">equals</code><code class="o">(<code><a aria-label="java.lang.Object 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/Object.html">Object</a></code><code class="parameterName">other</code>)</code><i class="q"><code>boolean</code></i></h2>
+				<table class="L">
+					<tr class="Z">
+						<td><code><a aria-label="java.lang.Object 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/Object.html">Object</a></code><code class="parameterName">other</code></td>
+						<td></td>
+					</tr>
+					<tr class="d">
+						<td><code>boolean</code></td>
+						<td></td>
+					</tr>
+				</table>
+			</section>
+			<section class="V" id="toString()">
+				<h2 class="e"><i class="FINAL"><i class="OVERRIDE PUBLIC"></i></i><code class="M">toString</code><code class="o">()</code><i class="q"><code><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></i></h2>
+				<table class="L">
+					<tr class="d">
+						<td><code><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></td>
+						<td></td>
+					</tr>
+				</table>
+			</section>
+			<section class="V" id="compareTo(psychopath.Location)">
+				<h2 class="e"><i class="FINAL"><i class="OVERRIDE PUBLIC"></i></i><code class="M">compareTo</code><code class="o">(<code><a aria-label="psychopath.Location" href="api/psychopath.Location.html">Location</a></code><code class="parameterName">o</code>)</code><i class="q"><code>int</code></i></h2>
+				<table class="L">
+					<tr class="Z">
+						<td><code><a aria-label="psychopath.Location" href="api/psychopath.Location.html">Location</a></code><code class="parameterName">o</code></td>
+						<td></td>
+					</tr>
+					<tr class="d">
+						<td><code>int</code></td>
+						<td></td>
+					</tr>
+				</table>
+			</section>
+			<section class="V" id="convert(java.nio.file.Path)">
+				<h2 class="e"><i class="ABSTRACT"><i class="PROTECTED"></i></i><code class="M">convert</code><code class="o">(<code><a aria-label="java.nio.file.Path 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/Path.html">Path</a></code><code class="parameterName">path</code>)</code><i class="q"><code>Self</code></i></h2>
+				<table class="L">
+					<tr class="Z">
+						<td><code><a aria-label="java.nio.file.Path 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/Path.html">Path</a></code><code class="parameterName">path</code></td>
+						<td><span><p>A target path.</p></span></td>
+					</tr>
+					<tr class="d">
+						<td><code>Self</code></td>
+						<td><span><p>The <code><a aria-label="psychopath.Location" href="api/psychopath.Location.html">Location</a></code>.</p></span></td>
+					</tr>
+				</table><span class="B"><p>Convert from <code><a aria-label="java.nio.file.Path 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/Path.html">Path</a></code>.</p></span></section>
+		</article>
+		<aside class="P">
+			<div class="g">
+				<h5 class="l">Constructors</h5>
+				<ul>
+					<li class="h"><i class="PROTECTED"></i><code><a href="api/psychopath.Location.html#Location(java.nio.file.Path)">Location</a></code><code class="o">(<code><a aria-label="java.nio.file.Path 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/Path.html">Path</a></code><code class="parameterName">path</code>)</code></li>
+				</ul>
+				<h5 class="l">Fields</h5>
+				<ul>
+					<li class="h"><i class="TRANSIENT"><i class="PROTECTED"></i></i><code><a href="api/psychopath.Location.html#path">path</a></code><i class="m"><code class="return"><a aria-label="java.nio.file.Path 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/Path.html">Path</a></code></i></li>
+				</ul>
+				<h5 class="l">Methods</h5>
+				<ul>
+					<li class="h"><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#name()">name</a></code><code class="o">()</code><i class="m"><code><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></i></li>
+					<li class="h"><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#base()">base</a></code><code class="o">()</code><i class="m"><code><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></i></li>
+					<li class="h"><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#base(java.lang.String)">base</a></code><code class="o">(<code><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code><code class="parameterName">newBaseName</code>)</code><i class="m"><code>Self</code></i></li>
+					<li class="h"><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#extension()">extension</a></code><code class="o">()</code><i class="m"><code><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></i></li>
+					<li class="h"><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#extension(java.lang.String)">extension</a></code><code class="o">(<code><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code><code class="parameterName">newExtension</code>)</code><i class="m"><code>Self</code></i></li>
+					<li class="h"><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#path()">path</a></code><code class="o">()</code><i class="m"><code><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></i></li>
+					<li class="h"><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#externalForm()">externalForm</a></code><code class="o">()</code><i class="m"><code><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></i></li>
+					<li class="h"><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#absolutize()">absolutize</a></code><code class="o">()</code><i class="m"><code>Self</code></i></li>
+					<li class="h"><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#relativize(java.lang.Object)">relativize</a></code><code class="o">(<code>T</code><code class="parameterName">other</code>)</code><i class="m"><code>T</code></i></li>
+					<li class="h"><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#parent()">parent</a></code><code class="o">()</code><i class="m"><code><a aria-label="psychopath.Directory" href="api/psychopath.Directory.html">Directory</a></code></i></li>
+					<li class="h"><i class="ABSTRACT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#children()">children</a></code><code class="o">()</code><i class="m"><code>kiss.Signal<code class="parameters"><code><a aria-label="psychopath.Location" href="api/psychopath.Location.html">Location</a></code></code></code></i></li>
+					<li class="h"><i class="ABSTRACT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#descendant()">descendant</a></code><code class="o">()</code><i class="m"><code>kiss.Signal<code class="parameters"><code><a aria-label="psychopath.Location" href="api/psychopath.Location.html">Location</a></code></code></code></i></li>
+					<li class="h"><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#attr()">attr</a></code><code class="o">()</code><i class="m"><code><a aria-label="java.nio.file.attribute.BasicFileAttributes 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/attribute/BasicFileAttributes.html">BasicFileAttributes</a></code></i></li>
+					<li class="h"><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#size()">size</a></code><code class="o">()</code><i class="m"><code>long</code></i></li>
+					<li class="h"><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#creationMilli(java.nio.file.LinkOption...)">creationMilli</a></code><code class="o">(<code array="var"><a aria-label="java.nio.file.LinkOption 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/LinkOption.html">LinkOption</a></code><code class="parameterName">options</code>)</code><i class="m"><code>long</code></i></li>
+					<li class="h"><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#creationTime(java.nio.file.LinkOption...)">creationTime</a></code><code class="o">(<code array="var"><a aria-label="java.nio.file.LinkOption 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/LinkOption.html">LinkOption</a></code><code class="parameterName">options</code>)</code><i class="m"><code><a aria-label="java.time.Instant 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/time/Instant.html">Instant</a></code></i></li>
+					<li class="h"><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#creationDateTime(java.nio.file.LinkOption...)">creationDateTime</a></code><code class="o">(<code array="var"><a aria-label="java.nio.file.LinkOption 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/LinkOption.html">LinkOption</a></code><code class="parameterName">options</code>)</code><i class="m"><code><a aria-label="java.time.ZonedDateTime 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/time/ZonedDateTime.html">ZonedDateTime</a></code></i></li>
+					<li class="h"><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#creationTime(long)">creationTime</a></code><code class="o">(<code>long</code><code class="parameterName">millisecond</code>)</code><i class="m"><code>Self</code></i></li>
+					<li class="h"><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#creationTime(java.nio.file.attribute.FileTime)">creationTime</a></code><code class="o">(<code><a aria-label="java.nio.file.attribute.FileTime 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/attribute/FileTime.html">FileTime</a></code><code class="parameterName">time</code>)</code><i class="m"><code>Self</code></i></li>
+					<li class="h"><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#creationTime(java.time.temporal.TemporalAccessor)">creationTime</a></code><code class="o">(<code><a aria-label="java.time.temporal.TemporalAccessor 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/time/temporal/TemporalAccessor.html">TemporalAccessor</a></code><code class="parameterName">time</code>)</code><i class="m"><code>Self</code></i></li>
+					<li class="h"><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#lastAccessMilli(java.nio.file.LinkOption...)">lastAccessMilli</a></code><code class="o">(<code array="var"><a aria-label="java.nio.file.LinkOption 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/LinkOption.html">LinkOption</a></code><code class="parameterName">options</code>)</code><i class="m"><code>long</code></i></li>
+					<li class="h"><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#lastAccessTime(java.nio.file.LinkOption...)">lastAccessTime</a></code><code class="o">(<code array="var"><a aria-label="java.nio.file.LinkOption 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/LinkOption.html">LinkOption</a></code><code class="parameterName">options</code>)</code><i class="m"><code><a aria-label="java.time.Instant 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/time/Instant.html">Instant</a></code></i></li>
+					<li class="h"><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#lastAccessDateTime(java.nio.file.LinkOption...)">lastAccessDateTime</a></code><code class="o">(<code array="var"><a aria-label="java.nio.file.LinkOption 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/LinkOption.html">LinkOption</a></code><code class="parameterName">options</code>)</code><i class="m"><code><a aria-label="java.time.ZonedDateTime 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/time/ZonedDateTime.html">ZonedDateTime</a></code></i></li>
+					<li class="h"><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#lastAccessTime(long)">lastAccessTime</a></code><code class="o">(<code>long</code><code class="parameterName">millisecond</code>)</code><i class="m"><code>Self</code></i></li>
+					<li class="h"><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#lastAccessTime(java.nio.file.attribute.FileTime)">lastAccessTime</a></code><code class="o">(<code><a aria-label="java.nio.file.attribute.FileTime 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/attribute/FileTime.html">FileTime</a></code><code class="parameterName">time</code>)</code><i class="m"><code>Self</code></i></li>
+					<li class="h"><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#lastAccessTime(java.time.temporal.TemporalAccessor)">lastAccessTime</a></code><code class="o">(<code><a aria-label="java.time.temporal.TemporalAccessor 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/time/temporal/TemporalAccessor.html">TemporalAccessor</a></code><code class="parameterName">time</code>)</code><i class="m"><code>Self</code></i></li>
+					<li class="h"><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#lastModifiedMilli(java.nio.file.LinkOption...)">lastModifiedMilli</a></code><code class="o">(<code array="var"><a aria-label="java.nio.file.LinkOption 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/LinkOption.html">LinkOption</a></code><code class="parameterName">options</code>)</code><i class="m"><code>long</code></i></li>
+					<li class="h"><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#lastModifiedTime(java.nio.file.LinkOption...)">lastModifiedTime</a></code><code class="o">(<code array="var"><a aria-label="java.nio.file.LinkOption 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/LinkOption.html">LinkOption</a></code><code class="parameterName">options</code>)</code><i class="m"><code><a aria-label="java.time.Instant 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/time/Instant.html">Instant</a></code></i></li>
+					<li class="h"><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#lastModifiedDateTime(java.nio.file.LinkOption...)">lastModifiedDateTime</a></code><code class="o">(<code array="var"><a aria-label="java.nio.file.LinkOption 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/LinkOption.html">LinkOption</a></code><code class="parameterName">options</code>)</code><i class="m"><code><a aria-label="java.time.ZonedDateTime 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/time/ZonedDateTime.html">ZonedDateTime</a></code></i></li>
+					<li class="h"><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#lastModifiedTime(long)">lastModifiedTime</a></code><code class="o">(<code>long</code><code class="parameterName">millisecond</code>)</code><i class="m"><code>Self</code></i></li>
+					<li class="h"><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#lastModifiedTime(java.nio.file.attribute.FileTime)">lastModifiedTime</a></code><code class="o">(<code><a aria-label="java.nio.file.attribute.FileTime 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/attribute/FileTime.html">FileTime</a></code><code class="parameterName">time</code>)</code><i class="m"><code>Self</code></i></li>
+					<li class="h"><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#lastModifiedTime(java.time.temporal.TemporalAccessor)">lastModifiedTime</a></code><code class="o">(<code><a aria-label="java.time.temporal.TemporalAccessor 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/time/temporal/TemporalAccessor.html">TemporalAccessor</a></code><code class="parameterName">time</code>)</code><i class="m"><code>Self</code></i></li>
+					<li class="h"><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#attribute(java.nio.file.LinkOption...)">attribute</a></code><code class="o">(<code array="var"><a aria-label="java.nio.file.LinkOption 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/LinkOption.html">LinkOption</a></code><code class="parameterName">options</code>)</code><i class="m"><code><a aria-label="java.nio.file.attribute.BasicFileAttributes 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/attribute/BasicFileAttributes.html">BasicFileAttributes</a></code></i></li>
+					<li class="h"><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#attributeView(java.nio.file.LinkOption...)">attributeView</a></code><code class="o">(<code array="var"><a aria-label="java.nio.file.LinkOption 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/LinkOption.html">LinkOption</a></code><code class="parameterName">options</code>)</code><i class="m"><code><a aria-label="java.nio.file.attribute.BasicFileAttributeView 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/attribute/BasicFileAttributeView.html">BasicFileAttributeView</a></code></i></li>
+					<li class="h"><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#isAbsolute()">isAbsolute</a></code><code class="o">()</code><i class="m"><code>boolean</code></i></li>
+					<li class="h"><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#isRelative()">isRelative</a></code><code class="o">()</code><i class="m"><code>boolean</code></i></li>
+					<li class="h"><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#isAbsent(java.nio.file.LinkOption...)">isAbsent</a></code><code class="o">(<code array="var"><a aria-label="java.nio.file.LinkOption 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/LinkOption.html">LinkOption</a></code><code class="parameterName">options</code>)</code><i class="m"><code>boolean</code></i></li>
+					<li class="h"><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#isPresent(java.nio.file.LinkOption...)">isPresent</a></code><code class="o">(<code array="var"><a aria-label="java.nio.file.LinkOption 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/LinkOption.html">LinkOption</a></code><code class="parameterName">options</code>)</code><i class="m"><code>boolean</code></i></li>
+					<li class="h"><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#isReadable()">isReadable</a></code><code class="o">()</code><i class="m"><code>boolean</code></i></li>
+					<li class="h"><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#isFile(java.nio.file.LinkOption...)">isFile</a></code><code class="o">(<code array="var"><a aria-label="java.nio.file.LinkOption 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/LinkOption.html">LinkOption</a></code><code class="parameterName">options</code>)</code><i class="m"><code>boolean</code></i></li>
+					<li class="h"><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#isDirectory(java.nio.file.LinkOption...)">isDirectory</a></code><code class="o">(<code array="var"><a aria-label="java.nio.file.LinkOption 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/LinkOption.html">LinkOption</a></code><code class="parameterName">options</code>)</code><i class="m"><code>boolean</code></i></li>
+					<li class="h"><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#isSymbolicLink()">isSymbolicLink</a></code><code class="o">()</code><i class="m"><code>boolean</code></i></li>
+					<li class="h"><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#isRoot()">isRoot</a></code><code class="o">()</code><i class="m"><code>boolean</code></i></li>
+					<li class="h"><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#isBefore(psychopath.Location)">isBefore</a></code><code class="o">(<code><a aria-label="psychopath.Location" href="api/psychopath.Location.html">Location</a></code><code class="parameterName">other</code>)</code><i class="m"><code>boolean</code></i></li>
+					<li class="h"><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#isAfter(psychopath.Location)">isAfter</a></code><code class="o">(<code><a aria-label="psychopath.Location" href="api/psychopath.Location.html">Location</a></code><code class="parameterName">other</code>)</code><i class="m"><code>boolean</code></i></li>
+					<li class="h"><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#asDirectory()">asDirectory</a></code><code class="o">()</code><i class="m"><code><a aria-label="psychopath.Directory" href="api/psychopath.Directory.html">Directory</a></code></i></li>
+					<li class="h"><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#asFile()">asFile</a></code><code class="o">()</code><i class="m"><code><a aria-label="psychopath.File" href="api/psychopath.File.html">File</a></code></i></li>
+					<li class="h"><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#asJavaFile()">asJavaFile</a></code><code class="o">()</code><i class="m"><code><a aria-label="java.io.File 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/io/File.html">File</a></code></i></li>
+					<li class="h"><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#asJavaPath()">asJavaPath</a></code><code class="o">()</code><i class="m"><code><a aria-label="java.nio.file.Path 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/Path.html">Path</a></code></i></li>
+					<li class="h"><i class="ABSTRACT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#create()">create</a></code><code class="o">()</code><i class="m"><code>Self</code></i></li>
+					<li class="h"><i class="PUBLIC"></i><code><a href="api/psychopath.Location.html#deleteOnExit()">deleteOnExit</a></code><code class="o">()</code><i class="m"><code>Self</code></i></li>
+					<li class="h"><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#moveUp()">moveUp</a></code><code class="o">()</code><i class="m"><code>Self</code></i></li>
+					<li class="h"><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#renameTo(java.lang.String,java.nio.file.CopyOption...)">renameTo</a></code><code class="o">(<code><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code><code class="parameterName">name</code>, <code array="var"><a aria-label="java.nio.file.CopyOption 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/CopyOption.html">CopyOption</a></code><code class="parameterName">options</code>)</code><i class="m"><code>Self</code></i></li>
+					<li class="h"><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#pack()">pack</a></code><code class="o">()</code><i class="m"><code><a aria-label="psychopath.File" href="api/psychopath.File.html">File</a></code></i></li>
+					<li class="h"><i class="ABSTRACT"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#observe()">observe</a></code><code class="o">()</code><i class="m"><code>kiss.Signal<code class="parameters"><code><a aria-label="java.nio.file.WatchEvent 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/WatchEvent.html">WatchEvent</a><code class="parameters"><code><a aria-label="psychopath.Location" href="api/psychopath.Location.html">Location</a></code></code></code></code></code></i></li>
+					<li class="h"><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#touch()">touch</a></code><code class="o">()</code><i class="m"><code>Self</code></i></li>
+					<li class="h"><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#match(java.lang.String)">match</a></code><code class="o">(<code><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code><code class="parameterName">pattern</code>)</code><i class="m"><code>boolean</code></i></li>
+					<li class="h"><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#match(java.lang.String...)">match</a></code><code class="o">(<code array="var"><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code><code class="parameterName">patterns</code>)</code><i class="m"><code>boolean</code></i></li>
+					<li class="h"><i class="FINAL"><i class="PUBLIC"></i></i><code><a href="api/psychopath.Location.html#match(java.util.List)">match</a></code><code class="o">(<code><a aria-label="java.util.List 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/List.html">List</a><code class="parameters"><code><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></code></code><code class="parameterName">patterns</code>)</code><i class="m"><code>boolean</code></i></li>
+					<li class="h"><i class="FINAL"><i class="OVERRIDE PUBLIC"></i></i><code><a href="api/psychopath.Location.html#hashCode()">hashCode</a></code><code class="o">()</code><i class="m"><code>int</code></i></li>
+					<li class="h"><i class="FINAL"><i class="OVERRIDE PUBLIC"></i></i><code><a href="api/psychopath.Location.html#equals(java.lang.Object)">equals</a></code><code class="o">(<code><a aria-label="java.lang.Object 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/Object.html">Object</a></code><code class="parameterName">other</code>)</code><i class="m"><code>boolean</code></i></li>
+					<li class="h"><i class="FINAL"><i class="OVERRIDE PUBLIC"></i></i><code><a href="api/psychopath.Location.html#toString()">toString</a></code><code class="o">()</code><i class="m"><code><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code></i></li>
+					<li class="h"><i class="FINAL"><i class="OVERRIDE PUBLIC"></i></i><code><a href="api/psychopath.Location.html#compareTo(psychopath.Location)">compareTo</a></code><code class="o">(<code><a aria-label="psychopath.Location" href="api/psychopath.Location.html">Location</a></code><code class="parameterName">o</code>)</code><i class="m"><code>int</code></i></li>
+					<li class="h"><i class="ABSTRACT"><i class="PROTECTED"></i></i><code><a href="api/psychopath.Location.html#convert(java.nio.file.Path)">convert</a></code><code class="o">(<code><a aria-label="java.nio.file.Path 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/Path.html">Path</a></code><code class="parameterName">path</code>)</code><i class="m"><code>Self</code></i></li>
+				</ul>
+			</div>
+		</aside>
+		<footer class="a"/>
 	</body>
+	<script src="root.js"></script>
+	<script src="main.js" type="module"></script>
 </html>
