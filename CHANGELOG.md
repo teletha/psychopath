@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.0.3](https://github.com/teletha/psychopath/compare/v2.0.2...v2.0.3) (2025-03-07)
+
+
+### Bug Fixes
+
+* correct format ([92f74ae](https://github.com/teletha/psychopath/commit/92f74ae39b2cb75dc7170473f783e58aaf167023))
+* require-module info ([3c2d142](https://github.com/teletha/psychopath/commit/3c2d142aeebf24bb47819f05254d14eb5eda7a66))
+
 ## [2.0.2](https://github.com/teletha/psychopath/compare/v2.0.1...v2.0.2) (2024-11-11)
 
 
