@@ -9,8 +9,8 @@
  */
 package psychopath.location;
 
-import static java.time.temporal.ChronoUnit.SECONDS;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static java.time.temporal.ChronoUnit.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -155,5 +155,11 @@ class LocationTest extends LocationTestHelper {
         assert one.isAfter(other) == false;
         assert other.isAfter(one);
         assert one.isAfter(same) == false;
+    }
+
+    @Test
+    void normalize() {
+        File file = Locator.file("test/../one/../two/file.txt");
+        assert file.normalize().path().equals("two/file.txt");
     }
 }

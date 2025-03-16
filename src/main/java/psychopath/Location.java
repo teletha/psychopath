@@ -195,6 +195,34 @@ public abstract class Location<Self extends Location> implements Comparable<Loca
     }
 
     /**
+     * Returns a path that is this path with redundant name elements eliminated.
+     *
+     * <p>
+     * The precise definition of this method is implementation dependent but
+     * in general it derives from this path, a path that does not contain
+     * <em>redundant</em> name elements. In many file systems, the "{@code .}"
+     * and "{@code ..}" are special names used to indicate the current directory
+     * and parent directory. In such file systems all occurrences of "{@code .}"
+     * are considered redundant. If a "{@code ..}" is preceded by a
+     * non-"{@code ..}" name then both names are considered redundant (the
+     * process to identify such names is repeated until it is no longer
+     * applicable).
+     *
+     * <p>
+     * This method does not access the file system; the path may not locate
+     * a file that exists. Eliminating "{@code ..}" and a preceding name from a
+     * path may result in the path that locates a different file than the original
+     * path. This can arise when the preceding name is a symbolic link.
+     *
+     * @return the resulting path or this path if it does not contain
+     *         redundant name elements; an empty path is returned if this path
+     *         does not have a root component and all name elements are redundant
+     */
+    public final Self normalize() {
+        return convert(path.normalize());
+    }
+
+    /**
      * Returns the <em>parent path</em>, or {@code null} if this path does not have a parent.
      * <p>
      * The parent of this path object consists of this path's root component, if any, and each
