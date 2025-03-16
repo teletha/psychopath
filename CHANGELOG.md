@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.0](https://github.com/teletha/psychopath/compare/v2.0.3...v2.1.0) (2025-03-16)
+
+
+### Features
+
+* add Location#normalize ([f952cf8](https://github.com/teletha/psychopath/commit/f952cf80f854e6489d0e4fc7728f02f18e98c886))
+
 ## [2.0.3](https://github.com/teletha/psychopath/compare/v2.0.2...v2.0.3) (2025-03-07)
 
 
