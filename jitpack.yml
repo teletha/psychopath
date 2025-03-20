@@ -1,5 +1,5 @@
 jdk:
-  - openjdk23
+  - openjdk24
 
 install: |
   if [ -e "bee" ]; then
