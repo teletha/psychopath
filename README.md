@@ -58,7 +58,7 @@ Add it into the libraryDependencies section like so:
 libraryDependencies += "com.github.teletha" % "psychopath" % "2.1.0"
 ```
 #### [Leiningen](https://leiningen.org/)
-Add JitPack repository at the end of repositories in your project.clj:
+Add JitPack repository at the end of repositories in your project().clj:
 ```clj
 :repositories [["jitpack" "https://jitpack.io"]]
 ```
@@ -97,7 +97,7 @@ If you think something might be a bug, but you're not sure, ask on StackOverflow
 
 ## Dependency
 Psychopath depends on the following products on runtime.
-* [sinobu-4.6.0](https://mvnrepository.com/artifact/com.github.teletha/sinobu/4.6.0)
+* [sinobu-4.6.1](https://mvnrepository.com/artifact/com.github.teletha/sinobu/4.6.1)
 <p align="right"><a href="#top">back to top</a></p>
 
 
