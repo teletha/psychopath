@@ -14,6 +14,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URL;
 import java.nio.file.CopyOption;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
@@ -780,6 +782,28 @@ public abstract class Location<Self extends Location> implements Comparable<Loca
      */
     public final Path asJavaPath() {
         return path;
+    }
+
+    /**
+     * Returns a {@link URI} object constructed from the this abstract path.
+     *
+     * @return a {@code URI} constructed from this abstract path
+     */
+    public final URI asURI() {
+        return asJavaPath().toUri();
+    }
+
+    /**
+     * Returns a {@link URL} object constructed from the this abstract path.
+     *
+     * @return a {@code URL} constructed from this abstract path
+     */
+    public final URL asURL() {
+        try {
+            return asURI().toURL();
+        } catch (MalformedURLException e) {
+            throw I.quiet(e);
+        }
     }
 
     /**
