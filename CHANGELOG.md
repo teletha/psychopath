@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.2.0](https://github.com/teletha/psychopath/compare/2.1.0...2.2.0) (2025-04-09)
+
+
+### Features
+
+* add Location#asURI and #asURL ([b4640cb](https://github.com/teletha/psychopath/commit/b4640cb4dee811124d1b006803e39d063596fbdb))
+
 ## [2.1.0](https://github.com/teletha/psychopath/compare/v2.0.3...2.1.0) (2025-03-16)
 
 
