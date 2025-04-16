@@ -765,9 +765,6 @@ public class File extends Location<File> {
      * This method reads all content including the line separators in the middle and/or at the end.
      * The resulting string will contain line separators as they appear in the file.
      *
-     * @apiNote This method is intended for simple cases where it is appropriate and convenient to
-     *          read the content of a file into a String. It is not intended for reading very large
-     *          files.
      * @param charset the charset to use for decoding
      * @return a String containing the content read from the file
      * @throws OutOfMemoryError if the file is extremely large, for example larger than {@code 2GB}
@@ -1046,28 +1043,6 @@ public class File extends Location<File> {
      * method that caused the read to take place. In case an {@code IOException} is thrown when
      * closing the file, it is also wrapped as an {@code UncheckedIOException}.
      *
-     * @apiNote This method must be used within a try-with-resources statement or similar control
-     *          structure to ensure that the stream's open file is closed promptly after the
-     *          stream's operations have completed.
-     * @implNote This implementation supports good parallel stream performance for the standard
-     *           charsets {@link StandardCharsets#UTF_8 UTF-8}, {@link StandardCharsets#US_ASCII
-     *           US-ASCII} and {@link StandardCharsets#ISO_8859_1 ISO-8859-1}. Such
-     *           <em>line-optimal</em> charsets have the property that the encoded bytes of a line
-     *           feed ('\n') or a carriage return ('\r') are efficiently identifiable from other
-     *           encoded characters when randomly accessing the bytes of the file.
-     *           <p>
-     *           For non-<em>line-optimal</em> charsets the stream source's spliterator has poor
-     *           splitting properties, similar to that of a spliterator associated with an iterator
-     *           or that associated with a stream returned from {@link BufferedReader#lines()}. Poor
-     *           splitting properties can result in poor parallel stream performance.
-     *           <p>
-     *           For <em>line-optimal</em> charsets the stream source's spliterator has good
-     *           splitting properties, assuming the file contains a regular sequence of lines. Good
-     *           splitting properties can result in good parallel stream performance. The
-     *           spliterator for a <em>line-optimal</em> charset takes advantage of the charset
-     *           properties (a line feed or a carriage return being efficient identifiable) such
-     *           that when splitting it can approximately divide the number of covered lines in
-     *           half.
      * @return the lines from the file as a {@code Stream}
      */
     public Signal<String> lines() {
@@ -1095,28 +1070,6 @@ public class File extends Location<File> {
      * method that caused the read to take place. In case an {@code IOException} is thrown when
      * closing the file, it is also wrapped as an {@code UncheckedIOException}.
      *
-     * @apiNote This method must be used within a try-with-resources statement or similar control
-     *          structure to ensure that the stream's open file is closed promptly after the
-     *          stream's operations have completed.
-     * @implNote This implementation supports good parallel stream performance for the standard
-     *           charsets {@link StandardCharsets#UTF_8 UTF-8}, {@link StandardCharsets#US_ASCII
-     *           US-ASCII} and {@link StandardCharsets#ISO_8859_1 ISO-8859-1}. Such
-     *           <em>line-optimal</em> charsets have the property that the encoded bytes of a line
-     *           feed ('\n') or a carriage return ('\r') are efficiently identifiable from other
-     *           encoded characters when randomly accessing the bytes of the file.
-     *           <p>
-     *           For non-<em>line-optimal</em> charsets the stream source's spliterator has poor
-     *           splitting properties, similar to that of a spliterator associated with an iterator
-     *           or that associated with a stream returned from {@link BufferedReader#lines()}. Poor
-     *           splitting properties can result in poor parallel stream performance.
-     *           <p>
-     *           For <em>line-optimal</em> charsets the stream source's spliterator has good
-     *           splitting properties, assuming the file contains a regular sequence of lines. Good
-     *           splitting properties can result in good parallel stream performance. The
-     *           spliterator for a <em>line-optimal</em> charset takes advantage of the charset
-     *           properties (a line feed or a carriage return being efficient identifiable) such
-     *           that when splitting it can approximately divide the number of covered lines in
-     *           half.
      * @param charset the charset to use for decoding
      * @return the lines from the file as a {@code Stream}
      */
