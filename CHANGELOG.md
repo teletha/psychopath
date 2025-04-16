@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.2.1](https://github.com/teletha/psychopath/compare/2.2.0...2.2.1) (2025-04-16)
+
+
+### Bug Fixes
+
+* Enhance temporary file handling security ([e2bfe04](https://github.com/teletha/psychopath/commit/e2bfe04f0b3fde74f71fd2571545e0bfafa73756))
+
 ## [2.2.0](https://github.com/teletha/psychopath/compare/2.1.0...2.2.0) (2025-04-09)
 
 
