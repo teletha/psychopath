@@ -9,6 +9,7 @@
  */
 package psychopath;
 
+import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -47,22 +48,22 @@ public class Locator {
             // Clean up any old temporary directories by listing all of the files, using a prefix
             // filter and that don't have a lock file.
             for (Directory sub : temporaries.walkDirectory("temporary*").toList()) {
-                // create a file to represent the lock
-                RandomAccessFile file = new RandomAccessFile(sub.file("lock").asJavaFile(), "rw");
+                // Prevent race condition with other JVMs by checking the last modified time
+                if (System.currentTimeMillis() - sub.lastModifiedMilli() >= 1000 * 60 * 10) {
+                    // create a file to represent the lock
+                    try (RandomAccessFile file = new RandomAccessFile(sub.file("lock").asJavaFile(), "rw")) {
+                        // test whether we can acquire lock or not
+                        FileLock lock = file.getChannel().tryLock();
 
-                // test whether we can acquire lock or not
-                FileLock lock = file.getChannel().tryLock();
+                        // delete the all contents in the temporary directory
+                        // since we could acquire a exclusive lock
+                        if (lock != null) {
+                            // unlock immediately
+                            lock.release();
 
-                // release lock immediately
-                file.close();
-
-                // delete the all contents in the temporary directory since we could acquire a
-                // exclusive lock
-                if (lock != null) {
-                    try {
-                        sub.delete();
-                    } catch (Throwable e) {
-                        // ignore
+                            // Clean up old temporary directories asynchronously.
+                            I.schedule(sub::delete);
+                        }
                     }
                 }
             }
@@ -72,7 +73,32 @@ public class Locator {
 
             // Create a lock after creating the temporary directory so there is no race condition
             // with another application trying to clean our temporary directory.
-            FileChannel.open(temporary.file("lock").asJavaPath(), StandardOpenOption.CREATE, StandardOpenOption.WRITE).tryLock();
+            Path lockPath = temporary.file("lock").asJavaPath();
+            FileChannel channel = null;
+            FileLock jvmLock = null;
+
+            try {
+                channel = FileChannel.open(lockPath, StandardOpenOption.CREATE, StandardOpenOption.WRITE);
+                jvmLock = channel.tryLock();
+
+                if (jvmLock == null) {
+                    throw new IllegalStateException("Could not acquire lock for JVM temporary directory: " + temporary + ". Another process might be holding the lock or there could be a file system issue.");
+                }
+
+                // Note: Ideally, 'channel' and 'jvmLock' should be kept referenced somewhere
+                // to explicitly manage their lifecycle, but within a static initializer, relying on
+                // JVM exit for release is a common (though less explicit) pattern. If you have a
+                // central shutdown hook mechanism, releasing the lock there would be cleaner.
+            } catch (Throwable e) {
+                if (channel != null) {
+                    try {
+                        channel.close();
+                    } catch (IOException ignored) {
+                        // Ignore close exception
+                    }
+                }
+                throw new IllegalStateException("Failed to create or lock the JVM temporary directory lock file: " + lockPath, e);
+            }
         } catch (Throwable e) {
             throw I.quiet(e);
         }
