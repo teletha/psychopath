@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.2.2](https://github.com/teletha/psychopath/compare/2.2.1...2.2.2) (2026-10-09)
+
+
+### Bug Fixes
+
+* Defer temporary directory cleanup and rebase project groupId ([46d9071](https://github.com/teletha/psychopath/commit/46d9071aa95ea230e5c739e39de07e1978c8dd13))
+
 ## [2.2.1](https://github.com/teletha/psychopath/compare/2.2.0...2.2.1) (2025-04-16)
 
 
