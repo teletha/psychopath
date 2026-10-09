@@ -15,6 +15,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
+import java.nio.file.DirectoryStream;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -44,29 +45,6 @@ public class Locator {
         try {
             // Create the root temporary directory for psychopath.
             temporaries = directory(Path.of(System.getProperty("java.io.tmpdir"), "psychopath"));
-
-            // Clean up any old temporary directories by listing all of the files, using a prefix
-            // filter and that don't have a lock file.
-            for (Directory sub : temporaries.walkDirectory("temporary*").toList()) {
-                // Prevent race condition with other JVMs by checking the last modified time
-                if (System.currentTimeMillis() - sub.lastModifiedMilli() >= 1000 * 60 * 10) {
-                    // create a file to represent the lock
-                    try (RandomAccessFile file = new RandomAccessFile(sub.file("lock").asJavaFile(), "rw")) {
-                        // test whether we can acquire lock or not
-                        FileLock lock = file.getChannel().tryLock();
-
-                        // delete the all contents in the temporary directory
-                        // since we could acquire a exclusive lock
-                        if (lock != null) {
-                            // unlock immediately
-                            lock.release();
-
-                            // Clean up old temporary directories asynchronously.
-                            I.schedule(sub::delete);
-                        }
-                    }
-                }
-            }
 
             // Create the temporary directory for the current processing JVM.
             temporary = create(Directory.class, temporaries);
@@ -99,6 +77,10 @@ public class Locator {
                 }
                 throw new IllegalStateException("Failed to create or lock the JVM temporary directory lock file: " + lockPath, e);
             }
+
+            // Clean up old temporary directories asynchronously so that scanning a potentially
+            // huge temporary directory tree never blocks the first use of this class.
+            I.schedule(Locator::cleanupOldTemporaries);
         } catch (Throwable e) {
             throw I.quiet(e);
         }
@@ -386,6 +368,57 @@ public class Locator {
         } while (temp.isPresent());
 
         return (T) temp.create();
+    }
+
+    /**
+     * <p>
+     * Clean up old temporary directories that are no longer held by any processing JVM.
+     * </p>
+     * <p>
+     * This method is executed asynchronously so that scanning a potentially huge temporary
+     * directory tree never blocks the first use of {@link Locator}. It lists only the immediate
+     * children of the temporary root instead of recursively walking the whole tree, because only
+     * direct children can ever match the {@code "temporary*"} name.
+     * </p>
+     */
+    private static void cleanupOldTemporaries() {
+        // List the direct children by their names. Listing at the file system level with a glob
+        // avoids traversing the full contents of every temporary directory.
+        try (DirectoryStream<Path> stream = Files.newDirectoryStream(temporaries.path, "temporary*")) {
+            long now = System.currentTimeMillis();
+
+            for (Path path : stream) {
+                if (!Files.isDirectory(path)) {
+                    continue;
+                }
+
+                Directory sub = directory(path);
+
+                // Prevent race condition with other JVMs by checking the last modified time
+                if (now - sub.lastModifiedMilli() < 1000 * 60 * 10) {
+                    continue;
+                }
+
+                // create a file to represent the lock
+                try (RandomAccessFile file = new RandomAccessFile(sub.file("lock").asJavaFile(), "rw")) {
+                    // test whether we can acquire lock or not
+                    FileLock lock = file.getChannel().tryLock();
+
+                    // delete the all contents in the temporary directory
+                    // since we could acquire a exclusive lock
+                    if (lock != null) {
+                        // unlock immediately
+                        lock.release();
+
+                        // Clean up old temporary directories asynchronously.
+                        I.schedule(sub::delete);
+                    }
+                }
+            }
+        } catch (IOException | RuntimeException e) {
+            // Clean up is best-effort, so failures such as a missing root directory can be ignored.
+            I.quiet(e);
+        }
     }
 
     /**

@@ -14,11 +14,11 @@ import javax.lang.model.SourceVersion;
 public class Project extends bee.api.Project {
 
     {
-        product("com.github.teletha", "psychopath", ref("version.txt"));
+        product("io.github.teletha", "psychopath", ref("version.txt"));
         require(SourceVersion.latest(), SourceVersion.RELEASE_21);
 
-        require("com.github.teletha", "sinobu");
-        require("com.github.teletha", "antibug").atTest();
+        require("io.github.teletha", "sinobu");
+        require("io.github.teletha", "antibug").atTest();
         require("com.google.jimfs", "jimfs").atTest();
     }
 }
