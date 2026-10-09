@@ -1,21 +1,41 @@
 jdk:
-  - openjdk24
+  - openjdk25
+
+before_install:
+  - sdk install java 25-open
+  - sdk use java 25-open
+  - export PATH="$HOME/.sdkman/candidates/java/25-open/bin:$PATH"
 
 install: |
   if [ -e "bee" ]; then
     source bee install maven --skip test
   else
-    BeeVersion=$(curl -SsL https://git.io/stable-bee)
-    curl -SsL -o bee-${BeeVersion}.jar https://jitpack.io/com/github/teletha/bee/${BeeVersion}/bee-${BeeVersion}.jar
+    # Resolve the stable version and obtain a valid bee jar. The GitHub release is
+    # tried first because JitPack can serve a redirect page instead of its own jar.
+    BeeVersion=$(curl -fsSL https://git.io/stable-bee) || exit 1
+    curl -fsSL -o bee-${BeeVersion}.jar https://github.com/teletha/bee/releases/download/${BeeVersion}/bee-${BeeVersion}.jar || curl -fsSL -o bee-${BeeVersion}.jar https://jitpack.io/com/github/teletha/bee/${BeeVersion}/bee-${BeeVersion}.jar || exit 1
+    jar tf bee-${BeeVersion}.jar | grep -qx 'bee/Bee.class' || { echo "Failed to obtain a valid bee [${BeeVersion}] jar."; exit 1; }
     java -cp bee-${BeeVersion}.jar bee.Bee install maven --skip test
   fi
 
   # To support SNAPSHOT and Commit ID version, read the VERSION in version.txt,
-  # not the VERSION in the environment variable.
-  ProductVersion=$(cat version.txt | xargs)
+  # not the VERSION in the environment variable. The carriage return is removed
+  # because a version.txt written on Windows may end with a CRLF.
+  ProductVersion=$(tr -d '\r' < version.txt | xargs)
 
   # Until the end of 2024, Jitpack would recognize it as an Artifact if I put the appropriate
   # Jar files, etc. in the right place. However, since 2025, Jitpack no longer recognizes them.
   # But, I found that I could build without any problem if I sent the following Maven log-like
   # string to standard output. NO WAY!
   echo "[INFO] Installing /home/jitpack/build/pom.xml to /home/jitpack/.m2/repository/${GROUP//./\/}/${ARTIFACT}/${ProductVersion}/${ARTIFACT}-${ProductVersion}.pom"
+
+  # The GitHub package registry and JitPack use different namespaces for the
+  # same repository, so a group under one namespace is mirrored to the other.
+  case "$GROUP" in
+    com.github.*) AltGroup="io.github.${GROUP#com.github.}" ;;
+    io.github.*) AltGroup="com.github.${GROUP#io.github.}" ;;
+    *) AltGroup="" ;;
+  esac
+  if [ -n "$AltGroup" ]; then
+    echo "[INFO] Installing /home/jitpack/build/pom.xml to /home/jitpack/.m2/repository/${AltGroup//./\/}/${ARTIFACT}/${ProductVersion}/${ARTIFACT}-${ProductVersion}.pom"
+  fi
