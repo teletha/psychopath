@@ -1,7 +1,7 @@
 <p align="center">
     <a href="https://docs.oracle.com/en/java/javase/21/"><img src="https://img.shields.io/badge/Java-Release%2021-green"/></a>
     <span>&nbsp;</span>
-    <a href="https://jitpack.io/#teletha/psychopath"><img src="https://img.shields.io/jitpack/v/github/teletha/psychopath?label=Repository&color=green"></a>
+    <a href="https://jitpack.io/#io.github.teletha/psychopath"><img src="https://img.shields.io/jitpack/v/github/teletha/psychopath?label=Repository&color=green"></a>
     <span>&nbsp;</span>
     <a href="https://teletha.github.io/psychopath"><img src="https://img.shields.io/website.svg?down_color=red&down_message=CLOSE&label=Official%20Site&up_color=green&up_message=OPEN&url=https%3A%2F%2Fteletha.github.io%2Fpsychopath"></a>
 </p>
@@ -30,7 +30,7 @@ Add JitPack repository at the end of repositories element in your build.xml:
 Add it into in the dependencies element like so:
 ```xml
 <dependency>
-    <groupId>com.github.teletha</groupId>
+    <groupId>io.github.teletha</groupId>
     <artifactId>psychopath</artifactId>
     <version>2.2.1</version>
 </dependency>
@@ -45,7 +45,7 @@ repositories {
 Add it into the dependencies section like so:
 ```gradle
 dependencies {
-    implementation 'com.github.teletha:psychopath:2.2.1'
+    implementation 'io.github.teletha:psychopath:2.2.1'
 }
 ```
 #### [SBT](https://www.scala-sbt.org/)
@@ -55,7 +55,7 @@ resolvers += "jitpack" at "https://jitpack.io"
 ```
 Add it into the libraryDependencies section like so:
 ```scala
-libraryDependencies += "com.github.teletha" % "psychopath" % "2.2.1"
+libraryDependencies += "io.github.teletha" % "psychopath" % "2.2.1"
 ```
 #### [Leiningen](https://leiningen.org/)
 Add JitPack repository at the end of repositories in your project().clj:
@@ -64,12 +64,12 @@ Add JitPack repository at the end of repositories in your project().clj:
 ```
 Add it into the dependencies section like so:
 ```clj
-:dependencies [[com.github.teletha/psychopath "2.2.1"]]
+:dependencies [[io.github.teletha/psychopath "2.2.1"]]
 ```
 #### [Bee](https://teletha.github.io/bee)
 Add it into your project definition class like so:
 ```java
-require("com.github.teletha", "psychopath", "2.2.1");
+require("io.github.teletha", "psychopath", "2.2.1");
 ```
 <p align="right"><a href="#top">back to top</a></p>
 
@@ -97,12 +97,12 @@ If you think something might be a bug, but you're not sure, ask on StackOverflow
 
 ## Dependency
 Psychopath depends on the following products on runtime.
-* [sinobu-4.7.0](https://mvnrepository.com/artifact/com.github.teletha/sinobu/4.7.0)
+* [sinobu-4.14.0](https://mvnrepository.com/artifact/io.github.teletha/sinobu/4.14.0)
 <p align="right"><a href="#top">back to top</a></p>
 
 
 ## License
-Copyright (C) 2025 The PSYCHOPATH Development Team
+Copyright (C) 2026 The PSYCHOPATH Development Team
 
 MIT License
 
