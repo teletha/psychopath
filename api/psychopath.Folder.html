@@ -3,359 +3,361 @@
 	<head>
 		<meta charset="UTF-8"/>
 		<meta content="width=device-width, initial-scale=1" name="viewport"/>
-		<meta content="Explains how to use Psychopath and its API. " name="description"/>
+		<meta content="Explains how to use Psychopath and its API. FileSystem utilities." name="description"/>
 		<link href="https://cdn.jsdelivr.net" rel="preconnect"/>
 		<link href="https://fonts.googleapis.com" rel="preconnect"/>
 		<link crossorigin="null" href="https://fonts.gstatic.com" rel="preconnect"/>
-		<link as="style" fetchpriority="high" href="https://fonts.googleapis.com/css2?display=swap&#38;family=Inter" rel="preload"/>
-		<link href="https://fonts.googleapis.com/css2?display=swap&#38;family=Inter" media="print" onload="this.media=&#39;all&#39;" rel="stylesheet"/>
-		<link as="style" fetchpriority="high" href="https://fonts.googleapis.com/css2?display=swap&#38;family=Material+Icons" rel="preload"/>
-		<link href="https://fonts.googleapis.com/css2?display=swap&#38;family=Material+Icons" media="print" onload="this.media=&#39;all&#39;" rel="stylesheet"/>
-		<link as="style" fetchpriority="high" href="https://fonts.googleapis.com/css2?display=swap&#38;family=Vollkorn" rel="preload"/>
-		<link href="https://fonts.googleapis.com/css2?display=swap&#38;family=Vollkorn" media="print" onload="this.media=&#39;all&#39;" rel="stylesheet"/>
+		<link as="style" fetchpriority="high" href="https://fonts.googleapis.com/css2?display=swap&amp;family=Inter" rel="preload"/>
+		<link href="https://fonts.googleapis.com/css2?display=swap&amp;family=Inter" media="print" onload="this.media=&apos;all&apos;" rel="stylesheet"/>
+		<link as="style" fetchpriority="high" href="https://fonts.googleapis.com/css2?display=swap&amp;family=Material+Icons" rel="preload"/>
+		<link href="https://fonts.googleapis.com/css2?display=swap&amp;family=Material+Icons" media="print" onload="this.media=&apos;all&apos;" rel="stylesheet"/>
+		<link as="style" fetchpriority="high" href="https://fonts.googleapis.com/css2?display=swap&amp;family=Vollkorn" rel="preload"/>
+		<link href="https://fonts.googleapis.com/css2?display=swap&amp;family=Vollkorn" media="print" onload="this.media=&apos;all&apos;" rel="stylesheet"/>
 		<title>Psychopath API</title>
 		<base href="../"/>
 		<script src="mimic.js" type="module"></script>
 		<link href="https://cdn.jsdelivr.net/npm/ress@4.0.0/dist/ress.min.css" rel="stylesheet"/>
 		<link href="main.css" rel="stylesheet"/>
 	</head>
-	<body class="R">
-		<header class="S" date="2025-04-09" ver="2.2.1">
-			<h1 class="j"><code>Psychopath</code></h1>
-			<nav class="K"><a href="api/" id="API"><svg class="package A svg" viewBox="0 0 24 24">
+	<body class="J">
+		<header class="K" date="2025-04-16">
+			<h1 class="g"><a href="index.html"><code>Psychopath</code></a></h1>
+			<nav class="t"><a href="api/main.html" id="API"><svg class="package">
 						<use href="main.svg#package"/>
 					</svg>
-				</a><a href="https://github.com/teletha/psychopath/discussions" id="Community" target="_blank"><svg class="user A svg" viewBox="0 0 24 24">
-						<use href="main.svg#user"/>
-					</svg>
-				</a><a href="doc/changelog.html" id="Activity"><svg class="activity A svg" viewBox="0 0 24 24">
+				</a><a href="doc/changelog.html" id="Activity"><svg class="activity">
 						<use href="main.svg#activity"/>
 					</svg>
-				</a><a href="https://github.com/teletha/psychopath" id="Repository" target="_blank"><svg class="github A svg" viewBox="0 0 24 24">
+				</a><a href="https://github.com/teletha/psychopath/discussions" id="Community" target="_blank"><svg class="user">
+						<use href="main.svg#user"/>
+					</svg>
+				</a><a href="https://github.com/teletha/psychopath" id="Repository" target="_blank"><svg class="github">
 						<use href="main.svg#github"/>
 					</svg>
 				</a></nav>
-			<div class="h"><a aria-label="Change color scheme" id="theme"><svg class="sun A svg" viewBox="0 0 24 24">
+			<div class="S"><a aria-label="Change color scheme" id="theme"><svg class="sun">
 						<use href="main.svg#sun"/>
-					</svg><svg class="moon A svg" viewBox="0 0 24 24">
+					</svg><svg class="moon">
 						<use href="main.svg#moon"/>
 					</svg>
 				</a></div>
 		</header>
-		<nav class="U"></nav>
-		<article class="T" id="Article">
-			<section class="c"><code class="f">psychopath</code>
-				<h2 class="Class d"><code class="q">Folder</code></h2>
-				<div class="g">
-					<ul class="C F">
+		<nav class="N"></nav>
+		<article class="L" id="Article">
+			<section class="i"><code class="LB">psychopath</code>
+				<h2 class="Class JB"><code class="c">Folder</code></h2>
+				<div class="s">
+					<ul class="E H">
 						<li><code><a aria-label="psychopath.PathOperatable" href="api/psychopath.PathOperatable.html">PathOperatable</a></code></li>
 					</ul>
-				</div><span class="B"><p>Virtual directory to manage resources from various entries.</p></span></section>
-			<section class="c" id="add(java.lang.String)">
-				<h2 class="e"><i class="PUBLIC"></i><code class="q">add</code><code class="r">(<code><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code><code class="parameterName">entry</code>)</code><i class="P"><code><a aria-label="psychopath.Folder" href="api/psychopath.Folder.html">Folder</a></code></i></h2>
-				<table class="s">
-					<tr class="l">
-						<td><code><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code><code class="parameterName">entry</code></td>
+				</div><span class="A"><p>Virtual directory to manage resources from various entries.</p></span></section>
+			<section class="i" id="add(java.lang.String)">
+				<h2 class="Q"><i class="PUBLIC"></i><code class="c">add</code><code class="W">(<code><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/24/docs/api/java.base/java/lang/String.html">String</a></code><code class="parameterName">entry</code>)</code><i class="Y"><code><a aria-label="psychopath.Folder" href="api/psychopath.Folder.html">Folder</a></code></i></h2>
+				<table class="r">
+					<tr class="FB">
+						<td><code><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/24/docs/api/java.base/java/lang/String.html">String</a></code><code class="parameterName">entry</code></td>
 						<td><span><p>A path to entry.</p></span></td>
 					</tr>
-					<tr class="m">
+					<tr class="BB">
 						<td><code><a aria-label="psychopath.Folder" href="api/psychopath.Folder.html">Folder</a></code></td>
 						<td><span><p>Chainable API.</p></span></td>
 					</tr>
-				</table><span class="B"><p>Add entry by path expression.</p></span></section>
-			<section class="c" id="add(java.lang.String,java.util.function.Function)">
-				<h2 class="e"><i class="PUBLIC"></i><code class="q">add</code><code class="r">(<code><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code><code class="parameterName">entry</code>, <code><a aria-label="java.util.function.Function 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code>, <code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code></code></code><code class="parameterName">option</code>)</code><i class="P"><code><a aria-label="psychopath.Folder" href="api/psychopath.Folder.html">Folder</a></code></i></h2>
-				<table class="s">
-					<tr class="l">
-						<td><code><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code><code class="parameterName">entry</code></td>
+				</table><span class="A"><p>Add entry by path expression.</p></span></section>
+			<section class="i" id="add(java.lang.String,java.util.function.Function)">
+				<h2 class="Q"><i class="PUBLIC"></i><code class="c">add</code><code class="W">(<code><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/24/docs/api/java.base/java/lang/String.html">String</a></code><code class="parameterName">entry</code>, <code><a aria-label="java.util.function.Function 🚀" href="https://docs.oracle.com/en/java/javase/24/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code>, <code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code></code></code><code class="parameterName">option</code>)</code><i class="Y"><code><a aria-label="psychopath.Folder" href="api/psychopath.Folder.html">Folder</a></code></i></h2>
+				<table class="r">
+					<tr class="FB">
+						<td><code><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/24/docs/api/java.base/java/lang/String.html">String</a></code><code class="parameterName">entry</code></td>
 						<td><span><p>A path to entry.</p></span></td>
 					</tr>
-					<tr class="l">
-						<td><code><a aria-label="java.util.function.Function 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code>, <code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code></code></code><code class="parameterName">option</code></td>
+					<tr class="FB">
+						<td><code><a aria-label="java.util.function.Function 🚀" href="https://docs.oracle.com/en/java/javase/24/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code>, <code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code></code></code><code class="parameterName">option</code></td>
 						<td></td>
 					</tr>
-					<tr class="m">
+					<tr class="BB">
 						<td><code><a aria-label="psychopath.Folder" href="api/psychopath.Folder.html">Folder</a></code></td>
 						<td><span><p>Chainable API.</p></span></td>
 					</tr>
-				</table><span class="B"><p>Add entry by path expression.</p></span></section>
-			<section class="c" id="add(java.nio.file.Path,java.lang.String...)">
-				<h2 class="e"><i class="PUBLIC"></i><code class="q">add</code><code class="r">(<code><a aria-label="java.nio.file.Path 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/Path.html">Path</a></code><code class="parameterName">entry</code>, <code array="var"><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code><code class="parameterName">patterns</code>)</code><i class="P"><code><a aria-label="psychopath.Folder" href="api/psychopath.Folder.html">Folder</a></code></i></h2>
-				<table class="s">
-					<tr class="l">
-						<td><code><a aria-label="java.nio.file.Path 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/Path.html">Path</a></code><code class="parameterName">entry</code></td>
+				</table><span class="A"><p>Add entry by path expression.</p></span></section>
+			<section class="i" id="add(java.nio.file.Path,java.lang.String...)">
+				<h2 class="Q"><i class="PUBLIC"></i><code class="c">add</code><code class="W">(<code><a aria-label="java.nio.file.Path 🚀" href="https://docs.oracle.com/en/java/javase/24/docs/api/java.base/java/nio/file/Path.html">Path</a></code><code class="parameterName">entry</code>, <code array="var"><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/24/docs/api/java.base/java/lang/String.html">String</a></code><code class="parameterName">patterns</code>)</code><i class="Y"><code><a aria-label="psychopath.Folder" href="api/psychopath.Folder.html">Folder</a></code></i></h2>
+				<table class="r">
+					<tr class="FB">
+						<td><code><a aria-label="java.nio.file.Path 🚀" href="https://docs.oracle.com/en/java/javase/24/docs/api/java.base/java/nio/file/Path.html">Path</a></code><code class="parameterName">entry</code></td>
 						<td><span><p>A path to entry.</p></span></td>
 					</tr>
-					<tr class="l">
-						<td><code array="var"><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code><code class="parameterName">patterns</code></td>
+					<tr class="FB">
+						<td><code array="var"><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/24/docs/api/java.base/java/lang/String.html">String</a></code><code class="parameterName">patterns</code></td>
 						<td><span><p>A list of glob patterns to accept file by its name.</p></span></td>
 					</tr>
-					<tr class="m">
+					<tr class="BB">
 						<td><code><a aria-label="psychopath.Folder" href="api/psychopath.Folder.html">Folder</a></code></td>
 						<td><span><p>Chainable API.</p></span></td>
 					</tr>
-				</table><span class="B"><p>Add entry by <code><a aria-label="java.nio.file.Path 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/Path.html">Path</a></code>.</p></span></section>
-			<section class="c" id="add(java.nio.file.Path,java.util.function.Function)">
-				<h2 class="e"><i class="PUBLIC"></i><code class="q">add</code><code class="r">(<code><a aria-label="java.nio.file.Path 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/Path.html">Path</a></code><code class="parameterName">entry</code>, <code><a aria-label="java.util.function.Function 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code>, <code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code></code></code><code class="parameterName">option</code>)</code><i class="P"><code><a aria-label="psychopath.Folder" href="api/psychopath.Folder.html">Folder</a></code></i></h2>
-				<table class="s">
-					<tr class="l">
-						<td><code><a aria-label="java.nio.file.Path 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/Path.html">Path</a></code><code class="parameterName">entry</code></td>
+				</table><span class="A"><p>Add entry by <code><a aria-label="java.nio.file.Path 🚀" href="https://docs.oracle.com/en/java/javase/24/docs/api/java.base/java/nio/file/Path.html">Path</a></code>.</p></span></section>
+			<section class="i" id="add(java.nio.file.Path,java.util.function.Function)">
+				<h2 class="Q"><i class="PUBLIC"></i><code class="c">add</code><code class="W">(<code><a aria-label="java.nio.file.Path 🚀" href="https://docs.oracle.com/en/java/javase/24/docs/api/java.base/java/nio/file/Path.html">Path</a></code><code class="parameterName">entry</code>, <code><a aria-label="java.util.function.Function 🚀" href="https://docs.oracle.com/en/java/javase/24/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code>, <code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code></code></code><code class="parameterName">option</code>)</code><i class="Y"><code><a aria-label="psychopath.Folder" href="api/psychopath.Folder.html">Folder</a></code></i></h2>
+				<table class="r">
+					<tr class="FB">
+						<td><code><a aria-label="java.nio.file.Path 🚀" href="https://docs.oracle.com/en/java/javase/24/docs/api/java.base/java/nio/file/Path.html">Path</a></code><code class="parameterName">entry</code></td>
 						<td><span><p>A path to entry.</p></span></td>
 					</tr>
-					<tr class="l">
-						<td><code><a aria-label="java.util.function.Function 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code>, <code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code></code></code><code class="parameterName">option</code></td>
+					<tr class="FB">
+						<td><code><a aria-label="java.util.function.Function 🚀" href="https://docs.oracle.com/en/java/javase/24/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code>, <code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code></code></code><code class="parameterName">option</code></td>
 						<td></td>
 					</tr>
-					<tr class="m">
+					<tr class="BB">
 						<td><code><a aria-label="psychopath.Folder" href="api/psychopath.Folder.html">Folder</a></code></td>
 						<td><span><p>Chainable API.</p></span></td>
 					</tr>
-				</table><span class="B"><p>Add entry by <code><a aria-label="java.nio.file.Path 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/Path.html">Path</a></code>.</p></span></section>
-			<section class="c" id="add(psychopath.Folder,java.lang.String...)">
-				<h2 class="e"><i class="PUBLIC"></i><code class="q">add</code><code class="r">(<code><a aria-label="psychopath.Folder" href="api/psychopath.Folder.html">Folder</a></code><code class="parameterName">entries</code>, <code array="var"><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code><code class="parameterName">patterns</code>)</code><i class="P"><code><a aria-label="psychopath.Folder" href="api/psychopath.Folder.html">Folder</a></code></i></h2>
-				<table class="s">
-					<tr class="l">
+				</table><span class="A"><p>Add entry by <code><a aria-label="java.nio.file.Path 🚀" href="https://docs.oracle.com/en/java/javase/24/docs/api/java.base/java/nio/file/Path.html">Path</a></code>.</p></span></section>
+			<section class="i" id="add(psychopath.Folder,java.lang.String...)">
+				<h2 class="Q"><i class="PUBLIC"></i><code class="c">add</code><code class="W">(<code><a aria-label="psychopath.Folder" href="api/psychopath.Folder.html">Folder</a></code><code class="parameterName">entries</code>, <code array="var"><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/24/docs/api/java.base/java/lang/String.html">String</a></code><code class="parameterName">patterns</code>)</code><i class="Y"><code><a aria-label="psychopath.Folder" href="api/psychopath.Folder.html">Folder</a></code></i></h2>
+				<table class="r">
+					<tr class="FB">
 						<td><code><a aria-label="psychopath.Folder" href="api/psychopath.Folder.html">Folder</a></code><code class="parameterName">entries</code></td>
 						<td><span><p>A entries to merge.</p></span></td>
 					</tr>
-					<tr class="l">
-						<td><code array="var"><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code><code class="parameterName">patterns</code></td>
+					<tr class="FB">
+						<td><code array="var"><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/24/docs/api/java.base/java/lang/String.html">String</a></code><code class="parameterName">patterns</code></td>
 						<td><span><p>A list of glob patterns to accept file by its name.</p></span></td>
 					</tr>
-					<tr class="m">
+					<tr class="BB">
 						<td><code><a aria-label="psychopath.Folder" href="api/psychopath.Folder.html">Folder</a></code></td>
 						<td><span><p>Chainable API.</p></span></td>
 					</tr>
-				</table><span class="B"><p>Merge entries from other <code><a aria-label="psychopath.Folder" href="api/psychopath.Folder.html">Folder</a></code>.</p></span></section>
-			<section class="c" id="add(psychopath.Folder,java.util.function.Function)">
-				<h2 class="e"><i class="PUBLIC"></i><code class="q">add</code><code class="r">(<code><a aria-label="psychopath.Folder" href="api/psychopath.Folder.html">Folder</a></code><code class="parameterName">entries</code>, <code><a aria-label="java.util.function.Function 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code>, <code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code></code></code><code class="parameterName">option</code>)</code><i class="P"><code><a aria-label="psychopath.Folder" href="api/psychopath.Folder.html">Folder</a></code></i></h2>
-				<table class="s">
-					<tr class="l">
+				</table><span class="A"><p>Merge entries from other <code><a aria-label="psychopath.Folder" href="api/psychopath.Folder.html">Folder</a></code>.</p></span></section>
+			<section class="i" id="add(psychopath.Folder,java.util.function.Function)">
+				<h2 class="Q"><i class="PUBLIC"></i><code class="c">add</code><code class="W">(<code><a aria-label="psychopath.Folder" href="api/psychopath.Folder.html">Folder</a></code><code class="parameterName">entries</code>, <code><a aria-label="java.util.function.Function 🚀" href="https://docs.oracle.com/en/java/javase/24/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code>, <code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code></code></code><code class="parameterName">option</code>)</code><i class="Y"><code><a aria-label="psychopath.Folder" href="api/psychopath.Folder.html">Folder</a></code></i></h2>
+				<table class="r">
+					<tr class="FB">
 						<td><code><a aria-label="psychopath.Folder" href="api/psychopath.Folder.html">Folder</a></code><code class="parameterName">entries</code></td>
 						<td><span><p>A entries to merge.</p></span></td>
 					</tr>
-					<tr class="l">
-						<td><code><a aria-label="java.util.function.Function 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code>, <code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code></code></code><code class="parameterName">option</code></td>
+					<tr class="FB">
+						<td><code><a aria-label="java.util.function.Function 🚀" href="https://docs.oracle.com/en/java/javase/24/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code>, <code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code></code></code><code class="parameterName">option</code></td>
 						<td></td>
 					</tr>
-					<tr class="m">
+					<tr class="BB">
 						<td><code><a aria-label="psychopath.Folder" href="api/psychopath.Folder.html">Folder</a></code></td>
 						<td><span><p>Chainable API.</p></span></td>
 					</tr>
-				</table><span class="B"><p>Merge entries from other <code><a aria-label="psychopath.Folder" href="api/psychopath.Folder.html">Folder</a></code>.</p></span></section>
-			<section class="c" id="add(psychopath.Location,java.lang.String...)">
-				<h2 class="e"><i class="PUBLIC"></i><code class="q">add</code><code class="r">(<code><a aria-label="psychopath.Location" href="api/psychopath.Location.html">Location</a></code><code class="parameterName">entry</code>, <code array="var"><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code><code class="parameterName">patterns</code>)</code><i class="P"><code><a aria-label="psychopath.Folder" href="api/psychopath.Folder.html">Folder</a></code></i></h2>
-				<table class="s">
-					<tr class="l">
+				</table><span class="A"><p>Merge entries from other <code><a aria-label="psychopath.Folder" href="api/psychopath.Folder.html">Folder</a></code>.</p></span></section>
+			<section class="i" id="add(psychopath.Location,java.lang.String...)">
+				<h2 class="Q"><i class="PUBLIC"></i><code class="c">add</code><code class="W">(<code><a aria-label="psychopath.Location" href="api/psychopath.Location.html">Location</a></code><code class="parameterName">entry</code>, <code array="var"><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/24/docs/api/java.base/java/lang/String.html">String</a></code><code class="parameterName">patterns</code>)</code><i class="Y"><code><a aria-label="psychopath.Folder" href="api/psychopath.Folder.html">Folder</a></code></i></h2>
+				<table class="r">
+					<tr class="FB">
 						<td><code><a aria-label="psychopath.Location" href="api/psychopath.Location.html">Location</a></code><code class="parameterName">entry</code></td>
 						<td><span><p>A location to entry.</p></span></td>
 					</tr>
-					<tr class="l">
-						<td><code array="var"><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code><code class="parameterName">patterns</code></td>
+					<tr class="FB">
+						<td><code array="var"><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/24/docs/api/java.base/java/lang/String.html">String</a></code><code class="parameterName">patterns</code></td>
 						<td><span><p>A list of glob patterns to accept file by its name.</p></span></td>
 					</tr>
-					<tr class="m">
+					<tr class="BB">
 						<td><code><a aria-label="psychopath.Folder" href="api/psychopath.Folder.html">Folder</a></code></td>
 						<td><span><p>Chainable API.</p></span></td>
 					</tr>
-				</table><span class="B"><p>Add entries by <code><a aria-label="psychopath.Location" href="api/psychopath.Location.html">Location</a></code>.</p></span></section>
-			<section class="c" id="add(psychopath.Location,java.util.function.Function)">
-				<h2 class="e"><i class="PUBLIC"></i><code class="q">add</code><code class="r">(<code><a aria-label="psychopath.Location" href="api/psychopath.Location.html">Location</a></code><code class="parameterName">entry</code>, <code><a aria-label="java.util.function.Function 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code>, <code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code></code></code><code class="parameterName">option</code>)</code><i class="P"><code><a aria-label="psychopath.Folder" href="api/psychopath.Folder.html">Folder</a></code></i></h2>
-				<table class="s">
-					<tr class="l">
+				</table><span class="A"><p>Add entries by <code><a aria-label="psychopath.Location" href="api/psychopath.Location.html">Location</a></code>.</p></span></section>
+			<section class="i" id="add(psychopath.Location,java.util.function.Function)">
+				<h2 class="Q"><i class="PUBLIC"></i><code class="c">add</code><code class="W">(<code><a aria-label="psychopath.Location" href="api/psychopath.Location.html">Location</a></code><code class="parameterName">entry</code>, <code><a aria-label="java.util.function.Function 🚀" href="https://docs.oracle.com/en/java/javase/24/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code>, <code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code></code></code><code class="parameterName">option</code>)</code><i class="Y"><code><a aria-label="psychopath.Folder" href="api/psychopath.Folder.html">Folder</a></code></i></h2>
+				<table class="r">
+					<tr class="FB">
 						<td><code><a aria-label="psychopath.Location" href="api/psychopath.Location.html">Location</a></code><code class="parameterName">entry</code></td>
 						<td><span><p>A location to entry.</p></span></td>
 					</tr>
-					<tr class="l">
-						<td><code><a aria-label="java.util.function.Function 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code>, <code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code></code></code><code class="parameterName">option</code></td>
+					<tr class="FB">
+						<td><code><a aria-label="java.util.function.Function 🚀" href="https://docs.oracle.com/en/java/javase/24/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code>, <code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code></code></code><code class="parameterName">option</code></td>
 						<td></td>
 					</tr>
-					<tr class="m">
+					<tr class="BB">
 						<td><code><a aria-label="psychopath.Folder" href="api/psychopath.Folder.html">Folder</a></code></td>
 						<td><span><p>Chainable API.</p></span></td>
 					</tr>
-				</table><span class="B"><p>Add entries by <code><a aria-label="psychopath.Location" href="api/psychopath.Location.html">Location</a></code>.</p></span></section>
-			<section class="c" id="add(kiss.Signal,java.lang.String...)">
-				<h2 class="e"><i class="PUBLIC"></i><code class="q">add</code><code class="r">(<code>kiss.Signal<code class="parameters"><code>?</code><code class="extends"><code><a aria-label="psychopath.Location" href="api/psychopath.Location.html">Location</a></code></code></code></code><code class="parameterName">entries</code>, <code array="var"><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code><code class="parameterName">patterns</code>)</code><i class="P"><code><a aria-label="psychopath.Folder" href="api/psychopath.Folder.html">Folder</a></code></i></h2>
-				<table class="s">
-					<tr class="l">
+				</table><span class="A"><p>Add entries by <code><a aria-label="psychopath.Location" href="api/psychopath.Location.html">Location</a></code>.</p></span></section>
+			<section class="i" id="add(kiss.Signal,java.lang.String...)">
+				<h2 class="Q"><i class="PUBLIC"></i><code class="c">add</code><code class="W">(<code>kiss.Signal<code class="parameters"><code>?</code><code class="extends"><code><a aria-label="psychopath.Location" href="api/psychopath.Location.html">Location</a></code></code></code></code><code class="parameterName">entries</code>, <code array="var"><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/24/docs/api/java.base/java/lang/String.html">String</a></code><code class="parameterName">patterns</code>)</code><i class="Y"><code><a aria-label="psychopath.Folder" href="api/psychopath.Folder.html">Folder</a></code></i></h2>
+				<table class="r">
+					<tr class="FB">
 						<td><code>kiss.Signal<code class="parameters"><code>?</code><code class="extends"><code><a aria-label="psychopath.Location" href="api/psychopath.Location.html">Location</a></code></code></code></code><code class="parameterName">entries</code></td>
 						<td></td>
 					</tr>
-					<tr class="l">
-						<td><code array="var"><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code><code class="parameterName">patterns</code></td>
+					<tr class="FB">
+						<td><code array="var"><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/24/docs/api/java.base/java/lang/String.html">String</a></code><code class="parameterName">patterns</code></td>
 						<td><span><p>A list of glob patterns to accept file by its name.</p></span></td>
 					</tr>
-					<tr class="m">
+					<tr class="BB">
 						<td><code><a aria-label="psychopath.Folder" href="api/psychopath.Folder.html">Folder</a></code></td>
 						<td></td>
 					</tr>
-				</table><span class="B"><p>Add entries.</p></span></section>
-			<section class="c" id="add(kiss.Signal,java.util.function.Function)">
-				<h2 class="e"><i class="PUBLIC"></i><code class="q">add</code><code class="r">(<code>kiss.Signal<code class="parameters"><code>?</code><code class="extends"><code><a aria-label="psychopath.Location" href="api/psychopath.Location.html">Location</a></code></code></code></code><code class="parameterName">entries</code>, <code><a aria-label="java.util.function.Function 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code>, <code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code></code></code><code class="parameterName">option</code>)</code><i class="P"><code><a aria-label="psychopath.Folder" href="api/psychopath.Folder.html">Folder</a></code></i></h2>
-				<table class="s">
-					<tr class="l">
+				</table><span class="A"><p>Add entries.</p></span></section>
+			<section class="i" id="add(kiss.Signal,java.util.function.Function)">
+				<h2 class="Q"><i class="PUBLIC"></i><code class="c">add</code><code class="W">(<code>kiss.Signal<code class="parameters"><code>?</code><code class="extends"><code><a aria-label="psychopath.Location" href="api/psychopath.Location.html">Location</a></code></code></code></code><code class="parameterName">entries</code>, <code><a aria-label="java.util.function.Function 🚀" href="https://docs.oracle.com/en/java/javase/24/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code>, <code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code></code></code><code class="parameterName">option</code>)</code><i class="Y"><code><a aria-label="psychopath.Folder" href="api/psychopath.Folder.html">Folder</a></code></i></h2>
+				<table class="r">
+					<tr class="FB">
 						<td><code>kiss.Signal<code class="parameters"><code>?</code><code class="extends"><code><a aria-label="psychopath.Location" href="api/psychopath.Location.html">Location</a></code></code></code></code><code class="parameterName">entries</code></td>
 						<td></td>
 					</tr>
-					<tr class="l">
-						<td><code><a aria-label="java.util.function.Function 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code>, <code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code></code></code><code class="parameterName">option</code></td>
+					<tr class="FB">
+						<td><code><a aria-label="java.util.function.Function 🚀" href="https://docs.oracle.com/en/java/javase/24/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code>, <code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code></code></code><code class="parameterName">option</code></td>
 						<td></td>
 					</tr>
-					<tr class="m">
+					<tr class="BB">
 						<td><code><a aria-label="psychopath.Folder" href="api/psychopath.Folder.html">Folder</a></code></td>
 						<td></td>
 					</tr>
-				</table><span class="B"><p>Add entries.</p></span></section>
-			<section class="c" id="add(psychopath.Directory,java.lang.String...)">
-				<h2 class="e"><i class="PUBLIC"></i><code class="q">add</code><code class="r">(<code><a aria-label="psychopath.Directory" href="api/psychopath.Directory.html">Directory</a></code><code class="parameterName">base</code>, <code array="var"><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code><code class="parameterName">patterns</code>)</code><i class="P"><code><a aria-label="psychopath.Folder" href="api/psychopath.Folder.html">Folder</a></code></i></h2>
-				<table class="s">
-					<tr class="l">
+				</table><span class="A"><p>Add entries.</p></span></section>
+			<section class="i" id="add(psychopath.Directory,java.lang.String...)">
+				<h2 class="Q"><i class="PUBLIC"></i><code class="c">add</code><code class="W">(<code><a aria-label="psychopath.Directory" href="api/psychopath.Directory.html">Directory</a></code><code class="parameterName">base</code>, <code array="var"><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/24/docs/api/java.base/java/lang/String.html">String</a></code><code class="parameterName">patterns</code>)</code><i class="Y"><code><a aria-label="psychopath.Folder" href="api/psychopath.Folder.html">Folder</a></code></i></h2>
+				<table class="r">
+					<tr class="FB">
 						<td><code><a aria-label="psychopath.Directory" href="api/psychopath.Directory.html">Directory</a></code><code class="parameterName">base</code></td>
 						<td><span><p>A base path.</p></span></td>
 					</tr>
-					<tr class="l">
-						<td><code array="var"><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code><code class="parameterName">patterns</code></td>
-						<td><span><p>&#38;quot;glob&#38;quot; include/exclude patterns.</p></span></td>
+					<tr class="FB">
+						<td><code array="var"><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/24/docs/api/java.base/java/lang/String.html">String</a></code><code class="parameterName">patterns</code></td>
+						<td><span><p>&quot;glob&quot; include/exclude patterns.</p></span></td>
 					</tr>
-					<tr class="m">
+					<tr class="BB">
 						<td><code><a aria-label="psychopath.Folder" href="api/psychopath.Folder.html">Folder</a></code></td>
 						<td></td>
 					</tr>
-				</table><span class="B"><p>Add pattern matching path.</p></span></section>
-			<section class="c" id="add(psychopath.Directory,java.util.function.Function)">
-				<h2 class="e"><i class="PUBLIC"></i><code class="q">add</code><code class="r">(<code><a aria-label="psychopath.Directory" href="api/psychopath.Directory.html">Directory</a></code><code class="parameterName">base</code>, <code><a aria-label="java.util.function.Function 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code>, <code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code></code></code><code class="parameterName">option</code>)</code><i class="P"><code><a aria-label="psychopath.Folder" href="api/psychopath.Folder.html">Folder</a></code></i></h2>
-				<table class="s">
-					<tr class="l">
+				</table><span class="A"><p>Add pattern matching path.</p></span></section>
+			<section class="i" id="add(psychopath.Directory,java.util.function.Function)">
+				<h2 class="Q"><i class="PUBLIC"></i><code class="c">add</code><code class="W">(<code><a aria-label="psychopath.Directory" href="api/psychopath.Directory.html">Directory</a></code><code class="parameterName">base</code>, <code><a aria-label="java.util.function.Function 🚀" href="https://docs.oracle.com/en/java/javase/24/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code>, <code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code></code></code><code class="parameterName">option</code>)</code><i class="Y"><code><a aria-label="psychopath.Folder" href="api/psychopath.Folder.html">Folder</a></code></i></h2>
+				<table class="r">
+					<tr class="FB">
 						<td><code><a aria-label="psychopath.Directory" href="api/psychopath.Directory.html">Directory</a></code><code class="parameterName">base</code></td>
 						<td><span><p>A base path.</p></span></td>
 					</tr>
-					<tr class="l">
-						<td><code><a aria-label="java.util.function.Function 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code>, <code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code></code></code><code class="parameterName">option</code></td>
+					<tr class="FB">
+						<td><code><a aria-label="java.util.function.Function 🚀" href="https://docs.oracle.com/en/java/javase/24/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code>, <code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code></code></code><code class="parameterName">option</code></td>
 						<td><span><p>A option.</p></span></td>
 					</tr>
-					<tr class="m">
+					<tr class="BB">
 						<td><code><a aria-label="psychopath.Folder" href="api/psychopath.Folder.html">Folder</a></code></td>
 						<td></td>
 					</tr>
-				</table><span class="B"><p>Add pattern matching path.</p></span></section>
-			<section class="c" id="observeDeleting(java.util.function.Function)">
-				<h2 class="e"><i class="OVERRIDE PUBLIC"></i><code class="q">observeDeleting</code><code class="r">(<code><a aria-label="java.util.function.Function 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code>, <code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code></code></code><code class="parameterName">option</code>)</code><i class="P"><code>kiss.Signal<code class="parameters"><code><a aria-label="psychopath.Location" href="api/psychopath.Location.html">Location</a></code></code></code></i></h2>
-				<table class="s">
-					<tr class="l">
-						<td><code><a aria-label="java.util.function.Function 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code>, <code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code></code></code><code class="parameterName">option</code></td>
+				</table><span class="A"><p>Add pattern matching path.</p></span></section>
+			<section class="i" id="observeDeleting(java.util.function.Function)">
+				<h2 class="Q"><i class="OVERRIDE PUBLIC"></i><code class="c">observeDeleting</code><code class="W">(<code><a aria-label="java.util.function.Function 🚀" href="https://docs.oracle.com/en/java/javase/24/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code>, <code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code></code></code><code class="parameterName">option</code>)</code><i class="Y"><code>kiss.Signal<code class="parameters"><code><a aria-label="psychopath.Location" href="api/psychopath.Location.html">Location</a></code></code></code></i></h2>
+				<table class="r">
+					<tr class="FB">
+						<td><code><a aria-label="java.util.function.Function 🚀" href="https://docs.oracle.com/en/java/javase/24/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code>, <code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code></code></code><code class="parameterName">option</code></td>
 						<td></td>
 					</tr>
-					<tr class="m">
+					<tr class="BB">
 						<td><code>kiss.Signal<code class="parameters"><code><a aria-label="psychopath.Location" href="api/psychopath.Location.html">Location</a></code></code></code></td>
 						<td></td>
 					</tr>
 				</table>
 			</section>
-			<section class="c" id="observeCopyingTo(psychopath.Directory,java.util.function.Function)">
-				<h2 class="e"><i class="OVERRIDE PUBLIC"></i><code class="q">observeCopyingTo</code><code class="r">(<code><a aria-label="psychopath.Directory" href="api/psychopath.Directory.html">Directory</a></code><code class="parameterName">destination</code>, <code><a aria-label="java.util.function.Function 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code>, <code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code></code></code><code class="parameterName">option</code>)</code><i class="P"><code>kiss.Signal<code class="parameters"><code><a aria-label="psychopath.Location" href="api/psychopath.Location.html">Location</a></code></code></code></i></h2>
-				<table class="s">
-					<tr class="l">
+			<section class="i" id="observeCopyingTo(psychopath.Directory,java.util.function.Function)">
+				<h2 class="Q"><i class="OVERRIDE PUBLIC"></i><code class="c">observeCopyingTo</code><code class="W">(<code><a aria-label="psychopath.Directory" href="api/psychopath.Directory.html">Directory</a></code><code class="parameterName">destination</code>, <code><a aria-label="java.util.function.Function 🚀" href="https://docs.oracle.com/en/java/javase/24/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code>, <code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code></code></code><code class="parameterName">option</code>)</code><i class="Y"><code>kiss.Signal<code class="parameters"><code><a aria-label="psychopath.Location" href="api/psychopath.Location.html">Location</a></code></code></code></i></h2>
+				<table class="r">
+					<tr class="FB">
 						<td><code><a aria-label="psychopath.Directory" href="api/psychopath.Directory.html">Directory</a></code><code class="parameterName">destination</code></td>
 						<td></td>
 					</tr>
-					<tr class="l">
-						<td><code><a aria-label="java.util.function.Function 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code>, <code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code></code></code><code class="parameterName">option</code></td>
+					<tr class="FB">
+						<td><code><a aria-label="java.util.function.Function 🚀" href="https://docs.oracle.com/en/java/javase/24/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code>, <code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code></code></code><code class="parameterName">option</code></td>
 						<td></td>
 					</tr>
-					<tr class="m">
+					<tr class="BB">
 						<td><code>kiss.Signal<code class="parameters"><code><a aria-label="psychopath.Location" href="api/psychopath.Location.html">Location</a></code></code></code></td>
 						<td></td>
 					</tr>
 				</table>
 			</section>
-			<section class="c" id="observeMovingTo(psychopath.Directory,java.util.function.Function)">
-				<h2 class="e"><i class="OVERRIDE PUBLIC"></i><code class="q">observeMovingTo</code><code class="r">(<code><a aria-label="psychopath.Directory" href="api/psychopath.Directory.html">Directory</a></code><code class="parameterName">destination</code>, <code><a aria-label="java.util.function.Function 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code>, <code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code></code></code><code class="parameterName">option</code>)</code><i class="P"><code>kiss.Signal<code class="parameters"><code><a aria-label="psychopath.Location" href="api/psychopath.Location.html">Location</a></code></code></code></i></h2>
-				<table class="s">
-					<tr class="l">
+			<section class="i" id="observeMovingTo(psychopath.Directory,java.util.function.Function)">
+				<h2 class="Q"><i class="OVERRIDE PUBLIC"></i><code class="c">observeMovingTo</code><code class="W">(<code><a aria-label="psychopath.Directory" href="api/psychopath.Directory.html">Directory</a></code><code class="parameterName">destination</code>, <code><a aria-label="java.util.function.Function 🚀" href="https://docs.oracle.com/en/java/javase/24/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code>, <code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code></code></code><code class="parameterName">option</code>)</code><i class="Y"><code>kiss.Signal<code class="parameters"><code><a aria-label="psychopath.Location" href="api/psychopath.Location.html">Location</a></code></code></code></i></h2>
+				<table class="r">
+					<tr class="FB">
 						<td><code><a aria-label="psychopath.Directory" href="api/psychopath.Directory.html">Directory</a></code><code class="parameterName">destination</code></td>
 						<td></td>
 					</tr>
-					<tr class="l">
-						<td><code><a aria-label="java.util.function.Function 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code>, <code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code></code></code><code class="parameterName">option</code></td>
+					<tr class="FB">
+						<td><code><a aria-label="java.util.function.Function 🚀" href="https://docs.oracle.com/en/java/javase/24/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code>, <code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code></code></code><code class="parameterName">option</code></td>
 						<td></td>
 					</tr>
-					<tr class="m">
+					<tr class="BB">
 						<td><code>kiss.Signal<code class="parameters"><code><a aria-label="psychopath.Location" href="api/psychopath.Location.html">Location</a></code></code></code></td>
 						<td></td>
 					</tr>
 				</table>
 			</section>
-			<section class="c" id="observePackingTo(psychopath.File,java.util.function.Function)">
-				<h2 class="e"><i class="OVERRIDE PUBLIC"></i><code class="q">observePackingTo</code><code class="r">(<code><a aria-label="psychopath.File" href="api/psychopath.File.html">File</a></code><code class="parameterName">archive</code>, <code><a aria-label="java.util.function.Function 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code>, <code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code></code></code><code class="parameterName">option</code>)</code><i class="P"><code>kiss.Signal<code class="parameters"><code><a aria-label="psychopath.Location" href="api/psychopath.Location.html">Location</a></code></code></code></i></h2>
-				<table class="s">
-					<tr class="l">
+			<section class="i" id="observePackingTo(psychopath.File,java.util.function.Function)">
+				<h2 class="Q"><i class="OVERRIDE PUBLIC"></i><code class="c">observePackingTo</code><code class="W">(<code><a aria-label="psychopath.File" href="api/psychopath.File.html">File</a></code><code class="parameterName">archive</code>, <code><a aria-label="java.util.function.Function 🚀" href="https://docs.oracle.com/en/java/javase/24/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code>, <code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code></code></code><code class="parameterName">option</code>)</code><i class="Y"><code>kiss.Signal<code class="parameters"><code><a aria-label="psychopath.Location" href="api/psychopath.Location.html">Location</a></code></code></code></i></h2>
+				<table class="r">
+					<tr class="FB">
 						<td><code><a aria-label="psychopath.File" href="api/psychopath.File.html">File</a></code><code class="parameterName">archive</code></td>
 						<td></td>
 					</tr>
-					<tr class="l">
-						<td><code><a aria-label="java.util.function.Function 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code>, <code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code></code></code><code class="parameterName">option</code></td>
+					<tr class="FB">
+						<td><code><a aria-label="java.util.function.Function 🚀" href="https://docs.oracle.com/en/java/javase/24/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code>, <code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code></code></code><code class="parameterName">option</code></td>
 						<td></td>
 					</tr>
-					<tr class="m">
+					<tr class="BB">
 						<td><code>kiss.Signal<code class="parameters"><code><a aria-label="psychopath.Location" href="api/psychopath.Location.html">Location</a></code></code></code></td>
 						<td></td>
 					</tr>
 				</table>
 			</section>
-			<section class="c" id="walkFileWithBase(java.util.function.Function)">
-				<h2 class="e"><i class="OVERRIDE PUBLIC"></i><code class="q">walkFileWithBase</code><code class="r">(<code><a aria-label="java.util.function.Function 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code>, <code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code></code></code><code class="parameterName">option</code>)</code><i class="P"><code>kiss.Signal<code class="parameters"><code>kiss.Ⅱ<code class="parameters"><code><a aria-label="psychopath.Directory" href="api/psychopath.Directory.html">Directory</a></code>, <code><a aria-label="psychopath.File" href="api/psychopath.File.html">File</a></code></code></code></code></code></i></h2>
-				<table class="s">
-					<tr class="l">
-						<td><code><a aria-label="java.util.function.Function 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code>, <code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code></code></code><code class="parameterName">option</code></td>
+			<section class="i" id="walkFileWithBase(java.util.function.Function)">
+				<h2 class="Q"><i class="OVERRIDE PUBLIC"></i><code class="c">walkFileWithBase</code><code class="W">(<code><a aria-label="java.util.function.Function 🚀" href="https://docs.oracle.com/en/java/javase/24/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code>, <code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code></code></code><code class="parameterName">option</code>)</code><i class="Y"><code>kiss.Signal<code class="parameters"><code>kiss.Ⅱ<code class="parameters"><code><a aria-label="psychopath.Directory" href="api/psychopath.Directory.html">Directory</a></code>, <code><a aria-label="psychopath.File" href="api/psychopath.File.html">File</a></code></code></code></code></code></i></h2>
+				<table class="r">
+					<tr class="FB">
+						<td><code><a aria-label="java.util.function.Function 🚀" href="https://docs.oracle.com/en/java/javase/24/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code>, <code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code></code></code><code class="parameterName">option</code></td>
 						<td></td>
 					</tr>
-					<tr class="m">
+					<tr class="BB">
 						<td><code>kiss.Signal<code class="parameters"><code>kiss.Ⅱ<code class="parameters"><code><a aria-label="psychopath.Directory" href="api/psychopath.Directory.html">Directory</a></code>, <code><a aria-label="psychopath.File" href="api/psychopath.File.html">File</a></code></code></code></code></code></td>
 						<td></td>
 					</tr>
 				</table>
 			</section>
-			<section class="c" id="walkDirectoryWithBase(java.util.function.Function)">
-				<h2 class="e"><i class="OVERRIDE PUBLIC"></i><code class="q">walkDirectoryWithBase</code><code class="r">(<code><a aria-label="java.util.function.Function 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code>, <code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code></code></code><code class="parameterName">option</code>)</code><i class="P"><code>kiss.Signal<code class="parameters"><code>kiss.Ⅱ<code class="parameters"><code><a aria-label="psychopath.Directory" href="api/psychopath.Directory.html">Directory</a></code>, <code><a aria-label="psychopath.Directory" href="api/psychopath.Directory.html">Directory</a></code></code></code></code></code></i></h2>
-				<table class="s">
-					<tr class="l">
-						<td><code><a aria-label="java.util.function.Function 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code>, <code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code></code></code><code class="parameterName">option</code></td>
+			<section class="i" id="walkDirectoryWithBase(java.util.function.Function)">
+				<h2 class="Q"><i class="OVERRIDE PUBLIC"></i><code class="c">walkDirectoryWithBase</code><code class="W">(<code><a aria-label="java.util.function.Function 🚀" href="https://docs.oracle.com/en/java/javase/24/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code>, <code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code></code></code><code class="parameterName">option</code>)</code><i class="Y"><code>kiss.Signal<code class="parameters"><code>kiss.Ⅱ<code class="parameters"><code><a aria-label="psychopath.Directory" href="api/psychopath.Directory.html">Directory</a></code>, <code><a aria-label="psychopath.Directory" href="api/psychopath.Directory.html">Directory</a></code></code></code></code></code></i></h2>
+				<table class="r">
+					<tr class="FB">
+						<td><code><a aria-label="java.util.function.Function 🚀" href="https://docs.oracle.com/en/java/javase/24/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code>, <code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code></code></code><code class="parameterName">option</code></td>
 						<td></td>
 					</tr>
-					<tr class="m">
+					<tr class="BB">
 						<td><code>kiss.Signal<code class="parameters"><code>kiss.Ⅱ<code class="parameters"><code><a aria-label="psychopath.Directory" href="api/psychopath.Directory.html">Directory</a></code>, <code><a aria-label="psychopath.Directory" href="api/psychopath.Directory.html">Directory</a></code></code></code></code></code></td>
 						<td></td>
 					</tr>
 				</table>
 			</section>
 		</article>
-		<aside class="V">
-			<div class="i">
-				<h5 class="L">Methods</h5>
+		<aside class="O">
+			<div class="Z">
+				<h5 class="y">Methods</h5>
 				<ul>
-					<li class="p"><i class="PUBLIC"></i><code><a href="api/psychopath.Folder.html#add(java.lang.String)">add</a></code><code class="r">(<code><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code><code class="parameterName">entry</code>)</code><i class="o"><code><a aria-label="psychopath.Folder" href="api/psychopath.Folder.html">Folder</a></code></i></li>
-					<li class="p"><i class="PUBLIC"></i><code><a href="api/psychopath.Folder.html#add(java.lang.String,java.util.function.Function)">add</a></code><code class="r">(<code><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code><code class="parameterName">entry</code>, <code><a aria-label="java.util.function.Function 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code>, <code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code></code></code><code class="parameterName">option</code>)</code><i class="o"><code><a aria-label="psychopath.Folder" href="api/psychopath.Folder.html">Folder</a></code></i></li>
-					<li class="p"><i class="PUBLIC"></i><code><a href="api/psychopath.Folder.html#add(java.nio.file.Path,java.lang.String...)">add</a></code><code class="r">(<code><a aria-label="java.nio.file.Path 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/Path.html">Path</a></code><code class="parameterName">entry</code>, <code array="var"><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code><code class="parameterName">patterns</code>)</code><i class="o"><code><a aria-label="psychopath.Folder" href="api/psychopath.Folder.html">Folder</a></code></i></li>
-					<li class="p"><i class="PUBLIC"></i><code><a href="api/psychopath.Folder.html#add(java.nio.file.Path,java.util.function.Function)">add</a></code><code class="r">(<code><a aria-label="java.nio.file.Path 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/nio/file/Path.html">Path</a></code><code class="parameterName">entry</code>, <code><a aria-label="java.util.function.Function 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code>, <code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code></code></code><code class="parameterName">option</code>)</code><i class="o"><code><a aria-label="psychopath.Folder" href="api/psychopath.Folder.html">Folder</a></code></i></li>
-					<li class="p"><i class="PUBLIC"></i><code><a href="api/psychopath.Folder.html#add(psychopath.Folder,java.lang.String...)">add</a></code><code class="r">(<code><a aria-label="psychopath.Folder" href="api/psychopath.Folder.html">Folder</a></code><code class="parameterName">entries</code>, <code array="var"><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code><code class="parameterName">patterns</code>)</code><i class="o"><code><a aria-label="psychopath.Folder" href="api/psychopath.Folder.html">Folder</a></code></i></li>
-					<li class="p"><i class="PUBLIC"></i><code><a href="api/psychopath.Folder.html#add(psychopath.Folder,java.util.function.Function)">add</a></code><code class="r">(<code><a aria-label="psychopath.Folder" href="api/psychopath.Folder.html">Folder</a></code><code class="parameterName">entries</code>, <code><a aria-label="java.util.function.Function 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code>, <code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code></code></code><code class="parameterName">option</code>)</code><i class="o"><code><a aria-label="psychopath.Folder" href="api/psychopath.Folder.html">Folder</a></code></i></li>
-					<li class="p"><i class="PUBLIC"></i><code><a href="api/psychopath.Folder.html#add(psychopath.Location,java.lang.String...)">add</a></code><code class="r">(<code><a aria-label="psychopath.Location" href="api/psychopath.Location.html">Location</a></code><code class="parameterName">entry</code>, <code array="var"><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code><code class="parameterName">patterns</code>)</code><i class="o"><code><a aria-label="psychopath.Folder" href="api/psychopath.Folder.html">Folder</a></code></i></li>
-					<li class="p"><i class="PUBLIC"></i><code><a href="api/psychopath.Folder.html#add(psychopath.Location,java.util.function.Function)">add</a></code><code class="r">(<code><a aria-label="psychopath.Location" href="api/psychopath.Location.html">Location</a></code><code class="parameterName">entry</code>, <code><a aria-label="java.util.function.Function 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code>, <code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code></code></code><code class="parameterName">option</code>)</code><i class="o"><code><a aria-label="psychopath.Folder" href="api/psychopath.Folder.html">Folder</a></code></i></li>
-					<li class="p"><i class="PUBLIC"></i><code><a href="api/psychopath.Folder.html#add(kiss.Signal,java.lang.String...)">add</a></code><code class="r">(<code>kiss.Signal<code class="parameters"><code>?</code><code class="extends"><code><a aria-label="psychopath.Location" href="api/psychopath.Location.html">Location</a></code></code></code></code><code class="parameterName">entries</code>, <code array="var"><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code><code class="parameterName">patterns</code>)</code><i class="o"><code><a aria-label="psychopath.Folder" href="api/psychopath.Folder.html">Folder</a></code></i></li>
-					<li class="p"><i class="PUBLIC"></i><code><a href="api/psychopath.Folder.html#add(kiss.Signal,java.util.function.Function)">add</a></code><code class="r">(<code>kiss.Signal<code class="parameters"><code>?</code><code class="extends"><code><a aria-label="psychopath.Location" href="api/psychopath.Location.html">Location</a></code></code></code></code><code class="parameterName">entries</code>, <code><a aria-label="java.util.function.Function 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code>, <code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code></code></code><code class="parameterName">option</code>)</code><i class="o"><code><a aria-label="psychopath.Folder" href="api/psychopath.Folder.html">Folder</a></code></i></li>
-					<li class="p"><i class="PUBLIC"></i><code><a href="api/psychopath.Folder.html#add(psychopath.Directory,java.lang.String...)">add</a></code><code class="r">(<code><a aria-label="psychopath.Directory" href="api/psychopath.Directory.html">Directory</a></code><code class="parameterName">base</code>, <code array="var"><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/lang/String.html">String</a></code><code class="parameterName">patterns</code>)</code><i class="o"><code><a aria-label="psychopath.Folder" href="api/psychopath.Folder.html">Folder</a></code></i></li>
-					<li class="p"><i class="PUBLIC"></i><code><a href="api/psychopath.Folder.html#add(psychopath.Directory,java.util.function.Function)">add</a></code><code class="r">(<code><a aria-label="psychopath.Directory" href="api/psychopath.Directory.html">Directory</a></code><code class="parameterName">base</code>, <code><a aria-label="java.util.function.Function 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code>, <code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code></code></code><code class="parameterName">option</code>)</code><i class="o"><code><a aria-label="psychopath.Folder" href="api/psychopath.Folder.html">Folder</a></code></i></li>
-					<li class="p"><i class="OVERRIDE PUBLIC"></i><code><a href="api/psychopath.Folder.html#observeDeleting(java.util.function.Function)">observeDeleting</a></code><code class="r">(<code><a aria-label="java.util.function.Function 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code>, <code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code></code></code><code class="parameterName">option</code>)</code><i class="o"><code>kiss.Signal<code class="parameters"><code><a aria-label="psychopath.Location" href="api/psychopath.Location.html">Location</a></code></code></code></i></li>
-					<li class="p"><i class="OVERRIDE PUBLIC"></i><code><a href="api/psychopath.Folder.html#observeCopyingTo(psychopath.Directory,java.util.function.Function)">observeCopyingTo</a></code><code class="r">(<code><a aria-label="psychopath.Directory" href="api/psychopath.Directory.html">Directory</a></code><code class="parameterName">destination</code>, <code><a aria-label="java.util.function.Function 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code>, <code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code></code></code><code class="parameterName">option</code>)</code><i class="o"><code>kiss.Signal<code class="parameters"><code><a aria-label="psychopath.Location" href="api/psychopath.Location.html">Location</a></code></code></code></i></li>
-					<li class="p"><i class="OVERRIDE PUBLIC"></i><code><a href="api/psychopath.Folder.html#observeMovingTo(psychopath.Directory,java.util.function.Function)">observeMovingTo</a></code><code class="r">(<code><a aria-label="psychopath.Directory" href="api/psychopath.Directory.html">Directory</a></code><code class="parameterName">destination</code>, <code><a aria-label="java.util.function.Function 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code>, <code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code></code></code><code class="parameterName">option</code>)</code><i class="o"><code>kiss.Signal<code class="parameters"><code><a aria-label="psychopath.Location" href="api/psychopath.Location.html">Location</a></code></code></code></i></li>
-					<li class="p"><i class="OVERRIDE PUBLIC"></i><code><a href="api/psychopath.Folder.html#observePackingTo(psychopath.File,java.util.function.Function)">observePackingTo</a></code><code class="r">(<code><a aria-label="psychopath.File" href="api/psychopath.File.html">File</a></code><code class="parameterName">archive</code>, <code><a aria-label="java.util.function.Function 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code>, <code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code></code></code><code class="parameterName">option</code>)</code><i class="o"><code>kiss.Signal<code class="parameters"><code><a aria-label="psychopath.Location" href="api/psychopath.Location.html">Location</a></code></code></code></i></li>
-					<li class="p"><i class="OVERRIDE PUBLIC"></i><code><a href="api/psychopath.Folder.html#walkFileWithBase(java.util.function.Function)">walkFileWithBase</a></code><code class="r">(<code><a aria-label="java.util.function.Function 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code>, <code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code></code></code><code class="parameterName">option</code>)</code><i class="o"><code>kiss.Signal<code class="parameters"><code>kiss.Ⅱ<code class="parameters"><code><a aria-label="psychopath.Directory" href="api/psychopath.Directory.html">Directory</a></code>, <code><a aria-label="psychopath.File" href="api/psychopath.File.html">File</a></code></code></code></code></code></i></li>
-					<li class="p"><i class="OVERRIDE PUBLIC"></i><code><a href="api/psychopath.Folder.html#walkDirectoryWithBase(java.util.function.Function)">walkDirectoryWithBase</a></code><code class="r">(<code><a aria-label="java.util.function.Function 🚀" href="https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code>, <code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code></code></code><code class="parameterName">option</code>)</code><i class="o"><code>kiss.Signal<code class="parameters"><code>kiss.Ⅱ<code class="parameters"><code><a aria-label="psychopath.Directory" href="api/psychopath.Directory.html">Directory</a></code>, <code><a aria-label="psychopath.Directory" href="api/psychopath.Directory.html">Directory</a></code></code></code></code></code></i></li>
+					<li class="DB"><i class="PUBLIC"></i><code><a href="api/psychopath.Folder.html#add(java.lang.String)">add</a></code><code class="W">(<code><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/24/docs/api/java.base/java/lang/String.html">String</a></code><code class="parameterName">entry</code>)</code><i class="KB"><code><a aria-label="psychopath.Folder" href="api/psychopath.Folder.html">Folder</a></code></i></li>
+					<li class="DB"><i class="PUBLIC"></i><code><a href="api/psychopath.Folder.html#add(java.lang.String,java.util.function.Function)">add</a></code><code class="W">(<code><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/24/docs/api/java.base/java/lang/String.html">String</a></code><code class="parameterName">entry</code>, <code><a aria-label="java.util.function.Function 🚀" href="https://docs.oracle.com/en/java/javase/24/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code>, <code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code></code></code><code class="parameterName">option</code>)</code><i class="KB"><code><a aria-label="psychopath.Folder" href="api/psychopath.Folder.html">Folder</a></code></i></li>
+					<li class="DB"><i class="PUBLIC"></i><code><a href="api/psychopath.Folder.html#add(java.nio.file.Path,java.lang.String...)">add</a></code><code class="W">(<code><a aria-label="java.nio.file.Path 🚀" href="https://docs.oracle.com/en/java/javase/24/docs/api/java.base/java/nio/file/Path.html">Path</a></code><code class="parameterName">entry</code>, <code array="var"><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/24/docs/api/java.base/java/lang/String.html">String</a></code><code class="parameterName">patterns</code>)</code><i class="KB"><code><a aria-label="psychopath.Folder" href="api/psychopath.Folder.html">Folder</a></code></i></li>
+					<li class="DB"><i class="PUBLIC"></i><code><a href="api/psychopath.Folder.html#add(java.nio.file.Path,java.util.function.Function)">add</a></code><code class="W">(<code><a aria-label="java.nio.file.Path 🚀" href="https://docs.oracle.com/en/java/javase/24/docs/api/java.base/java/nio/file/Path.html">Path</a></code><code class="parameterName">entry</code>, <code><a aria-label="java.util.function.Function 🚀" href="https://docs.oracle.com/en/java/javase/24/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code>, <code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code></code></code><code class="parameterName">option</code>)</code><i class="KB"><code><a aria-label="psychopath.Folder" href="api/psychopath.Folder.html">Folder</a></code></i></li>
+					<li class="DB"><i class="PUBLIC"></i><code><a href="api/psychopath.Folder.html#add(psychopath.Folder,java.lang.String...)">add</a></code><code class="W">(<code><a aria-label="psychopath.Folder" href="api/psychopath.Folder.html">Folder</a></code><code class="parameterName">entries</code>, <code array="var"><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/24/docs/api/java.base/java/lang/String.html">String</a></code><code class="parameterName">patterns</code>)</code><i class="KB"><code><a aria-label="psychopath.Folder" href="api/psychopath.Folder.html">Folder</a></code></i></li>
+					<li class="DB"><i class="PUBLIC"></i><code><a href="api/psychopath.Folder.html#add(psychopath.Folder,java.util.function.Function)">add</a></code><code class="W">(<code><a aria-label="psychopath.Folder" href="api/psychopath.Folder.html">Folder</a></code><code class="parameterName">entries</code>, <code><a aria-label="java.util.function.Function 🚀" href="https://docs.oracle.com/en/java/javase/24/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code>, <code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code></code></code><code class="parameterName">option</code>)</code><i class="KB"><code><a aria-label="psychopath.Folder" href="api/psychopath.Folder.html">Folder</a></code></i></li>
+					<li class="DB"><i class="PUBLIC"></i><code><a href="api/psychopath.Folder.html#add(psychopath.Location,java.lang.String...)">add</a></code><code class="W">(<code><a aria-label="psychopath.Location" href="api/psychopath.Location.html">Location</a></code><code class="parameterName">entry</code>, <code array="var"><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/24/docs/api/java.base/java/lang/String.html">String</a></code><code class="parameterName">patterns</code>)</code><i class="KB"><code><a aria-label="psychopath.Folder" href="api/psychopath.Folder.html">Folder</a></code></i></li>
+					<li class="DB"><i class="PUBLIC"></i><code><a href="api/psychopath.Folder.html#add(psychopath.Location,java.util.function.Function)">add</a></code><code class="W">(<code><a aria-label="psychopath.Location" href="api/psychopath.Location.html">Location</a></code><code class="parameterName">entry</code>, <code><a aria-label="java.util.function.Function 🚀" href="https://docs.oracle.com/en/java/javase/24/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code>, <code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code></code></code><code class="parameterName">option</code>)</code><i class="KB"><code><a aria-label="psychopath.Folder" href="api/psychopath.Folder.html">Folder</a></code></i></li>
+					<li class="DB"><i class="PUBLIC"></i><code><a href="api/psychopath.Folder.html#add(kiss.Signal,java.lang.String...)">add</a></code><code class="W">(<code>kiss.Signal<code class="parameters"><code>?</code><code class="extends"><code><a aria-label="psychopath.Location" href="api/psychopath.Location.html">Location</a></code></code></code></code><code class="parameterName">entries</code>, <code array="var"><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/24/docs/api/java.base/java/lang/String.html">String</a></code><code class="parameterName">patterns</code>)</code><i class="KB"><code><a aria-label="psychopath.Folder" href="api/psychopath.Folder.html">Folder</a></code></i></li>
+					<li class="DB"><i class="PUBLIC"></i><code><a href="api/psychopath.Folder.html#add(kiss.Signal,java.util.function.Function)">add</a></code><code class="W">(<code>kiss.Signal<code class="parameters"><code>?</code><code class="extends"><code><a aria-label="psychopath.Location" href="api/psychopath.Location.html">Location</a></code></code></code></code><code class="parameterName">entries</code>, <code><a aria-label="java.util.function.Function 🚀" href="https://docs.oracle.com/en/java/javase/24/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code>, <code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code></code></code><code class="parameterName">option</code>)</code><i class="KB"><code><a aria-label="psychopath.Folder" href="api/psychopath.Folder.html">Folder</a></code></i></li>
+					<li class="DB"><i class="PUBLIC"></i><code><a href="api/psychopath.Folder.html#add(psychopath.Directory,java.lang.String...)">add</a></code><code class="W">(<code><a aria-label="psychopath.Directory" href="api/psychopath.Directory.html">Directory</a></code><code class="parameterName">base</code>, <code array="var"><a aria-label="java.lang.String 🚀" href="https://docs.oracle.com/en/java/javase/24/docs/api/java.base/java/lang/String.html">String</a></code><code class="parameterName">patterns</code>)</code><i class="KB"><code><a aria-label="psychopath.Folder" href="api/psychopath.Folder.html">Folder</a></code></i></li>
+					<li class="DB"><i class="PUBLIC"></i><code><a href="api/psychopath.Folder.html#add(psychopath.Directory,java.util.function.Function)">add</a></code><code class="W">(<code><a aria-label="psychopath.Directory" href="api/psychopath.Directory.html">Directory</a></code><code class="parameterName">base</code>, <code><a aria-label="java.util.function.Function 🚀" href="https://docs.oracle.com/en/java/javase/24/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code>, <code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code></code></code><code class="parameterName">option</code>)</code><i class="KB"><code><a aria-label="psychopath.Folder" href="api/psychopath.Folder.html">Folder</a></code></i></li>
+					<li class="DB"><i class="OVERRIDE PUBLIC"></i><code><a href="api/psychopath.Folder.html#observeDeleting(java.util.function.Function)">observeDeleting</a></code><code class="W">(<code><a aria-label="java.util.function.Function 🚀" href="https://docs.oracle.com/en/java/javase/24/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code>, <code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code></code></code><code class="parameterName">option</code>)</code><i class="KB"><code>kiss.Signal<code class="parameters"><code><a aria-label="psychopath.Location" href="api/psychopath.Location.html">Location</a></code></code></code></i></li>
+					<li class="DB"><i class="OVERRIDE PUBLIC"></i><code><a href="api/psychopath.Folder.html#observeCopyingTo(psychopath.Directory,java.util.function.Function)">observeCopyingTo</a></code><code class="W">(<code><a aria-label="psychopath.Directory" href="api/psychopath.Directory.html">Directory</a></code><code class="parameterName">destination</code>, <code><a aria-label="java.util.function.Function 🚀" href="https://docs.oracle.com/en/java/javase/24/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code>, <code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code></code></code><code class="parameterName">option</code>)</code><i class="KB"><code>kiss.Signal<code class="parameters"><code><a aria-label="psychopath.Location" href="api/psychopath.Location.html">Location</a></code></code></code></i></li>
+					<li class="DB"><i class="OVERRIDE PUBLIC"></i><code><a href="api/psychopath.Folder.html#observeMovingTo(psychopath.Directory,java.util.function.Function)">observeMovingTo</a></code><code class="W">(<code><a aria-label="psychopath.Directory" href="api/psychopath.Directory.html">Directory</a></code><code class="parameterName">destination</code>, <code><a aria-label="java.util.function.Function 🚀" href="https://docs.oracle.com/en/java/javase/24/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code>, <code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code></code></code><code class="parameterName">option</code>)</code><i class="KB"><code>kiss.Signal<code class="parameters"><code><a aria-label="psychopath.Location" href="api/psychopath.Location.html">Location</a></code></code></code></i></li>
+					<li class="DB"><i class="OVERRIDE PUBLIC"></i><code><a href="api/psychopath.Folder.html#observePackingTo(psychopath.File,java.util.function.Function)">observePackingTo</a></code><code class="W">(<code><a aria-label="psychopath.File" href="api/psychopath.File.html">File</a></code><code class="parameterName">archive</code>, <code><a aria-label="java.util.function.Function 🚀" href="https://docs.oracle.com/en/java/javase/24/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code>, <code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code></code></code><code class="parameterName">option</code>)</code><i class="KB"><code>kiss.Signal<code class="parameters"><code><a aria-label="psychopath.Location" href="api/psychopath.Location.html">Location</a></code></code></code></i></li>
+					<li class="DB"><i class="OVERRIDE PUBLIC"></i><code><a href="api/psychopath.Folder.html#walkFileWithBase(java.util.function.Function)">walkFileWithBase</a></code><code class="W">(<code><a aria-label="java.util.function.Function 🚀" href="https://docs.oracle.com/en/java/javase/24/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code>, <code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code></code></code><code class="parameterName">option</code>)</code><i class="KB"><code>kiss.Signal<code class="parameters"><code>kiss.Ⅱ<code class="parameters"><code><a aria-label="psychopath.Directory" href="api/psychopath.Directory.html">Directory</a></code>, <code><a aria-label="psychopath.File" href="api/psychopath.File.html">File</a></code></code></code></code></code></i></li>
+					<li class="DB"><i class="OVERRIDE PUBLIC"></i><code><a href="api/psychopath.Folder.html#walkDirectoryWithBase(java.util.function.Function)">walkDirectoryWithBase</a></code><code class="W">(<code><a aria-label="java.util.function.Function 🚀" href="https://docs.oracle.com/en/java/javase/24/docs/api/java.base/java/util/function/Function.html">Function</a><code class="parameters"><code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code>, <code><a aria-label="psychopath.Option" href="api/psychopath.Option.html">Option</a></code></code></code><code class="parameterName">option</code>)</code><i class="KB"><code>kiss.Signal<code class="parameters"><code>kiss.Ⅱ<code class="parameters"><code><a aria-label="psychopath.Directory" href="api/psychopath.Directory.html">Directory</a></code>, <code><a aria-label="psychopath.Directory" href="api/psychopath.Directory.html">Directory</a></code></code></code></code></code></i></li>
 				</ul>
 			</div>
 		</aside>
-		<footer class="n"/>
+		<footer class="M">
+			<p>Powered by <a href="https://github.com/teletha/evergarden" target="_">Evergarden</a></p>
+		</footer>
 	</body>
 	<script src="root.js"></script>
 	<script src="main.js" type="module"></script>
